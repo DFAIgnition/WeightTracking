@@ -1,0 +1,332 @@
+{
+  "custom": {},
+  "params": {
+    "edit": true,
+    "unit_conversion": "",
+    "unit_id": "",
+    "unit_name": ""
+  },
+  "permissions": {
+    "securityLevels": [
+      {
+        "children": [
+          {
+            "children": [
+              {
+                "children": [],
+                "name": "CorporateAdministrator"
+              }
+            ],
+            "name": "Roles"
+          }
+        ],
+        "name": "Authenticated"
+      }
+    ],
+    "type": "AllOf"
+  },
+  "propConfig": {
+    "params.edit": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.sample_point_id": {
+      "paramDirection": "input",
+      "persistent": false
+    },
+    "params.unit_conversion": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.unit_id": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.unit_name": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 147,
+      "width": 880
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Icon"
+        },
+        "position": {
+          "height": 95,
+          "width": 115,
+          "x": 738.5,
+          "y": 1
+        },
+        "props": {
+          "path": "material/construction"
+        },
+        "type": "ia.display.icon"
+      },
+      {
+        "meta": {
+          "name": "Unit_Label"
+        },
+        "position": {
+          "height": 32,
+          "width": 177,
+          "x": 12,
+          "y": 10
+        },
+        "props": {
+          "text": "Unit:"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Unit_Entry"
+        },
+        "position": {
+          "height": 36,
+          "width": 256,
+          "x": 196,
+          "y": 10.5
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "expression": "toStr({view.params.unit_name},\"\")"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "placeholder": "Enter Unit Name"
+        },
+        "type": "ia.input.text-field"
+      },
+      {
+        "custom": {
+          "exists": 0
+        },
+        "events": {
+          "dom": {
+            "onClick": {
+              "config": {
+                "script": "\t\n\t# Get all the parameters we need to save\n\tunit_id\t\t\t\t\u003d self.view.params.unit_id\n\tunit_name\t\t\t\u003d self.getSibling(\"Unit_Entry\").props.text\n\tunit_conversion \t\u003d float(self.getSibling(\"Conversion_Entry\").props.text)\n\tedit\t\t\t\t\u003d self.view.params.edit\n\t\n\t\n\t# Do some validation...make sure everything has been entered correctly\n\t\n\tnamedQuery \u003d \"Weight_Q/DB_Scalar/Count_Unit\"\n\tparameters \u003d {\n\t\t\u0027unit_name\u0027:\t\tunit_name,\n\t\t\u0027unit_conversion\u0027: unit_conversion\n\t}\n\t\n\texists \u003d system.db.runNamedQuery(system.project.getProjectName(), namedQuery, parameters)\n\t\n\t\n\tif exists \u003e 0 and edit\u003d\u003dFalse:\n\t\tCORE_P.Utils.errorPopup(\u0027A line unit with that name already exists.\u0027) \n\t\treturn\n\t\t\t\n\t\n\ttxId \u003d system.db.beginTransaction(timeout\u003d5000)\n\n\ttry:\n\t\n\t\tif edit \u003d\u003d False:\n\t\n\t\t\tnamedQuery \u003d \"Weight_Q/DB_Insert/Insert_Unit\"\n\t\t\tparameters \u003d {\n\t\t\t\t\u0027unit_name\u0027:\t\tunit_name,\n\t\t\t\t\u0027unit_conversion\u0027: unit_conversion\n\t\t\t}\n\t\t\t\n\t\telse:\n\t\t\n\t\t\tnamedQuery \u003d \"Weight_Q/DB_Update/Update_Unit\"\n\t\t\tparameters \u003d {\n\t\t\t\t\u0027unit_id\u0027:\t\t\tunit_id, \n\t\t\t\t\u0027unit_name\u0027:\t\tunit_name,\n\t\t\t\t\u0027unit_conversion\u0027: unit_conversion\n\t\t\t}\n\t\t\t\n\t\taffected_rows \u003d system.db.runNamedQuery(system.project.getProjectName(), namedQuery, parameters,tx\u003dtxId)\n\t\t\n\t\tmessage \u003d  \u0027Added/Edited new packaging line unit:\u0027 + str(parameters)\n\t\t\n\t\t# Audit log\n\t\tCORE_P.Utils.logChanges(self, \n                     \u0027AddEditPackagingLineUnit\u0027,\n                     message, \n                     txId\u003dtxId,\n                    )\n\t\tsystem.db.commitTransaction(txId)\n                        \t\t\t\n\t\t# Update the table with lines \n\t\tsystem.perspective.sendMessage(\"update_bindings\", payload \u003d {}, scope \u003d \"page\")\n\n\t\tCORE_P.Utils.showSuccess(self, \"Saved!\") \n\t\t\n\t\tsystem.perspective.closePopup(\u0027\u0027)\n\n\texcept:\n\t\tsystem.db.rollbackTransaction(txId)\n\t\tCORE_P.Utils.errorPopup(\u0027Error adding/editing Packaging Line Unit:\u0027) #  + str(sys.exc_info())\n"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "SaveButton"
+        },
+        "position": {
+          "height": 34,
+          "width": 250,
+          "x": 11.5,
+          "y": 100
+        },
+        "props": {
+          "text": "Save Packaging Line Unit"
+        },
+        "type": "ia.input.button"
+      },
+      {
+        "events": {
+          "component": {
+            "onActionPerformed": {
+              "config": {
+                "script": "\t\t\n\t\n\t# Get all the parameters we need to delete\n\t\n\tunit_id \t\t\u003d self.view.params.unit_id\n\n\ttxId \u003d system.db.beginTransaction(timeout\u003d5000)\n\n\ttry:\n\n\t\tnamedQuery \u003d \"Weight_Q/DB_Delete/Delete_Unit\"\n\t\tparameters \u003d {\n\t\t\t\u0027unit_id\u0027:\t\t\tunit_id\n\t\t}\n\t\t\t\n\n\t\taffected_rows \u003d system.db.runNamedQuery(system.project.getProjectName(), namedQuery, parameters,tx\u003dtxId)\n\t\t\n\t\tmessage \u003d  \u0027Deleted packaging line unit:\u0027 + str(parameters)\n\t\t\n\t\t# Audit log\n\t\tCORE_P.Utils.logChanges(self, \n                     \u0027DeletePackagingLineUnit\u0027,\n                     message, \n                     txId\u003dtxId,\n                    )\n\t\tsystem.db.commitTransaction(txId)\n                        \t\t\t\n\t\t# Update the table with lines \n\t\tsystem.perspective.sendMessage(\"update_bindings\", payload \u003d {}, scope \u003d \"page\")\n\n\t\tCORE_P.Utils.showSuccess(self, \"Deleted!\") \n\t\t\n\t\tself.props.value\u003d0\n\t\t\n\t\tsystem.perspective.closePopup(\u0027\u0027)\n\n\texcept:\n\t\tsystem.db.rollbackTransaction(txId)\n\t\tself.props.value\u003d0\n\t\tCORE_P.Utils.errorPopup(\u0027Error deleting Packaging Line Unit:\u0027) #  + str(sys.exc_info())"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "DeleteButton"
+        },
+        "position": {
+          "height": 34,
+          "width": 127,
+          "x": 736,
+          "y": 100
+        },
+        "propConfig": {
+          "meta.visible": {
+            "binding": {
+              "config": {
+                "path": "view.params.edit"
+              },
+              "type": "property"
+            }
+          },
+          "props.enabled": {
+            "binding": {
+              "config": {
+                "expression": "{session.props.auth.user.userName}"
+              },
+              "transforms": [
+                {
+                  "code": "\treturn CORE_P.User.hasPermission(self, Constants_P.PROJECT[\u0027project_name\u0027], \u0027SITEADMIN\u0027)",
+                  "type": "script"
+                }
+              ],
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "confirm": {
+            "enabled": true
+          },
+          "disabledStyle": {
+            "backgroundColor": "#FF8A8A"
+          },
+          "readyState": {
+            "icon": {
+              "style": {
+                "height": "24px",
+                "width": "2rem"
+              }
+            },
+            "text": "Delete"
+          },
+          "style": {
+            "backgroundColor": "#FF0000"
+          },
+          "writingState": {
+            "icon": {
+              "path": "material/hourglass_empty",
+              "style": {
+                "height": "24px",
+                "width": "2rem"
+              }
+            },
+            "text": "Deleting..."
+          }
+        },
+        "type": "ia.input.oneshotbutton"
+      },
+      {
+        "events": {
+          "dom": {
+            "onClick": {
+              "config": {
+                "script": "\n\tsystem.perspective.closePopup(\u0027\u0027)"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "CancelButton"
+        },
+        "position": {
+          "height": 34,
+          "width": 250,
+          "x": 268,
+          "y": 100
+        },
+        "props": {
+          "primary": false,
+          "text": "Cancel"
+        },
+        "type": "ia.input.button"
+      },
+      {
+        "meta": {
+          "name": "Conversion_Label"
+        },
+        "position": {
+          "height": 32,
+          "width": 177,
+          "x": 12,
+          "y": 50
+        },
+        "props": {
+          "text": "Conversion Factor:"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Conversion_Entry"
+        },
+        "position": {
+          "height": 36,
+          "width": 256,
+          "x": 196,
+          "y": 50.5
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "expression": "toStr({view.params.unit_conversion},\"\")"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "placeholder": "Enter Conversion Factor"
+        },
+        "type": "ia.input.text-field"
+      },
+      {
+        "custom": {
+          "help_text": "Conversion Factor is used to convert unit to grams. Examples:\n\nkg :\t1000\nlbs: \t453.592\noz: \t28",
+          "help_title": "Conversion Factor"
+        },
+        "events": {
+          "dom": {
+            "onClick": {
+              "config": {
+                "script": "\tCORE_P.Utils.helpPopup(self.custom.help_text, title\u003dself.custom.help_title)"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "HelpIcon"
+        },
+        "position": {
+          "height": 30,
+          "rotate": {
+            "anchor": "50% 37%"
+          },
+          "width": 30,
+          "x": 457.989,
+          "y": 53
+        },
+        "props": {
+          "path": "material/help",
+          "style": {
+            "cursor": "pointer"
+          }
+        },
+        "type": "ia.display.icon"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "position": {
+      "x": 87.5,
+      "y": -4.5
+    },
+    "type": "ia.container.coord"
+  }
+}

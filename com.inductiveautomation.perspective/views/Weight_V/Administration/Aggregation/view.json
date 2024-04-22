@@ -1,0 +1,387 @@
+{
+  "custom": {},
+  "events": {
+    "system": {
+      "onStartup": {
+        "config": {
+          "script": "\tself.session.custom.aggregator.progress_scale\u003d0\n\tself.session.custom.aggregator.progress_week\u003d0"
+        },
+        "scope": "G",
+        "type": "script"
+      }
+    }
+  },
+  "params": {},
+  "permissions": {
+    "securityLevels": [
+      {
+        "children": [],
+        "name": "Authenticated"
+      }
+    ],
+    "type": "AnyOf"
+  },
+  "props": {
+    "defaultSize": {
+      "height": 818
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "SubHeaderEmbedded"
+        },
+        "position": {
+          "basis": "32px",
+          "shrink": 0
+        },
+        "props": {
+          "params": {
+            "icon": "settings",
+            "text": "Manual aggregation of history data"
+          },
+          "path": "CORE_V/Headers/SubHeader"
+        },
+        "type": "ia.display.view"
+      },
+      {
+        "meta": {
+          "name": "CurrentSite"
+        },
+        "position": {
+          "basis": 1,
+          "display": false,
+          "shrink": 0
+        },
+        "props": {
+          "params": {
+            "site": null,
+            "site_id": null
+          },
+          "path": "CORE_V/Utils/CurrentSite"
+        },
+        "type": "ia.display.view"
+      },
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "Label"
+            },
+            "position": {
+              "basis": "50px",
+              "grow": 1
+            },
+            "props": {
+              "style": {
+                "paddingBottom": 5,
+                "paddingLeft": 20,
+                "paddingTop": 5
+              },
+              "text": "Selection Start Time:"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "Start"
+            },
+            "position": {
+              "grow": 1
+            },
+            "propConfig": {
+              "props.value": {
+                "binding": {
+                  "config": {
+                    "expression": "addMonths(now(0), -1)"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "formattedValue": "Mar 22, 2024 6:03 PM",
+              "pickerType": "date",
+              "style": {
+                "marginRight": 10,
+                "paddingBottom": 5,
+                "paddingLeft": 5,
+                "paddingRight": 5,
+                "paddingTop": 5
+              }
+            },
+            "type": "ia.input.date-time-input"
+          }
+        ],
+        "meta": {
+          "name": "StartTime"
+        },
+        "position": {
+          "basis": "35px"
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "Label"
+            },
+            "position": {
+              "basis": "50px",
+              "grow": 1
+            },
+            "props": {
+              "style": {
+                "paddingBottom": 5,
+                "paddingLeft": 20,
+                "paddingTop": 5
+              },
+              "text": "Selection End Time:"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "End"
+            },
+            "position": {
+              "grow": 1
+            },
+            "propConfig": {
+              "props.value": {
+                "binding": {
+                  "config": {
+                    "expression": "now(0)"
+                  },
+                  "type": "expr"
+                }
+              }
+            },
+            "props": {
+              "formattedValue": "Apr 22, 2024 6:03 PM",
+              "pickerType": "date",
+              "style": {
+                "marginRight": 10,
+                "paddingBottom": 5,
+                "paddingLeft": 5,
+                "paddingRight": 5,
+                "paddingTop": 5
+              }
+            },
+            "type": "ia.input.date-time-input"
+          }
+        ],
+        "meta": {
+          "name": "EndTime"
+        },
+        "position": {
+          "basis": "35px"
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "Label"
+            },
+            "position": {
+              "basis": "50px",
+              "grow": 1
+            },
+            "props": {
+              "style": {
+                "paddingBottom": 5,
+                "paddingLeft": 20,
+                "paddingTop": 5
+              },
+              "text": "Selection Scale:"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "meta": {
+              "name": "Scale"
+            },
+            "position": {
+              "basis": "256px",
+              "grow": 1
+            },
+            "propConfig": {
+              "props.options": {
+                "binding": {
+                  "config": {
+                    "enableValueCache": false,
+                    "parameters": {
+                      "line_id": "None",
+                      "site_id": "{.../CurrentSite.props.params.site_id}"
+                    },
+                    "queryPath": "Weight_Q/DB_Query/Get_Filler",
+                    "returnFormat": "dataset"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\t\n\t# Create an empty list to hold our formatted data\n    formatted_data \u003d []\n    \n    # Add an initial option for \u0027All Scales\u0027\n    all_scales_option \u003d {\"value\": 0, \"label\": \"All Lines - All Scales\"}\n    formatted_data.append(all_scales_option)\n\n    # Iterate through each row in the dataset\n    for row in range(value.getRowCount()):\n        # Extract line_id and line_name from the current row\n        scale_id \u003d value.getValueAt(row, \"scale_id\")\n        scale_name \u003d value.getValueAt(row, \"scale_name\")\n        line_name \u003d value.getValueAt(row, \"line_name\")\n\n        # Create a dictionary with the \u0027value\u0027 and \u0027label\u0027 keys\n        item \u003d {\"value\": scale_id, \"label\": line_name + \u0027 - \u0027 + scale_name}\n\n        # Add the dictionary to our list\n        formatted_data.append(item)\n\n    # Return the formatted list\n    return formatted_data",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "query"
+                }
+              }
+            },
+            "props": {
+              "style": {
+                "marginBottom": 5,
+                "marginLeft": 80,
+                "marginRight": 15,
+                "marginTop": 5
+              },
+              "textAlign": "center",
+              "value": 0
+            },
+            "type": "ia.input.dropdown"
+          }
+        ],
+        "meta": {
+          "name": "ScaleSelection"
+        },
+        "position": {
+          "basis": "35px"
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "meta": {
+          "name": "WeekProgress"
+        },
+        "position": {
+          "basis": "20px"
+        },
+        "propConfig": {
+          "props.value": {
+            "binding": {
+              "config": {
+                "path": "session.custom.aggregator.progress_week"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "marginTop": 5,
+            "paddingLeft": 20,
+            "paddingRight": 20
+          }
+        },
+        "type": "ia.display.progress"
+      },
+      {
+        "meta": {
+          "name": "TotalProgress"
+        },
+        "position": {
+          "basis": "20px"
+        },
+        "propConfig": {
+          "props.value": {
+            "binding": {
+              "config": {
+                "path": "session.custom.aggregator.progress_scale"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "marginTop": 5,
+            "paddingLeft": 20,
+            "paddingRight": 20
+          }
+        },
+        "type": "ia.display.progress"
+      },
+      {
+        "children": [
+          {
+            "custom": {
+              "help_text": "Utility to manual aggregate history data. This can be used to aggregate data for newley setup lines that already had the weight data captured in the historian. \n\nSelect start and end date and aggregator will work through all scales for the selected site to update the data from the historian.",
+              "help_title": "Aggregation"
+            },
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\tCORE_P.Utils.helpPopup(self.custom.help_text, title\u003dself.custom.help_title)"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "HelpIcon"
+            },
+            "props": {
+              "path": "material/help",
+              "style": {
+                "cursor": "pointer",
+                "marginBottom": 5,
+                "marginLeft": 20,
+                "marginRight": 10,
+                "marginTop": 5
+              }
+            },
+            "type": "ia.display.icon"
+          },
+          {
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\t\n\tself.session.custom.aggregator.progress_scale \u003d 0\n\tself.session.custom.aggregator.progress_week \u003d 0\n\t\n\t# Use the function\n\tstart_time \u003d self.parent.parent.getChild(\"StartTime\").getChild(\"Start\").props.value\n\tend_time \u003d self.parent.parent.getChild(\"EndTime\").getChild(\"End\").props.value\n\tsite_id \u003d self.parent.parent.getChild(\"CurrentSite\").props.params.site_id\n\tscale_id \u003d self.parent.parent.getChild(\"ScaleSelection\").getChild(\"Scale\").props.value\n\tsystem.util.invokeAsynchronous(Weight_P.Aggregator.GetBuckets, args\u003d(start_time, end_time,site_id,scale_id))\n\t\n\t"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Button"
+            },
+            "position": {
+              "grow": 1
+            },
+            "props": {
+              "style": {
+                "marginBottom": 5,
+                "marginRight": 20,
+                "marginTop": 5,
+                "paddingLeft": 0
+              },
+              "text": "Start Aggregation"
+            },
+            "type": "ia.input.button"
+          }
+        ],
+        "meta": {
+          "name": "Execution"
+        },
+        "position": {
+          "basis": "35px"
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column"
+    },
+    "type": "ia.container.flex"
+  }
+}

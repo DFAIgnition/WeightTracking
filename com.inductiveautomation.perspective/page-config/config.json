@@ -1,0 +1,61 @@
+{
+  "pages": {
+    "/admin": {
+      "title": "",
+      "viewPath": "Weight_V/Administration/Admin"
+    },
+    "/aggregator": {
+      "title": "Aggregator",
+      "viewPath": "Weight_V/Administration/Aggregation"
+    },
+    "/config": {
+      "title": "Configuration",
+      "viewPath": "Weight_V/Configuration/Configuration"
+    },
+    "/main": {
+      "title": "Aggregator",
+      "viewPath": "Weight_V/Overview"
+    },
+    "/useradmin": {
+      "title": "User Administration",
+      "viewPath": "Users_V/UserAdmin"
+    }
+  },
+  "sharedDocks": {
+    "cornerPriority": "top-bottom",
+    "left": [
+      {
+        "anchor": "fixed",
+        "autoBreakpoint": 768,
+        "content": "push",
+        "handle": "hide",
+        "iconUrl": "",
+        "id": "menu1",
+        "modal": false,
+        "resizable": false,
+        "show": "onDemand",
+        "size": 250,
+        "viewParams": {},
+        "viewPath": "CORE_V/Docks/Menu/Menu1"
+      }
+    ],
+    "top": [
+      {
+        "anchor": "fixed",
+        "autoBreakpoint": 480,
+        "content": "push",
+        "handle": "hide",
+        "iconUrl": "",
+        "id": "",
+        "modal": false,
+        "resizable": false,
+        "show": "visible",
+        "size": 58,
+        "viewParams": {
+          "path": "CORE_V/Docks/Header/MainHeader"
+        },
+        "viewPath": "CORE_V/Breakpoints/Breakpoint"
+      }
+    ]
+  }
+}

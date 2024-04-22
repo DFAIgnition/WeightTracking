@@ -1,0 +1,135 @@
+{
+  "scope": "DG",
+  "version": 2,
+  "restricted": false,
+  "overridable": true,
+  "files": [
+    "query.sql"
+  ],
+  "attributes": {
+    "useMaxReturnSize": false,
+    "autoBatchEnabled": false,
+    "fallbackValue": "",
+    "maxReturnSize": 100,
+    "cacheUnit": "SEC",
+    "type": "UpdateQuery",
+    "enabled": true,
+    "cacheAmount": 1,
+    "cacheEnabled": false,
+    "database": "",
+    "fallbackEnabled": false,
+    "lastModificationSignature": "4a15e0122c9a955ca05b407bd9fa06810c1a05bd02f35e6ab4cc38c0654af46",
+    "permissions": [
+      {
+        "zone": "",
+        "role": ""
+      }
+    ],
+    "lastModification": {
+      "actor": "system",
+      "timestamp": "2022-01-01T00:00:00Z"
+    },
+    "parameters": [
+      {
+        "type": "Parameter",
+        "identifier": "line_id",
+        "sqlType": 2
+      },
+      {
+        "type": "Parameter",
+        "identifier": "unit_id",
+        "sqlType": 2
+      },
+      {
+        "type": "Parameter",
+        "identifier": "filler_name",
+        "sqlType": 7
+      },
+      {
+        "type": "Parameter",
+        "identifier": "filler_design",
+        "sqlType": 4
+      },
+      {
+        "type": "Parameter",
+        "identifier": "filler_sp_low",
+        "sqlType": 4
+      },
+      {
+        "type": "Parameter",
+        "identifier": "filler_sp",
+        "sqlType": 4
+      },
+      {
+        "type": "Parameter",
+        "identifier": "filler_sp_high",
+        "sqlType": 4
+      },
+      {
+        "type": "Parameter",
+        "identifier": "filler_sp_low_tag",
+        "sqlType": 7
+      },
+      {
+        "type": "Parameter",
+        "identifier": "filler_sp_tag",
+        "sqlType": 7
+      },
+      {
+        "type": "Parameter",
+        "identifier": "Filler_sp_high_tag",
+        "sqlType": 7
+      },
+      {
+        "type": "Parameter",
+        "identifier": "filler_reject",
+        "sqlType": 7
+      },
+      {
+        "type": "Parameter",
+        "identifier": "filler_reject_cond",
+        "sqlType": 7
+      },
+      {
+        "type": "Parameter",
+        "identifier": "filler_metal",
+        "sqlType": 7
+      },
+      {
+        "type": "Parameter",
+        "identifier": "filler_metal_cond",
+        "sqlType": 7
+      },
+      {
+        "type": "Parameter",
+        "identifier": "filler_reason_over",
+        "sqlType": 7
+      },
+      {
+        "type": "Parameter",
+        "identifier": "filler_reason_over_cond",
+        "sqlType": 7
+      },
+      {
+        "type": "Parameter",
+        "identifier": "filler_reason_under",
+        "sqlType": 7
+      },
+      {
+        "type": "Parameter",
+        "identifier": "filler_reason_under_cond",
+        "sqlType": 7
+      },
+      {
+        "type": "Parameter",
+        "identifier": "filler_reason_metal",
+        "sqlType": 7
+      },
+      {
+        "type": "Parameter",
+        "identifier": "filler_reason_metal_cond",
+        "sqlType": 7
+      }
+    ]
+  }
+}

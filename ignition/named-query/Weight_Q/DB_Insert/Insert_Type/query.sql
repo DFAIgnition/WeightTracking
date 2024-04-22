@@ -1,0 +1,1 @@
+INSERT INTO weight.dbo.type (type_name) VALUES (:type_name)

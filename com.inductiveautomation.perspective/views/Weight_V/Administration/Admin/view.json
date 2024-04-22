@@ -1,0 +1,119 @@
+{
+  "custom": {},
+  "params": {},
+  "props": {},
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "TabContainer"
+        },
+        "props": {
+          "menuType": "modern",
+          "tabs": [
+            "Type",
+            "Units",
+            "Line",
+            "Filler"
+          ]
+        },
+        "type": "ia.container.tab"
+      },
+      {
+        "meta": {
+          "name": "Type"
+        },
+        "position": {
+          "grow": 1
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "{../TabContainer.props.currentTabIndex}\u003d0"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "path": "Weight_V/Administration/TypeList"
+        },
+        "type": "ia.display.view"
+      },
+      {
+        "meta": {
+          "name": "Line"
+        },
+        "position": {
+          "grow": 1
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "{../TabContainer.props.currentTabIndex}\u003d2"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "path": "Weight_V/Administration/LineList"
+        },
+        "type": "ia.display.view"
+      },
+      {
+        "meta": {
+          "name": "Unit"
+        },
+        "position": {
+          "grow": 1
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "{../TabContainer.props.currentTabIndex}\u003d1"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "path": "Weight_V/Administration/UnitList"
+        },
+        "type": "ia.display.view"
+      },
+      {
+        "meta": {
+          "name": "Filler"
+        },
+        "position": {
+          "grow": 1
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "{../TabContainer.props.currentTabIndex}\u003d3"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "path": "Weight_V/Administration/FillerList"
+        },
+        "type": "ia.display.view"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column"
+    },
+    "type": "ia.container.flex"
+  }
+}

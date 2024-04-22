@@ -1,0 +1,163 @@
+{
+  "custom": {},
+  "params": {
+    "label": "Tag:",
+    "style": {
+      "input": "Weight_S/Framework/Card/Label",
+      "label": "Weight_S/Framework/Card/Value"
+    },
+    "value": {
+      "entry": "Select Tag"
+    }
+  },
+  "propConfig": {
+    "params.label": {
+      "paramDirection": "inout",
+      "persistent": true
+    },
+    "params.style": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.value": {
+      "paramDirection": "inout",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 22,
+      "width": 1080
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Label"
+        },
+        "position": {
+          "basis": "80px",
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.style.classes": {
+            "binding": {
+              "config": {
+                "path": "view.params.style.label"
+              },
+              "type": "property"
+            }
+          },
+          "props.text": {
+            "binding": {
+              "config": {
+                "path": "view.params.label"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "marginLeft": 5,
+            "textAlign": "right"
+          }
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "events": {
+          "dom": {
+            "onClick": {
+              "config": {
+                "draggable": true,
+                "id": "nGH7s_Nf",
+                "modal": true,
+                "overlayDismiss": false,
+                "position": {
+                  "height": 500,
+                  "width": 900
+                },
+                "positionType": "exact",
+                "resizable": false,
+                "showCloseIcon": true,
+                "title": "Please select tag",
+                "type": "open",
+                "viewParams": {
+                  "target": "{view.params.label}"
+                },
+                "viewPath": "CORE_V/Selections/chooseHistoryTagPopup",
+                "viewportBound": true
+              },
+              "scope": "C",
+              "type": "popup"
+            }
+          }
+        },
+        "meta": {
+          "name": "Tag",
+          "tooltip": {
+            "enabled": true,
+            "text": "Tag Selector"
+          }
+        },
+        "position": {
+          "grow": 1
+        },
+        "propConfig": {
+          "props.style.classes": {
+            "binding": {
+              "config": {
+                "path": "view.params.style.input"
+              },
+              "type": "property"
+            }
+          },
+          "props.text": {
+            "binding": {
+              "config": {
+                "bidirectional": true,
+                "path": "view.params.value.entry"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "borderColor": "#AAAAAA",
+            "borderStyle": "solid",
+            "borderWidth": 1,
+            "marginBottom": 2,
+            "marginLeft": 5,
+            "marginRight": 5,
+            "marginTop": 2,
+            "overflow": "hidden",
+            "paddingLeft": 5,
+            "paddingRight": 5,
+            "textAlign": "left"
+          }
+        },
+        "type": "ia.display.label"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "selectTag",
+          "pageScope": true,
+          "script": "\tif (payload[\u0027target\u0027] \u003d\u003d self.view.params.label):\n\t\tself.getChild(\"Tag\").props.text \u003d payload[\u0027selectedTag\u0027]",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    },
+    "type": "ia.container.flex"
+  }
+}

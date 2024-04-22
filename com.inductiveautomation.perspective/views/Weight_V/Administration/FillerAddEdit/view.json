@@ -1,0 +1,816 @@
+{
+  "custom": {},
+  "params": {
+    "edit": "True",
+    "filler_design": "",
+    "filler_id": "",
+    "filler_metal": "",
+    "filler_metal_cond": "",
+    "filler_name": "",
+    "filler_reason_metal": "",
+    "filler_reason_metal_cond": "",
+    "filler_reason_over": "",
+    "filler_reason_over_cond": "",
+    "filler_reason_under": "",
+    "filler_reason_under_cond": "",
+    "filler_reject": "",
+    "filler_reject_cond": "",
+    "filler_sp": "",
+    "filler_sp_high": "",
+    "filler_sp_high_tag": "",
+    "filler_sp_low": "",
+    "filler_sp_low_tag": "",
+    "filler_sp_tag": "",
+    "line_id": "",
+    "scale_id": "",
+    "scale_name": "",
+    "scale_weight": "",
+    "site_id": "",
+    "unit_id": ""
+  },
+  "permissions": {
+    "securityLevels": [
+      {
+        "children": [],
+        "name": "Authenticated"
+      }
+    ],
+    "type": "AllOf"
+  },
+  "propConfig": {
+    "params.edit": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.filler_design": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.filler_id": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.filler_metal": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.filler_metal_cond": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.filler_name": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.filler_reason_metal": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.filler_reason_metal_cond": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.filler_reason_over": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.filler_reason_over_cond": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.filler_reason_under": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.filler_reason_under_cond": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.filler_reject": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.filler_reject_cond": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.filler_sp": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.filler_sp_high": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.filler_sp_high_tag": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.filler_sp_low": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.filler_sp_low_tag": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.filler_sp_tag": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.line_id": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.sample_point_id": {
+      "paramDirection": "input",
+      "persistent": false
+    },
+    "params.scale_id": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.scale_name": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.scale_weight": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.site_id": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.unit_id": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 448,
+      "width": 881
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Icon"
+        },
+        "position": {
+          "height": 95,
+          "width": 115,
+          "x": 650,
+          "y": 23.5
+        },
+        "props": {
+          "path": "material/construction"
+        },
+        "type": "ia.display.icon"
+      },
+      {
+        "meta": {
+          "name": "Line_Label"
+        },
+        "position": {
+          "height": 32,
+          "width": 140,
+          "x": 4,
+          "y": 15
+        },
+        "props": {
+          "text": "Line:"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Line_Dropdown"
+        },
+        "position": {
+          "height": 36,
+          "width": 256,
+          "x": 52,
+          "y": 13
+        },
+        "propConfig": {
+          "props.options": {
+            "binding": {
+              "config": {
+                "enableValueCache": false,
+                "parameters": {
+                  "site_id": "{view.params.site_id}"
+                },
+                "queryPath": "Weight_Q/DB_Query/Get_Line",
+                "returnFormat": "json"
+              },
+              "transforms": [
+                {
+                  "code": "\t\n\t# Format and sort the names \n\tformatted_names \u003d sorted([{\"value\": item[\"line_id\"], \"label\": item[\"line_name\"]} for item in value],key\u003dlambda x: x[\u0027label\u0027].lower())\n\treturn formatted_names\n\t",
+                  "type": "script"
+                }
+              ],
+              "type": "query"
+            }
+          },
+          "props.value": {
+            "binding": {
+              "config": {
+                "expression": "{view.params.line_id}"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "placeholder": {
+            "text": "Select Line..."
+          }
+        },
+        "type": "ia.input.dropdown"
+      },
+      {
+        "meta": {
+          "name": "Filler_Label"
+        },
+        "position": {
+          "height": 32,
+          "width": 140,
+          "x": 4,
+          "y": 55
+        },
+        "props": {
+          "text": "Filler:"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Filler_Entry"
+        },
+        "position": {
+          "height": 36,
+          "width": 256,
+          "x": 52,
+          "y": 53
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "expression": "toStr({view.params.filler_name},\"\")"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "placeholder": "Enter Filler Name"
+        },
+        "type": "ia.input.text-field"
+      },
+      {
+        "meta": {
+          "name": "Unit_Label"
+        },
+        "position": {
+          "height": 32,
+          "width": 140,
+          "x": 4,
+          "y": 95
+        },
+        "props": {
+          "text": "Unit:"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Unit_Dropdown"
+        },
+        "position": {
+          "height": 36,
+          "width": 256,
+          "x": 52,
+          "y": 93
+        },
+        "propConfig": {
+          "props.options": {
+            "binding": {
+              "config": {
+                "enableValueCache": false,
+                "queryPath": "Weight_Q/DB_Query/Get_Unit_ID",
+                "returnFormat": "json"
+              },
+              "transforms": [
+                {
+                  "code": "\t\n\t# Format and sort the names \n\tformatted_names \u003d sorted([{\"value\": item[\"unit_id\"], \"label\": item[\"unit_name\"]} for item in value],key\u003dlambda x: x[\u0027label\u0027].lower())\n\treturn formatted_names\n\t",
+                  "type": "script"
+                }
+              ],
+              "type": "query"
+            }
+          },
+          "props.value": {
+            "binding": {
+              "config": {
+                "expression": "{view.params.unit_id}"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "placeholder": {
+            "text": "Select Line..."
+          }
+        },
+        "type": "ia.input.dropdown"
+      },
+      {
+        "meta": {
+          "name": "Setpoint_Low_Tag"
+        },
+        "position": {
+          "height": 39,
+          "width": 721,
+          "x": 154,
+          "y": 181.5
+        },
+        "propConfig": {
+          "props.params.initial_tag": {
+            "binding": {
+              "config": {
+                "expression": "toStr({view.params.filler_sp_low_tag},\"\")"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "params": {
+            "buttonText": "Select a tag",
+            "inputName": "Setpoint_Low_Tag",
+            "selectedTag": ""
+          },
+          "path": "CORE_V/Selections/chooseHistoryTagTree"
+        },
+        "type": "ia.display.view"
+      },
+      {
+        "meta": {
+          "name": "Setpoint_Low_Entry",
+          "tooltip": {
+            "enabled": true,
+            "text": "SP Low"
+          }
+        },
+        "position": {
+          "height": 36,
+          "width": 100,
+          "x": 52,
+          "y": 183
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "expression": "toStr({view.params.filler_sp_low},\"\")"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "placeholder": "SP Low",
+          "style": {
+            "textAlign": "center"
+          }
+        },
+        "type": "ia.input.text-field"
+      },
+      {
+        "meta": {
+          "name": "Setpoint_Low_Label"
+        },
+        "position": {
+          "height": 32,
+          "width": 50,
+          "y": 185
+        },
+        "props": {
+          "text": "SP L:"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Setpoint_Label"
+        },
+        "position": {
+          "height": 32,
+          "width": 50,
+          "y": 227
+        },
+        "props": {
+          "text": "SP:"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Setpoint_Entry",
+          "tooltip": {
+            "enabled": true,
+            "text": "SP Low"
+          }
+        },
+        "position": {
+          "height": 36,
+          "width": 100,
+          "x": 52,
+          "y": 225
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "expression": "toStr({view.params.filler_sp},\"\")"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "placeholder": "SP",
+          "style": {
+            "textAlign": "center"
+          }
+        },
+        "type": "ia.input.text-field"
+      },
+      {
+        "meta": {
+          "name": "Setpoint_Tag"
+        },
+        "position": {
+          "height": 39,
+          "width": 721,
+          "x": 154,
+          "y": 223.5
+        },
+        "propConfig": {
+          "props.params.initial_tag": {
+            "binding": {
+              "config": {
+                "expression": "toStr({view.params.filler_sp_tag},\"\")"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "params": {
+            "buttonText": "Select a tag",
+            "inputName": "Setpoint_Tag",
+            "selectedTag": ""
+          },
+          "path": "CORE_V/Selections/chooseHistoryTagTree"
+        },
+        "type": "ia.display.view"
+      },
+      {
+        "meta": {
+          "name": "Setpoint_High_Label"
+        },
+        "position": {
+          "height": 32,
+          "width": 50,
+          "y": 268
+        },
+        "props": {
+          "text": "SP H:"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Setpoint_High_Entry",
+          "tooltip": {
+            "enabled": true,
+            "text": "SP Low"
+          }
+        },
+        "position": {
+          "height": 36,
+          "width": 100,
+          "x": 52,
+          "y": 266
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "expression": "toStr({view.params.filler_sp_high},\"\")"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "placeholder": "SP High",
+          "style": {
+            "textAlign": "center"
+          }
+        },
+        "type": "ia.input.text-field"
+      },
+      {
+        "meta": {
+          "name": "Setpoint_High_Tag"
+        },
+        "position": {
+          "height": 39,
+          "width": 721,
+          "x": 154,
+          "y": 264.5
+        },
+        "propConfig": {
+          "props.params.initial_tag": {
+            "binding": {
+              "config": {
+                "expression": "toStr({view.params.filler_sp_high_tag},\"\")"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "params": {
+            "buttonText": "Select a tag",
+            "inputName": "Setpoint_High_Tag",
+            "selectedTag": ""
+          },
+          "path": "CORE_V/Selections/chooseHistoryTagTree"
+        },
+        "type": "ia.display.view"
+      },
+      {
+        "custom": {
+          "exists": 0
+        },
+        "events": {
+          "dom": {
+            "onClick": {
+              "config": {
+                "script": "\t\n\t# Get all the parameters we need to save\n\tsite_id \t\t\t\t\t\u003d self.view.params.site_id\n\tfiller_id\t\t\t\t\t\u003d self.view.params.filler_id\n\tline_id \t\t\t\t\t\u003d self.getSibling(\"Line_Dropdown\").props.value\n\tunit_id \t\t\t\t\t\u003d self.getSibling(\"Unit_Dropdown\").props.value\n\tfiller_name \t\t\t\t\u003d self.getSibling(\"Filler_Entry\").props.text\n\tfiller_design\t\t\t\t\u003d self.getSibling(\"Setpoint_Design\").props.text\n\tfiller_sp_low\t\t\t\t\u003d self.getSibling(\"Setpoint_Low_Entry\").props.text\n\tfiller_sp\t\t\t\t\t\u003d self.getSibling(\"Setpoint_Entry\").props.text\n\tfiller_sp_high\t\t\t\t\u003d self.getSibling(\"Setpoint_High_Entry\").props.text\n\tfiller_sp_low_tag \t\t\t\u003d self.getSibling(\"Setpoint_Low_Tag\").props.params.selectedTag\n\tfiller_sp_tag \t\t\t\t\u003d self.getSibling(\"Setpoint_Tag\").props.params.selectedTag\n\tfiller_sp_high_tag \t\t\t\u003d self.getSibling(\"Setpoint_High_Tag\").props.params.selectedTag\n\tfiller_reject\t\t\t\t\u003d None\n\tfiller_reject_cond\t\t\t\u003d None\n\tfiller_metal\t\t\t\t\u003d None\n\tfiller_metal_cond\t\t\t\u003d None\n\tfiller_reason_over\t\t\t\u003d None\n\tfiller_reason_over_cond\t\u003d None\n\tfiller_reason_under\t\t\t\u003d None\n\tfiller_reason_under_cond\t\u003d None\n\tfiller_reason_metal\t\t\t\u003d None\n\tfiller_reason_metal_cond\t\u003d None\n\tscale_id\t\t\t\t\t\u003d self.view.params.scale_id\n\tscale_name\t\t\t\t\t\u003d filler_name\n\tscale_weight\t\t\t\t\u003d self.getSibling(\"Weigh_Tag\").props.params.selectedTag\n\tedit\t\t\t\t\t\t\u003d self.view.params.edit\n\t\n\t# Do some validation...make sure everything has been entered correctly\n\t\n\ttxId \u003d system.db.beginTransaction(timeout\u003d5000)\n\n\ttry:\n\t\n\t\tif edit \u003d\u003d False:\n\t\t\n\t\t\tnamedQuery \u003d \"Weight_Q/DB_Insert/Insert_Filler\"\n\t\t\tparameters \u003d {\n\t\t\t\t\u0027line_id\u0027:\t\t\t\t\t\t\t\tline_id, \n\t\t\t\t\u0027unit_id\u0027:\t\t\t\t\t\t\t\tunit_id, \n\t\t\t\t\u0027filler_name\u0027:\t\t\t\t\t\t\tfiller_name, \n\t\t\t\t\u0027filler_design\u0027:\t\t\t\t\t\tfiller_design, \n\t\t\t\t\u0027filler_sp_low\u0027:\t\t\t\t\t\tfiller_sp_low, \n\t\t\t\t\u0027filler_sp\u0027:\t\t\t\t\t\t\tfiller_sp, \n\t\t\t\t\u0027filler_sp_high\u0027:\t\t\t\t\t\tfiller_sp_high, \n\t\t\t\t\u0027filler_sp_low_tag\u0027:\t\t\t\t\tfiller_sp_low_tag, \n\t\t\t\t\u0027filler_sp_tag\u0027:\t\t\t\t\t\tfiller_sp_tag, \n\t\t\t\t\u0027filler_sp_high_tag\u0027:\t\t\t\t\tfiller_sp_high_tag,\n\t\t\t\t\u0027filler_reject\u0027:\t\t\t\t\t\tfiller_reject,\n\t\t\t\t\u0027filler_reject_cond\u0027:\t\t\t\t\tfiller_reject_cond,\n\t\t\t\t\u0027filler_metal\u0027:\t\t\t\t\t\t\tfiller_metal,\n\t\t\t\t\u0027filler_metal_cond\u0027:\t\t\t\t\tfiller_metal_cond,\n\t\t\t\t\u0027filler_reason_over\u0027:\t\t\t\t\tfiller_reason_over,\n\t\t\t\t\u0027filler_reason_over_cond\u0027:\t\t\t\tfiller_reason_over_cond,\n\t\t\t\t\u0027filler_reason_under\u0027:\t\t\t\t\tfiller_reason_under,\n\t\t\t\t\u0027filler_reason_under_cond\u0027:\t\t\tfiller_reason_under_cond,\n\t\t\t\t\u0027filler_reason_metal\u0027:\t\t\t\t\tfiller_reason_metal,\n\t\t\t\t\u0027filler_reason_metal_cond\u0027:\t\t\tfiller_reason_metal_cond\n\t\t\t}\n\t\t\t\n\t\t\t\n\t\telse:\n\t\t\n\t\t\tnamedQuery \u003d \"Weight_Q/DB_Update/Update_Filler\"\n\t\t\tparameters \u003d {\n\t\t\t\t\u0027line_id\u0027:\t\t\t\t\t\t\t\tline_id, \n\t\t\t\t\u0027unit_id\u0027:\t\t\t\t\t\t\t\tunit_id, \n\t\t\t\t\u0027filler_name\u0027:\t\t\t\t\t\t\tfiller_name, \n\t\t\t\t\u0027filler_design\u0027:\t\t\t\t\t\tfiller_design, \n\t\t\t\t\u0027filler_sp_low\u0027:\t\t\t\t\t\tfiller_sp_low, \n\t\t\t\t\u0027filler_sp\u0027:\t\t\t\t\t\t\tfiller_sp, \n\t\t\t\t\u0027filler_sp_high\u0027:\t\t\t\t\t\tfiller_sp_high, \n\t\t\t\t\u0027filler_sp_low_tag\u0027:\t\t\t\t\tfiller_sp_low_tag, \n\t\t\t\t\u0027filler_sp_tag\u0027:\t\t\t\t\t\tfiller_sp_tag, \n\t\t\t\t\u0027filler_sp_high_tag\u0027:\t\t\t\t\tfiller_sp_high_tag,\n\t\t\t\t\u0027filler_reject\u0027:\t\t\t\t\t\tfiller_reject,\n\t\t\t\t\u0027filler_reject_cond\u0027:\t\t\t\t\tfiller_reject_cond,\n\t\t\t\t\u0027filler_metal\u0027:\t\t\t\t\t\t\tfiller_metal,\n\t\t\t\t\u0027filler_metal_cond\u0027:\t\t\t\t\tfiller_metal_cond,\n\t\t\t\t\u0027filler_reason_over\u0027:\t\t\t\t\tfiller_reason_over,\n\t\t\t\t\u0027filler_reason_over_cond\u0027:\t\t\t\tfiller_reason_over_cond,\n\t\t\t\t\u0027filler_reason_under\u0027:\t\t\t\t\tfiller_reason_under,\n\t\t\t\t\u0027filler_reason_under_cond\u0027:\t\t\tfiller_reason_under_cond,\n\t\t\t\t\u0027filler_reason_metal\u0027:\t\t\t\t\tfiller_reason_metal,\n\t\t\t\t\u0027filler_reason_metal_cond\u0027:\t\t\tfiller_reason_metal_cond,\n\t\t\t\t\u0027filler_id\u0027:\t\t\t\t\t\t\tfiller_id\n\t\t\t}\n\t\t\n\t\taffected_rows \u003d system.db.runNamedQuery(system.project.getProjectName(), namedQuery, parameters,tx\u003dtxId)\n\t\t\n\t\t# Add scale\n\t\t\n\t\tif edit \u003d\u003d False:\n\t\t\n\t\t\t# Get filler id from filler we just created\n\t\t\t\n\t\t\tnamedQuery \u003d \"Weight_Q/DB_Scalar/Get_Filler_ID\"\n\t\t\tparameters \u003d {\n\t\t\t\t\u0027line_id\u0027:\t\t\t\t\t\t\tline_id,\n\t\t\t\t\u0027unit_id\u0027:\t\t\t\t\t\t\tunit_id, \n\t\t\t\t\u0027filler_name\u0027:\t\t\t\t\t\tfiller_name\n\t\t\t}\n\t\t\t\n\t\t\tfiller_id \u003d system.db.runNamedQuery(system.project.getProjectName(), namedQuery, parameters,tx\u003dtxId)\n\t\t\t\n\t\t\n\t\t\tnamedQuery \u003d \"Weight_Q/DB_Insert/Insert_Scale\"\n\t\t\tparameters \u003d {\n\t\t\t\t\u0027scale_name\u0027:\t\t\t\t\t\t\tfiller_name,\n\t\t\t\t\u0027scale_weight\u0027:\t\t\t\t\t\t\tscale_weight, \n\t\t\t\t\u0027filler_id\u0027:\t\t\t\t\t\t\tfiller_id\n\t\t\t}\n\t\t\n\t\telse:\n\t\t\n\t\t\tnamedQuery \u003d \"Weight_Q/DB_Update/Update_Scale\"\n\t\t\tparameters \u003d {\n\t\t\t\t\u0027scale_name\u0027:\t\t\t\t\t\t\tfiller_name,\n\t\t\t\t\u0027scale_weight\u0027:\t\t\t\t\t\t\tscale_weight, \n\t\t\t\t\u0027filler_id\u0027:\t\t\t\t\t\t\tfiller_id,\n\t\t\t\t\u0027scale_id\u0027:\t\t\t\t\t\t\t\tscale_id\n\t\t\t}\n\t\t\t\n\t\taffected_rows \u003d system.db.runNamedQuery(system.project.getProjectName(), namedQuery, parameters,tx\u003dtxId)\n\t\t\n\t\t\n\t\tmessage \u003d  \u0027Added/Edited new filler:\u0027 + str(parameters)\n\t\t\n\t\t# Audit log\n\t\tCORE_P.Utils.logChanges(self, \n                     \u0027AddEditFiller\u0027,\n                     message, \n                     txId\u003dtxId,\n                     site_id\u003dsite_id,\n                    )\n\t\tsystem.db.commitTransaction(txId)\n\t\t                        \t\t\t\n\t\t# Update the table with lines \n\t\tsystem.perspective.sendMessage(\"update_bindings\", payload \u003d {}, scope \u003d \"page\")\n\n\t\tCORE_P.Utils.showSuccess(self, \"Saved!\") \n\t\t\n\t\tsystem.perspective.closePopup(\u0027\u0027)\n\n\texcept:\n\t\tsystem.db.rollbackTransaction(txId)\n\t\tCORE_P.Utils.errorPopup(\u0027Error adding/editing Filler:\u0027) #  + str(sys.exc_info())\n"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "SaveButton"
+        },
+        "position": {
+          "height": 34,
+          "width": 250,
+          "x": 11.75,
+          "y": 382
+        },
+        "props": {
+          "text": "Save Filler"
+        },
+        "type": "ia.input.button"
+      },
+      {
+        "events": {
+          "component": {
+            "onActionPerformed": {
+              "config": {
+                "script": "\t\t\n\t# Get all the parameters we need to delete\n\t\n\tfiller_id \t\t\u003d self.view.params.filler_id\n\tscale_id\t\t\u003d self.view.params.scale_id\n\tsite_id\t\t\t\u003d self.view.params.site_id\n\n\ttxId \u003d system.db.beginTransaction(timeout\u003d5000)\n\n\ttry:\n\t\n\t\t# Delete Scale First\n\t\tnamedQuery \u003d \"Weight_Q/DB_Delete/Delete_Scale\"\n\t\tparameters \u003d {\n\t\t\t\u0027scale_id\u0027:\t\t\tscale_id\n\t\t}\n\t\t\t\n\t\t\n\t\taffected_rows \u003d system.db.runNamedQuery(system.project.getProjectName(), namedQuery, parameters,tx\u003dtxId)\n\n\t\t# Delete Filler Next\n\t\tnamedQuery \u003d \"Weight_Q/DB_Delete/Delete_Filler\"\n\t\tparameters \u003d {\n\t\t\t\u0027filler_id\u0027:\t\tfiller_id\n\t\t}\n\t\t\t\n\n\t\taffected_rows \u003d system.db.runNamedQuery(system.project.getProjectName(), namedQuery, parameters,tx\u003dtxId)\n\t\t\n\t\tmessage \u003d  \u0027Deleted filler:\u0027 + str(parameters)\n\t\t\n\t\t# Audit log\n\t\tCORE_P.Utils.logChanges(self, \n                     \u0027DeleteFiller\u0027,\n                     message, \n                     txId\u003dtxId,\n                     site_id\u003dsite_id,\n                    )\n\t\tsystem.db.commitTransaction(txId)\n                        \t\t\t\n\t\t# Update the table with lines \n\t\tsystem.perspective.sendMessage(\"update_bindings\", payload \u003d {}, scope \u003d \"page\")\n\n\t\tCORE_P.Utils.showSuccess(self, \"Deleted!\") \n\t\t\n\t\tself.props.value\u003d0\n\t\t\n\t\tsystem.perspective.closePopup(\u0027\u0027)\n\n\texcept:\n\t\tsystem.db.rollbackTransaction(txId)\n\t\tself.props.value\u003d0\n\t\tCORE_P.Utils.errorPopup(\u0027Error deleting Filler:\u0027) #  + str(sys.exc_info())"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "DeleteButton"
+        },
+        "position": {
+          "height": 34,
+          "width": 127,
+          "x": 736.25,
+          "y": 382
+        },
+        "propConfig": {
+          "meta.visible": {
+            "binding": {
+              "config": {
+                "path": "view.params.edit"
+              },
+              "type": "property"
+            }
+          },
+          "props.enabled": {
+            "binding": {
+              "config": {
+                "expression": "{session.props.auth.user.userName}"
+              },
+              "transforms": [
+                {
+                  "code": "\treturn CORE_P.User.hasPermission(self, Constants_P.PROJECT[\u0027project_name\u0027], \u0027SITEADMIN\u0027)",
+                  "type": "script"
+                }
+              ],
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "confirm": {
+            "enabled": true
+          },
+          "disabledStyle": {
+            "backgroundColor": "#FF8A8A"
+          },
+          "readyState": {
+            "icon": {
+              "style": {
+                "height": "24px",
+                "width": "2rem"
+              }
+            },
+            "text": "Delete"
+          },
+          "style": {
+            "backgroundColor": "#FF0000"
+          },
+          "writingState": {
+            "icon": {
+              "path": "material/hourglass_empty",
+              "style": {
+                "height": "24px",
+                "width": "2rem"
+              }
+            },
+            "text": "Deleting..."
+          }
+        },
+        "type": "ia.input.oneshotbutton"
+      },
+      {
+        "events": {
+          "dom": {
+            "onClick": {
+              "config": {
+                "script": "\n\tsystem.perspective.closePopup(\u0027\u0027)"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "CancelButton"
+        },
+        "position": {
+          "height": 34,
+          "width": 250,
+          "x": 268.25,
+          "y": 382
+        },
+        "props": {
+          "primary": false,
+          "text": "Cancel"
+        },
+        "type": "ia.input.button"
+      },
+      {
+        "meta": {
+          "name": "Setpoint_High_Label_0"
+        },
+        "position": {
+          "height": 32,
+          "width": 50,
+          "x": 1,
+          "y": 309
+        },
+        "props": {
+          "text": "Scale:"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Setpoint_Design",
+          "tooltip": {
+            "enabled": true,
+            "text": "Design in units selected"
+          }
+        },
+        "position": {
+          "height": 36,
+          "width": 100,
+          "x": 53,
+          "y": 307
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "expression": "toStr({view.params.filler_design},\"\")"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "placeholder": "Design",
+          "style": {
+            "textAlign": "center"
+          }
+        },
+        "type": "ia.input.text-field"
+      },
+      {
+        "meta": {
+          "name": "Weigh_Tag"
+        },
+        "position": {
+          "height": 39,
+          "width": 721,
+          "x": 155,
+          "y": 305.5
+        },
+        "propConfig": {
+          "props.params.initial_tag": {
+            "binding": {
+              "config": {
+                "expression": "toStr({view.params.scale_weight},\"\")"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "params": {
+            "buttonText": "Select a tag",
+            "inputName": "Weight_Tag",
+            "selectedTag": ""
+          },
+          "path": "CORE_V/Selections/chooseHistoryTagTree"
+        },
+        "type": "ia.display.view"
+      },
+      {
+        "custom": {
+          "help_text": "Fillers will need a line, name and a unit.\n\nSetpoints can either be hardcoded by entering values in the SP low, SP and SP high fields or can be set via a tag from the PLC by choosing tags via the tag picker. If tags exists they will be used instead of the values entered.\n\nFor the scale we need two pieces. First field is the design parameter that gives the accuracy of the scale and will determine the coloring of the charts. If the scale is in gram and you enter 50 that means we expect the weights to be within 50 gram to be marked as dark green. Other color shades will be multiples of this value. The second part we need is the actual weight tag for the scale. This should be a register that updates when the scale weight is final not a moving actual scale tag.\n\n",
+          "help_title": "Filler"
+        },
+        "events": {
+          "dom": {
+            "onClick": {
+              "config": {
+                "script": "\tCORE_P.Utils.helpPopup(self.custom.help_text, title\u003dself.custom.help_title)"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "HelpIcon"
+        },
+        "position": {
+          "height": 49,
+          "rotate": {
+            "anchor": "50% 37%"
+          },
+          "width": 54,
+          "x": 563.979,
+          "y": 46.5
+        },
+        "props": {
+          "path": "material/help",
+          "style": {
+            "cursor": "pointer"
+          }
+        },
+        "type": "ia.display.icon"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "position": {
+      "x": 87.5,
+      "y": -4.5
+    },
+    "type": "ia.container.coord"
+  }
+}

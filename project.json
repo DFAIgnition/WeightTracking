@@ -1,0 +1,7 @@
+{
+  "title": "Weight Tracking",
+  "description": "Weight Tracking Application",
+  "parent": "Core",
+  "enabled": true,
+  "inheritable": false
+}

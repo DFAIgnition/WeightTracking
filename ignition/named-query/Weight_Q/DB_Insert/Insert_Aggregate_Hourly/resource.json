@@ -1,0 +1,175 @@
+{
+  "scope": "DG",
+  "version": 2,
+  "restricted": false,
+  "overridable": true,
+  "files": [
+    "query.sql"
+  ],
+  "attributes": {
+    "useMaxReturnSize": false,
+    "autoBatchEnabled": false,
+    "fallbackValue": "",
+    "maxReturnSize": 100,
+    "cacheUnit": "SEC",
+    "type": "UpdateQuery",
+    "enabled": true,
+    "cacheAmount": 1,
+    "cacheEnabled": false,
+    "database": "",
+    "fallbackEnabled": false,
+    "lastModificationSignature": "4a15e0122c9a955ca05b407bd9fa06810c1a05bd02f35e6ab4cc38c0654af46",
+    "permissions": [
+      {
+        "zone": "",
+        "role": ""
+      }
+    ],
+    "lastModification": {
+      "actor": "system",
+      "timestamp": "2022-01-01T00:00:00Z"
+    },
+    "parameters": [
+      {
+        "type": "Parameter",
+        "identifier": "scale_id",
+        "sqlType": 2
+      },
+      {
+        "type": "Parameter",
+        "identifier": "time_start",
+        "sqlType": 8
+      },
+      {
+        "type": "Parameter",
+        "identifier": "count",
+        "sqlType": 2
+      },
+      {
+        "type": "Parameter",
+        "identifier": "weight_avg",
+        "sqlType": 4
+      },
+      {
+        "type": "Parameter",
+        "identifier": "weight_sum",
+        "sqlType": 4
+      },
+      {
+        "type": "Parameter",
+        "identifier": "weight_diff",
+        "sqlType": 4
+      },
+      {
+        "type": "Parameter",
+        "identifier": "pct_weight_over",
+        "sqlType": 4
+      },
+      {
+        "type": "Parameter",
+        "identifier": "pct_weight_under",
+        "sqlType": 4
+      },
+      {
+        "type": "Parameter",
+        "identifier": "pct_out_of_range",
+        "sqlType": 4
+      },
+      {
+        "type": "Parameter",
+        "identifier": "standard_deviation",
+        "sqlType": 4
+      },
+      {
+        "type": "Parameter",
+        "identifier": "variance",
+        "sqlType": 4
+      },
+      {
+        "type": "Parameter",
+        "identifier": "weight_range",
+        "sqlType": 4
+      },
+      {
+        "type": "Parameter",
+        "identifier": "weight_max",
+        "sqlType": 4
+      },
+      {
+        "type": "Parameter",
+        "identifier": "weight_min",
+        "sqlType": 4
+      },
+      {
+        "type": "Parameter",
+        "identifier": "percentile25",
+        "sqlType": 4
+      },
+      {
+        "type": "Parameter",
+        "identifier": "percentile75",
+        "sqlType": 4
+      },
+      {
+        "type": "Parameter",
+        "identifier": "percentile50",
+        "sqlType": 4
+      },
+      {
+        "type": "Parameter",
+        "identifier": "reject_metal",
+        "sqlType": 2
+      },
+      {
+        "type": "Parameter",
+        "identifier": "reject_over",
+        "sqlType": 2
+      },
+      {
+        "type": "Parameter",
+        "identifier": "reject_under",
+        "sqlType": 2
+      },
+      {
+        "type": "Parameter",
+        "identifier": "material",
+        "sqlType": 7
+      },
+      {
+        "type": "Parameter",
+        "identifier": "sp_high",
+        "sqlType": 4
+      },
+      {
+        "type": "Parameter",
+        "identifier": "sp",
+        "sqlType": 4
+      },
+      {
+        "type": "Parameter",
+        "identifier": "sp_low",
+        "sqlType": 4
+      },
+      {
+        "type": "Parameter",
+        "identifier": "sp_plc",
+        "sqlType": 4
+      },
+      {
+        "type": "Parameter",
+        "identifier": "sp_high_plc",
+        "sqlType": 4
+      },
+      {
+        "type": "Parameter",
+        "identifier": "sp_low_plc",
+        "sqlType": 4
+      },
+      {
+        "type": "Parameter",
+        "identifier": "design",
+        "sqlType": 4
+      }
+    ]
+  }
+}

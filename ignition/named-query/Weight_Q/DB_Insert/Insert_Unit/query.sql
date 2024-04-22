@@ -1,0 +1,1 @@
+INSERT INTO weight.dbo.unit (unit_name,unit_conversion) VALUES (:unit_name, :unit_conversion )

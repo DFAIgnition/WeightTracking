@@ -1,0 +1,1 @@
+SELECT COUNT(*) FROM weight.dbo.type WHERE type_name = :type_name

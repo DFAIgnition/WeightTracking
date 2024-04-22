@@ -1,0 +1,59 @@
+{
+  "custom": {},
+  "params": {},
+  "props": {
+    "defaultSize": {
+      "height": 863,
+      "width": 1110
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Header"
+        },
+        "position": {
+          "basis": "32px"
+        },
+        "props": {
+          "params": {
+            "icon": "material/person_add_alt_1",
+            "text": "Alarms User Admin"
+          },
+          "path": "CORE_V/Headers/SubHeader"
+        },
+        "type": "ia.display.view"
+      },
+      {
+        "meta": {
+          "name": "UserAdminEmbedded"
+        },
+        "position": {
+          "basis": "831px"
+        },
+        "propConfig": {
+          "props.params.project_name": {
+            "binding": {
+              "config": {
+                "expression": "runScript(\"Constants_P.PROJECT[\u0027project_name\u0027]\")"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "path": "CORE_V/Users/UserAdmin"
+        },
+        "type": "ia.display.view"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column"
+    },
+    "type": "ia.container.flex"
+  }
+}

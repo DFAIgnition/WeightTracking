@@ -1,0 +1,6929 @@
+{
+  "custom": {
+    "aggregator": [
+      {
+        "days": [
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1704067200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1704153600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1704240000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1704326400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1704412800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1704499200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1704585600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1704672000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1704758400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1704844800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1704931200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1705017600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1705104000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1705190400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1705276800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1705363200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1705449600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1705536000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1705622400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1705708800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1705795200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1705881600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1705968000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1706054400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1706140800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1706227200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1706313600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1706400000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1706486400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1706572800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1706659200000
+          }
+        ],
+        "summary": {
+          "count": 0,
+          "weight_avg": 0,
+          "weight_diff": 0,
+          "x": "January"
+        }
+      },
+      {
+        "days": [
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1706745600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1706832000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1706918400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1707004800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1707091200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1707177600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1707264000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1707350400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1707436800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1707523200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1707609600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1707696000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1707782400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1707868800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1707955200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1708041600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1708128000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1708214400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1708300800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1708387200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1708473600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1708560000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1708646400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1708732800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1708819200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1708905600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1708992000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1709078400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1709164800000
+          }
+        ],
+        "summary": {
+          "count": 0,
+          "weight_avg": 0,
+          "weight_diff": 0,
+          "x": "February"
+        }
+      },
+      {
+        "days": [
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1709251200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1709337600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1709424000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1709510400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1709596800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1709683200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1709769600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1709856000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1709942400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1710028800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1710115200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1710201600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1710288000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1710374400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1710460800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1710547200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1710633600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1710720000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1710806400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1710892800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1710979200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1711065600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1711152000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1711238400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1711324800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1711411200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1711497600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1711584000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1711670400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1711756800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1711843200000
+          }
+        ],
+        "summary": {
+          "count": 0,
+          "weight_avg": 0,
+          "weight_diff": 0,
+          "x": "March"
+        }
+      },
+      {
+        "days": [
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1711929600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1712016000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1712102400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1712188800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1712275200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1712361600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1712448000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1712534400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1712620800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1712707200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1712793600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1712880000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1712966400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1713052800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1713139200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1713225600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1713312000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1713398400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1713484800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1713571200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1713657600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1713744000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1713830400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1713916800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1714003200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1714089600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1714176000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1714262400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1714348800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1714435200000
+          }
+        ],
+        "summary": {
+          "count": 0,
+          "weight_avg": 0,
+          "weight_diff": 0,
+          "x": "April"
+        }
+      },
+      {
+        "days": [
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1714521600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1714608000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1714694400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1714780800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1714867200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1714953600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1715040000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1715126400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1715212800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1715299200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1715385600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1715472000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1715558400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1715644800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1715731200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1715817600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1715904000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1715990400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1716076800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1716163200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1716249600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1716336000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1716422400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1716508800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1716595200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1716681600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1716768000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1716854400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1716940800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1717027200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1717113600000
+          }
+        ],
+        "summary": {
+          "count": 0,
+          "weight_avg": 0,
+          "weight_diff": 0,
+          "x": "May"
+        }
+      },
+      {
+        "days": [
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1717200000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1717286400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1717372800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1717459200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1717545600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1717632000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1717718400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1717804800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1717891200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1717977600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1718064000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1718150400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1718236800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1718323200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1718409600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1718496000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1718582400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1718668800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1718755200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1718841600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1718928000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1719014400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1719100800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1719187200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1719273600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1719360000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1719446400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1719532800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1719619200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1719705600000
+          }
+        ],
+        "summary": {
+          "count": 0,
+          "weight_avg": 0,
+          "weight_diff": 0,
+          "x": "June"
+        }
+      },
+      {
+        "days": [
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1719792000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1719878400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1719964800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1720051200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1720137600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1720224000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1720310400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1720396800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1720483200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1720569600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1720656000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1720742400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1720828800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1720915200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1721001600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1721088000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1721174400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1721260800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1721347200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1721433600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1721520000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1721606400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1721692800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1721779200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1721865600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1721952000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1722038400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1722124800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1722211200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1722297600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1722384000000
+          }
+        ],
+        "summary": {
+          "count": 0,
+          "weight_avg": 0,
+          "weight_diff": 0,
+          "x": "July"
+        }
+      },
+      {
+        "days": [
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1722470400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1722556800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1722643200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1722729600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1722816000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1722902400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1722988800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1723075200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1723161600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1723248000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1723334400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1723420800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1723507200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1723593600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1723680000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1723766400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1723852800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1723939200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1724025600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1724112000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1724198400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1724284800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1724371200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1724457600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1724544000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1724630400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1724716800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1724803200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1724889600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1724976000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1725062400000
+          }
+        ],
+        "summary": {
+          "count": 0,
+          "weight_avg": 0,
+          "weight_diff": 0,
+          "x": "August"
+        }
+      },
+      {
+        "days": [
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1725148800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1725235200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1725321600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1725408000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1725494400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1725580800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1725667200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1725753600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1725840000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1725926400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1726012800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1726099200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1726185600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1726272000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1726358400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1726444800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1726531200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1726617600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1726704000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1726790400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1726876800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1726963200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1727049600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1727136000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1727222400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1727308800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1727395200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1727481600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1727568000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1727654400000
+          }
+        ],
+        "summary": {
+          "count": 0,
+          "weight_avg": 0,
+          "weight_diff": 0,
+          "x": "September"
+        }
+      },
+      {
+        "days": [
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1727740800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1727827200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1727913600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1728000000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1728086400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1728172800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1728259200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1728345600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1728432000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1728518400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1728604800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1728691200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1728777600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1728864000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1728950400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1729036800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1729123200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1729209600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1729296000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1729382400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1729468800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1729555200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1729641600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1729728000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1729814400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1729900800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1729987200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1730073600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1730160000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1730246400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1730332800000
+          }
+        ],
+        "summary": {
+          "count": 0,
+          "weight_avg": 0,
+          "weight_diff": 0,
+          "x": "October"
+        }
+      },
+      {
+        "days": [
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1730419200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1730505600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1730592000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1730678400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1730764800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1730851200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1730937600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1731024000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1731110400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1731196800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1731283200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1731369600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1731456000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1731542400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1731628800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1731715200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1731801600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1731888000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1731974400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1732060800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1732147200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1732233600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1732320000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1732406400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1732492800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1732579200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1732665600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1732752000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1732838400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1732924800000
+          }
+        ],
+        "summary": {
+          "count": 0,
+          "weight_avg": 0,
+          "weight_diff": 0,
+          "x": "November"
+        }
+      },
+      {
+        "days": [
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1733011200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1733097600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1733184000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1733270400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1733356800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1733443200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1733529600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1733616000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1733702400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1733788800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1733875200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1733961600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1734048000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1734134400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1734220800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1734307200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1734393600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1734480000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1734566400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1734652800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1734739200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1734825600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1734912000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1734998400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1735084800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1735171200000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1735257600000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1735344000000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1735430400000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1735516800000
+          },
+          {
+            "count": 0,
+            "weight_avg": 0,
+            "weight_diff": 0,
+            "x": 1735603200000
+          }
+        ],
+        "summary": {
+          "count": 0,
+          "weight_avg": 0,
+          "weight_diff": 0,
+          "x": "December"
+        }
+      }
+    ],
+    "aggregator_day": [],
+    "aggregator_day_bag": [],
+    "aggregator_day_sp": [],
+    "aggregator_year": [
+      {
+        "data": [
+          {
+            "x": 1711929600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1712016000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1712102400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1712188800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1712275200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1712361600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1712448000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1712534400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1712620800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1712707200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1712793600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1712880000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1712966400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1713052800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1713139200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1713225600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1713312000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1713398400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1713484800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1713571200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1713657600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1713744000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1713830400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1713916800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1714003200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1714089600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1714176000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1714262400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1714348800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1714435200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          }
+        ],
+        "name": "April",
+        "year": 2024,
+        "zIndex": 4
+      },
+      {
+        "data": [
+          {
+            "x": 1709251200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1709337600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1709424000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1709510400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1709596800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1709683200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1709769600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1709856000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1709942400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1710028800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1710115200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1710201600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1710288000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1710374400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1710460800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1710547200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1710633600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1710720000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1710806400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1710892800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1710979200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1711065600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1711152000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1711238400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1711324800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1711411200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1711497600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1711584000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1711670400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1711756800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1711843200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          }
+        ],
+        "name": "March",
+        "year": 2024,
+        "zIndex": 3
+      },
+      {
+        "data": [
+          {
+            "x": 1706745600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1706832000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1706918400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1707004800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1707091200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1707177600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1707264000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1707350400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1707436800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1707523200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1707609600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1707696000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1707782400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1707868800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1707955200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1708041600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1708128000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1708214400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1708300800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1708387200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1708473600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1708560000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1708646400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1708732800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1708819200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1708905600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1708992000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1709078400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1709164800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          }
+        ],
+        "name": "February",
+        "year": 2024,
+        "zIndex": 2
+      },
+      {
+        "data": [
+          {
+            "x": 1704067200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1704153600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1704240000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1704326400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1704412800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1704499200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1704585600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1704672000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1704758400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1704844800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1704931200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1705017600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1705104000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1705190400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1705276800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1705363200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1705449600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1705536000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1705622400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1705708800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1705795200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1705881600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1705968000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1706054400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1706140800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1706227200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1706313600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1706400000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1706486400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1706572800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1706659200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          }
+        ],
+        "name": "January",
+        "year": 2024,
+        "zIndex": 1
+      },
+      {
+        "data": [
+          {
+            "x": 1733011200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1733097600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1733184000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1733270400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1733356800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1733443200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1733529600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1733616000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1733702400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1733788800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1733875200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1733961600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1734048000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1734134400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1734220800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1734307200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1734393600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1734480000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1734566400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1734652800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1734739200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1734825600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1734912000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1734998400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1735084800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1735171200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1735257600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1735344000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1735430400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1735516800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1735603200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          }
+        ],
+        "name": "December",
+        "year": 2023,
+        "zIndex": 12
+      },
+      {
+        "data": [
+          {
+            "x": 1730419200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1730505600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1730592000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1730678400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1730764800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1730851200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1730937600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1731024000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1731110400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1731196800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1731283200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1731369600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1731456000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1731542400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1731628800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1731715200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1731801600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1731888000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1731974400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1732060800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1732147200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1732233600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1732320000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1732406400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1732492800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1732579200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1732665600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1732752000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1732838400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1732924800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          }
+        ],
+        "name": "November",
+        "year": 2023,
+        "zIndex": 11
+      },
+      {
+        "data": [
+          {
+            "x": 1727740800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1727827200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1727913600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1728000000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1728086400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1728172800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1728259200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1728345600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1728432000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1728518400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1728604800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1728691200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1728777600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1728864000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1728950400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1729036800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1729123200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1729209600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1729296000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1729382400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1729468800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1729555200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1729641600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1729728000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1729814400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1729900800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1729987200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1730073600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1730160000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1730246400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1730332800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          }
+        ],
+        "name": "October",
+        "year": 2023,
+        "zIndex": 10
+      },
+      {
+        "data": [
+          {
+            "x": 1725148800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1725235200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1725321600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1725408000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1725494400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1725580800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1725667200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1725753600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1725840000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1725926400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1726012800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1726099200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1726185600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1726272000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1726358400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1726444800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1726531200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1726617600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1726704000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1726790400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1726876800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1726963200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1727049600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1727136000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1727222400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1727308800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1727395200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1727481600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1727568000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1727654400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          }
+        ],
+        "name": "September",
+        "year": 2023,
+        "zIndex": 9
+      },
+      {
+        "data": [
+          {
+            "x": 1722470400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1722556800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1722643200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1722729600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1722816000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1722902400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1722988800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1723075200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1723161600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1723248000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1723334400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1723420800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1723507200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1723593600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1723680000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1723766400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1723852800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1723939200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1724025600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1724112000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1724198400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1724284800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1724371200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1724457600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1724544000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1724630400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1724716800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1724803200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1724889600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1724976000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1725062400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          }
+        ],
+        "name": "August",
+        "year": 2023,
+        "zIndex": 8
+      },
+      {
+        "data": [
+          {
+            "x": 1719792000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1719878400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1719964800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1720051200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1720137600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1720224000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1720310400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1720396800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1720483200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1720569600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1720656000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1720742400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1720828800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1720915200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1721001600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1721088000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1721174400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1721260800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1721347200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1721433600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1721520000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1721606400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1721692800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1721779200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1721865600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1721952000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1722038400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1722124800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1722211200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1722297600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1722384000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          }
+        ],
+        "name": "July",
+        "year": 2023,
+        "zIndex": 7
+      },
+      {
+        "data": [
+          {
+            "x": 1717200000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1717286400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1717372800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1717459200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1717545600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1717632000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1717718400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1717804800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1717891200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1717977600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1718064000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1718150400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1718236800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1718323200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1718409600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1718496000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1718582400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1718668800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1718755200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1718841600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1718928000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1719014400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1719100800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1719187200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1719273600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1719360000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1719446400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1719532800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1719619200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1719705600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          }
+        ],
+        "name": "June",
+        "year": 2023,
+        "zIndex": 6
+      },
+      {
+        "data": [
+          {
+            "x": 1714521600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1714608000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1714694400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1714780800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1714867200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1714953600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1715040000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1715126400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1715212800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1715299200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1715385600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1715472000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1715558400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1715644800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1715731200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1715817600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1715904000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1715990400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1716076800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1716163200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1716249600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1716336000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1716422400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1716508800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1716595200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1716681600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1716768000000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1716854400000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1716940800000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1717027200000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          },
+          {
+            "x": 1717113600000,
+            "y": 0,
+            "y2": 0,
+            "y3": 0,
+            "y4": 0
+          }
+        ],
+        "name": "May",
+        "year": 2023,
+        "zIndex": 5
+      }
+    ],
+    "design": null,
+    "heatmap_format": {
+      "colorScale": {
+        "inverse": false,
+        "max": "",
+        "min": "",
+        "ranges": [
+          {
+            "color": "#FFFFFF",
+            "foreColor": "#FFFFFF",
+            "from": 0,
+            "name": " ",
+            "to": 0
+          },
+          {
+            "color": "#00800080",
+            "foreColor": "#000000",
+            "from": "0.000000000000000000001",
+            "name": "1σ"
+          },
+          {
+            "color": "#98FB9880",
+            "foreColor": "#000000",
+            "name": "2σ"
+          },
+          {
+            "color": "#FFB7B780",
+            "foreColor": "#000000",
+            "name": "3σ"
+          },
+          {
+            "color": "#FF555580",
+            "foreColor": "#000000",
+            "name": "5σ"
+          },
+          {
+            "color": "#FF000080",
+            "foreColor": "#000000",
+            "name": "\u003e5σ"
+          },
+          {
+            "color": "#AED6F180",
+            "foreColor": "#000000",
+            "name": "-1σ",
+            "to": "-0.000000000000000000001"
+          },
+          {
+            "color": "#5DADE280",
+            "foreColor": "#000000",
+            "name": "-2σ"
+          },
+          {
+            "color": "#2E86C180",
+            "foreColor": "#000000",
+            "name": "-3σ"
+          },
+          {
+            "color": "#21618C80",
+            "foreColor": "#000000",
+            "name": "-5σ"
+          },
+          {
+            "color": "#15436080",
+            "foreColor": "#000000",
+            "name": "\u003c-5σ"
+          }
+        ]
+      },
+      "distributed": false,
+      "enableShades": false,
+      "radius": 2,
+      "reverseNegativeShade": false,
+      "shadeIntensity": 0.8,
+      "useFillColorAsStroke": false
+    },
+    "key": "value",
+    "line": {
+      "Description": "",
+      "MaxWeight": 30000,
+      "MinWeight": 20000
+    },
+    "scale": {
+      "conversion_factor": 1,
+      "design": 50,
+      "scale_name": "Scale",
+      "setpoint": 25000,
+      "unit": "g"
+    },
+    "selection": {
+      "index_day": "",
+      "index_series": "",
+      "index_year": "",
+      "timestamp": ""
+    }
+  },
+  "params": {
+    "timeZoneID": ""
+  },
+  "propConfig": {
+    "custom.aggregator": {
+      "binding": {
+        "config": {
+          "enableValueCache": false,
+          "parameters": {
+            "scale_id": "{/root/Selections/selection_scale.props.value}"
+          },
+          "queryPath": "Weight_Q/Weight_Average",
+          "returnFormat": "json"
+        },
+        "transforms": [
+          {
+            "code": "\t\n\timport system\n\tfrom java.util import Calendar, TimeZone, Locale\n\tfrom java.text import SimpleDateFormat\n\t\n\t\n\tdef aggregateData(queryResults, timeZoneId):\n\t    yearlyData \u003d initializeYearlyData(timeZoneId)\n\t\n\t    for record in queryResults:\n\t        timestamp \u003d system.date.fromMillis(record[\u0027time_start\u0027])\n\t        calendar \u003d Calendar.getInstance(TimeZone.getTimeZone(timeZoneId))\n\t        calendar.setTime(timestamp)\n\t        monthIndex \u003d calendar.get(Calendar.MONTH)  # Zero-based indexing for months\n\t        dayIndex \u003d calendar.get(Calendar.DAY_OF_MONTH) - 1  # Zero-based indexing for days\n\t\n\t        updateDataStructure(yearlyData[monthIndex][\u0027days\u0027][dayIndex], record)\n\t        updateDataStructure(yearlyData[monthIndex][\u0027summary\u0027], record)\n\t\n\t    # Calculate final values for each day and month\n\t    for monthData in yearlyData:\n\t        for dayData in monthData[\u0027days\u0027]:\n\t            calculateFinalValues(dayData)\n\t        calculateFinalValues(monthData[\u0027summary\u0027])\n\t\n\t    return yearlyData\n\t\n\tdef initializeYearlyData(timeZoneId):\n\t    yearlyData \u003d []\n\t    for month in range(12):  # For each month\n\t        calendar \u003d Calendar.getInstance(TimeZone.getTimeZone(timeZoneId))\n\t        calendar.set(Calendar.MONTH, month)\n\t        monthName \u003d calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())\n\t        yearlyData.append({\n\t            \u0027days\u0027: initializeDaysOfMonth(calendar),\n\t            \u0027summary\u0027: initializeSummaryStructure(monthName)\n\t        })\n\t    return yearlyData\n\t\n\tdef initializeDaysOfMonth(calendar):\n\t    daysInMonth \u003d []\n\t    maxDay \u003d calendar.getActualMaximum(Calendar.DAY_OF_MONTH)\n\t    year \u003d calendar.get(Calendar.YEAR)\n\t    month \u003d calendar.get(Calendar.MONTH)\n\t    for day in range(1, maxDay + 1):  # One-based indexing\n\t        calendar.set(Calendar.YEAR, year)\n\t        calendar.set(Calendar.MONTH, month)\n\t        calendar.set(Calendar.DAY_OF_MONTH, day)\n\t        calendar.set(Calendar.HOUR_OF_DAY, 0)  # Set hour to midnight\n\t        calendar.set(Calendar.MINUTE, 0)       # Set minute to 0\n\t        calendar.set(Calendar.SECOND, 0)       # Set second to 0\n\t        calendar.set(Calendar.MILLISECOND, 0)  # Ensure millisecond is 0 for completeness\n\t        \n\t        timestamp \u003d system.date.toMillis(calendar.getTime())\n\t        daysInMonth.append({\u0027x\u0027: timestamp, \u0027weight_avg\u0027: 0, \u0027count\u0027: 0, \u0027weight_diff\u0027: 0})\n\t    return daysInMonth\n\t\n\tdef initializeSummaryStructure(monthName):\n\t    summary \u003d initializeDataStructure()\n\t    summary[\u0027x\u0027] \u003d monthName\n\t    return summary\n\t\n\tdef initializeDataStructure():\n\t    return {\u0027weight_avg\u0027: 0, \u0027count\u0027: 0, \u0027weight_diff\u0027: 0}\n\t\n\tdef updateDataStructure(data, record):\n\t    data[\u0027weight_avg\u0027] +\u003d record[\u0027weight_sum\u0027]\n\t    data[\u0027count\u0027] +\u003d record[\u0027count\u0027]\n\t    data[\u0027weight_diff\u0027] +\u003d record[\u0027weight_diff\u0027]\n\t\n\tdef calculateFinalValues(data):\n\t    if data[\u0027count\u0027] \u003e 0:\n\t        data[\u0027weight_avg\u0027] \u003d data[\u0027weight_avg\u0027] / data[\u0027count\u0027]\n\t    data[\u0027weight_diff\u0027] \u003d data[\u0027weight_diff\u0027] * self.custom.scale.conversion_factor / 1000\n\t\n\ttimeZoneId \u003d self.params.timeZoneID\n\taggregatedData \u003d aggregateData(value, timeZoneId)\n\treturn aggregatedData",
+            "type": "script"
+          }
+        ],
+        "type": "query"
+      },
+      "persistent": true
+    },
+    "custom.aggregator_day": {
+      "binding": {
+        "config": {
+          "parameters": {
+            "scale_id": "{/root/Selections/selection_scale.props.value}",
+            "start": "{view.custom.selection.timestamp}"
+          },
+          "queryPath": "Weight_Q/Weight_Day",
+          "returnFormat": "json"
+        },
+        "transforms": [
+          {
+            "code": "\t\n\n    from java.util import Calendar, TimeZone\n\n    if self.custom.selection.timestamp \u003d\u003d \u0027\u0027:\n        return []\n\n    # Assuming start_timestamp is provided or determined somehow\n    start_timestamp \u003d self.custom.selection.timestamp\n\n    # Get the time zone ID from a session property or another source\n    timeZoneId \u003d self.params.timeZoneID\n    tz \u003d TimeZone.getTimeZone(timeZoneId)\n\n    # Generate the list of all hourly timestamps\n    all_hours \u003d [start_timestamp + 3600000 * i for i in range(24)]\n\n    # Convert the value list to a dictionary for easier access\n    data_dict \u003d {bucket[\"time_start\"]: bucket for bucket in value}\n\n    # Transform the data\n    transformed_data \u003d []\n    for hour_timestamp in all_hours:\n        # Create a calendar instance set to the hour_timestamp and the specified time zone\n        cal \u003d Calendar.getInstance(tz)\n        cal.setTimeInMillis(hour_timestamp)\n\n        # Format the hour string\n        hour_str \u003d \u0027{:02d}:00\u0027.format(cal.get(Calendar.HOUR_OF_DAY))\n\n        bucket \u003d data_dict.get(hour_timestamp)\n\n        if bucket:\n            # Data exists for this hour\n            y_values \u003d [\n                bucket[\"weight_min\"],\n                bucket.get(\"percentile25\", 0),\n                bucket.get(\"percentile50\", 0),\n                bucket.get(\"percentile75\", 0),\n                bucket[\"weight_max\"]\n            ]\n        else:\n            # No data for this hour, use empty or placeholder values\n            y_values \u003d []\n\n        transformed_item \u003d {\n            \"x\": hour_str,\n            \"y\": y_values\n        }\n        transformed_data.append(transformed_item)\n\n    return transformed_data",
+            "type": "script"
+          }
+        ],
+        "type": "query"
+      },
+      "persistent": true
+    },
+    "custom.aggregator_day_bag": {
+      "binding": {
+        "config": {
+          "parameters": {
+            "scale_id": "{/root/Selections/selection_scale.props.value}",
+            "start": "{view.custom.selection.timestamp}"
+          },
+          "queryPath": "Weight_Q/Weight_Day",
+          "returnFormat": "json"
+        },
+        "transforms": [
+          {
+            "code": "\n    from java.util import Calendar, TimeZone\n\n    if self.custom.selection.timestamp \u003d\u003d \u0027\u0027:\n        return []\n\n    # Assuming start_timestamp is provided or determined somehow\n    start_timestamp \u003d self.custom.selection.timestamp\n\n    # Get the time zone ID from a session property or another source\n    timeZoneId \u003d self.params.timeZoneID\n    tz \u003d TimeZone.getTimeZone(timeZoneId)\n\n    # Generate the list of all hourly timestamps\n    all_hours \u003d [start_timestamp + 3600000 * i for i in range(24)]\n\n    # Convert the value list to a dictionary for easier access\n    data_dict \u003d {bucket[\"time_start\"]: bucket for bucket in value}\n\n    # Transform the data\n    transformed_data \u003d []\n    for hour_timestamp in all_hours:\n        # Create a calendar instance set to the hour_timestamp and the specified time zone\n        cal \u003d Calendar.getInstance(tz)\n        cal.setTimeInMillis(hour_timestamp)\n\n        # Format the hour string\n        hour_str \u003d \u0027{:02d}:00\u0027.format(cal.get(Calendar.HOUR_OF_DAY))\n\n        bucket \u003d data_dict.get(hour_timestamp)\n\n        if bucket:\n            # Data exists for this hour\n            y_values \u003d bucket[\"count\"]\n        else:\n            # No data for this hour, use empty or placeholder values\n            y_values \u003d 0\n\n        transformed_item \u003d {\n            \"x\": hour_str,\n            \"y\": y_values\n        }\n        transformed_data.append(transformed_item)\n\n    return transformed_data",
+            "type": "script"
+          }
+        ],
+        "type": "query"
+      },
+      "persistent": true
+    },
+    "custom.aggregator_day_sp": {
+      "binding": {
+        "config": {
+          "parameters": {
+            "scale_id": "{/root/Selections/selection_scale.props.value}",
+            "start": "{view.custom.selection.timestamp}"
+          },
+          "queryPath": "Weight_Q/Weight_Day",
+          "returnFormat": "json"
+        },
+        "transforms": [
+          {
+            "code": "\n    from java.util import Calendar, TimeZone\n\n    if self.custom.selection.timestamp \u003d\u003d \u0027\u0027:\n        return []\n\n    # Assuming start_timestamp is provided or determined somehow\n    start_timestamp \u003d self.custom.selection.timestamp\n\n    # Get the time zone ID from a session property or another source\n    timeZoneId \u003d self.params.timeZoneID\n    tz \u003d TimeZone.getTimeZone(timeZoneId)\n\n    # Generate the list of all hourly timestamps\n    all_hours \u003d [start_timestamp + 3600000 * i for i in range(24)]\n\n    # Convert the value list to a dictionary for easier access\n    data_dict \u003d {bucket[\"time_start\"]: bucket for bucket in value}\n\n    # Transform the data\n    transformed_data \u003d []\n    for hour_timestamp in all_hours:\n        # Create a calendar instance set to the hour_timestamp and the specified time zone\n        cal \u003d Calendar.getInstance(tz)\n        cal.setTimeInMillis(hour_timestamp)\n\n        # Format the hour string\n        hour_str \u003d \u0027{:02d}:00\u0027.format(cal.get(Calendar.HOUR_OF_DAY))\n\n        bucket \u003d data_dict.get(hour_timestamp)\n\n        if bucket:\n            # Data exists for this hour\n            # Check if \u0027sp_plc\u0027 is present and has a value; if not, fall back to \u0027sp\u0027\n            y_values \u003d bucket.get(\u0027sp_plc\u0027, bucket.get(\u0027sp\u0027, None))\n        else:\n            # No data for this hour, use empty or placeholder values\n            y_values \u003d None\n\n        transformed_item \u003d {\n            \"x\": hour_str,\n            \"y\": y_values\n        }\n        transformed_data.append(transformed_item)\n\n    return transformed_data",
+            "type": "script"
+          }
+        ],
+        "type": "query"
+      },
+      "persistent": true
+    },
+    "custom.aggregator_year": {
+      "binding": {
+        "config": {
+          "struct": {
+            "aggregator": "{view.custom.aggregator}",
+            "scale": "{/root/Selections/selection_scale.props.value}",
+            "stat": "{/root/Selections/selection_stat.props.value}"
+          },
+          "waitOnAll": false
+        },
+        "transforms": [
+          {
+            "code": "\n    import datetime\n\n    # Get the current month and year\n    current_month \u003d datetime.datetime.now().month\n    current_year \u003d datetime.datetime.now().year\n\n    # Custom sorting function to correctly order months with respect to the current month and year\n    def sort_key(entry):\n        month_name \u003d entry[\"name\"]\n        month_number \u003d month_to_number.get(month_name, -1)\n        entry_year \u003d entry.get(\"year\", current_year)\n\n        # Calculate how far back in time each entry is from the current month and year\n        year_diff \u003d current_year - entry_year\n        month_diff \u003d current_month - month_number\n\n        # For entries from the previous year, adjust month_diff to reflect their actual distance from the current month\n        if year_diff \u003e 0:\n            month_diff +\u003d 12\n\n        return (year_diff, month_diff)\n\n    month_to_number \u003d {\n        \"January\": 1, \"February\": 2, \"March\": 3, \"April\": 4,\n        \"May\": 5, \"June\": 6, \"July\": 7, \"August\": 8,\n        \"September\": 9, \"October\": 10, \"November\": 11, \"December\": 12\n    }\n\n    monthlyData \u003d value[\u0027aggregator\u0027]\n\n    transformedData \u003d []\n\n    for month in monthlyData:\n        monthName \u003d month[\"summary\"][\"x\"]\n        dayData \u003d month[\"days\"]\n\n        monthDataArray \u003d []\n        allDaysAreZero \u003d False # Set to true if empty months should not be shown\n        for day in dayData:\n            dayNumber \u003d day[\"x\"]\n            weight_diff \u003d day[\"weight_diff\"]\n            weight_avg \u003d day[\"weight_avg\"]\n            count \u003d day[\"count\"]\n            \n            if count\u003e0:\n            \tavg_diff \u003d weight_diff/count*1000/self.custom.scale.conversion_factor\n            else:\n            \tavg_diff\u003d0\n\n            if weight_diff !\u003d 0 or weight_avg !\u003d 0 or count !\u003d 0:\n                allDaysAreZero \u003d False\n            monthDataArray.append({\n                \"x\": dayNumber,\n                \"y\": avg_diff,\n                \"y2\": weight_avg,      # weight_diff as y\n                \"y3\": weight_diff,      # weight_avg as y2\n                \"y4\": count            # count as y3\n            })\n\n        if not allDaysAreZero:\n            month_number \u003d month_to_number.get(monthName, -1)\n            if month_number \u003e current_month:\n                inferred_year \u003d current_year - 1\n            else:\n                inferred_year \u003d current_year\n\n            transformedData.append({\n                \"data\": monthDataArray,\n                \"name\": monthName,\n                \"year\": inferred_year,\n                \"zIndex\": month_number\n            })\n\n    # Sort the transformed data using the custom sort key\n    transformedData.sort(key\u003dsort_key)\n\n    return transformedData",
+            "type": "script"
+          }
+        ],
+        "type": "expr-struct"
+      },
+      "persistent": true
+    },
+    "custom.heatmap_format": {
+      "persistent": true
+    },
+    "custom.heatmap_format.colorScale.ranges[10].from": {
+      "binding": {
+        "config": {
+          "expression": "-1000*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[10].to": {
+      "binding": {
+        "config": {
+          "expression": "-5*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[1].to": {
+      "binding": {
+        "config": {
+          "expression": "{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[2].from": {
+      "binding": {
+        "config": {
+          "expression": "{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[2].to": {
+      "binding": {
+        "config": {
+          "expression": "2*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[3].from": {
+      "binding": {
+        "config": {
+          "expression": "2*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[3].to": {
+      "binding": {
+        "config": {
+          "expression": "3*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[4].from": {
+      "binding": {
+        "config": {
+          "expression": "3*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[4].to": {
+      "binding": {
+        "config": {
+          "expression": "5*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[5].from": {
+      "binding": {
+        "config": {
+          "expression": "5*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[5].to": {
+      "binding": {
+        "config": {
+          "expression": "1000*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[6].from": {
+      "binding": {
+        "config": {
+          "expression": "-{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[7].from": {
+      "binding": {
+        "config": {
+          "expression": "-2*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[7].to": {
+      "binding": {
+        "config": {
+          "expression": "-{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[8].from": {
+      "binding": {
+        "config": {
+          "expression": "-3*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[8].to": {
+      "binding": {
+        "config": {
+          "expression": "-2*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[9].from": {
+      "binding": {
+        "config": {
+          "expression": "-5*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[9].to": {
+      "binding": {
+        "config": {
+          "expression": "-3*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.key": {
+      "persistent": true
+    },
+    "custom.line": {
+      "binding": {
+        "config": {
+          "parameters": {
+            "line_id": "{/root/Selections/selection_line.props.value}"
+          },
+          "queryPath": "Weight_Q/DB_Query/Get_Line_Info"
+        },
+        "transforms": [
+          {
+            "code": "\n    # Create an empty dictionary to hold the results\n    result \u003d {}\n\n    # Check if the dataset contains at least one row\n    if value.getRowCount() \u003e 0:\n        # Extract values from the first row\n        line_desc \u003d value.getValueAt(0, \"line_desc\")\n        line_weight_min \u003d value.getValueAt(0, \"line_weight_min\")\n        line_weight_max \u003d value.getValueAt(0, \"line_weight_max\")\n\n        # Assign these values to the keys \u0027design\u0027 and \u0027setpoint\u0027 in the result dictionary\n        result[\u0027Description\u0027] \u003d line_desc\n        result[\u0027MinWeight\u0027] \u003d line_weight_min\n        result[\u0027MaxWeight\u0027] \u003d line_weight_max\n    else:\n        # Handle the case where no rows are returned\n        result[\u0027Description\u0027] \u003d \u0027\u0027\n        result[\u0027MinWeight\u0027] \u003d 20000\n        result[\u0027MaxWeight\u0027] \u003d 30000\n\n    # Return the dictionary containing the design and setpoint\n    return result",
+            "type": "script"
+          }
+        ],
+        "type": "query"
+      },
+      "persistent": true
+    },
+    "custom.scale": {
+      "binding": {
+        "config": {
+          "parameters": {
+            "scale_id": "{/root/Selections/selection_scale.props.value}"
+          },
+          "queryPath": "Weight_Q/DB_Query/Get_Scale_Info"
+        },
+        "transforms": [
+          {
+            "code": "\n    # Create an empty dictionary to hold the results\n    result \u003d {}\n\n    # Check if the dataset contains at least one row\n    if value.getRowCount() \u003e 0:\n        # Extract values from the first row\n        filler_design \u003d value.getValueAt(0, \"filler_design\")\n        filler_sp \u003d value.getValueAt(0, \"filler_sp\")\n        unit_name \u003d value.getValueAt(0, \"unit_name\")\n        unit_conversion \u003d value.getValueAt(0, \"unit_conversion\")\n        scale_name \u003d value.getValueAt(0, \"scale_name\")\n\n        # Assign these values to the keys \u0027design\u0027 and \u0027setpoint\u0027 in the result dictionary\n        result[\u0027design\u0027] \u003d filler_design\n        result[\u0027setpoint\u0027] \u003d filler_sp\n        result[\u0027unit\u0027] \u003d unit_name\n        result[\u0027conversion_factor\u0027] \u003d unit_conversion\n        result[\u0027scale_name\u0027] \u003d scale_name\n    else:\n        # Handle the case where no rows are returned\n        result[\u0027design\u0027] \u003d 50\n        result[\u0027setpoint\u0027] \u003d 25000\n        result[\u0027unit\u0027] \u003d \u0027g\u0027\n        result[\u0027conversion_factor\u0027] \u003d 1\n        result[\u0027scale_name\u0027] \u003d \u0027Scale\u0027\n\n    # Return the dictionary containing the design and setpoint\n    return result",
+            "type": "script"
+          }
+        ],
+        "type": "query"
+      },
+      "persistent": true
+    },
+    "custom.scale.unit": {
+      "onChange": {
+        "enabled": null,
+        "script": "\tself.getChild(\"root\").getChild(\"Day\").getChild(\"dailychart\").refreshBinding(\u0027props.options.title.text\u0027)\n\t"
+      }
+    },
+    "custom.selection": {
+      "persistent": true
+    },
+    "custom.selection.datetime": {
+      "binding": {
+        "config": {
+          "path": "view.custom.selection.timestamp"
+        },
+        "transforms": [
+          {
+            "formatType": "datetime",
+            "formatValue": {
+              "date": "full"
+            },
+            "type": "format"
+          }
+        ],
+        "type": "property"
+      }
+    },
+    "params.timeZoneID": {
+      "binding": {
+        "config": {
+          "path": "session.props.timeZoneId"
+        },
+        "type": "property"
+      },
+      "onChange": {
+        "enabled": null,
+        "script": "\t\n\ttry:\n\t\tfrom java.util import Calendar, TimeZone\n\t\t\n\t\t# Get the timezone ID from a session property or another source\n\t\ttimeZoneId \u003d self.view.params.timeZoneID\n\t\ttz \u003d TimeZone.getTimeZone(timeZoneId)\n\t\t\n\t\tself.refreshBinding(\"custom.aggregator\")\n\t\tself.refreshBinding(\"custom.aggregator_day\")\n\t\tself.refreshBinding(\"custom.aggregator_day_bag\")\n\t\tself.refreshBinding(\"custom.aggregator_day_sp\")\n\t\t\n\t\t # Retrieve the year from the series data\n\t\tseries_year \u003d self.custom.aggregator_year[self.custom.selection.index_series].year\n\t\t\n\t\t# Convert to seconds for Python datetime operations\n\t\ttimestamp_seconds \u003d self.custom.aggregator_year[self.custom.selection.index_series].data[self.custom.selection.index_day].x / 1000.0\n\t\t\n\t\t# Create a calendar instance, set the time and adjust to the specified timezone\n\t\tcalendar \u003d Calendar.getInstance(tz)\n\t\tcalendar.setTimeInMillis(long(timestamp_seconds * 1000))\n\t\t\n\t\t# Correctly set the year based on the series data\n\t\tcalendar.set(Calendar.YEAR, series_year)\n\t\t\n\t\t# Set hour, minute, second, and millisecond to 0 to get the start of the day\n\t\tcalendar.set(Calendar.HOUR_OF_DAY, 0)\n\t\tcalendar.set(Calendar.MINUTE, 0)\n\t\tcalendar.set(Calendar.SECOND, 0)\n\t\tcalendar.set(Calendar.MILLISECOND, 0)\n\t\t\n\t\t# Convert back to epoch milliseconds adjusted for the specified timezone\n\t\tmidnight_timestamp \u003d calendar.getTimeInMillis()\n\t\tself.view.custom.selection.timestamp \u003d midnight_timestamp\n\texcept:\n\t\treturn"
+      },
+      "paramDirection": "inout",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 4000,
+      "width": 1920
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "CurrentSite"
+        },
+        "position": {
+          "basis": "0px",
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.params.site_id": {
+            "onChange": {
+              "enabled": null,
+              "script": "\tself.view.custom.selection.index_day\u003d\u0027\u0027\n\tself.view.custom.selection.index_series\u003d\u0027\u0027\n\tself.view.custom.selection.timestamp\u003d\u0027\u0027\n\tself.view.custom.selection.datetime\u003d\u0027\u0027\n\tself.parent.getChild(\"Selections\").getChild(\"selection_line\").props.value\u003d0\n\tself.parent.getChild(\"Selections\").getChild(\"selection_scale\").props.value\u003d0"
+            }
+          }
+        },
+        "props": {
+          "params": {
+            "site": null,
+            "site_id": null
+          },
+          "path": "CORE_V/Utils/CurrentSite"
+        },
+        "type": "ia.display.view"
+      },
+      {
+        "children": [
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tself.parent.parent.getChild(\"Year\").getChild(\"heatmap\").refreshBinding(\"props.series\")"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "selection_line",
+              "tooltip": {
+                "text": "Select Line"
+              }
+            },
+            "position": {
+              "basis": "200px",
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.options": {
+                "binding": {
+                  "config": {
+                    "enableValueCache": false,
+                    "parameters": {
+                      "site_id": "{.../CurrentSite.props.params.site_id}"
+                    },
+                    "queryPath": "Weight_Q/DB_Query/Get_Line",
+                    "returnFormat": "dataset"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\t\n\t# Create an empty list to hold our formatted data\n    formatted_data \u003d []\n\n    # Iterate through each row in the dataset\n    for row in range(value.getRowCount()):\n        # Extract line_id and line_name from the current row\n        line_id \u003d value.getValueAt(row, \"line_id\")\n        line_name \u003d value.getValueAt(row, \"line_name\")\n\n        # Create a dictionary with the \u0027value\u0027 and \u0027label\u0027 keys\n        item \u003d {\"value\": line_id, \"label\": line_name}\n\n        # Add the dictionary to our list\n        formatted_data.append(item)\n\n    # Return the formatted list\n    return formatted_data",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "query"
+                },
+                "persistent": true
+              },
+              "props.value": {
+                "onChange": {
+                  "enabled": null,
+                  "script": "\tself.getSibling(\"selection_scale\").props.value\u003d0\n\tself.view.custom.selection.index_day\u003d\u0027\u0027\n\tself.view.custom.selection.index_series\u003d\u0027\u0027\n\tself.view.custom.selection.index_year\u003d\u0027\u0027\n\tself.view.custom.selection.timestamp\u003d\u0027\u0027\n\tself.view.custom.selection.datetime\u003d\u0027\u0027"
+                },
+                "persistent": true
+              }
+            },
+            "props": {
+              "options": [
+                {
+                  "label": "Bag 1",
+                  "value": 2
+                },
+                {
+                  "label": "Test",
+                  "value": 13
+                }
+              ],
+              "placeholder": {
+                "text": "Select Line..."
+              },
+              "style": {
+                "marginBottom": 2,
+                "marginLeft": 10,
+                "marginRight": 10,
+                "marginTop": 2
+              },
+              "value": 0
+            },
+            "type": "ia.input.dropdown"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tself.parent.parent.getChild(\"Year\").getChild(\"heatmap\").refreshBinding(\"props.series\")"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "selection_scale",
+              "tooltip": {
+                "text": "Select Scale"
+              }
+            },
+            "position": {
+              "basis": "200px",
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.options": {
+                "binding": {
+                  "config": {
+                    "enableValueCache": false,
+                    "parameters": {
+                      "line_id": "{../selection_line.props.value}",
+                      "site_id": "{.../CurrentSite.props.params.site_id}"
+                    },
+                    "queryPath": "Weight_Q/DB_Query/Get_Scale",
+                    "returnFormat": "dataset"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\t\n\t# Create an empty list to hold our formatted data\n    formatted_data \u003d []\n\n    # Iterate through each row in the dataset\n    for row in range(value.getRowCount()):\n        # Extract line_id and line_name from the current row\n        line_id \u003d value.getValueAt(row, \"scale_id\")\n        line_name \u003d value.getValueAt(row, \"scale_name\")\n\n        # Create a dictionary with the \u0027value\u0027 and \u0027label\u0027 keys\n        item \u003d {\"value\": line_id, \"label\": line_name}\n\n        # Add the dictionary to our list\n        formatted_data.append(item)\n\n    # Return the formatted list\n    return formatted_data",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "query"
+                },
+                "persistent": true
+              },
+              "props.value": {
+                "persistent": true
+              }
+            },
+            "props": {
+              "placeholder": {
+                "text": "Select Scale..."
+              },
+              "style": {
+                "marginBottom": 2,
+                "marginRight": 10,
+                "marginTop": 2
+              },
+              "value": 0
+            },
+            "type": "ia.input.dropdown"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tself.parent.parent.getChild(\"Year\").getChild(\"heatmap\").refreshBinding(\"props.series\")\n\tself.parent.parent.getChild(\"Year\").getChild(\"heatmap\").refreshBinding(\"props.options.plotOptions.heatmap\")"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "selection_stat",
+              "tooltip": {
+                "text": "Select Stat To Show"
+              }
+            },
+            "position": {
+              "basis": "200px",
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.options[0].label": {
+                "binding": {
+                  "config": {
+                    "path": "view.custom.scale.unit"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tif value !\u003d\u0027No data\u0027:\n\t\treturn \u0027Average Weight [\u0027+value+\u0027]\u0027\n\telse:\n\t\treturn \u0027Average Weight\u0027",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.value": {
+                "persistent": true
+              }
+            },
+            "props": {
+              "options": [
+                {
+                  "value": "weight_avg"
+                },
+                {
+                  "label": "Units",
+                  "value": "count"
+                },
+                {
+                  "label": "Overage [kg]",
+                  "value": "weight_diff"
+                }
+              ],
+              "style": {
+                "marginBottom": 2,
+                "marginRight": 10,
+                "marginTop": 2
+              },
+              "value": "weight_avg"
+            },
+            "type": "ia.input.dropdown"
+          }
+        ],
+        "meta": {
+          "name": "Selections"
+        },
+        "position": {
+          "basis": "32px",
+          "shrink": 0
+        },
+        "props": {
+          "justify": "center",
+          "style": {
+            "borderColor": "#808080",
+            "borderStyle": "solid",
+            "borderWidth": 0.5,
+            "marginBottom": 5,
+            "marginLeft": 5,
+            "marginRight": 5,
+            "marginTop": 5,
+            "overflow": "hidden",
+            "overflowX": "hidden",
+            "overflowY": "hidden"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "Month"
+            },
+            "position": {
+              "basis": "100%"
+            },
+            "propConfig": {
+              "props.data": {
+                "binding": {
+                  "config": {
+                    "path": "view.custom.aggregator"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\t\n\tfrom java.util import Calendar\n\t\n\tinput_data \u003d value\n\t\n\t# Initialize data arrays\n\tbag_counts \u003d []\n\tweight_avgs \u003d []\n\tweight_diffs \u003d []\n\t\n\t# Define month names for mapping numbers back to names later\n\tmonth_names \u003d [\"January\", \"February\", \"March\", \"April\", \"May\", \"June\", \n\t               \"July\", \"August\", \"September\", \"October\", \"November\", \"December\"]\n\t\n\t# Convert month names to numbers for sorting\n\tmonth_numbers \u003d {name: i + 1 for i, name in enumerate(month_names)}\n\t\n\t# Get current year and month\n\tcalendar \u003d Calendar.getInstance()\n\tcurrentYear \u003d calendar.get(Calendar.YEAR)\n\tcurrentMonth \u003d calendar.get(Calendar.MONTH) + 1  # Adjusting so January is 1, December is 12\n\t\n\t# Determine the year for each month and populate data arrays\n\tcombined_data \u003d []\n\tfor month in input_data:\n\t    summary \u003d month[\"summary\"]\n\t    month_number \u003d month_numbers[summary[\"x\"]]\n\t    year \u003d currentYear if month_number \u003c\u003d currentMonth else currentYear - 1\n\t    bag_count \u003d float(summary.get(\"count\", 0))\n\t    weight_avg \u003d float(summary.get(\"weight_avg\", 0.0))\n\t    weight_diff \u003d float(summary.get(\"weight_diff\", 0.0))\n\t    combined_data.append([year, month_number, bag_count, weight_avg, weight_diff])\n\t\n\t# Sort the combined_data by year and month_number\n\tcombined_data.sort(key\u003dlambda x: (x[0], x[1]))\n\t\n\t# Replace month_number with month names for display, using the month_names list\n\tfor row in combined_data:\n\t    row[1] \u003d month_names[row[1] - 1]  # Convert month number back to name\n\t\n\tcombined_headers \u003d [\"Year\", \"Month\", \"Count\", \"Weight Avg\", \"Weight Diff\"]\n\tcombined_dataset \u003d system.dataset.toDataSet(combined_headers, combined_data)\n\t\n\treturn combined_dataset",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.headerGroups[0][3].title": {
+                "binding": {
+                  "config": {
+                    "path": "view.custom.scale.unit"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\treturn \u0027Weight Average [\u0027+value+\u0027]\u0027",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "bodyStyle": {
+                "classes": "Weight_S/Framework/Card/Label"
+              },
+              "columns": [
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "Year",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "justify": "center",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "none",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": false,
+                  "sort": "ascending",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": 1
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "Month",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "justify": "center",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": false,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": 1
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "Count",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "justify": "center",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": 1
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "Weight Avg",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "justify": "center",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": 1
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "Weight Diff",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "justify": "center",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": 1
+                }
+              ],
+              "enableHeader": false,
+              "enableHeaderGroups": true,
+              "headerGroupStyle": {
+                "classes": "Weight_S/Framework/Card/Value"
+              },
+              "headerGroups": [
+                [
+                  {
+                    "align": "center",
+                    "justify": "center",
+                    "span": 1,
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Year"
+                  },
+                  {
+                    "align": "center",
+                    "justify": "center",
+                    "span": 1,
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Month"
+                  },
+                  {
+                    "align": "center",
+                    "justify": "center",
+                    "span": 1,
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Units"
+                  },
+                  {
+                    "align": "center",
+                    "justify": "center",
+                    "span": 1,
+                    "style": {
+                      "classes": ""
+                    }
+                  },
+                  {
+                    "align": "center",
+                    "justify": "center",
+                    "span": 1,
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Overage [kg]"
+                  }
+                ]
+              ],
+              "headerStyle": {
+                "classes": "Weight_S/Framework/Card/Value"
+              },
+              "pager": {
+                "bottom": false
+              },
+              "rows": {
+                "height": "20px"
+              }
+            },
+            "type": "ia.display.table"
+          }
+        ],
+        "meta": {
+          "name": "Data"
+        },
+        "position": {
+          "basis": "275px",
+          "shrink": 0
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "if({../Selections/selection_line.props.value}\u003d0,False,if({../Selections/selection_scale.props.value}\u003d0,False,True))"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "borderColor": "#808080",
+            "borderStyle": "solid",
+            "borderWidth": 0.5,
+            "marginBottom": 5,
+            "marginLeft": 5,
+            "marginRight": 5,
+            "marginTop": 5,
+            "overflow": "hidden",
+            "overflowX": "hidden",
+            "overflowY": "hidden"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "events": {
+              "component": {
+                "dataPointSelectionHandler": {
+                  "config": {
+                    "script": "\n    from java.util import Calendar, TimeZone\n\n    # Get the timezone ID from a session property or another source\n    timeZoneId \u003d self.view.params.timeZoneID\n    tz \u003d TimeZone.getTimeZone(timeZoneId)\n    \n    #Hide if no data exists for selected day\n\t\n    # Check if no data exists for the selected day\n    if self.props.series[event.seriesIndex].data[event.dataPointIndex].y \u003d\u003d 0:\n    \tself.view.custom.selection.timestamp \u003d \u0027\u0027\n        self.view.custom.selection.index_series \u003d \u0027\u0027\n        self.view.custom.selection.index_day \u003d \u0027\u0027\n        self.view.custom.selection.index_year \u003d \u0027\u0027\n        return  # Exit the function if no data\n\t\n\t# Hide with second click on same day\n    if event.seriesIndex \u003d\u003d self.view.custom.selection.index_series and event.dataPointIndex \u003d\u003d self.view.custom.selection.index_day:\n        self.view.custom.selection.timestamp \u003d \u0027\u0027\n        self.view.custom.selection.index_series \u003d \u0027\u0027\n        self.view.custom.selection.index_day \u003d \u0027\u0027\n        self.view.custom.selection.index_year \u003d \u0027\u0027\n        return\n    \n    # Retrieve the year from the series data\n    series_year \u003d self.props.series[event.seriesIndex].year\n\n    # Convert to seconds for Python datetime operations\n    timestamp_seconds \u003d self.props.series[event.seriesIndex].data[event.dataPointIndex].x / 1000.0\n    \n    # Create a calendar instance, set the time and adjust to the specified timezone\n    calendar \u003d Calendar.getInstance(tz)\n    calendar.setTimeInMillis(long(timestamp_seconds * 1000))\n    \n    # Correctly set the year based on the series data\n    calendar.set(Calendar.YEAR, series_year)\n    \n    # Set hour, minute, second, and millisecond to 0 to get the start of the day\n    calendar.set(Calendar.HOUR_OF_DAY, 0)\n    calendar.set(Calendar.MINUTE, 0)\n    calendar.set(Calendar.SECOND, 0)\n    calendar.set(Calendar.MILLISECOND, 0)\n    \n    # Convert back to epoch milliseconds adjusted for the specified timezone\n    midnight_timestamp \u003d calendar.getTimeInMillis()\n    self.view.custom.selection.timestamp \u003d midnight_timestamp\n    \n    self.view.custom.selection.index_series \u003d event.seriesIndex\n    self.view.custom.selection.index_day \u003d event.dataPointIndex\n    self.view.custom.selection.index_year \u003d series_year\n\t\n\n\t\n\n\n"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "heatmap"
+            },
+            "position": {
+              "basis": "100%",
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.options.dataLabels.formatter": {
+                "binding": {
+                  "config": {
+                    "path": ".../Selections/selection_stat.props.value"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\n    \n    if value \u003d\u003d \u0027weight_avg\u0027:\n        \n        return \u0027\u0027\u0027function(val, opts) {\n            // Retrieve y2 value from the opts object\n            var y2 \u003d opts.w.config.series[opts.seriesIndex].data[opts.dataPointIndex].y2;\n            // Format y2 to a fixed number with no decimal places\n            var formattedY2 \u003d y2.toFixed(0);\n            // Return formatted number as a localized string\n            return formattedY2.toLocaleString();\n        }\u0027\u0027\u0027\n        \n    if value \u003d\u003d \u0027weight_diff\u0027:\n        \n        return \u0027\u0027\u0027function(val, opts) {\n            // Retrieve y3 value from the opts object\n            var y3 \u003d opts.w.config.series[opts.seriesIndex].data[opts.dataPointIndex].y3;\n            // Format y3 to a fixed number with no decimal places\n            var formattedY3 \u003d y3.toFixed(0);\n            // Return formatted number as a localized string\n            return formattedY3.toLocaleString();\n        }\u0027\u0027\u0027\n        \n    if value \u003d\u003d \u0027count\u0027:\n        \n        return \u0027\u0027\u0027function(val, opts) {\n            // Retrieve y4 value from the opts object\n            var y4 \u003d opts.w.config.series[opts.seriesIndex].data[opts.dataPointIndex].y4;\n            // Format y4 to a fixed number with no decimal places\n            var formattedY4 \u003d y4.toFixed(0);\n            // Return formatted number as a localized string\n            return formattedY4.toLocaleString();\n        }\u0027\u0027\u0027",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.options.plotOptions.heatmap": {
+                "binding": {
+                  "config": {
+                    "path": "view.custom.heatmap_format"
+                  },
+                  "type": "property"
+                }
+              },
+              "props.options.title.text": {
+                "binding": {
+                  "config": {
+                    "struct": {
+                      "description": "{view.custom.line.Description}",
+                      "scale": "{view.custom.scale.scale_name}",
+                      "unit": "{view.custom.scale.unit}"
+                    },
+                    "waitOnAll": true
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tif value[\u0027description\u0027] !\u003d \u0027\u0027:\n\t\treturn  value[\u0027description\u0027] + \u0027 \u0027 + value[\u0027scale\u0027] + \u0027 - Weights are in \u0027 + value[\u0027unit\u0027] + \u0027. Overage is in kg. Filler accuracy σ set to: \u0027 + str(self.view.custom.scale.design) + \u0027 \u0027 + value[\u0027unit\u0027]\n\telse:\n\t\treturn \u0027Weights are in \u0027 + value[\u0027unit\u0027] + \u0027. Overage is in kg. Filler accuracy σ set to: \u0027 + str(self.view.custom.scale.design) + \u0027 \u0027 + value[\u0027unit\u0027]",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "expr-struct"
+                }
+              },
+              "props.options.tooltip.y.formatter": {
+                "binding": {
+                  "config": {
+                    "expression": "{view.custom.scale.unit}"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\n    # Convert the Python variable \u0027value\u0027 to a string and prepare it for JavaScript injection\n    value_str \u003d str(value)\n    \n    # Create the JavaScript function as a string, injecting \u0027value\u0027 correctly\n    return (\u0027\u0027\u0027function(value, { series, seriesIndex, dataPointIndex, w }) {\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    // Accessing the data for y, y2, y3, and y4\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var data \u003d w.config.series[seriesIndex].data[dataPointIndex];\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y \u003d parseFloat(data.y).toFixed(0);  // Main value\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y2 \u003d parseFloat(data.y2).toFixed(0); // Additional value 1\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y3 \u003d parseFloat(data.y3).toFixed(1); // Additional value 2\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y4 \u003d parseFloat(data.y4).toFixed(0); // Additional value 3\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    // Concatenate the values with slashes in between\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    return \u0027Avg. Overage: \u0027 + y + \" \u0027\u0027\u0027 + value_str + \u0027\u0027\u0027 \" + \u0027 / Avg. Weight: \u0027 + y2 + \" \u0027\u0027\u0027 + value_str + \u0027\u0027\u0027 \"  + \u0027 / Overage: \u0027 + y3+ \" kg \"   + \u0027 / Units: \u0027 + y4;\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n}\u0027\u0027\u0027)\n",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "expr"
+                }
+              },
+              "props.series": {
+                "binding": {
+                  "config": {
+                    "path": "view.custom.aggregator_year"
+                  },
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "options": {
+                "annotations": {},
+                "chart": {
+                  "animations": {
+                    "enabled": false
+                  },
+                  "background": "",
+                  "events": {
+                    "dataPointSelection": true
+                  },
+                  "fontFamily": "Roboto",
+                  "foreColor": "#333",
+                  "height": 220,
+                  "toolbar": {
+                    "show": false,
+                    "tools": {
+                      "zoom": false,
+                      "zoomin": false,
+                      "zoomout": false
+                    }
+                  },
+                  "type": "heatmap",
+                  "width": 480
+                },
+                "colors": [
+                  "#FF0000"
+                ],
+                "dataLabels": {
+                  "enabled": true,
+                  "style": {
+                    "fontSize": "10px",
+                    "fontWeight": 700
+                  }
+                },
+                "grid": {
+                  "padding": {
+                    "left": 15,
+                    "right": 25
+                  }
+                },
+                "legend": {
+                  "fontSize": 14,
+                  "itemMargin": {
+                    "vertical": 0
+                  },
+                  "markers": {
+                    "offsetY": 2,
+                    "shape": "square",
+                    "size": 10
+                  },
+                  "offsetY": 0,
+                  "show": true
+                },
+                "plotOptions": {},
+                "stroke": {
+                  "colors": [
+                    "#fff"
+                  ],
+                  "fill": {
+                    "gradient": {
+                      "colorStops": [],
+                      "inverseColors": true,
+                      "opacityFrom": 1,
+                      "opacityTo": 1,
+                      "shade": "dark",
+                      "shadeIntensity": 0.5,
+                      "stops": [
+                        0,
+                        50,
+                        100
+                      ],
+                      "type": "horizontal"
+                    },
+                    "opacity": 0.85,
+                    "type": "solid"
+                  }
+                },
+                "theme": {
+                  "palette": "palette4"
+                },
+                "title": {
+                  "align": "center",
+                  "style": {
+                    "color": "#263238",
+                    "fontFamily": "Roboto",
+                    "fontSize": "12px",
+                    "fontWeight": "normal"
+                  }
+                },
+                "tooltip": {
+                  "enabled": true,
+                  "followCursor": true,
+                  "marker": {
+                    "show": true
+                  },
+                  "x": {
+                    "show": true
+                  },
+                  "y": {
+                    "show": true
+                  }
+                },
+                "xaxis": {
+                  "axisTicks": {
+                    "show": false
+                  },
+                  "decimalsInFloat": 0,
+                  "labels": {
+                    "show": false,
+                    "style": {},
+                    "trim": true
+                  },
+                  "tickAmount": 31,
+                  "tickPlacement": "numeric",
+                  "title": {
+                    "style": {
+                      "fontWeight": 700
+                    }
+                  },
+                  "tooltip": {
+                    "enabled": false
+                  },
+                  "type": "datetime"
+                },
+                "yaxis": {
+                  "labels": {
+                    "style": {}
+                  },
+                  "tickAmount": 5,
+                  "title": {
+                    "style": {
+                      "fontWeight": 700
+                    }
+                  }
+                }
+              },
+              "style": {
+                "marginBottom": 10,
+                "marginLeft": 10,
+                "marginRight": 10,
+                "marginTop": 10
+              },
+              "type": "heatmap"
+            },
+            "type": "kyvislabs.display.apexchart"
+          }
+        ],
+        "meta": {
+          "name": "Year"
+        },
+        "position": {
+          "shrink": 0
+        },
+        "propConfig": {
+          "position.basis": {
+            "binding": {
+              "config": {
+                "expression": "concat(toStr(((len({./heatmap.props.series})+2)*25)),\u0027px\u0027)"
+              },
+              "type": "expr"
+            }
+          },
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "if({../Selections/selection_line.props.value}\u003d0,False,if({../Selections/selection_scale.props.value}\u003d0,False,True))"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "alignContent": "flex-start",
+          "style": {
+            "borderColor": "#808080",
+            "borderStyle": "solid",
+            "borderWidth": 0.5,
+            "marginBottom": 5,
+            "marginLeft": 5,
+            "marginRight": 5,
+            "marginTop": 5,
+            "overflow": "hidden",
+            "overflowX": "hidden",
+            "overflowY": "hidden"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "dailychart"
+            },
+            "position": {
+              "basis": "100%",
+              "shrink": 0
+            },
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "config": {
+                    "path": "view.custom.selection.timestamp"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tif value\u003d\u003d\u0027\u0027:\n\t\treturn False\n\telse:\n\t\treturn True",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.options.title.text": {
+                "binding": {
+                  "config": {
+                    "path": "view.custom.selection.datetime"
+                  },
+                  "type": "property"
+                }
+              },
+              "props.options.yaxis[0].max": {
+                "binding": {
+                  "config": {
+                    "parameters": {
+                      "scale_id": "{.../Selections/selection_scale.props.value}",
+                      "start": "{view.custom.selection.timestamp}"
+                    },
+                    "queryPath": "Weight_Q/Weight_Day",
+                    "returnFormat": "json"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\ttry:\n\t\tif self.parent.parent.getChild(\"Settings\").getChild(\"Fix Scale\").props.selected:\n\t\t\treturn self.view.custom.line.MaxWeight\n\t\telse:\n\t\t\t# Extract weight_max values from each row and find the maximum\n\t\t    max_weight \u003d max(row[\u0027weight_max\u0027] for row in value)\n\t\t    return max_weight\n\texcept:\n\t\treturn 100",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "query"
+                }
+              },
+              "props.options.yaxis[0].min": {
+                "binding": {
+                  "config": {
+                    "parameters": {
+                      "scale_id": "{.../Selections/selection_scale.props.value}",
+                      "start": "{view.custom.selection.timestamp}"
+                    },
+                    "queryPath": "Weight_Q/Weight_Day",
+                    "returnFormat": "json"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\ttry:\n\t\tif self.parent.parent.getChild(\"Settings\").getChild(\"Fix Scale\").props.selected:\n\t\t\treturn self.view.custom.line.MinWeight\n\t\telse:\n\t\t\t# Extract weight_max values from each row and find the maximum\n\t\t    min_weight \u003d min(row[\u0027weight_min\u0027] for row in value)\n\t\t    return min_weight\n\texcept:\n\t\treturn 0",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "query"
+                }
+              },
+              "props.options.yaxis[2].max": {
+                "binding": {
+                  "config": {
+                    "path": "this.props.options.yaxis[0].max"
+                  },
+                  "type": "property"
+                }
+              },
+              "props.options.yaxis[2].min": {
+                "binding": {
+                  "config": {
+                    "path": "this.props.options.yaxis[0].min"
+                  },
+                  "type": "property"
+                }
+              },
+              "props.series[0].data": {
+                "binding": {
+                  "config": {
+                    "path": "view.custom.aggregator_day"
+                  },
+                  "type": "property"
+                }
+              },
+              "props.series[1].data": {
+                "binding": {
+                  "config": {
+                    "path": "view.custom.aggregator_day_bag"
+                  },
+                  "type": "property"
+                }
+              },
+              "props.series[2].data": {
+                "binding": {
+                  "config": {
+                    "path": "view.custom.aggregator_day_sp"
+                  },
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "options": {
+                "annotations": {},
+                "chart": {
+                  "animations": {
+                    "enabled": false
+                  },
+                  "background": "",
+                  "events": {
+                    "dataPointSelection": true
+                  },
+                  "fontFamily": "Roboto",
+                  "foreColor": "#333",
+                  "height": 220,
+                  "id": "",
+                  "toolbar": {
+                    "show": false
+                  },
+                  "type": "boxPlot",
+                  "width": 480
+                },
+                "colors": [
+                  "#AAAAAA50"
+                ],
+                "dataLabels": {
+                  "enabled": false,
+                  "formatter": "function (value) {return value.toFixed(0).toLocaleString()}",
+                  "style": {
+                    "fontWeight": 700
+                  }
+                },
+                "grid": {
+                  "padding": {
+                    "left": 15,
+                    "right": 25
+                  }
+                },
+                "legend": {
+                  "fontSize": 14,
+                  "itemMargin": {
+                    "vertical": 0
+                  },
+                  "markers": {
+                    "offsetY": 2,
+                    "shape": "square",
+                    "size": 10
+                  },
+                  "offsetY": 0,
+                  "show": false
+                },
+                "markers": {
+                  "colors": [
+                    "#FF0000",
+                    "#FF0000",
+                    "#FF00FF"
+                  ],
+                  "shape": [
+                    "circle",
+                    "circle",
+                    "square"
+                  ],
+                  "size": [
+                    0,
+                    0,
+                    1
+                  ]
+                },
+                "plotOptions": {
+                  "boxPlot": {
+                    "colors": {
+                      "lower": "#4169E1",
+                      "upper": "#B22222"
+                    }
+                  }
+                },
+                "stroke": {
+                  "colors": [
+                    "#555555",
+                    "#555555",
+                    "#FF00FF"
+                  ],
+                  "curve": [
+                    "straight",
+                    "straight",
+                    "straight"
+                  ],
+                  "dashArray": [
+                    0,
+                    0,
+                    5
+                  ],
+                  "width": [
+                    0.5,
+                    0,
+                    1
+                  ]
+                },
+                "title": {
+                  "align": "center"
+                },
+                "tooltip": {
+                  "custom": "function({series, seriesIndex, dataPointIndex, w}) {\n    let htmlContent \u003d \u0027\u003cdiv class\u003d\"arrow_box\" style\u003d\"\u0027\n        + \u0027background-color: #f9f9f9; padding: 10px; border: 1px solid #ddd; \u0027\n        + \u0027box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); border-radius: 5px; \u0027\n        + \u0027font-family: Arial, sans-serif; font-size: 14px; color: #333; \u0027\n        + \u0027line-height: 1; text-align: left;\"\u003e\u0027;\n\n    const formatValue \u003d value \u003d\u003e Math.round(value).toString();\n\n    // Added margin-right to the span for spacing\n    htmlContent +\u003d \u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003eMaximum:\u003c/span\u003e\u003cb\u003e\u0027 + formatValue(w.globals.seriesCandleC[0][dataPointIndex]) + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\n                 + \u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003e75%:\u003c/span\u003e\u003cb\u003e\u0027 + formatValue(w.globals.seriesCandleL[0][dataPointIndex]) + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\n                 + \u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003eMedian:\u003c/span\u003e\u003cb\u003e\u0027 + formatValue(w.globals.seriesCandleM[0][dataPointIndex]) + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\n                 + \u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003e25%:\u003c/span\u003e\u003cb\u003e\u0027 + formatValue(w.globals.seriesCandleH[0][dataPointIndex]) + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\n                 + \u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003eMinimum:\u003c/span\u003e\u003cb\u003e\u0027 + formatValue(w.globals.seriesCandleO[0][dataPointIndex]) + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\n                 + \u0027\u003cbr\u003e\u0027 // Line break before Count\n                 + \u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003eCount:\u003c/span\u003e\u003cb\u003e\u0027 + formatValue(series[1][dataPointIndex]) + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\n\t\t\t\t + \u0027\u003cbr\u003e\u0027 // Line break before SP\n                 + \u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003eSP:\u003c/span\u003e\u003cb\u003e\u0027 + formatValue(series[2][dataPointIndex]) + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\n                 + \u0027\u003c/div\u003e\u0027;\n\n    return htmlContent;\n}\n",
+                  "enabled": true,
+                  "followCursor": false,
+                  "marker": {
+                    "show": false
+                  },
+                  "shared": false,
+                  "x": {
+                    "show": true
+                  }
+                },
+                "xaxis": {
+                  "tooltip": {
+                    "enabled": false
+                  },
+                  "type": "category"
+                },
+                "yaxis": [
+                  {
+                    "forceNiceScale": true,
+                    "opposite": false,
+                    "title": {
+                      "text": "Weight"
+                    }
+                  },
+                  {
+                    "forceNiceScale": true,
+                    "opposite": true,
+                    "title": {
+                      "text": "Units"
+                    }
+                  },
+                  {
+                    "forceNiceScale": true,
+                    "opposite": false,
+                    "show": false,
+                    "title": {
+                      "text": "SP"
+                    }
+                  }
+                ]
+              },
+              "series": [
+                {
+                  "name": "Weight",
+                  "type": "boxPlot"
+                },
+                {
+                  "name": "Units",
+                  "type": "area"
+                },
+                {
+                  "name": "SP",
+                  "type": "line"
+                }
+              ],
+              "type": "boxPlot"
+            },
+            "type": "kyvislabs.display.apexchart"
+          }
+        ],
+        "meta": {
+          "name": "Day"
+        },
+        "position": {
+          "basis": "500px",
+          "shrink": 0
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "path": "view.custom.selection.timestamp"
+              },
+              "transforms": [
+                {
+                  "code": "\tif value\u003d\u003d\u0027\u0027:\n\t\treturn False\n\telse:\n\t\treturn True",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "direction": "column",
+          "style": {
+            "borderColor": "#808080",
+            "borderStyle": "solid",
+            "borderWidth": 0.5,
+            "marginBottom": 5,
+            "marginLeft": 5,
+            "marginRight": 5,
+            "marginTop": 5,
+            "overflow": "hidden",
+            "overflowX": "hidden",
+            "overflowY": "hidden"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\tself.parent.parent.getChild(\"Day\").getChild(\"dailychart\").refreshBinding(\"props.options.yaxis[0].min\")\n\tself.parent.parent.getChild(\"Day\").getChild(\"dailychart\").refreshBinding(\"props.options.yaxis[0].max\")"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "Fix Scale"
+            },
+            "position": {
+              "basis": "132px"
+            },
+            "props": {
+              "style": {
+                "classes": "Weight_S/Framework/Card/Label"
+              },
+              "text": "Fix weight scale"
+            },
+            "type": "ia.input.checkbox"
+          }
+        ],
+        "meta": {
+          "name": "Settings"
+        },
+        "position": {
+          "basis": "32px",
+          "shrink": 0
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "path": "view.custom.selection.timestamp"
+              },
+              "transforms": [
+                {
+                  "code": "\tif value\u003d\u003d\u0027\u0027:\n\t\treturn False\n\telse:\n\t\treturn True",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "justify": "center",
+          "style": {
+            "borderColor": "#808080",
+            "borderStyle": "solid",
+            "borderWidth": 0.5,
+            "marginBottom": 5,
+            "marginLeft": 5,
+            "marginRight": 5,
+            "marginTop": 5,
+            "overflow": "hidden",
+            "overflowX": "hidden",
+            "overflowY": "hidden"
+          }
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column"
+    },
+    "type": "ia.container.flex"
+  }
+}
