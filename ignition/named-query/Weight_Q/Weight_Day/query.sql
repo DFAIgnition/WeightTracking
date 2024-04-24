@@ -17,7 +17,8 @@ SELECT
     sp_low,
     sp_plc,
     sp_low_plc,
-    sp_high_plc
+    sp_high_plc,
+    material
 FROM 
     weight.dbo.aggregated
 WHERE 
