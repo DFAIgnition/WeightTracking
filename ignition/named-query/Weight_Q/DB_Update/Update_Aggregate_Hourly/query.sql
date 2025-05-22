@@ -1,6 +1,6 @@
 UPDATE 		weight.dbo.aggregated 
 SET 
-		    count = :count, 
+		    [count] = :count, 
 		    weight_avg = :weight_avg,
 		    weight_sum = :weight_sum, 
 		    weight_diff = :weight_diff, 
@@ -28,4 +28,6 @@ SET
 		    design = :design
 WHERE 
 		    scale_id = :scale_id AND 
-		    time_start = :time_start
+		    time_start = :time_start AND 
+		    material = :material 
+

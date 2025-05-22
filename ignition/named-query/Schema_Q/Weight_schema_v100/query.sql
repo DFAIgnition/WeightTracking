@@ -1,7 +1,7 @@
 /****** Object:  Database [weight]    ******/
 CREATE DATABASE [weight]
 GO
-
+   
 USE [weight]
 GO
 

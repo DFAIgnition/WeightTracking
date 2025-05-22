@@ -12,11 +12,11 @@
     "fallbackValue": "",
     "maxReturnSize": 100,
     "cacheUnit": "SEC",
-    "type": "UpdateQuery",
+    "type": "Query",
     "enabled": true,
     "cacheAmount": 1,
     "cacheEnabled": false,
-    "database": "",
+    "database": "system",
     "fallbackEnabled": false,
     "lastModificationSignature": "4a15e0122c9a955ca05b407bd9fa06810c1a05bd02f35e6ab4cc38c0654af46",
     "permissions": [
@@ -32,42 +32,7 @@
     "parameters": [
       {
         "type": "Parameter",
-        "identifier": "type_id",
-        "sqlType": 2
-      },
-      {
-        "type": "Parameter",
         "identifier": "site_id",
-        "sqlType": 2
-      },
-      {
-        "type": "Parameter",
-        "identifier": "line_name",
-        "sqlType": 7
-      },
-      {
-        "type": "Parameter",
-        "identifier": "line_material",
-        "sqlType": 7
-      },
-      {
-        "type": "Parameter",
-        "identifier": "line_weight_min",
-        "sqlType": 4
-      },
-      {
-        "type": "Parameter",
-        "identifier": "line_weight_max",
-        "sqlType": 4
-      },
-      {
-        "type": "Parameter",
-        "identifier": "line_desc",
-        "sqlType": 7
-      },
-      {
-        "type": "Parameter",
-        "identifier": "starr_unit_id",
         "sqlType": 2
       }
     ]

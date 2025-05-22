@@ -7,22 +7,7 @@
     "unit_name": ""
   },
   "permissions": {
-    "securityLevels": [
-      {
-        "children": [
-          {
-            "children": [
-              {
-                "children": [],
-                "name": "CorporateAdministrator"
-              }
-            ],
-            "name": "Roles"
-          }
-        ],
-        "name": "Authenticated"
-      }
-    ],
+    "securityLevels": [],
     "type": "AllOf"
   },
   "propConfig": {

@@ -5,10 +5,16 @@ from org.apache.commons.math3.stat.descriptive import DescriptiveStatistics
 
 # Helper functions, Move to CORE after done
 
+###############################################################
+# SystemLogger
+###############################################################
 def SystemLogger(LoggerActive, LoggerName, Message):
 	if LoggerActive:
 	    system.util.getLogger(LoggerName).info(Message)
         
+###############################################################
+# getWeeksBetween
+###############################################################
 def getWeeksBetween(startCal, endCal):
 	tempCal = startCal.clone()  
 	weeks = 0
@@ -17,6 +23,9 @@ def getWeeksBetween(startCal, endCal):
 	    weeks += 1
 	return weeks
     
+###############################################################
+# createWeekCalendar
+###############################################################
 def createWeekCalendar(baseCal, weeksToAdd):
 	cal = Calendar.getInstance()
 	cal.setTime(baseCal.getTime())
@@ -24,8 +33,9 @@ def createWeekCalendar(baseCal, weeksToAdd):
 	return cal
 	
 	
-# Main function
-    
+###############################################################
+# Main function - ProcessWeek
+###############################################################
 def ProcessWeek(Start, End, site_id, scale_id):
 	
 	LoggerActive = False
@@ -105,138 +115,201 @@ def ProcessWeek(Start, End, site_id, scale_id):
 		        if converted_tag_name == item['path']:
 					all_data[key].append(item)
 		
-		for key, items in all_data.items():
-		    for item in items:
-				timestamp = Date.from(item['timestamp'].toInstant())
-				calendar_instance = Calendar.getInstance()
-				calendar_instance.setTime(timestamp)
-				calendar_instance.set(Calendar.MINUTE, 0)
-				calendar_instance.set(Calendar.SECOND, 0)
-				calendar_instance.set(Calendar.MILLISECOND, 0)
+		materials = []
+		material_index = 0		
+		# If we have a tag defined, use that. 
+		try:
+			if ('line_material' in all_data and all_data['line_material']):
+				materials = CORE_P.Tags.getTagChanges(entry['line_material'], Start, End)
 				
-				day_key = sdf_day.format(timestamp)
-				hour_of_day = calendar_instance.get(Calendar.HOUR_OF_DAY)
-				time_start = sdf_day_hour.format(calendar_instance.getTime())
-				
-				
-				
-				if day_key not in daily_data:
-				    daily_data[day_key] = {hour: {'time_start': '', 'scale_weight_values': []} for hour in range(24)}
-				    
-				if 'time_start' not in daily_data[day_key][hour_of_day] or not daily_data[day_key][hour_of_day]['time_start']:
-					daily_data[day_key][hour_of_day]['time_start'] = time_start
-					SystemLogger(LoggerActive, "Weight Tracking", "Time: {}".format(time_start))
-				
-				if key not in daily_data[day_key][hour_of_day]:
-				    daily_data[day_key][hour_of_day][key] = []
-				
-				daily_data[day_key][hour_of_day][key].append(item['value'])
-				
-				if key == 'scale_weight':
-				    daily_data[day_key][hour_of_day]['scale_weight_values'].append(item['value'])
-				
+				if (len(materials)>0 and materials[0]['timestamp']>Start):
+					materials.insert(0, {"value": 'None', "timestamp":Start})
+			else:
+				materials = [{"value": 'None', "timestamp":Start},{"value": 'None', "timestamp":End}]
+		except:
+			SystemLogger(True, "JAY", CORE_P.Utils.getError())			
+
+		try:
+			for key, items in all_data.items():
+				material_index = 0		
+				#SystemLogger(True, "JAY", str(key))
+				for item in items:
+				#	SystemLogger(True, "JAY", str(item))
+					timestamp = Date.from(item['timestamp'].toInstant())
+					calendar_instance = Calendar.getInstance()
+					calendar_instance.setTime(timestamp)
+					calendar_instance.set(Calendar.MINUTE, 0)
+					calendar_instance.set(Calendar.SECOND, 0)
+					calendar_instance.set(Calendar.MILLISECOND, 0)
+					
+					day_key = sdf_day.format(timestamp)
+					hour_of_day = calendar_instance.get(Calendar.HOUR_OF_DAY)
+					time_start = sdf_day_hour.format(calendar_instance.getTime())
+					
+					#for tag in ['line_material']:
+					#						if tag in tags and tags[tag]:
+					#						    # Store the first value directly
+					#						    tags[tag] = tags[tag][0]
+					#						else:
+					#						    # Use the last known or default value
+					#						    tags[tag] = last_known_values.get(tag, 'N/A')	
+					
+					# Work out which material to use
+					while ( (material_index < (len(materials)-1))  and (timestamp >= materials[material_index + 1]['timestamp']) ):
+						material_index = material_index + 1 
+						
+					material = materials[material_index]['value']
+					
+					
+					if day_key not in daily_data:
+					   # daily_data[day_key] = {hour: {'time_start': '', 'scale_weight_values': []} for hour in range(24)}
+					    daily_data[day_key] = {hour: {} for hour in range(24)}
+					
+					if material not in daily_data[day_key][hour_of_day]:
+						daily_data[day_key][hour_of_day][material] = {'time_start': '', 'scale_weight_values': []}
+					
+					if 'time_start' not in daily_data[day_key][hour_of_day][material] or not daily_data[day_key][hour_of_day][material]['time_start']:
+						daily_data[day_key][hour_of_day][material]['time_start'] = time_start
+						SystemLogger(LoggerActive, "Weight Tracking", "Time: {}".format(time_start))
+					
+					if key not in daily_data[day_key][hour_of_day][material]:
+					    daily_data[day_key][hour_of_day][material][key] = []
+					
+					daily_data[day_key][hour_of_day][material][key].append(item['value'])
+					
+					if key == 'scale_weight':
+					    daily_data[day_key][hour_of_day][material]['scale_weight_values'].append(item['value'])
+					    #daily_data[day_key][hour_of_day][material]['scale_weight_values'].append(item['timestamp'])
+		except:
+			SystemLogger(True, "JAY", CORE_P.Utils.getError())				
+
+	#	SystemLogger(True, "JAY", "Materials:" + str(materials))
 		
+		SystemLogger(True, "JAY", "Daily Data:" + str(daily_data))
+		#return #DEBUG
+		
+# OLD VERSION		
+#				if day_key not in daily_data:
+#				    daily_data[day_key] = {hour: {'time_start': '', 'scale_weight_values': []} for hour in range(24)}
+#				    
+#				if 'time_start' not in daily_data[day_key][hour_of_day] or not daily_data[day_key][hour_of_day]['time_start']:
+#					daily_data[day_key][hour_of_day]['time_start'] = time_start
+#					SystemLogger(LoggerActive, "Weight Tracking", "Time: {}".format(time_start))
+#				
+#				if key not in daily_data[day_key][hour_of_day]:
+#				    daily_data[day_key][hour_of_day][key] = []
+#				
+#				daily_data[day_key][hour_of_day][key].append(item['value'])
+#				
+#				if key == 'scale_weight':
+#				    daily_data[day_key][hour_of_day]['scale_weight_values'].append(item['value'])
+#				    
+		#LoggerActive = True
+	#	SystemLogger(True, 'JAY', str(daily_data.items()))
 		# Aggregate and calculate statistics for each tag.
 		for day, hours in daily_data.items():
 		
-			for hour, tags in hours.items():
+			#for hour, tags in hours.items():
+			for hour, materials in hours.items():
 			
+				for material, tags in materials.items():
+				
+					# Setting set points:
+					for sp_tag in ['filler_sp_tag', 'filler_sp_high_tag', 'filler_sp_low_tag']:
+						if sp_tag in tags and tags[sp_tag]:
+						    # Store the first value directly
+						    tags[sp_tag] = tags[sp_tag][0]
+						else:
+						    # Use the last known or default value
+						    tags[sp_tag] = last_known_values.get(sp_tag, default_sp_values[sp_tag])	
 						    
-				# Setting set points:
-				for sp_tag in ['filler_sp_tag', 'filler_sp_high_tag', 'filler_sp_low_tag']:
-					if sp_tag in tags and tags[sp_tag]:
-					    # Store the first value directly
-					    tags[sp_tag] = tags[sp_tag][0]
-					else:
-					    # Use the last known or default value
-					    tags[sp_tag] = last_known_values.get(sp_tag, default_sp_values[sp_tag])	
+					# Setting material:
+#					for tag in ['line_material']:
+#						if tag in tags and tags[tag]:
+#						    # Store the first value directly
+#						    tags[tag] = tags[tag][0]
+#						else:
+#						    # Use the last known or default value
+#						    tags[tag] = last_known_values.get(tag, 'N/A')	
+					tags['line_material'] = material
 					    
-				# Setting material:
-				for tag in ['line_material']:
-					if tag in tags and tags[tag]:
-					    # Store the first value directly
-					    tags[tag] = tags[tag][0]
-					else:
-					    # Use the last known or default value
-					    tags[tag] = last_known_values.get(tag, 'N/A')	
-				
-				    
-				# Working on weight Statistics			    
-				if 'scale_weight_values' in tags and tags['scale_weight_values']:
-					stats = DescriptiveStatistics()
-					stats.clear()
-					
-					count_over_threshold = 0
-					count_under_threshold = 0
-					count_out_of_threshold = 0
-					
+					# Working on weight Statistics			    
+					if 'scale_weight_values' in tags and tags['scale_weight_values']:
+						stats = DescriptiveStatistics()
+						stats.clear()
 						
-					for value in tags['scale_weight_values']:
-						stats.addValue(value)
-						if value > tags['filler_sp_high_tag']:
-							count_over_threshold += 1
-						if value < tags['filler_sp_low_tag']:
-							count_under_threshold += 1
-						if value < tags['filler_sp_low_tag'] or value > tags['filler_sp_high_tag'] :
-							count_out_of_threshold += 1
+						count_over_threshold = 0
+						count_under_threshold = 0
+						count_out_of_threshold = 0
+						
 							
-					tags['scale_id']=entry['scale_id']
-					tags['count']=len(tags['scale_weight_values'])
-					tags['standard_deviation'] = stats.getStandardDeviation()
-					tags['variance'] = stats.getVariance()
-					tags['weight_avg'] =  stats.getMean()
-					tags['weight_max'] = stats.getMax()
-					tags['weight_min'] = stats.getMin()
-					tags['weight_range'] = tags['weight_max']-tags['weight_min']
-					tags['percentile25'] = stats.getPercentile(25)
-					tags['percentile50'] = stats.getPercentile(50)
-					tags['percentile75'] = stats.getPercentile(75)
-					tags['weight_sum'] = sum(tags['scale_weight_values'])
-					tags['weight_target'] = tags['count']*tags['filler_sp_tag']
-					tags['weight_diff'] = tags['weight_sum']- tags['weight_target']
-					tags['pct_weight_over'] = (count_over_threshold / float(tags['count'])) * 100 if tags['count'] > 0 else 0
-					tags['pct_weight_under'] = (count_under_threshold / float(tags['count'])) * 100 if tags['count'] > 0 else 0
-					tags['pct_out_of_range'] = (count_out_of_threshold / float(tags['count'])) * 100 if tags['count'] > 0 else 0
-					tags['sp_low'] = entry['filler_sp_low']
-					tags['sp'] = entry['filler_sp']
-					tags['sp_high'] = entry['filler_sp_high']
-					tags['design'] = entry['filler_design']
+						for value in tags['scale_weight_values']:
+							stats.addValue(value)
+							if value > tags['filler_sp_high_tag']:
+								count_over_threshold += 1
+							if value < tags['filler_sp_low_tag']:
+								count_under_threshold += 1
+							if value < tags['filler_sp_low_tag'] or value > tags['filler_sp_high_tag'] :
+								count_out_of_threshold += 1
+								
+						tags['scale_id']=entry['scale_id']
+						tags['count']=len(tags['scale_weight_values'])
+						tags['standard_deviation'] = stats.getStandardDeviation()
+						tags['variance'] = stats.getVariance()
+						tags['weight_avg'] =  stats.getMean()
+						tags['weight_max'] = stats.getMax()
+						tags['weight_min'] = stats.getMin()
+						tags['weight_range'] = tags['weight_max']-tags['weight_min']
+						tags['percentile25'] = stats.getPercentile(25)
+						tags['percentile50'] = stats.getPercentile(50)
+						tags['percentile75'] = stats.getPercentile(75)
+						tags['weight_sum'] = sum(tags['scale_weight_values'])
+						tags['weight_target'] = tags['count']*tags['filler_sp_tag']
+						tags['weight_diff'] = tags['weight_sum']- tags['weight_target']
+						tags['pct_weight_over'] = (count_over_threshold / float(tags['count'])) * 100 if tags['count'] > 0 else 0
+						tags['pct_weight_under'] = (count_under_threshold / float(tags['count'])) * 100 if tags['count'] > 0 else 0
+						tags['pct_out_of_range'] = (count_out_of_threshold / float(tags['count'])) * 100 if tags['count'] > 0 else 0
+						tags['sp_low'] = entry['filler_sp_low']
+						tags['sp'] = entry['filler_sp']
+						tags['sp_high'] = entry['filler_sp_high']
+						tags['design'] = entry['filler_design']
+						
 					
-				
-				# Clean up to save memory.
-				del tags['scale_weight_values']
-				
-				
-				# Calculate aggregates and maintain last known values for certain tags.
-				for tag, values in tags.items():
-				    if not isinstance(values, list):
-				        values = [values]  # Ensure values is a list, even if it's a single value
-				
-				    if tag == 'scale_weight':
-				        tags[tag] = sum(values) / len(values) if values else None
-				    elif tag in ['filler_reject', 'filler_metal']:
-				        tags[tag] = values.count(1)
-				    elif tag == 'filler_reason_over':
-				        tags[tag] = values.count(1)
-				    elif tag == 'filler_reason_under':
-				        tags[tag] = values.count(2)
-				    elif tag == 'filler_reason_metal':
-				        tags[tag] = values.count(3)
-				        
-				        
-				        
-				 # Update last known values for next iteration
-				for tag in ['filler_sp_tag', 'filler_sp_high_tag', 'filler_sp_low_tag','line_material']:
-				    if tag in tags and tags[tag]:
-				        last_known_values[tag] = tags[tag]    
-				        	                    
-		# Rewmove keys that have no hourly data or less than 2 bags per hour
+					# Clean up to save memory.
+					del tags['scale_weight_values']
+					
+					
+					# Calculate aggregates and maintain last known values for certain tags.
+					for tag, values in tags.items():
+					    if not isinstance(values, list):
+					        values = [values]  # Ensure values is a list, even if it's a single value
+					
+					    if tag == 'scale_weight':
+					        tags[tag] = sum(values) / len(values) if values else None
+					    elif tag in ['filler_reject', 'filler_metal']:
+					        tags[tag] = values.count(1)
+					    elif tag == 'filler_reason_over':
+					        tags[tag] = values.count(1)
+					    elif tag == 'filler_reason_under':
+					        tags[tag] = values.count(2)
+					    elif tag == 'filler_reason_metal':
+					        tags[tag] = values.count(3)
+					        
+					        
+					        
+					 # Update last known values for next iteration
+					for tag in ['filler_sp_tag', 'filler_sp_high_tag', 'filler_sp_low_tag','line_material']:
+					    if tag in tags and tags[tag]:
+					        last_known_values[tag] = tags[tag]    
+					        	                    
+		# Remove keys that have no hourly data or less than 2 bags per hour
 		for day_key in list(daily_data.keys()):  # Iterate over each day
 		    for hour_key in list(daily_data[day_key].keys()):  # Iterate over each hour
-		        hour_data = daily_data[day_key][hour_key]
-		        # Check if 'count' key exists and if its value is less than 1
-		        if 'count' not in hour_data or hour_data['count'] <= 1:
-		            del daily_data[day_key][hour_key]  # Delete the hour bucket
+		    	for material_key in list(daily_data[day_key][hour_key].keys()):  # Iterate over each material
+			        hour_data = daily_data[day_key][hour_key][material_key]
+			        # Check if 'count' key exists and if its value is less than 1
+			        if 'count' not in hour_data or hour_data['count'] <= 1:
+			            del daily_data[day_key][hour_key][material_key]  # Delete the hour bucket
 		            
 		    # After processing hours, check if the day has any hours left
 			if not daily_data[day_key]:  # Check if the day is empty
@@ -249,58 +322,77 @@ def ProcessWeek(Start, End, site_id, scale_id):
 		  
 	return scale_data
 	
+###############################################################
+# insertOrUpdateBucketData
+###############################################################
 def insertOrUpdateBucketData(scale_data):
 
 	LoggerActive = False
+	try:
+		for scale_id, days_data in scale_data.items():
+			#SystemLogger(True, "JAY", "scale_id:" + str(scale_id))	
+			for day, hours_data in days_data.items():
+			#	SystemLogger(True, "JAY", "day:" + str(day))	
+				for hour, material_data in hours_data.items():
+			#		SystemLogger(True, "JAY", "hour:" + str(hour))					
+					for material, bucket in material_data.items():
+					#	SystemLogger(True, "JAY", "material:" + str(material))						
+						updateParams = {
+										    'scale_id': bucket['scale_id'],
+										    'time_start': bucket['time_start'],
+										    'count': bucket.get('count', 0),
+										    'weight_avg': round(bucket.get('weight_avg', 0.0),2),
+										    'weight_sum': round(bucket.get('weight_sum', 0.0),2),
+										    'weight_diff': round(bucket.get('weight_diff', 0.0),2),
+										    'pct_weight_over': round(bucket.get('pct_weight_over', 0.0),2),
+										    'pct_weight_under': round(bucket.get('pct_weight_under', 0.0),2),
+										    'pct_out_of_range': round(bucket.get('pct_out_of_range', 0.0),2),
+										    'standard_deviation': round(bucket.get('standard_deviation', 0.0),2),
+										    'variance': round(bucket.get('variance', 0.0),2),
+										    'weight_range': round(bucket.get('weight_range', 0.0),2),
+										    'weight_max': round(bucket.get('weight_max', 0.0),2),
+										    'weight_min': round(bucket.get('weight_min', 0.0),2),
+										    'percentile25': round(bucket.get('percentile25', 0.0),2),
+										    'percentile50': round(bucket.get('percentile50', 0.0),2),
+										    'percentile75': round(bucket.get('percentile75', 0.0),2),
+										    'reject_metal': bucket.get('reject_metal', 0),
+										    'reject_over': bucket.get('reject_over', 0),
+										    'reject_under': bucket.get('reject_under', 0),
+										    'material': bucket.get('line_material', 'N/A'),
+										    'sp_high': round(bucket.get('sp_high', 0.0),2),
+										    'sp': round(bucket.get('sp', 0.0),2),
+										    'sp_low': round(bucket.get('sp_low', 0.0),2),
+										    'sp_high_plc': round(bucket.get('filler_sp_high_tag', 0.0),2),
+										    'sp_plc': round(bucket.get('filler_sp_tag', 0.0),2),
+										    'sp_low_plc': round(bucket.get('filler_sp_low_tag', 0.0),2),
+										    'design': round(bucket.get('design', 50.0),2)
+										}
+										
+					#	SystemLogger(LoggerActive, "Weight Tracking", "SQL Write: {}".format(updateParams))
+						
+					#	SystemLogger(True, "JAY", "SQL Write: {}".format(updateParams))
+						
+						# Updated SQL query with string formatting
+						checkSql = "SELECT COUNT(*) FROM weight.dbo.aggregated WHERE scale_id = %d AND time_start = '%s' and material = '%s' " % (scale_id, bucket['time_start'], material)
+					#	SystemLogger(True, "JAY", "SQL = " + str(checkSql) + ' --- ' + str(bucket.get('line_material', 'N/A')))
+						
+						# Running the query
+						existingCount = system.db.runScalarQuery(checkSql)
+					#	SystemLogger(True, "JAY", "existingCount = " + str(existingCount))
+						
+						if existingCount > 0:
+					#		SystemLogger(True, "JAY", "Updating" + str(updateParams))
+							system.db.runNamedQuery("Weight_Q/DB_Update/Update_Aggregate_Hourly", updateParams)
+						else:
+					#		SystemLogger(True, "JAY", "Inserting" + str(updateParams))
+							system.db.runNamedQuery("Weight_Q/DB_Insert/Insert_Aggregate_Hourly", updateParams)	
+	except:
+		SystemLogger(True, "JAY", CORE_P.Utils.getError())			
+	SystemLogger(True, "JAY", "Finished processing")		
 
-	for scale_id, days_data in scale_data.items():
-	    for day, hours_data in days_data.items():
-	        for hour, bucket in hours_data.items():
-		
-				updateParams = {
-								    'scale_id': bucket['scale_id'],
-								    'time_start': bucket['time_start'],
-								    'count': bucket.get('count', 0),
-								    'weight_avg': round(bucket.get('weight_avg', 0.0),2),
-								    'weight_sum': round(bucket.get('weight_sum', 0.0),2),
-								    'weight_diff': round(bucket.get('weight_diff', 0.0),2),
-								    'pct_weight_over': round(bucket.get('pct_weight_over', 0.0),2),
-								    'pct_weight_under': round(bucket.get('pct_weight_under', 0.0),2),
-								    'pct_out_of_range': round(bucket.get('pct_out_of_range', 0.0),2),
-								    'standard_deviation': round(bucket.get('standard_deviation', 0.0),2),
-								    'variance': round(bucket.get('variance', 0.0),2),
-								    'weight_range': round(bucket.get('weight_range', 0.0),2),
-								    'weight_max': round(bucket.get('weight_max', 0.0),2),
-								    'weight_min': round(bucket.get('weight_min', 0.0),2),
-								    'percentile25': round(bucket.get('percentile25', 0.0),2),
-								    'percentile50': round(bucket.get('percentile50', 0.0),2),
-								    'percentile75': round(bucket.get('percentile75', 0.0),2),
-								    'reject_metal': bucket.get('reject_metal', 0),
-								    'reject_over': bucket.get('reject_over', 0),
-								    'reject_under': bucket.get('reject_under', 0),
-								    'material': bucket.get('line_material', 'N/A'),
-								    'sp_high': round(bucket.get('sp_high', 0.0),2),
-								    'sp': round(bucket.get('sp', 0.0),2),
-								    'sp_low': round(bucket.get('sp_low', 0.0),2),
-								    'sp_high_plc': round(bucket.get('filler_sp_high_tag', 0.0),2),
-								    'sp_plc': round(bucket.get('filler_sp_tag', 0.0),2),
-								    'sp_low_plc': round(bucket.get('filler_sp_low_tag', 0.0),2),
-								    'design': round(bucket.get('design', 50.0),2)
-								}
-								
-				SystemLogger(LoggerActive, "Weight Tracking", "SQL Write: {}".format(updateParams))
-				
-				# Updated SQL query with string formatting
-				checkSql = "SELECT COUNT(*) FROM weight.dbo.aggregated WHERE scale_id = %d AND time_start = '%s'" % (scale_id, bucket['time_start'])
-				
-				# Running the query
-				existingCount = system.db.runScalarQuery(checkSql)
-				
-				if existingCount > 0:
-					system.db.runNamedQuery("Weight_Q/DB_Update/Update_Aggregate_Hourly", updateParams)
-				else:
-					system.db.runNamedQuery("Weight_Q/DB_Insert/Insert_Aggregate_Hourly", updateParams)
-
+###############################################################
+# GetBuckets
+###############################################################
 def GetBuckets(Start, End, site_id=0, scale_id=0):
 
 	LoggerActive = False
@@ -339,6 +431,9 @@ def GetBuckets(Start, End, site_id=0, scale_id=0):
 	progress = 100
 	system.util.sendMessage(project="WeightTracking", messageHandler="AggregatorUpdateBarWeek", scope='S', payload={"progress": progress})
 		
+###############################################################
+# GetBucketsGlobal
+###############################################################
 def GetBucketsGlobal(Start, End, site_id=0, scale_id=0):
 
 	LoggerActive = False

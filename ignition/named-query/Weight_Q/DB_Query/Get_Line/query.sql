@@ -6,7 +6,8 @@ SELECT 			l.site_id,
 				l.line_desc,
 				l.line_weight_min,
 				l.line_weight_max,
-				l.line_material
+				l.line_material,
+				l.starr_unit_id
 				
 FROM 			weight.dbo.line as l
 

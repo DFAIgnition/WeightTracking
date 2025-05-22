@@ -126,7 +126,7 @@
           "component": {
             "onRowDoubleClick": {
               "config": {
-                "script": "\t\n\t# Make sure we have edit permission to do this\n\tif (not CORE_P.User.hasPermission(self, Constants_P.PROJECT[\u0027project_name\u0027], \u0027SITEADMIN\u0027)):\n\t\treturn\n\t\t\t\n\t# Opens a popup view. We are passing in two parameters, called \"myParam\" and \"myParam2\". We also set some additional properties of the popup.\n\tsystem.perspective.openPopup(\"LineAddEdit\",\n\t\t\t\t\t\t\t\t  \u0027Weight_V/Administration/LineAddEdit\u0027, \n\t\t\t\t\t\t\t\t  params \u003d {\u0027line_id\u0027:event.value[\u0027line_id\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027site_id\u0027:event.value[\u0027site_id\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027type_id\u0027:event.value[\u0027type_id\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027type_name\u0027:event.value[\u0027type_name\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027line_name\u0027:event.value[\u0027line_name\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027line_material\u0027:event.value[\u0027line_material\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027line_desc\u0027:event.value[\u0027line_desc\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027line_weight_min\u0027:event.value[\u0027line_weight_min\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027line_weight_max\u0027:event.value[\u0027line_weight_max\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027edit\u0027:True,\n\t\t\t\t\t\t\t\t  \t\t\t}, \n\t\t\t\t\t\t\t\t  showCloseIcon \u003d True, \n\t\t\t\t\t\t\t\t  title \u003d \u0027Edit Packaging Lines\u0027, \n\t\t\t\t\t\t\t\t  modal \u003d True)\t"
+                "script": "\t\n\t# Make sure we have edit permission to do this\n\tif (not CORE_P.User.hasPermission(self, Constants_P.PROJECT[\u0027project_name\u0027], \u0027SITEADMIN\u0027)):\n\t\treturn\n\t\t\t\n\t# Opens a popup view. We are passing in two parameters, called \"myParam\" and \"myParam2\". We also set some additional properties of the popup.\n\tsystem.perspective.openPopup(\"LineAddEdit\",\n\t\t\t\t\t\t\t\t  \u0027Weight_V/Administration/LineAddEdit\u0027, \n\t\t\t\t\t\t\t\t  params \u003d {\u0027line_id\u0027:event.value[\u0027line_id\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027site_id\u0027:event.value[\u0027site_id\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027type_id\u0027:event.value[\u0027type_id\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027type_name\u0027:event.value[\u0027type_name\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027line_name\u0027:event.value[\u0027line_name\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027line_material\u0027:event.value[\u0027line_material\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027line_desc\u0027:event.value[\u0027line_desc\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027line_weight_min\u0027:event.value[\u0027line_weight_min\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027line_weight_max\u0027:event.value[\u0027line_weight_max\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027starr_unit_id\u0027:event.value[\u0027starr_unit_id\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027edit\u0027:True,\n\t\t\t\t\t\t\t\t  \t\t\t}, \n\t\t\t\t\t\t\t\t  showCloseIcon \u003d True, \n\t\t\t\t\t\t\t\t  title \u003d \u0027Edit Packaging Lines\u0027, \n\t\t\t\t\t\t\t\t  modal \u003d True)\t"
               },
               "scope": "G",
               "type": "script"
@@ -455,6 +455,98 @@
               "dateFormat": "MM/DD/YYYY",
               "editable": false,
               "field": "line_material",
+              "filter": {
+                "boolean": {
+                  "condition": ""
+                },
+                "date": {
+                  "condition": "",
+                  "value": ""
+                },
+                "enabled": false,
+                "number": {
+                  "condition": "",
+                  "value": ""
+                },
+                "string": {
+                  "condition": "",
+                  "value": ""
+                },
+                "visible": "on-hover"
+              },
+              "footer": {
+                "align": "center",
+                "justify": "left",
+                "style": {
+                  "classes": ""
+                },
+                "title": ""
+              },
+              "header": {
+                "align": "center",
+                "justify": "left",
+                "style": {
+                  "classes": ""
+                },
+                "title": ""
+              },
+              "justify": "auto",
+              "nullFormat": {
+                "includeNullStrings": false,
+                "nullFormatValue": "",
+                "strict": false
+              },
+              "number": "value",
+              "numberFormat": "0,0.##",
+              "progressBar": {
+                "bar": {
+                  "color": "",
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                "max": 100,
+                "min": 0,
+                "track": {
+                  "color": "",
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                "value": {
+                  "enabled": true,
+                  "format": "0,0.##",
+                  "justify": "center",
+                  "style": {
+                    "classes": ""
+                  }
+                }
+              },
+              "render": "auto",
+              "resizable": true,
+              "sort": "none",
+              "sortable": true,
+              "strictWidth": false,
+              "style": {
+                "classes": ""
+              },
+              "toggleSwitch": {
+                "color": {
+                  "selected": "",
+                  "unselected": ""
+                }
+              },
+              "viewParams": {},
+              "viewPath": "",
+              "visible": false,
+              "width": ""
+            },
+            {
+              "align": "center",
+              "boolean": "checkbox",
+              "dateFormat": "MM/DD/YYYY",
+              "editable": false,
+              "field": "",
               "filter": {
                 "boolean": {
                   "condition": ""
