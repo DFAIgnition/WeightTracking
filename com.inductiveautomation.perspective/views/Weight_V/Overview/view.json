@@ -5079,7 +5079,9 @@
     "custom.aggregator_day": {
       "binding": {
         "config": {
+          "enableValueCache": false,
           "parameters": {
+            "material": "{/root/Selections/selection_material.props.value}",
             "scale_id": "{/root/Selections/selection_scale.props.value}",
             "start": "{view.custom.selection.timestamp}"
           },
@@ -5088,7 +5090,7 @@
         },
         "transforms": [
           {
-            "code": "\t\n\n    from java.util import Calendar, TimeZone\n\n    if self.custom.selection.timestamp \u003d\u003d \u0027\u0027:\n        return []\n\n    # Assuming start_timestamp is provided or determined somehow\n    start_timestamp \u003d self.custom.selection.timestamp\n\n    # Get the time zone ID from a session property or another source\n    timeZoneId \u003d self.params.timeZoneID\n    tz \u003d TimeZone.getTimeZone(timeZoneId)\n\n    # Generate the list of all hourly timestamps\n    all_hours \u003d [start_timestamp + 3600000 * i for i in range(24)]\n\n    # Convert the value list to a dictionary for easier access\n    data_dict \u003d {bucket[\"time_start\"]: bucket for bucket in value}\n\n    # Transform the data\n    transformed_data \u003d []\n    for hour_timestamp in all_hours:\n        # Create a calendar instance set to the hour_timestamp and the specified time zone\n        cal \u003d Calendar.getInstance(tz)\n        cal.setTimeInMillis(hour_timestamp)\n\n        # Format the hour string\n        hour_str \u003d \u0027{:02d}:00\u0027.format(cal.get(Calendar.HOUR_OF_DAY))\n\n        bucket \u003d data_dict.get(hour_timestamp)\n\n        if bucket:\n            # Data exists for this hour\n            y_values \u003d [\n                bucket[\"weight_min\"],\n                bucket.get(\"percentile25\", 0),\n                bucket.get(\"percentile50\", 0),\n                bucket.get(\"percentile75\", 0),\n                bucket[\"weight_max\"]\n            ]\n            if bucket[\"material\"] !\u003d 0.0:\n            \tmaterial \u003d bucket[\"material\"]\n            else:\n            \tmaterial \u003d \"None\"\n        else:\n            # No data for this hour, use empty or placeholder values\n            y_values \u003d []\n            material \u003d \u0027None\u0027\n\n        transformed_item \u003d {\n            \"x\": hour_str,\n            \"y\": y_values,\n            \"material\": material\n        }\n        transformed_data.append(transformed_item)\n\n    return transformed_data",
+            "code": "\t\n\t#CORE_P.Utils.errorPopup(\u0027DEBUG:\u0027 + str(value) + \u0027 - \u0027 + str(self.getChild(\"root\").getChild(\"Selections\").getChild(\"selection_material\").props.value))\n\n\tfrom java.util import Calendar, TimeZone\n\n\tif self.custom.selection.timestamp \u003d\u003d \u0027\u0027:\n\t    return []\n\t\n\t# Assuming start_timestamp is provided or determined somehow\n\tstart_timestamp \u003d self.custom.selection.timestamp\n\t\n\t# Get the time zone ID from a session property or another source\n\ttimeZoneId \u003d self.params.timeZoneID\n\ttz \u003d TimeZone.getTimeZone(timeZoneId)\n\t\n\t# Generate the list of all hourly timestamps\n\tall_hours \u003d [start_timestamp + 3600000 * i for i in range(24)]\n\t\n\t# Convert the value list to a dictionary for easier access\n\tdata_dict \u003d {bucket[\"time_start\"]: bucket for bucket in value}\n\t\n\t# Transform the data\n\ttransformed_data \u003d []\n\tfor hour_timestamp in all_hours:\n\t    # Create a calendar instance set to the hour_timestamp and the specified time zone\n\t    cal \u003d Calendar.getInstance(tz)\n\t    cal.setTimeInMillis(hour_timestamp)\n\t\n\t    # Format the hour string\n\t    hour_str \u003d \u0027{:02d}:00\u0027.format(cal.get(Calendar.HOUR_OF_DAY))\n\t\n\t    bucket \u003d data_dict.get(hour_timestamp)\n\t\n\t    if bucket:\n\t        # Data exists for this hour\n\t        y_values \u003d [\n\t            bucket[\"weight_min\"],\n\t            bucket.get(\"percentile25\", 0),\n\t            bucket.get(\"percentile50\", 0),\n\t            bucket.get(\"percentile75\", 0),\n\t            bucket[\"weight_max\"]\n\t        ]\n\t        if bucket[\"material\"] !\u003d 0.0:\n\t        \tmaterial \u003d bucket[\"material\"]\n\t        else:\n\t        \tmaterial \u003d \"None\"\n\t    else:\n\t        # No data for this hour, use empty or placeholder values\n\t        y_values \u003d []\n\t        material \u003d \u0027None\u0027\n\t\n\t    transformed_item \u003d {\n\t        \"x\": hour_str,\n\t        \"y\": y_values,\n\t        \"material\": material\n\t    }\n\t    transformed_data.append(transformed_item)\n\t\n\treturn transformed_data",
             "type": "script"
           }
         ],
@@ -5100,6 +5102,7 @@
       "binding": {
         "config": {
           "parameters": {
+            "material": "{/root/Selections/selection_material.props.value}",
             "scale_id": "{/root/Selections/selection_scale.props.value}",
             "start": "{view.custom.selection.timestamp}"
           },
@@ -5120,6 +5123,7 @@
       "binding": {
         "config": {
           "parameters": {
+            "material": "{/root/Selections/selection_material.props.value}",
             "scale_id": "{/root/Selections/selection_scale.props.value}",
             "start": "{view.custom.selection.timestamp}"
           },
@@ -5327,6 +5331,7 @@
     "custom.scale": {
       "binding": {
         "config": {
+          "enableValueCache": false,
           "parameters": {
             "scale_id": "{/root/Selections/selection_scale.props.value}"
           },
@@ -6632,6 +6637,7 @@
                 "binding": {
                   "config": {
                     "parameters": {
+                      "material": "{.../Selections/selection_material.props.value}",
                       "scale_id": "{.../Selections/selection_scale.props.value}",
                       "start": "{view.custom.selection.timestamp}"
                     },
