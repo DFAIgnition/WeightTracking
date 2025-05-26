@@ -17,6 +17,7 @@ SELECT	time_start,
 FROM weight.dbo.aggregated
 WHERE scale_id = :scale_id
 AND time_start >= DATEADD(month, -11, DATEADD(month, DATEDIFF(month, 0, GETDATE()), 0))
+and (material = :material)
 group by time_start
 
 ORDER BY time_start;

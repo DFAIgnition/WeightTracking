@@ -18,9 +18,9 @@ SELECT
     sp_plc,
     sp_low_plc,
     sp_high_plc,
-    material
+    (select STRING_AGG(material, ', ') from weight.dbo.aggregated a2 where a2.scale_id = a.scale_id and a2.time_start = a.time_start and a2.material != 'All') as material
 FROM 
-    weight.dbo.aggregated
+    weight.dbo.aggregated a
 WHERE 
     scale_id = :scale_id AND 
     time_start >= :start AND 

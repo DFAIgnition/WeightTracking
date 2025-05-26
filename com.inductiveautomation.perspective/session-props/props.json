@@ -56,11 +56,13 @@
     }
   },
   "props": {
-    "address": "[0:0:0:0:0:0:0:1]",
+    "address": "127.0.0.1",
+    "appBar": {
+      "togglePosition": "hidden"
+    },
     "device": {},
     "geolocation": {},
-    "locale": "en-US",
-    "securityLevels": [],
-    "timeZoneId": "Pacific/Auckland"
+    "locale": "en-NZ",
+    "securityLevels": []
   }
 }

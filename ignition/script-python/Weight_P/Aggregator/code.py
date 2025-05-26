@@ -128,7 +128,7 @@ def ProcessWeek(Start, End, site_id, scale_id):
 				materials = [{"value": 'None', "timestamp":Start},{"value": 'None', "timestamp":End}]
 		except:
 			SystemLogger(True, "JAY", CORE_P.Utils.getError())			
-
+		all_materials_key = 'All'
 		try:
 			for key, items in all_data.items():
 				material_index = 0		
@@ -167,25 +167,33 @@ def ProcessWeek(Start, End, site_id, scale_id):
 					
 					if material not in daily_data[day_key][hour_of_day]:
 						daily_data[day_key][hour_of_day][material] = {'time_start': '', 'scale_weight_values': []}
-					
+						
+					if all_materials_key not in daily_data[day_key][hour_of_day]:
+						daily_data[day_key][hour_of_day][all_materials_key] = {'time_start': '', 'scale_weight_values': []}
+						
 					if 'time_start' not in daily_data[day_key][hour_of_day][material] or not daily_data[day_key][hour_of_day][material]['time_start']:
 						daily_data[day_key][hour_of_day][material]['time_start'] = time_start
-						SystemLogger(LoggerActive, "Weight Tracking", "Time: {}".format(time_start))
-					
+					if 'time_start' not in daily_data[day_key][hour_of_day][all_materials_key] or not daily_data[day_key][hour_of_day][all_materials_key]['time_start']:
+						daily_data[day_key][hour_of_day][all_materials_key]['time_start'] = time_start
+						
 					if key not in daily_data[day_key][hour_of_day][material]:
 					    daily_data[day_key][hour_of_day][material][key] = []
-					
+					if key not in daily_data[day_key][hour_of_day][all_materials_key]:
+					    daily_data[day_key][hour_of_day][all_materials_key][key] = []
+					    
 					daily_data[day_key][hour_of_day][material][key].append(item['value'])
+					daily_data[day_key][hour_of_day][all_materials_key][key].append(item['value'])
 					
 					if key == 'scale_weight':
 					    daily_data[day_key][hour_of_day][material]['scale_weight_values'].append(item['value'])
+					    daily_data[day_key][hour_of_day][all_materials_key]['scale_weight_values'].append(item['value'])
 					    #daily_data[day_key][hour_of_day][material]['scale_weight_values'].append(item['timestamp'])
 		except:
 			SystemLogger(True, "JAY", CORE_P.Utils.getError())				
 
 	#	SystemLogger(True, "JAY", "Materials:" + str(materials))
 		
-		SystemLogger(True, "JAY", "Daily Data:" + str(daily_data))
+		#SystemLogger(True, "JAY", "Daily Data:" + str(daily_data))
 		#return #DEBUG
 		
 # OLD VERSION		

@@ -24,6 +24,8 @@ ALTER TABLE weight.dbo.line
 ADD CONSTRAINT CK_Line_Weight CHECK (line_weight_max > line_weight_min);
 GO
 
+
+
 --------------------------------------------------------------------------------
 -- Versions table update
 --------------------------------------------------------------------------------
