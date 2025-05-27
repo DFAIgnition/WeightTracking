@@ -115,19 +115,37 @@ def ProcessWeek(Start, End, site_id, scale_id):
 		        if converted_tag_name == item['path']:
 					all_data[key].append(item)
 		
+		
+		#######################################################################
+		# Materials stuff
+		#######################################################################
 		materials = []
 		material_index = 0		
-		# If we have a tag defined, use that. 
 		try:
+			# If we have a tag defined, use that. 
 			if ('line_material' in all_data and all_data['line_material']):
+			#	SystemLogger(True, "JAY", 'DEBUG: Getting materials from Tags!')		
 				materials = CORE_P.Tags.getTagChanges(entry['line_material'], Start, End)
 				
 				if (len(materials)>0 and materials[0]['timestamp']>Start):
 					materials.insert(0, {"value": 'None', "timestamp":Start})
+			
+			# Else, if we have a link to a STARR unit...work out materials from that instead
+			elif(entry['starr_unit_id']):
+			#	SystemLogger(True, "JAY", 'DEBUG: Getting materials from STARR!')		
+				materials = Weight_P.STARR.getMaterialsFromSTARR(entry['starr_unit_id'], Start, End)
+				SystemLogger(True, "JAY", 'DEBUG: ' + str(materials))						
+			
+			# Otherwise...materials are None
 			else:
+			#	SystemLogger(True, "JAY", 'DEBUG: Using default materials!' +str(entry['starr_unit_id']))		
 				materials = [{"value": 'None', "timestamp":Start},{"value": 'None', "timestamp":End}]
 		except:
 			SystemLogger(True, "JAY", CORE_P.Utils.getError())			
+		
+		#######################################################################
+		# Process stuff
+		#######################################################################		
 		all_materials_key = 'All'
 		try:
 			for key, items in all_data.items():
@@ -333,14 +351,21 @@ def ProcessWeek(Start, End, site_id, scale_id):
 ###############################################################
 # insertOrUpdateBucketData
 ###############################################################
-def insertOrUpdateBucketData(scale_data):
+def insertOrUpdateBucketData(scale_data, start_dt, end_dt):
 
 	LoggerActive = False
 	try:
 		for scale_id, days_data in scale_data.items():
-			#SystemLogger(True, "JAY", "scale_id:" + str(scale_id))	
+			SystemLogger(True, "JAY", "scale_id:" + str(scale_id) )
+			
+			# Delete the old versions of the rowsrows
+			txId = system.db.beginTransaction(timeout=5000)
+			parameters = {'scale_id':scale_id, 'start_dt':start_dt, 'end_dt':end_dt}
+			system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/DB_Delete/Delete_Aggregate_Rows', parameters=parameters, tx=txId)
+			
+			# Then add in all the new ones
 			for day, hours_data in days_data.items():
-			#	SystemLogger(True, "JAY", "day:" + str(day))	
+				SystemLogger(True, "JAY", "day:" + str(day))	
 				for hour, material_data in hours_data.items():
 			#		SystemLogger(True, "JAY", "hour:" + str(hour))					
 					for material, bucket in material_data.items():
@@ -376,26 +401,27 @@ def insertOrUpdateBucketData(scale_data):
 										    'design': round(bucket.get('design', 50.0),2)
 										}
 										
-					#	SystemLogger(LoggerActive, "Weight Tracking", "SQL Write: {}".format(updateParams))
-						
-					#	SystemLogger(True, "JAY", "SQL Write: {}".format(updateParams))
-						
-						# Updated SQL query with string formatting
-						checkSql = "SELECT COUNT(*) FROM weight.dbo.aggregated WHERE scale_id = %d AND time_start = '%s' and material = '%s' " % (scale_id, bucket['time_start'], material)
-					#	SystemLogger(True, "JAY", "SQL = " + str(checkSql) + ' --- ' + str(bucket.get('line_material', 'N/A')))
-						
-						# Running the query
-						existingCount = system.db.runScalarQuery(checkSql)
-					#	SystemLogger(True, "JAY", "existingCount = " + str(existingCount))
-						
-						if existingCount > 0:
-					#		SystemLogger(True, "JAY", "Updating" + str(updateParams))
-							system.db.runNamedQuery("Weight_Q/DB_Update/Update_Aggregate_Hourly", updateParams)
-						else:
-					#		SystemLogger(True, "JAY", "Inserting" + str(updateParams))
-							system.db.runNamedQuery("Weight_Q/DB_Insert/Insert_Aggregate_Hourly", updateParams)	
+#						# Updated SQL query with string formatting
+#						checkSql = "SELECT COUNT(*) FROM weight.dbo.aggregated WHERE scale_id = %d AND time_start = '%s' and material = '%s' " % (scale_id, bucket['time_start'], material)
+#						
+#						# Running the query
+#						existingCount = system.db.runScalarQuery(checkSql)
+#						
+#						if existingCount > 0:
+#							system.db.runNamedQuery("Weight_Q/DB_Update/Update_Aggregate_Hourly", updateParams)
+#						else:
+#					#		SystemLogger(True, "JAY", "Inserting" + str(updateParams))
+#							system.db.runNamedQuery("Weight_Q/DB_Insert/Insert_Aggregate_Hourly", updateParams)	
+						#system.db.runNamedQuery("Weight_Q/DB_Insert/Insert_Aggregate_Hourly", updateParams)
+						system.db.runNamedQuery(project=system.project.getProjectName(), path="Weight_Q/DB_Insert/Insert_Aggregate_Hourly", parameters=updateParams, tx=txId)
+							
+			system.db.commitTransaction(txId)
+			system.db.closeTransaction(txId)					
+							
 	except:
-		SystemLogger(True, "JAY", CORE_P.Utils.getError())			
+		SystemLogger(True, "JAY", CORE_P.Utils.getError())		
+		system.db.rollbackTransaction(txId)	
+		system.db.closeTransaction(txId)	
 	SystemLogger(True, "JAY", "Finished processing")		
 
 ###############################################################
@@ -431,7 +457,7 @@ def GetBuckets(Start, End, site_id=0, scale_id=0):
 		SystemLogger(LoggerActive, "Weight Tracking", "{}, {}, {}, {}".format(weekStart.getTime(), weekEnd.getTime(), site_id, scale_id))
 		
 		scale_data = ProcessWeek(weekStart.getTime(),weekEnd.getTime(), site_id, scale_id)
-		insertOrUpdateBucketData(scale_data)
+		insertOrUpdateBucketData(scale_data, weekStart.getTime(),weekEnd.getTime())
 		
 		progress = float(i) / float(weeksBetween) * 100
 		system.util.sendMessage(project="WeightTracking", messageHandler="AggregatorUpdateBarWeek", scope='S', payload={"progress": progress})
@@ -470,5 +496,5 @@ def GetBucketsGlobal(Start, End, site_id=0, scale_id=0):
 		SystemLogger(LoggerActive, "Weight Tracking", "{}, {}, {}, {}".format(weekStart.getTime(), weekEnd.getTime(), site_id, scale_id))
 		
 		scale_data = ProcessWeek(weekStart.getTime(),weekEnd.getTime(), site_id, scale_id)
-		insertOrUpdateBucketData(scale_data)
+		insertOrUpdateBucketData(scale_data,weekStart.getTime(), weekEnd.getTime())
 		

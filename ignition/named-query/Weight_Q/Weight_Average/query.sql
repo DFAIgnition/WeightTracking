@@ -16,7 +16,9 @@ SELECT	time_start,
 		STRING_AGG(material, ', ') AS material
 FROM weight.dbo.aggregated
 WHERE scale_id = :scale_id
-AND time_start >= DATEADD(month, -11, DATEADD(month, DATEDIFF(month, 0, GETDATE()), 0))
+--AND time_start >= DATEADD(month, -11, DATEADD(month, DATEDIFF(month, 0, GETDATE()), 0))
+AND time_start >= DATEADD(month, -11, DATEADD(month, DATEDIFF(month, 0, :end_dt), 0))
+AND time_start <  DATEADD(day,1,EOMONTH(:end_dt))
 and (material = :material)
 group by time_start
 
