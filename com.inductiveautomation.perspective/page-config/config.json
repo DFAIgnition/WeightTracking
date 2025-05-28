@@ -16,6 +16,10 @@
       "title": "Aggregator",
       "viewPath": "Weight_V/Overview"
     },
+    "/materials": {
+      "title": "Weights by Material",
+      "viewPath": "Weight_V/Materials"
+    },
     "/useradmin": {
       "title": "User Administration",
       "viewPath": "Users_V/UserAdmin"

@@ -74,7 +74,7 @@
   },
   "props": {
     "defaultSize": {
-      "height": 452,
+      "height": 529,
       "width": 880
     }
   },
@@ -245,7 +245,7 @@
           "height": 34,
           "width": 250,
           "x": 12,
-          "y": 407
+          "y": 487
         },
         "props": {
           "text": "Save Packaging Line"
@@ -286,7 +286,7 @@
           "height": 34,
           "width": 127,
           "x": 736.5,
-          "y": 407
+          "y": 487
         },
         "propConfig": {
           "meta.visible": {
@@ -363,7 +363,7 @@
           "height": 34,
           "width": 250,
           "x": 268.5,
-          "y": 407
+          "y": 487
         },
         "props": {
           "primary": false,
@@ -417,7 +417,7 @@
         },
         "position": {
           "height": 36,
-          "width": 280,
+          "width": 120,
           "x": 161,
           "y": 299
         },
@@ -457,9 +457,9 @@
         },
         "position": {
           "height": 32,
-          "width": 140,
-          "x": 12,
-          "y": 340
+          "width": 106,
+          "x": 307,
+          "y": 301
         },
         "props": {
           "text": "Weight Max:"
@@ -472,9 +472,9 @@
         },
         "position": {
           "height": 36,
-          "width": 280,
-          "x": 161,
-          "y": 340
+          "width": 119,
+          "x": 417,
+          "y": 299
         },
         "propConfig": {
           "props.text": {
@@ -516,8 +516,8 @@
             "anchor": "50% 37%"
           },
           "width": 30,
-          "x": 494.979,
-          "y": 320
+          "x": 574.979,
+          "y": 302
         },
         "props": {
           "path": "material/help",
@@ -633,6 +633,111 @@
           "textStyle": {
             "fontWeight": "bold"
           }
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Reject_Tag"
+        },
+        "position": {
+          "height": 39,
+          "width": 721,
+          "x": 157,
+          "y": 382
+        },
+        "propConfig": {
+          "props.params.initial_tag": {
+            "binding": {
+              "config": {
+                "expression": "toStr({view.params.line_material},\"\")"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "params": {
+            "buttonText": "Select a tag",
+            "inputName": "Material_Tag",
+            "selectedTag": ""
+          },
+          "path": "CORE_V/Selections/chooseHistoryTagTree"
+        },
+        "type": "ia.display.view"
+      },
+      {
+        "meta": {
+          "name": "Material_Label_5"
+        },
+        "position": {
+          "height": 32,
+          "width": 140,
+          "x": 11,
+          "y": 386
+        },
+        "props": {
+          "text": "Reject Tag:"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Material_Label_7"
+        },
+        "position": {
+          "height": 32,
+          "width": 154,
+          "x": 11,
+          "y": 351
+        },
+        "props": {
+          "text": "Reject counter",
+          "textStyle": {
+            "fontWeight": "bold"
+          }
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "RejectType"
+        },
+        "position": {
+          "height": 35,
+          "width": 441,
+          "x": 150,
+          "y": 422
+        },
+        "props": {
+          "radios": [
+            {
+              "selected": true,
+              "text": "Boolean",
+              "value": "boolean"
+            },
+            {
+              "selected": false,
+              "text": "Counter",
+              "value": "counter"
+            }
+          ],
+          "value": "boolean"
+        },
+        "type": "ia.input.radio-group"
+      },
+      {
+        "meta": {
+          "name": "Material_Label_6"
+        },
+        "position": {
+          "height": 32,
+          "width": 140,
+          "x": 11,
+          "y": 426
+        },
+        "props": {
+          "text": "Tag Type:"
         },
         "type": "ia.display.label"
       }

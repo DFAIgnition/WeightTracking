@@ -1,0 +1,1196 @@
+{
+  "custom": {
+    "aggregator_year": null,
+    "design": null,
+    "end_dt": {
+      "$": [
+        "ts",
+        192,
+        1748385611109
+      ],
+      "$ts": 1748385611000
+    },
+    "heatmap_format": {
+      "colorScale": {
+        "inverse": false,
+        "max": "",
+        "min": "",
+        "ranges": [
+          {
+            "color": "#FFFFFF",
+            "foreColor": "#FFFFFF",
+            "from": 0,
+            "name": " ",
+            "to": 0
+          },
+          {
+            "color": "#00800080",
+            "foreColor": "#000000",
+            "from": "0.000000000000000000001",
+            "name": "1σ"
+          },
+          {
+            "color": "#98FB9880",
+            "foreColor": "#000000",
+            "name": "2σ"
+          },
+          {
+            "color": "#FFB7B780",
+            "foreColor": "#000000",
+            "name": "3σ"
+          },
+          {
+            "color": "#FF555580",
+            "foreColor": "#000000",
+            "name": "5σ"
+          },
+          {
+            "color": "#FF000080",
+            "foreColor": "#000000",
+            "name": "\u003e5σ"
+          },
+          {
+            "color": "#AED6F180",
+            "foreColor": "#000000",
+            "name": "-1σ",
+            "to": "-0.000000000000000000001"
+          },
+          {
+            "color": "#5DADE280",
+            "foreColor": "#000000",
+            "name": "-2σ"
+          },
+          {
+            "color": "#2E86C180",
+            "foreColor": "#000000",
+            "name": "-3σ"
+          },
+          {
+            "color": "#21618C80",
+            "foreColor": "#000000",
+            "name": "-5σ"
+          },
+          {
+            "color": "#15436080",
+            "foreColor": "#000000",
+            "name": "\u003c-5σ"
+          }
+        ]
+      },
+      "distributed": false,
+      "enableShades": false,
+      "radius": 2,
+      "reverseNegativeShade": false,
+      "shadeIntensity": 0.8,
+      "useFillColorAsStroke": false
+    },
+    "key": "value",
+    "line": {
+      "Description": "",
+      "MaxWeight": 30000,
+      "MinWeight": 20000
+    },
+    "scale": {
+      "conversion_factor": 1,
+      "design": 50,
+      "scale_name": "Scale",
+      "setpoint": 25000,
+      "unit": "g"
+    },
+    "selection": {
+      "index_day": "",
+      "index_series": "",
+      "index_year": "",
+      "timestamp": ""
+    },
+    "sqlserver_timezone": "UTC"
+  },
+  "params": {
+    "timeZoneID": ""
+  },
+  "propConfig": {
+    "custom.aggregator_year": {
+      "binding": {
+        "config": {
+          "struct": {
+            "aggregator": "{view.custom.aggregator}",
+            "scale": "{/root/Selections/selection_scale.props.value}",
+            "stat": "{/root/Selections/selection_stat.props.value}"
+          },
+          "waitOnAll": false
+        },
+        "transforms": [
+          {
+            "code": "\n    import datetime\n    SeriesIndex\u003d-1\n    \n    end_dt \u003d self.custom.end_dt\n\t\n    # Get the current month and year\n    #current_month \u003d datetime.datetime.now().month\n    #current_year \u003d datetime.datetime.now().year\n    current_month \u003d end_dt.getMonth()+1\n    current_year \u003d end_dt.getYear()+ 1900\n\n    # Custom sorting function to correctly order months with respect to the current month and year\n    def sort_key(entry):\n        month_name \u003d entry[\"name\"]\n        month_number \u003d month_to_number.get(month_name, -1)\n        entry_year \u003d entry.get(\"year\", current_year)\n\n        # Calculate how far back in time each entry is from the current month and year\n        year_diff \u003d current_year - entry_year\n        month_diff \u003d current_month - month_number\n\n        # For entries from the previous year, adjust month_diff to reflect their actual distance from the current month\n        if year_diff \u003e 0:\n            month_diff +\u003d 12\n\n        return (year_diff, month_diff)\n\n    month_to_number \u003d {\n        \"January\": 1, \"February\": 2, \"March\": 3, \"April\": 4,\n        \"May\": 5, \"June\": 6, \"July\": 7, \"August\": 8,\n        \"September\": 9, \"October\": 10, \"November\": 11, \"December\": 12\n    }\n\n    monthlyData \u003d value[\u0027aggregator\u0027]\n\n    transformedData \u003d []\n\n    for month in monthlyData:\n        monthName \u003d month[\"summary\"][\"x\"]\n        dayData \u003d month[\"days\"]\n\n        monthDataArray \u003d []\n        allDaysAreZero \u003d False # Set to true if empty months should not be shown\n        for day in dayData:\n            dayNumber \u003d day[\"x\"]\n            weight_diff \u003d day[\"weight_diff\"]\n            weight_avg \u003d day[\"weight_avg\"]\n            count \u003d day[\"count\"]\n            \n            if count\u003e0:\n            \tavg_diff \u003d weight_diff/count*1000/self.custom.scale.conversion_factor\n            else:\n            \tavg_diff\u003d0\n\n            if weight_diff !\u003d 0 or weight_avg !\u003d 0 or count !\u003d 0:\n                allDaysAreZero \u003d False\n\n            monthDataArray.append({\n                \"x\": dayNumber,\n                \"y\": avg_diff,\n                \"y2\": weight_avg,      # weight_diff as y\n                \"y3\": weight_diff,      # weight_avg as y2\n                \"y4\": count            # count as y3\n            })\n\n        if not allDaysAreZero:\n            month_number \u003d month_to_number.get(monthName, -1)\n            if month_number \u003e current_month:\n                inferred_year \u003d current_year - 1\n            else:\n                inferred_year \u003d current_year\n\n            transformedData.append({\n                \"data\": monthDataArray,\n                \"name\": monthName,\n                \"year\": inferred_year,\n                \"zIndex\": month_number\n            })\n\n    # Sort the transformed data using the custom sort key\n    transformedData.sort(key\u003dsort_key)\n\n    return transformedData",
+            "type": "script"
+          }
+        ],
+        "type": "expr-struct"
+      },
+      "persistent": true
+    },
+    "custom.end_dt": {
+      "binding": {
+        "config": {
+          "path": "1"
+        },
+        "transforms": [
+          {
+            "code": "\treturn CORE_P.Time.currentTimestamp()",
+            "type": "script"
+          }
+        ],
+        "type": "property"
+      },
+      "persistent": true
+    },
+    "custom.heatmap_format": {
+      "persistent": true
+    },
+    "custom.heatmap_format.colorScale.ranges[10].from": {
+      "binding": {
+        "config": {
+          "expression": "-1000*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[10].to": {
+      "binding": {
+        "config": {
+          "expression": "-5*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[1].to": {
+      "binding": {
+        "config": {
+          "expression": "{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[2].from": {
+      "binding": {
+        "config": {
+          "expression": "{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[2].to": {
+      "binding": {
+        "config": {
+          "expression": "2*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[3].from": {
+      "binding": {
+        "config": {
+          "expression": "2*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[3].to": {
+      "binding": {
+        "config": {
+          "expression": "3*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[4].from": {
+      "binding": {
+        "config": {
+          "expression": "3*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[4].to": {
+      "binding": {
+        "config": {
+          "expression": "5*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[5].from": {
+      "binding": {
+        "config": {
+          "expression": "5*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[5].to": {
+      "binding": {
+        "config": {
+          "expression": "1000*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[6].from": {
+      "binding": {
+        "config": {
+          "expression": "-{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[7].from": {
+      "binding": {
+        "config": {
+          "expression": "-2*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[7].to": {
+      "binding": {
+        "config": {
+          "expression": "-{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[8].from": {
+      "binding": {
+        "config": {
+          "expression": "-3*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[8].to": {
+      "binding": {
+        "config": {
+          "expression": "-2*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[9].from": {
+      "binding": {
+        "config": {
+          "expression": "-5*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[9].to": {
+      "binding": {
+        "config": {
+          "expression": "-3*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.key": {
+      "persistent": true
+    },
+    "custom.line": {
+      "binding": {
+        "config": {
+          "parameters": {
+            "line_id": "{/root/Selections/selection_line.props.value}"
+          },
+          "queryPath": "Weight_Q/DB_Query/Get_Line_Info"
+        },
+        "transforms": [
+          {
+            "code": "\n    # Create an empty dictionary to hold the results\n    result \u003d {}\n\n    # Check if the dataset contains at least one row\n    if value.getRowCount() \u003e 0:\n        # Extract values from the first row\n        line_desc \u003d value.getValueAt(0, \"line_desc\")\n        line_weight_min \u003d value.getValueAt(0, \"line_weight_min\")\n        line_weight_max \u003d value.getValueAt(0, \"line_weight_max\")\n\n        # Assign these values to the keys \u0027design\u0027 and \u0027setpoint\u0027 in the result dictionary\n        result[\u0027Description\u0027] \u003d line_desc\n        result[\u0027MinWeight\u0027] \u003d line_weight_min\n        result[\u0027MaxWeight\u0027] \u003d line_weight_max\n    else:\n        # Handle the case where no rows are returned\n        result[\u0027Description\u0027] \u003d \u0027\u0027\n        result[\u0027MinWeight\u0027] \u003d 20000\n        result[\u0027MaxWeight\u0027] \u003d 30000\n\n    # Return the dictionary containing the design and setpoint\n    return result",
+            "type": "script"
+          }
+        ],
+        "type": "query"
+      },
+      "persistent": true
+    },
+    "custom.scale": {
+      "binding": {
+        "config": {
+          "enableValueCache": false,
+          "parameters": {
+            "scale_id": "{/root/Selections/selection_scale.props.value}"
+          },
+          "queryPath": "Weight_Q/DB_Query/Get_Scale_Info"
+        },
+        "transforms": [
+          {
+            "code": "\n    # Create an empty dictionary to hold the results\n    result \u003d {}\n\n    # Check if the dataset contains at least one row\n    if value.getRowCount() \u003e 0:\n        # Extract values from the first row\n        filler_design \u003d value.getValueAt(0, \"filler_design\")\n        filler_sp \u003d value.getValueAt(0, \"filler_sp\")\n        unit_name \u003d value.getValueAt(0, \"unit_name\")\n        unit_conversion \u003d value.getValueAt(0, \"unit_conversion\")\n        scale_name \u003d value.getValueAt(0, \"scale_name\")\n\n        # Assign these values to the keys \u0027design\u0027 and \u0027setpoint\u0027 in the result dictionary\n        result[\u0027design\u0027] \u003d filler_design\n        result[\u0027setpoint\u0027] \u003d filler_sp\n        result[\u0027unit\u0027] \u003d unit_name\n        result[\u0027conversion_factor\u0027] \u003d unit_conversion\n        result[\u0027scale_name\u0027] \u003d scale_name\n    else:\n        # Handle the case where no rows are returned\n        result[\u0027design\u0027] \u003d 50\n        result[\u0027setpoint\u0027] \u003d 25000\n        result[\u0027unit\u0027] \u003d \u0027g\u0027\n        result[\u0027conversion_factor\u0027] \u003d 1\n        result[\u0027scale_name\u0027] \u003d \u0027Scale\u0027\n\n    # Return the dictionary containing the design and setpoint\n    return result",
+            "type": "script"
+          }
+        ],
+        "type": "query"
+      },
+      "persistent": true
+    },
+    "custom.scale.unit": {
+      "onChange": {
+        "enabled": null,
+        "script": "\tself.getChild(\"root\").getChild(\"Day\").getChild(\"dailychart\").refreshBinding(\u0027props.options.title.text\u0027)\n\t"
+      }
+    },
+    "custom.selection": {
+      "persistent": true
+    },
+    "custom.selection.datetime": {
+      "binding": {
+        "config": {
+          "path": "view.custom.selection.timestamp"
+        },
+        "transforms": [
+          {
+            "formatType": "datetime",
+            "formatValue": {
+              "date": "full"
+            },
+            "type": "format"
+          }
+        ],
+        "type": "property"
+      }
+    },
+    "custom.sqlserver_timezone": {
+      "binding": {
+        "config": {
+          "path": "session.props.timeZoneId"
+        },
+        "transforms": [
+          {
+            "code": "\treturn CORE_P.Time.getSQLServerTimezone(value) or \u0027UTC\u0027\n\t",
+            "type": "script"
+          }
+        ],
+        "type": "property"
+      },
+      "persistent": true
+    },
+    "params.timeZoneID": {
+      "binding": {
+        "config": {
+          "path": "session.props.timeZoneId"
+        },
+        "type": "property"
+      },
+      "onChange": {
+        "enabled": null,
+        "script": "\t\n\ttry:\n\t\tfrom java.util import Calendar, TimeZone\n\t\t\n\t\t# Get the timezone ID from a session property or another source\n\t\ttimeZoneId \u003d self.view.params.timeZoneID\n\t\ttz \u003d TimeZone.getTimeZone(timeZoneId)\n\t\t\n\t\tself.refreshBinding(\"custom.aggregator\")\n\t\tself.refreshBinding(\"custom.aggregator_day\")\n\t\tself.refreshBinding(\"custom.aggregator_day_bag\")\n\t\tself.refreshBinding(\"custom.aggregator_day_sp\")\n\t\t\n\t\t # Retrieve the year from the series data\n\t\tseries_year \u003d self.custom.aggregator_year[self.custom.selection.index_series].year\n\t\t\n\t\t# Convert to seconds for Python datetime operations\n\t\ttimestamp_seconds \u003d self.custom.aggregator_year[self.custom.selection.index_series].data[self.custom.selection.index_day].x / 1000.0\n\t\t\n\t\t# Create a calendar instance, set the time and adjust to the specified timezone\n\t\tcalendar \u003d Calendar.getInstance(tz)\n\t\tcalendar.setTimeInMillis(long(timestamp_seconds * 1000))\n\t\t\n\t\t# Correctly set the year based on the series data\n\t\tcalendar.set(Calendar.YEAR, series_year)\n\t\t\n\t\t# Set hour, minute, second, and millisecond to 0 to get the start of the day\n\t\tcalendar.set(Calendar.HOUR_OF_DAY, 0)\n\t\tcalendar.set(Calendar.MINUTE, 0)\n\t\tcalendar.set(Calendar.SECOND, 0)\n\t\tcalendar.set(Calendar.MILLISECOND, 0)\n\t\t\n\t\t# Convert back to epoch milliseconds adjusted for the specified timezone\n\t\tmidnight_timestamp \u003d calendar.getTimeInMillis()\n\t\tself.view.custom.selection.timestamp \u003d midnight_timestamp\n\texcept:\n\t\treturn"
+      },
+      "paramDirection": "inout",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 4000,
+      "width": 1920
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "CurrentSite"
+        },
+        "position": {
+          "basis": "0px",
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.params.site_id": {
+            "onChange": {
+              "enabled": null,
+              "script": "\tself.view.custom.selection.index_day\u003d\u0027\u0027\n\tself.view.custom.selection.index_series\u003d\u0027\u0027\n\tself.view.custom.selection.timestamp\u003d\u0027\u0027\n\tself.view.custom.selection.datetime\u003d\u0027\u0027\n\tself.parent.getChild(\"Selections\").getChild(\"selection_line\").props.value\u003d0\n\tself.parent.getChild(\"Selections\").getChild(\"selection_scale\").props.value\u003d0"
+            }
+          }
+        },
+        "props": {
+          "params": {
+            "site": null,
+            "site_id": null
+          },
+          "path": "CORE_V/Utils/CurrentSite"
+        },
+        "type": "ia.display.view"
+      },
+      {
+        "children": [
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tself.parent.parent.getChild(\"Year\").getChild(\"heatmap\").refreshBinding(\"props.series\")"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "selection_line",
+              "tooltip": {
+                "text": "Select Line"
+              }
+            },
+            "position": {
+              "basis": "200px",
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.options": {
+                "binding": {
+                  "config": {
+                    "enableValueCache": false,
+                    "parameters": {
+                      "site_id": "{.../CurrentSite.props.params.site_id}"
+                    },
+                    "queryPath": "Weight_Q/DB_Query/Get_Line",
+                    "returnFormat": "dataset"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\t\n\t# Create an empty list to hold our formatted data\n    formatted_data \u003d []\n\n    # Iterate through each row in the dataset\n    for row in range(value.getRowCount()):\n        # Extract line_id and line_name from the current row\n        line_id \u003d value.getValueAt(row, \"line_id\")\n        line_name \u003d value.getValueAt(row, \"line_name\")\n\n        # Create a dictionary with the \u0027value\u0027 and \u0027label\u0027 keys\n        item \u003d {\"value\": line_id, \"label\": line_name}\n\n        # Add the dictionary to our list\n        formatted_data.append(item)\n        \n    # Check if the formatted data has only one row\n\tif len(formatted_data) \u003d\u003d 1:\n\t    # Set self.props.value to the scale_id of the single row\n\t    self.props.value \u003d formatted_data[0][\u0027value\u0027]\n\telif len(formatted_data)\u003e1:\n\t\tself.props.value \u003d formatted_data[0][\u0027value\u0027]\n\n    # Return the formatted list\n    return formatted_data",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "query"
+                },
+                "persistent": true
+              },
+              "props.value": {
+                "onChange": {
+                  "enabled": null,
+                  "script": "\tself.getSibling(\"selection_scale\").props.value\u003d0\n\tself.view.custom.selection.index_day\u003d\u0027\u0027\n\tself.view.custom.selection.index_series\u003d\u0027\u0027\n\tself.view.custom.selection.index_year\u003d\u0027\u0027\n\tself.view.custom.selection.timestamp\u003d\u0027\u0027\n\tself.view.custom.selection.datetime\u003d\u0027\u0027"
+                },
+                "persistent": true
+              }
+            },
+            "props": {
+              "options": [
+                {
+                  "label": "Bag Line 1",
+                  "value": 1
+                },
+                {
+                  "label": "Bottle Line 1",
+                  "value": 2
+                }
+              ],
+              "placeholder": {
+                "text": "Select Line..."
+              },
+              "style": {
+                "marginBottom": 2,
+                "marginLeft": 10,
+                "marginRight": 10,
+                "marginTop": 2
+              },
+              "value": 0
+            },
+            "type": "ia.input.dropdown"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tself.parent.parent.getChild(\"Year\").getChild(\"heatmap\").refreshBinding(\"props.series\")"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "selection_scale",
+              "tooltip": {
+                "text": "Select Scale"
+              }
+            },
+            "position": {
+              "basis": "200px",
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.options": {
+                "binding": {
+                  "config": {
+                    "enableValueCache": false,
+                    "parameters": {
+                      "line_id": "{../selection_line.props.value}",
+                      "site_id": "{.../CurrentSite.props.params.site_id}"
+                    },
+                    "queryPath": "Weight_Q/DB_Query/Get_Scale",
+                    "returnFormat": "dataset"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\t\n\t# Create an empty list to hold our formatted data\n    formatted_data \u003d []\n\n    # Iterate through each row in the dataset\n    for row in range(value.getRowCount()):\n        # Extract line_id and line_name from the current row\n        scale_id \u003d value.getValueAt(row, \"scale_id\")\n        scale_name \u003d value.getValueAt(row, \"scale_name\")\n\n        # Create a dictionary with the \u0027value\u0027 and \u0027label\u0027 keys\n        item \u003d {\"value\": scale_id, \"label\": scale_name}\n\n        # Add the dictionary to our list\n        formatted_data.append(item)\n        \n    # Check if the formatted data has only one row\n\tif len(formatted_data) \u003d\u003d 1:\n\t    # Set self.props.value to the scale_id of the single row\n\t    self.props.value \u003d formatted_data[0][\u0027value\u0027]\n\telif len(formatted_data)\u003e1:\n\t\tself.props.value \u003d formatted_data[-1][\u0027value\u0027]\n\n    # Return the formatted list\n    return formatted_data\n",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "query"
+                },
+                "persistent": true
+              },
+              "props.value": {
+                "persistent": true
+              }
+            },
+            "props": {
+              "placeholder": {
+                "text": "Select Scale..."
+              },
+              "style": {
+                "marginBottom": 2,
+                "marginRight": 10,
+                "marginTop": 2
+              },
+              "value": 0
+            },
+            "type": "ia.input.dropdown"
+          }
+        ],
+        "meta": {
+          "name": "Selections"
+        },
+        "position": {
+          "basis": "32px",
+          "shrink": 0
+        },
+        "props": {
+          "justify": "center",
+          "style": {
+            "borderColor": "#808080",
+            "borderStyle": "solid",
+            "borderWidth": 0.5,
+            "marginBottom": 5,
+            "marginLeft": 5,
+            "marginRight": 5,
+            "marginTop": 5,
+            "overflow": "hidden",
+            "overflowX": "hidden",
+            "overflowY": "hidden"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\tself.meta.visible \u003d False\n\tself.getSibling(\"ScrollForward\").meta.visible \u003d False\n\tself.view.custom.end_dt \u003d  CORE_P.Time.adjustTimestamp(self.view.custom.end_dt, offset_hours\u003d-(3*60*24))"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "ScrollBack"
+            },
+            "position": {
+              "basis": "30px"
+            },
+            "props": {
+              "path": "material/arrow_back",
+              "style": {
+                "cursor": "pointer"
+              }
+            },
+            "type": "ia.display.icon"
+          },
+          {
+            "meta": {
+              "name": "Month"
+            },
+            "position": {
+              "basis": "100%"
+            },
+            "propConfig": {
+              "props.data": {
+                "binding": {
+                  "config": {
+                    "struct": {
+                      "end_dt": "{view.custom.end_dt}",
+                      "scale_id": "{.../Selections/selection_scale.props.value}",
+                      "timezone": "{view.custom.sqlserver_timezone}"
+                    },
+                    "waitOnAll": true
+                  },
+                  "transforms": [
+                    {
+                      "code": "\t\t\n\ttry:\n\t\t# Your variables\n\t\ttimezone \u003d value[\u0027timezone\u0027]\n\t\tscale_id \u003d value[\u0027scale_id\u0027]\n\t\tend_dt \u003d value[\u0027end_dt\u0027]\n\t\t\n\t\t# Query with \u0027?\u0027 placeholders\n\t\t# IMPORTANT: The order of \u0027?\u0027 must match the order of arguments passed.\n\t\tquery \u003d \"\"\"\n\t\t\n\t\tSELECT\n\t\t    material,\n\t\t    FORMAT(time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM\u0027) as \u0027date\u0027,\n\t\t    FORMAT(time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027MMM yyyy\u0027) as \u0027display_date\u0027,\n\t\t    SUM([count]) AS \u0027count\u0027,\n\t\t    (SUM(weight_sum) / SUM([count])) AS \u0027weight_avg\u0027,\n\t\t    SUM(weight_diff) /1000 AS \u0027weight_diff\u0027\n\t\tFROM weight.dbo.aggregated\n\t\tWHERE material !\u003d \u0027All\u0027\n\t\tAND scale_id \u003d ?                                                  \n\t\tAND time_start \u003e\u003d DATEADD(month, -11, DATEADD(month, DATEDIFF(month, 0, ?), 0)) \n\t\tAND time_start \u003c DATEADD(day, 1, EOMONTH(?))                       \n\t\tGROUP BY\n\t\t    material,\n\t\t    FORMAT(time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM\u0027), \n\t\t    FORMAT(time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027MMM yyyy\u0027)  \n\n\t\t\"\"\"\n\t\t\n\t\tquery \u003d query.replace(\u0027:timezone\u0027,timezone)\n\t\t\n\t\t\n\t\t# Note: You need to repeat parameters if they are used multiple times.\n\t\t\n\t\targs \u003d [\n\t\t    scale_id,  \n\t\t    end_dt,    \n\t\t    end_dt,    \n\t\t]\n\t\t\n\t\tresults \u003d CORE_P.Utils.datasetToDicts(system.db.runPrepQuery(query, args, \u0027system\u0027))\n\t\treturn results\n\texcept:\n\t    # Handle error\n\t    #CORE_P.Utils.errorPopup(\u0027Error getting materials list:\u0027)\n\t    return []\n\t",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "expr-struct"
+                }
+              }
+            },
+            "props": {
+              "bodyStyle": {
+                "classes": "Weight_S/Framework/Card/Label"
+              },
+              "columns": [
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "display_date",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Month"
+                  },
+                  "justify": "center",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "none",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": false,
+                  "sort": "ascending",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": 1
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "material",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Material"
+                  },
+                  "justify": "center",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": false,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": 1
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "count",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Units"
+                  },
+                  "justify": "center",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": 1
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "weight_avg",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Weight Average [g]"
+                  },
+                  "justify": "center",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": 1
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "weight_diff",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Overage [kg]"
+                  },
+                  "justify": "center",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": 1
+                }
+              ],
+              "enableHeaderGroups": true,
+              "filter": {
+                "enabled": true
+              },
+              "headerGroupStyle": {
+                "classes": "Weight_S/Framework/Card/Value"
+              },
+              "headerStyle": {
+                "classes": "Weight_S/Framework/Card/Value"
+              },
+              "pager": {
+                "bottom": false
+              },
+              "rows": {
+                "height": "20px"
+              }
+            },
+            "type": "ia.display.table"
+          },
+          {
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\tt \u003d CORE_P.Time.adjustTimestamp(self.view.custom.end_dt, offset_hours\u003d(3*60*24))\n\tif (t\u003eCORE_P.Time.currentTimestamp()):\t\n\t\tt\u003dCORE_P.Time.currentTimestamp()\n\telse:\n\t\tself.meta.visible \u003d False\n\t\tself.getSibling(\"ScrollBack\").meta.visible \u003d False\n\t\t\n\tself.view.custom.end_dt \u003d t\n\t"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "ScrollForward"
+            },
+            "position": {
+              "basis": "30px"
+            },
+            "props": {
+              "path": "material/arrow_forward",
+              "style": {
+                "cursor": "pointer"
+              }
+            },
+            "type": "ia.display.icon"
+          }
+        ],
+        "meta": {
+          "name": "Data"
+        },
+        "position": {
+          "basis": "275px",
+          "grow": 1
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "expression": "if({../Selections/selection_line.props.value}\u003d0,False,if({../Selections/selection_scale.props.value}\u003d0,False,True))"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "style": {
+            "borderColor": "#808080",
+            "borderStyle": "solid",
+            "borderWidth": 0.5,
+            "marginBottom": 5,
+            "marginLeft": 5,
+            "marginRight": 5,
+            "marginTop": 5,
+            "overflow": "hidden",
+            "overflowX": "hidden",
+            "overflowY": "hidden"
+          }
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column"
+    },
+    "type": "ia.container.flex"
+  }
+}
