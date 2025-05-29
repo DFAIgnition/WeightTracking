@@ -6,6 +6,23 @@
     "children": [
       {
         "meta": {
+          "name": "Header"
+        },
+        "position": {
+          "basis": "32px",
+          "shrink": 0
+        },
+        "props": {
+          "params": {
+            "icon": "material/format_list_bulleted",
+            "text": "Weight Tracking Config"
+          },
+          "path": "CORE_V/Headers/SubHeader"
+        },
+        "type": "ia.display.view"
+      },
+      {
+        "meta": {
           "name": "TabContainer"
         },
         "props": {

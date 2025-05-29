@@ -18,6 +18,7 @@
         },
         "position": {
           "basis": "32px",
+          "display": false,
           "shrink": 0
         },
         "props": {

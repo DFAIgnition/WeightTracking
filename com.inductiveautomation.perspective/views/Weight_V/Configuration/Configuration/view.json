@@ -1,42 +1,5 @@
 {
-  "custom": {
-    "query": [
-      {
-        "filler_design": 100,
-        "filler_id": 1,
-        "filler_metal": null,
-        "filler_metal_cond": null,
-        "filler_name": "Filler 1",
-        "filler_reason_metal": null,
-        "filler_reason_metal_cond": null,
-        "filler_reason_over": null,
-        "filler_reason_over_cond": null,
-        "filler_reason_under": null,
-        "filler_reason_under_cond": null,
-        "filler_reject": null,
-        "filler_reject_cond": null,
-        "filler_sp": 10000,
-        "filler_sp_high": 20000,
-        "filler_sp_high_tag": "",
-        "filler_sp_low": 0,
-        "filler_sp_low_tag": "",
-        "filler_sp_tag": "",
-        "line_id": 1,
-        "line_material": "[US_KS_GAR01]Test_Material_Tag",
-        "line_name": "Bag Line 1",
-        "scale_id": 1,
-        "scale_name": "Filler 1",
-        "scale_weight": "[US_KS_GAR01]Dryer 1/D1_Rate_Tag",
-        "site_id": 10,
-        "starr_unit_id": 1,
-        "type_id": 1,
-        "type_name": "Bag",
-        "unit_id": 1,
-        "unit_name": "g"
-      }
-    ],
-    "valid": false
-  },
+  "custom": {},
   "params": {},
   "propConfig": {
     "custom.query": {
@@ -57,7 +20,7 @@
         ],
         "type": "query"
       },
-      "persistent": true
+      "persistent": false
     },
     "custom.valid": {
       "binding": {
@@ -66,7 +29,7 @@
         },
         "type": "expr"
       },
-      "persistent": true
+      "persistent": false
     }
   },
   "props": {

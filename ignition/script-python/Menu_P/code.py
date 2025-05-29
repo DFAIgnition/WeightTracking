@@ -17,7 +17,7 @@ def getProjectMenu():
 		{'label': "Admin",				'icon':"material/settings",		"target": "", "items":[
 			{'label': "Filler Setup",		'icon':"material/settings",	"target": "/admin",  'permission_code':'SITEADMIN', 'project_name':project_name},
 			{'label': "User Admin",					'icon':"material/settings",		"target": "/useradmin", 		'permission_code':'SITEADMIN', 'project_name':project_name},
-			{'label': "Aggregator Manual",			 'icon':"material/calculate",		"target": "/aggregator", 		'permission_code':'SITEADMIN', 'project_name':project_name}
+			{'label': "Manual Aggregator",			 'icon':"material/calculate",		"target": "/aggregator", 		'permission_code':'SITEADMIN', 'project_name':project_name}
 		]},			
 	]
 	

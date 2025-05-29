@@ -14,12 +14,13 @@
           "name": "Header"
         },
         "position": {
-          "basis": "32px"
+          "basis": "32px",
+          "shrink": 0
         },
         "props": {
           "params": {
             "icon": "material/person_add_alt_1",
-            "text": "Alarms User Admin"
+            "text": "Weight Tracking User Admin"
           },
           "path": "CORE_V/Headers/SubHeader"
         },
