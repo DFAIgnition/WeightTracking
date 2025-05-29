@@ -56,6 +56,9 @@
         "show": "visible",
         "size": 58,
         "viewParams": {
+          "params": {
+            "project_name": "Weight Tracking"
+          },
           "path": "CORE_V/Docks/Header/MainHeader"
         },
         "viewPath": "CORE_V/Breakpoints/Breakpoint"

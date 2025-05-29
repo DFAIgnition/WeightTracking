@@ -1,15 +1,16 @@
-select 
-	    material,
-	    format(time_start  AT TIME ZONE 'UTC' AT TIME ZONE 'Central Standard Time' ,'yyyy-mm'),
-	  
-	  sum([count]) as 'count',
-	  (sum(weight_sum) / sum([count])) as 'weight_avg', 
-	  sum(weight_diff)  as 'weight_diff'
-from weight.dbo.aggregated
-WHERE material != 'All'
-and scale_id = :scale_id
-AND time_start >= DATEADD(month, -11, DATEADD(month, DATEDIFF(month, 0, :end_dt), 0))
-AND time_start <  DATEADD(day,1,EOMONTH(:end_dt))
-group by 
-		material, 
-		format(time_start  AT TIME ZONE 'UTC' AT TIME ZONE 'Central Standard Time' ,'yyyy-mm')
+-- REDUNDANT! Had to build query in code, because SQLServer/ignition doesn't seem to allow the passing of the timezone as a parameter
+--select 
+--	    material,
+--	    format(time_start  AT TIME ZONE 'UTC' AT TIME ZONE 'Central Standard Time' ,'yyyy-mm'),
+--	  
+--	  sum([count]) as 'count',
+--	  (sum(weight_sum) / sum([count])) as 'weight_avg', 
+--	  sum(weight_diff)  as 'weight_diff'
+--from weight.dbo.aggregated
+--WHERE material != 'All'
+--and scale_id = :scale_id
+--AND time_start >= DATEADD(month, -11, DATEADD(month, DATEDIFF(month, 0, :end_dt), 0))
+--AND time_start <  DATEADD(day,1,EOMONTH(:end_dt))
+--group by 
+--		material, 
+--		format(time_start  AT TIME ZONE 'UTC' AT TIME ZONE 'Central Standard Time' ,'yyyy-mm')

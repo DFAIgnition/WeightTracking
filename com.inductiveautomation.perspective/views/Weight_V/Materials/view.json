@@ -1,14 +1,13 @@
 {
   "custom": {
-    "aggregator_year": null,
     "design": null,
     "end_dt": {
       "$": [
         "ts",
         192,
-        1748385611109
+        1748485186612
       ],
-      "$ts": 1748385611000
+      "$ts": 1748736000000
     },
     "heatmap_format": {
       "colorScale": {
@@ -86,9 +85,9 @@
     },
     "key": "value",
     "line": {
-      "Description": "",
+      "Description": "Bag Line 1 ",
       "MaxWeight": 30000,
-      "MinWeight": 20000
+      "MinWeight": 0
     },
     "scale": {
       "conversion_factor": 1,
@@ -103,40 +102,28 @@
       "index_year": "",
       "timestamp": ""
     },
-    "sqlserver_timezone": "UTC"
+    "sqlserver_timezone": "UTC",
+    "start_dt": {
+      "$": [
+        "ts",
+        192,
+        1748485375457
+      ],
+      "$ts": 1743462000000
+    }
   },
   "params": {
     "timeZoneID": ""
   },
   "propConfig": {
-    "custom.aggregator_year": {
-      "binding": {
-        "config": {
-          "struct": {
-            "aggregator": "{view.custom.aggregator}",
-            "scale": "{/root/Selections/selection_scale.props.value}",
-            "stat": "{/root/Selections/selection_stat.props.value}"
-          },
-          "waitOnAll": false
-        },
-        "transforms": [
-          {
-            "code": "\n    import datetime\n    SeriesIndex\u003d-1\n    \n    end_dt \u003d self.custom.end_dt\n\t\n    # Get the current month and year\n    #current_month \u003d datetime.datetime.now().month\n    #current_year \u003d datetime.datetime.now().year\n    current_month \u003d end_dt.getMonth()+1\n    current_year \u003d end_dt.getYear()+ 1900\n\n    # Custom sorting function to correctly order months with respect to the current month and year\n    def sort_key(entry):\n        month_name \u003d entry[\"name\"]\n        month_number \u003d month_to_number.get(month_name, -1)\n        entry_year \u003d entry.get(\"year\", current_year)\n\n        # Calculate how far back in time each entry is from the current month and year\n        year_diff \u003d current_year - entry_year\n        month_diff \u003d current_month - month_number\n\n        # For entries from the previous year, adjust month_diff to reflect their actual distance from the current month\n        if year_diff \u003e 0:\n            month_diff +\u003d 12\n\n        return (year_diff, month_diff)\n\n    month_to_number \u003d {\n        \"January\": 1, \"February\": 2, \"March\": 3, \"April\": 4,\n        \"May\": 5, \"June\": 6, \"July\": 7, \"August\": 8,\n        \"September\": 9, \"October\": 10, \"November\": 11, \"December\": 12\n    }\n\n    monthlyData \u003d value[\u0027aggregator\u0027]\n\n    transformedData \u003d []\n\n    for month in monthlyData:\n        monthName \u003d month[\"summary\"][\"x\"]\n        dayData \u003d month[\"days\"]\n\n        monthDataArray \u003d []\n        allDaysAreZero \u003d False # Set to true if empty months should not be shown\n        for day in dayData:\n            dayNumber \u003d day[\"x\"]\n            weight_diff \u003d day[\"weight_diff\"]\n            weight_avg \u003d day[\"weight_avg\"]\n            count \u003d day[\"count\"]\n            \n            if count\u003e0:\n            \tavg_diff \u003d weight_diff/count*1000/self.custom.scale.conversion_factor\n            else:\n            \tavg_diff\u003d0\n\n            if weight_diff !\u003d 0 or weight_avg !\u003d 0 or count !\u003d 0:\n                allDaysAreZero \u003d False\n\n            monthDataArray.append({\n                \"x\": dayNumber,\n                \"y\": avg_diff,\n                \"y2\": weight_avg,      # weight_diff as y\n                \"y3\": weight_diff,      # weight_avg as y2\n                \"y4\": count            # count as y3\n            })\n\n        if not allDaysAreZero:\n            month_number \u003d month_to_number.get(monthName, -1)\n            if month_number \u003e current_month:\n                inferred_year \u003d current_year - 1\n            else:\n                inferred_year \u003d current_year\n\n            transformedData.append({\n                \"data\": monthDataArray,\n                \"name\": monthName,\n                \"year\": inferred_year,\n                \"zIndex\": month_number\n            })\n\n    # Sort the transformed data using the custom sort key\n    transformedData.sort(key\u003dsort_key)\n\n    return transformedData",
-            "type": "script"
-          }
-        ],
-        "type": "expr-struct"
-      },
-      "persistent": true
-    },
     "custom.end_dt": {
       "binding": {
         "config": {
-          "path": "1"
+          "path": "session.props.timeZoneId"
         },
         "transforms": [
           {
-            "code": "\treturn CORE_P.Time.currentTimestamp()",
+            "code": "\tfrom java.util import Date\n\tfrom system.date import now, addMonths\n\t\n\t# Start with the end of the current month\n\treturn addMonths(CORE_P.Time.month_start(self.session.props.timeZoneId), 1)\n\t ",
             "type": "script"
           }
         ],
@@ -372,6 +359,25 @@
       },
       "persistent": true
     },
+    "custom.start_dt": {
+      "binding": {
+        "config": {
+          "struct": {
+            "end_dt": "{view.custom.end_dt}",
+            "months": "{/root/Selections/selection_months.props.value}"
+          },
+          "waitOnAll": true
+        },
+        "transforms": [
+          {
+            "code": "\tfrom java.util import Date\n\tfrom system.date import now, addMonths\n\t\n\t# Start exactly one month before the end_dt...\n\treturn addMonths(value[\u0027end_dt\u0027], -value[\u0027months\u0027])\n\t",
+            "type": "script"
+          }
+        ],
+        "type": "expr-struct"
+      },
+      "persistent": true
+    },
     "params.timeZoneID": {
       "binding": {
         "config": {
@@ -389,12 +395,30 @@
   },
   "props": {
     "defaultSize": {
-      "height": 4000,
-      "width": 1920
+      "width": 1200
     }
   },
   "root": {
     "children": [
+      {
+        "meta": {
+          "name": "Header"
+        },
+        "position": {
+          "basis": "32px",
+          "shrink": 0
+        },
+        "props": {
+          "params": {
+            "help_text": "This report shows the Weights stats broken down by Material",
+            "help_title": "Materials Report",
+            "icon": "material/format_list_bulleted",
+            "text": "Materials Report"
+          },
+          "path": "CORE_V/Headers/SubHeader"
+        },
+        "type": "ia.display.view"
+      },
       {
         "meta": {
           "name": "CurrentSite"
@@ -468,7 +492,7 @@
               "props.value": {
                 "onChange": {
                   "enabled": null,
-                  "script": "\tself.getSibling(\"selection_scale\").props.value\u003d0\n\tself.view.custom.selection.index_day\u003d\u0027\u0027\n\tself.view.custom.selection.index_series\u003d\u0027\u0027\n\tself.view.custom.selection.index_year\u003d\u0027\u0027\n\tself.view.custom.selection.timestamp\u003d\u0027\u0027\n\tself.view.custom.selection.datetime\u003d\u0027\u0027"
+                  "script": "\tself.getSibling(\"selection_scale\").props.value\u003d0\n\t"
                 },
                 "persistent": true
               }
@@ -489,11 +513,11 @@
               },
               "style": {
                 "marginBottom": 2,
-                "marginLeft": 10,
+                "marginLeft": 5,
                 "marginRight": 10,
-                "marginTop": 2
+                "marginTop": 4
               },
-              "value": 0
+              "value": 1
             },
             "type": "ia.input.dropdown"
           },
@@ -533,7 +557,7 @@
                   },
                   "transforms": [
                     {
-                      "code": "\t\n\t# Create an empty list to hold our formatted data\n    formatted_data \u003d []\n\n    # Iterate through each row in the dataset\n    for row in range(value.getRowCount()):\n        # Extract line_id and line_name from the current row\n        scale_id \u003d value.getValueAt(row, \"scale_id\")\n        scale_name \u003d value.getValueAt(row, \"scale_name\")\n\n        # Create a dictionary with the \u0027value\u0027 and \u0027label\u0027 keys\n        item \u003d {\"value\": scale_id, \"label\": scale_name}\n\n        # Add the dictionary to our list\n        formatted_data.append(item)\n        \n    # Check if the formatted data has only one row\n\tif len(formatted_data) \u003d\u003d 1:\n\t    # Set self.props.value to the scale_id of the single row\n\t    self.props.value \u003d formatted_data[0][\u0027value\u0027]\n\telif len(formatted_data)\u003e1:\n\t\tself.props.value \u003d formatted_data[-1][\u0027value\u0027]\n\n    # Return the formatted list\n    return formatted_data\n",
+                      "code": "\t\n\t# Create an empty list to hold our formatted data\n    formatted_data \u003d []\n\n    # Iterate through each row in the dataset\n    for row in range(value.getRowCount()):\n        # Extract line_id and line_name from the current row\n        scale_id \u003d value.getValueAt(row, \"scale_id\")\n        scale_name \u003d value.getValueAt(row, \"scale_name\")\n\n        # Create a dictionary with the \u0027value\u0027 and \u0027label\u0027 keys\n        item \u003d {\"value\": scale_id, \"label\": scale_name}\n\n        # Add the dictionary to our list\n        formatted_data.append(item)\n        \n    # Check if the formatted data has only one row\n\tif len(formatted_data) \u003d\u003d 1:\n\t    # Set self.props.value to the scale_id of the single row\n\t    self.props.value \u003d formatted_data[0][\u0027value\u0027]\n\telif len(formatted_data)\u003e1:\n\t \tformatted_data.append({\"value\": 0, \"label\": \u0027All Fillers\u0027})\n\t\tself.props.value \u003d 0\n\n    # Return the formatted list\n    return formatted_data\n",
                       "type": "script"
                     }
                   ],
@@ -547,7 +571,7 @@
             },
             "props": {
               "placeholder": {
-                "text": "Select Scale..."
+                "text": "Select Filler..."
               },
               "style": {
                 "marginBottom": 2,
@@ -557,6 +581,108 @@
               "value": 0
             },
             "type": "ia.input.dropdown"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\tself.parent.parent.getChild(\"Year\").getChild(\"heatmap\").refreshBinding(\"props.series\")"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "selection_months",
+              "tooltip": {
+                "text": "Select Scale"
+              }
+            },
+            "position": {
+              "basis": "200px",
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.options": {
+                "persistent": true
+              },
+              "props.value": {
+                "persistent": true
+              }
+            },
+            "props": {
+              "options": [
+                {
+                  "label": "One Month",
+                  "value": 1
+                },
+                {
+                  "label": "Two Months",
+                  "value": 2
+                },
+                {
+                  "label": "3 Months",
+                  "value": 3
+                },
+                {
+                  "label": "6 Months",
+                  "value": 6
+                },
+                {
+                  "label": "12 Months",
+                  "value": 12
+                }
+              ],
+              "placeholder": {
+                "text": ""
+              },
+              "style": {
+                "marginBottom": 2,
+                "marginRight": 10,
+                "marginTop": 2
+              },
+              "value": 2
+            },
+            "type": "ia.input.dropdown"
+          },
+          {
+            "meta": {
+              "name": "Spacer"
+            },
+            "position": {
+              "basis": "50px",
+              "grow": 1
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\timport re\n\t\t\t\t\n\t# Get the set of results currently showing in the table \n\tif (len(self.parent.parent.getChild(\"Data\").getChild(\"Month\").props.filter.results.data)\u003e0):\n\t\tdata \u003d  CORE_P.Utils.pythonify(self.parent.parent.getChild(\"Data\").getChild(\"Month\").props.filter.results.data)\n\telse:\n\t\tdata \u003d  CORE_P.Utils.pythonify(self.parent.parent.getChild(\"Data\").getChild(\"Month\").props.data)\n\t\n#\tCORE_P.Utils.errorPopup(str(data))\n#\treturn\t\n\t\t\n\tresults \u003d []\n\ttest_headers \u003d {}\n\ttry: \n\t\t\t\n\t\theaders \u003d [\t\u0027Packing Line\u0027,\n\t\t\t\t\t\u0027Filler\u0027, \n\t\t\t\t\t\u0027Month\u0027, \n\t\t\t\t\t\u0027Material Number\u0027, \n\t\t\t\t\t\u0027Material Description\u0027, \n\t\t\t\t\t\u0027Units Produced\u0027, \n\t\t\t\t\t\u0027Weight Average (g)\u0027, \n\t\t\t\t\t\u0027Total Production (kg)\u0027, \n\t\t\t\t\t\u0027Overage (kg)\u0027, \n\t\t\t\t\t]\n\t\t\t\t\t\n\t\tpacking_line \u003d CORE_P.Utils.get_dropdown_label(self.getSibling(\"selection_line\"))\n\t\tfiller \u003d CORE_P.Utils.get_dropdown_label(self.getSibling(\"selection_scale\"))\n   \t\t# Build the dataset\n\t\tfor row in data:\n\t\t\n\t\t\tnew_row \u003d {\n\t\t\t\t\u0027Packing Line\u0027: \t\tpacking_line,\n\t\t\t\t\u0027Filler\u0027: \t\t\t\tfiller,\n\t\t\t\t\u0027Month\u0027: \t\t\t\trow[\u0027display_date\u0027], \n\t\t\t\t\u0027Material Number\u0027:\t\trow[\u0027material\u0027], \n\t\t\t\t\u0027Material Description\u0027:\trow[\u0027material_description\u0027], \n\t\t\t\t\u0027Units Produced\u0027: \t\trow[\u0027count\u0027], \n\t\t\t\t\u0027Weight Average (g)\u0027: \trow[\u0027weight_avg\u0027], \n\t\t\t\t\u0027Total Production (kg)\u0027:row[\u0027weight_sum_kg\u0027], \n\t\t\t\t\u0027Overage (kg)\u0027: \t\trow[\u0027weight_diff_kg\u0027]\n\t\t\t}\n\t\t\t\n\t\t\tresults.append(new_row)\n\t\t\t\t\n\t#\tzone \u003d self.session.props.timeZoneId.replace(\u0027/\u0027,\u0027-\u0027)\n\t\t\t\t\n\t\tspreadsheet \u003d system.dataset.toExcel(True, [CORE_P.Utils.dictToDataset(results, headers)])\n\t\tfilePath \u003d \u0027Weight Tracking - Materials\u0027 + str(CORE_P.Time.display_local_dt(CORE_P.Time.currentTimestamp(), self\u003dself, format\u003d\u0027yyyy-MM-dd\u0027)) + \u0027.xlsx\u0027\n\t\t\n\t\t#system.file.writeFile(filePath, spreadsheet)\n\t\tsystem.perspective.download(filePath, spreadsheet)\n\t\tCORE_P.Utils.showSuccess(self, \u0027Downloading...\u0027)\n\texcept:\n\t\tCORE_P.Utils.errorPopup(\"Error exporting material weights to Excel:\" )\n   \t\treturn\t   \n\t\t\t\t\t   \t\t\t\t"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "DownloadButton"
+            },
+            "position": {
+              "basis": "160px",
+              "shrink": 0
+            },
+            "props": {
+              "style": {
+                "marginRight": 5
+              },
+              "text": "Download"
+            },
+            "type": "ia.input.button"
           }
         ],
         "meta": {
@@ -567,15 +693,11 @@
           "shrink": 0
         },
         "props": {
-          "justify": "center",
           "style": {
             "borderColor": "#808080",
-            "borderStyle": "solid",
+            "borderStyle": "none",
             "borderWidth": 0.5,
-            "marginBottom": 5,
-            "marginLeft": 5,
-            "marginRight": 5,
-            "marginTop": 5,
+            "marginTop": 2,
             "overflow": "hidden",
             "overflowX": "hidden",
             "overflowY": "hidden"
@@ -590,7 +712,7 @@
               "dom": {
                 "onClick": {
                   "config": {
-                    "script": "\tself.meta.visible \u003d False\n\tself.getSibling(\"ScrollForward\").meta.visible \u003d False\n\tself.view.custom.end_dt \u003d  CORE_P.Time.adjustTimestamp(self.view.custom.end_dt, offset_hours\u003d-(3*60*24))"
+                    "script": "\tfrom java.util import Date\n\tfrom system.date import now, addMonths\n\t\n\tself.view.custom.end_dt \u003d addMonths(self.view.custom.end_dt, -self.parent.parent.getChild(\"Selections\").getChild(\"selection_months\").props.value)\n\t"
                   },
                   "scope": "G",
                   "type": "script"
@@ -601,7 +723,8 @@
               "name": "ScrollBack"
             },
             "position": {
-              "basis": "30px"
+              "basis": "30px",
+              "shrink": 0
             },
             "props": {
               "path": "material/arrow_back",
@@ -624,14 +747,16 @@
                   "config": {
                     "struct": {
                       "end_dt": "{view.custom.end_dt}",
+                      "months": "{.../Selections/selection_months.props.value}",
                       "scale_id": "{.../Selections/selection_scale.props.value}",
+                      "start_dt": "{view.custom.start_dt}",
                       "timezone": "{view.custom.sqlserver_timezone}"
                     },
                     "waitOnAll": true
                   },
                   "transforms": [
                     {
-                      "code": "\t\t\n\ttry:\n\t\t# Your variables\n\t\ttimezone \u003d value[\u0027timezone\u0027]\n\t\tscale_id \u003d value[\u0027scale_id\u0027]\n\t\tend_dt \u003d value[\u0027end_dt\u0027]\n\t\t\n\t\t# Query with \u0027?\u0027 placeholders\n\t\t# IMPORTANT: The order of \u0027?\u0027 must match the order of arguments passed.\n\t\tquery \u003d \"\"\"\n\t\t\n\t\tSELECT\n\t\t    material,\n\t\t    FORMAT(time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM\u0027) as \u0027date\u0027,\n\t\t    FORMAT(time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027MMM yyyy\u0027) as \u0027display_date\u0027,\n\t\t    SUM([count]) AS \u0027count\u0027,\n\t\t    (SUM(weight_sum) / SUM([count])) AS \u0027weight_avg\u0027,\n\t\t    SUM(weight_diff) /1000 AS \u0027weight_diff\u0027\n\t\tFROM weight.dbo.aggregated\n\t\tWHERE material !\u003d \u0027All\u0027\n\t\tAND scale_id \u003d ?                                                  \n\t\tAND time_start \u003e\u003d DATEADD(month, -11, DATEADD(month, DATEDIFF(month, 0, ?), 0)) \n\t\tAND time_start \u003c DATEADD(day, 1, EOMONTH(?))                       \n\t\tGROUP BY\n\t\t    material,\n\t\t    FORMAT(time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM\u0027), \n\t\t    FORMAT(time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027MMM yyyy\u0027)  \n\n\t\t\"\"\"\n\t\t\n\t\tquery \u003d query.replace(\u0027:timezone\u0027,timezone)\n\t\t\n\t\t\n\t\t# Note: You need to repeat parameters if they are used multiple times.\n\t\t\n\t\targs \u003d [\n\t\t    scale_id,  \n\t\t    end_dt,    \n\t\t    end_dt,    \n\t\t]\n\t\t\n\t\tresults \u003d CORE_P.Utils.datasetToDicts(system.db.runPrepQuery(query, args, \u0027system\u0027))\n\t\treturn results\n\texcept:\n\t    # Handle error\n\t    #CORE_P.Utils.errorPopup(\u0027Error getting materials list:\u0027)\n\t    return []\n\t",
+                      "code": "\t\t\n\ttry:\n\t\tsqlserver_tz \u003d value[\u0027timezone\u0027] # Note, the Ignition timezone has already been converted here into a format that SQLServer understands...\n\t\tscale_id \u003d value[\u0027scale_id\u0027]\n\t\tend_dt \u003d value[\u0027end_dt\u0027]\n\t\t\n\t\tmonths \u003d (int(value[\u0027months\u0027]) - 1) * -1\n\t\t\n\t\t# Build the query. \n\t\t# Note - had to build the query in code, because SQLServer/ignition doesn\u0027t seem to allow the passing of the timezone as a parameter\n\t\t# This is generally a \u0027Bad Idea\u0027, due to SQl injection attacks. In this case, I\u0027m only directly substituting in a timezone string that \n\t\t# comes from a database entry that is manually controlled by us (so should be safe). The other params are run through Prep as normal. \n\t\tquery \u003d \"\"\"\n\t\tSELECT\n\t\t    material,\n\t\t    FORMAT(time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM\u0027) as \u0027date\u0027,\n\t\t    FORMAT(time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027MMM yyyy\u0027) as \u0027display_date\u0027,\n\t\t    SUM([count]) AS \u0027count\u0027,\n\t\t    (SUM(weight_sum) / SUM([count])) AS \u0027weight_avg\u0027,\n\t\t    SUM(weight_diff) /1000 AS \u0027weight_diff_kg\u0027,\n\t\t    SUM(weight_sum) /1000 AS \u0027weight_sum_kg\u0027,\n  \t\t\t(\n\t\t            SELECT material_description\n\t\t            FROM system.dbo.materials m\n\t\t            WHERE m.material_number \u003d TRY_CAST(a.material AS INT)\n\t\t        ) AS material_description\t\t    \n\t\tFROM weight.dbo.aggregated a\n\t\tWHERE material !\u003d \u0027All\u0027\n\t\tAND (0 \u003d ? or scale_id \u003d ?)\n\t\tAND time_start \u003e\u003d ?\n\t\tAND time_start \u003c ?\n\t\tGROUP BY\n\t\t    material,\n\t\t    FORMAT(time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM\u0027), \n\t\t    FORMAT(time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027MMM yyyy\u0027)  \n\t\tORDER BY FORMAT(time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM\u0027), material\n\t\t\"\"\"\n\t\t\n\t\t#AND time_start \u003e\u003d DATEADD(month, ?, DATEADD(month, DATEDIFF(month, 0, ?), 0)) \n\t\t#AND time_start \u003c DATEADD(day, 1, EOMONTH(?))            \n\t\t\t\t\t\t\n\t\t# Substitute in the timezone\t\t\n\t\tquery \u003d query.replace(\u0027:timezone\u0027,sqlserver_tz)\n\t\t\n\t\t# Note: You need to repeat parameters if they are used multiple times.\n\t\t# IMPORTANT: The order of \u0027?\u0027 must match the order of arguments passed.\n\t\targs \u003d [\n\t\t    int(scale_id),  \n\t\t    int(scale_id),\n\t\t    value[\u0027start_dt\u0027],    \n\t\t    value[\u0027end_dt\u0027] \n\t\t]\n\t\t\n\t\tresults \u003d CORE_P.Utils.datasetToDicts(system.db.runPrepQuery(query, args, \u0027system\u0027))\n\t\t#CORE_P.Utils.errorPopup(\u0027Dates:\u0027 + str(value[\u0027start_dt\u0027]) + \u0027 - \u0027  + str(value[\u0027end_dt\u0027]))\n\t\treturn results\n\texcept:\n\t    # Handle error\n\t   # CORE_P.Utils.errorPopup(\u0027Error getting materials list:\u0027 + str(type(value[\u0027end_dt\u0027])))\n\t    return []\n\t",
                       "type": "script"
                     }
                   ],
@@ -685,7 +810,7 @@
                     },
                     "title": "Month"
                   },
-                  "justify": "center",
+                  "justify": "left",
                   "nullFormat": {
                     "includeNullStrings": false,
                     "nullFormatValue": "",
@@ -777,7 +902,7 @@
                     },
                     "title": "Material"
                   },
-                  "justify": "center",
+                  "justify": "left",
                   "nullFormat": {
                     "includeNullStrings": false,
                     "nullFormatValue": "",
@@ -833,6 +958,98 @@
                   "boolean": "checkbox",
                   "dateFormat": "MM/DD/YYYY",
                   "editable": false,
+                  "field": "material_description",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Material Description"
+                  },
+                  "justify": "left",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": false,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": 3
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
                   "field": "count",
                   "filter": {
                     "boolean": {
@@ -869,7 +1086,7 @@
                     },
                     "title": "Units"
                   },
-                  "justify": "center",
+                  "justify": "left",
                   "nullFormat": {
                     "includeNullStrings": false,
                     "nullFormatValue": "",
@@ -961,7 +1178,7 @@
                     },
                     "title": "Weight Average [g]"
                   },
-                  "justify": "center",
+                  "justify": "left",
                   "nullFormat": {
                     "includeNullStrings": false,
                     "nullFormatValue": "",
@@ -1017,7 +1234,99 @@
                   "boolean": "checkbox",
                   "dateFormat": "MM/DD/YYYY",
                   "editable": false,
-                  "field": "weight_diff",
+                  "field": "weight_sum_kg",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Total Production [kg]"
+                  },
+                  "justify": "left",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": 1
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "weight_diff_kg",
                   "filter": {
                     "boolean": {
                       "condition": ""
@@ -1053,7 +1362,7 @@
                     },
                     "title": "Overage [kg]"
                   },
-                  "justify": "center",
+                  "justify": "left",
                   "nullFormat": {
                     "includeNullStrings": false,
                     "nullFormatValue": "",
@@ -1116,10 +1425,19 @@
                 "classes": "Weight_S/Framework/Card/Value"
               },
               "pager": {
-                "bottom": false
+                "initialOption": 200,
+                "options": [
+                  50,
+                  100,
+                  200,
+                  500
+                ]
               },
               "rows": {
                 "height": "20px"
+              },
+              "style": {
+                "padding": 4
               }
             },
             "type": "ia.display.table"
@@ -1129,7 +1447,7 @@
               "dom": {
                 "onClick": {
                   "config": {
-                    "script": "\tt \u003d CORE_P.Time.adjustTimestamp(self.view.custom.end_dt, offset_hours\u003d(3*60*24))\n\tif (t\u003eCORE_P.Time.currentTimestamp()):\t\n\t\tt\u003dCORE_P.Time.currentTimestamp()\n\telse:\n\t\tself.meta.visible \u003d False\n\t\tself.getSibling(\"ScrollBack\").meta.visible \u003d False\n\t\t\n\tself.view.custom.end_dt \u003d t\n\t"
+                    "script": "\tfrom java.util import Date\n\tfrom system.date import now, addMonths\n\t\n\tt \u003d  addMonths(self.view.custom.end_dt, self.parent.parent.getChild(\"Selections\").getChild(\"selection_months\").props.value)\n\t\t\n\tif (t\u003eCORE_P.Time.currentTimestamp()):\t\n\t\tt \u003d CORE_P.Time.month_start(self.session.props.timeZoneId) \n\t\t\n\tself.view.custom.end_dt \u003d t\n\t"
                   },
                   "scope": "G",
                   "type": "script"
@@ -1140,7 +1458,8 @@
               "name": "ScrollForward"
             },
             "position": {
-              "basis": "30px"
+              "basis": "30px",
+              "shrink": 0
             },
             "props": {
               "path": "material/arrow_forward",
@@ -1157,16 +1476,6 @@
         "position": {
           "basis": "275px",
           "grow": 1
-        },
-        "propConfig": {
-          "position.display": {
-            "binding": {
-              "config": {
-                "expression": "if({../Selections/selection_line.props.value}\u003d0,False,if({../Selections/selection_scale.props.value}\u003d0,False,True))"
-              },
-              "type": "expr"
-            }
-          }
         },
         "props": {
           "style": {
