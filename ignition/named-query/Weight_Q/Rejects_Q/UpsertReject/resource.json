@@ -12,7 +12,7 @@
     "fallbackValue": "",
     "maxReturnSize": 100,
     "cacheUnit": "SEC",
-    "type": "Query",
+    "type": "UpdateQuery",
     "enabled": true,
     "cacheAmount": 1,
     "cacheEnabled": false,
@@ -32,13 +32,13 @@
     "parameters": [
       {
         "type": "Parameter",
-        "identifier": "scale_id",
+        "identifier": "metal_count",
         "sqlType": 2
       },
       {
         "type": "Parameter",
-        "identifier": "start",
-        "sqlType": 8
+        "identifier": "weight_count",
+        "sqlType": 2
       },
       {
         "type": "Parameter",
@@ -49,6 +49,11 @@
         "type": "Parameter",
         "identifier": "line_id",
         "sqlType": 2
+      },
+      {
+        "type": "Parameter",
+        "identifier": "time_start",
+        "sqlType": 8
       }
     ]
   }

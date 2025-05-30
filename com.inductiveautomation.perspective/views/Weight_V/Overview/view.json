@@ -5108,6 +5108,7 @@
           "enableValueCache": false,
           "parameters": {
             "end_dt": "{view.custom.end_dt}",
+            "line_id": "{/root/Selections/selection_line.props.value}",
             "material": "{/root/Selections/selection_material.props.value}",
             "scale_id": "{/root/Selections/selection_scale.props.value}"
           },
@@ -5129,6 +5130,7 @@
         "config": {
           "enableValueCache": false,
           "parameters": {
+            "line_id": "{/root/Selections/selection_line.props.value}",
             "material": "{/root/Selections/selection_material.props.value}",
             "scale_id": "{/root/Selections/selection_scale.props.value}",
             "start": "{view.custom.selection.timestamp}"
@@ -5614,7 +5616,7 @@
                   },
                   "transforms": [
                     {
-                      "code": "\t\n\t# Create an empty list to hold our formatted data\n    formatted_data \u003d []\n\n    # Iterate through each row in the dataset\n    for row in range(value.getRowCount()):\n        # Extract line_id and line_name from the current row\n        scale_id \u003d value.getValueAt(row, \"scale_id\")\n        scale_name \u003d value.getValueAt(row, \"scale_name\")\n\n        # Create a dictionary with the \u0027value\u0027 and \u0027label\u0027 keys\n        item \u003d {\"value\": scale_id, \"label\": scale_name}\n\n        # Add the dictionary to our list\n        formatted_data.append(item)\n        \n    # Check if the formatted data has only one row\n\tif len(formatted_data) \u003d\u003d 1:\n\t    # Set self.props.value to the scale_id of the single row\n\t    self.props.value \u003d formatted_data[0][\u0027value\u0027]\n\telif len(formatted_data)\u003e1:\n\t\tself.props.value \u003d formatted_data[-1][\u0027value\u0027]\n\n    # Return the formatted list\n    return formatted_data\n",
+                      "code": "\t\n\t# Create an empty list to hold our formatted data\n    formatted_data \u003d []\n\n    # Iterate through each row in the dataset\n    for row in range(value.getRowCount()):\n        # Extract line_id and line_name from the current row\n        scale_id \u003d value.getValueAt(row, \"scale_id\")\n        scale_name \u003d value.getValueAt(row, \"scale_name\")\n\n        # Create a dictionary with the \u0027value\u0027 and \u0027label\u0027 keys\n        item \u003d {\"value\": scale_id, \"label\": scale_name}\n\n        # Add the dictionary to our list\n        formatted_data.append(item)\n        \n    # Check if the formatted data has only one row\n\tif len(formatted_data) \u003d\u003d 1:\n\t    # Set self.props.value to the scale_id of the single row\n\t    self.props.value \u003d formatted_data[0][\u0027value\u0027]\n\telif len(formatted_data)\u003e1:\n\t\tformatted_data.append({\"value\": 0, \"label\": \u0027All Fillers\u0027})\n\t\tself.props.value \u003d 0\n\t\t#self.props.value \u003d formatted_data[-1][\u0027value\u0027]\n\n    # Return the formatted list\n    return formatted_data\n",
                       "type": "script"
                     }
                   ],
@@ -5767,10 +5769,9 @@
           "shrink": 0
         },
         "props": {
-          "justify": "center",
           "style": {
             "borderColor": "#808080",
-            "borderStyle": "solid",
+            "borderStyle": "none",
             "borderWidth": 0.5,
             "marginBottom": 5,
             "marginLeft": 5,
@@ -6417,7 +6418,7 @@
           "position.display": {
             "binding": {
               "config": {
-                "expression": "if({../Selections/selection_line.props.value}\u003d0,False,if({../Selections/selection_scale.props.value}\u003d0,False,True))"
+                "expression": "if({../Selections/selection_line.props.value}\u003d0,False,True)"
               },
               "type": "expr"
             }
@@ -6695,7 +6696,7 @@
           "position.display": {
             "binding": {
               "config": {
-                "expression": "if({../Selections/selection_line.props.value}\u003d0,False,if({../Selections/selection_scale.props.value}\u003d0,False,True))"
+                "expression": "if({../Selections/selection_line.props.value}\u003d0,False,True)"
               },
               "type": "expr"
             }

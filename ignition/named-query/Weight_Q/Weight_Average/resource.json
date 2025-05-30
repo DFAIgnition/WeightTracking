@@ -44,6 +44,11 @@
         "type": "Parameter",
         "identifier": "end_dt",
         "sqlType": 8
+      },
+      {
+        "type": "Parameter",
+        "identifier": "line_id",
+        "sqlType": 2
       }
     ]
   }

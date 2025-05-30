@@ -30,10 +30,15 @@ SELECT
     END
 FROM 
     weight.dbo.aggregated a
+	join weight.dbo.scale s on a.scale_id = s.scale_id
+	join weight.dbo.filler f on s.filler_id = f.filler_id
+
+    
 WHERE 
     time_start >= :start AND 
     time_start < DATEADD(DAY, 1, :start) AND
-    scale_id = :scale_id AND 
+    (:scale_id = 0 or scale_id = :scale_id )AND 
+    f.line_id = :line_id AND 
 	material = :material
 ORDER BY 
     time_start;

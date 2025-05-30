@@ -9,6 +9,13 @@ GO
 ALTER TABLE weight.dbo.line
 ADD starr_unit_id INT DEFAULT NULL;
 
+ALTER TABLE weight.dbo.line
+ADD metal_reject_tag NVARCHAR(255) DEFAULT NULL, 
+weight_reject_tag NVARCHAR(255) DEFAULT NULL, 
+metal_reject_tag_type char(1),
+weight_reject_tag_type char(1);
+
+
 -- Get rid of all the extra sub-second precision in the dates
 alter table [weight].dbo.aggregated
 alter column time_start datetime2(0);
@@ -22,6 +29,15 @@ CREATE UNIQUE NONCLUSTERED INDEX [aggregated_u] ON [dbo].[aggregated]
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 
+
+CREATE TABLE weight.dbo.rejects (
+    reject_id 		INT PRIMARY KEY IDENTITY(1,1),
+    line_id			INT NOT NULL,
+	time_start		datetime2(0),
+	metal_count		int, 
+	weight_count	int,
+	material		nvarchar(32)
+);
 
 
 --------------------------------------------------------------------------------

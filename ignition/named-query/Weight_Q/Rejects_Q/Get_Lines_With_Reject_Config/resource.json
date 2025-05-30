@@ -28,28 +28,6 @@
     "lastModification": {
       "actor": "system",
       "timestamp": "2022-01-01T00:00:00Z"
-    },
-    "parameters": [
-      {
-        "type": "Parameter",
-        "identifier": "scale_id",
-        "sqlType": 2
-      },
-      {
-        "type": "Parameter",
-        "identifier": "start",
-        "sqlType": 8
-      },
-      {
-        "type": "Parameter",
-        "identifier": "material",
-        "sqlType": 7
-      },
-      {
-        "type": "Parameter",
-        "identifier": "line_id",
-        "sqlType": 2
-      }
-    ]
+    }
   }
 }

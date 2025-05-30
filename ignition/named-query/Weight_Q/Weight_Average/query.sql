@@ -14,8 +14,11 @@ SELECT	time_start,
 		max(standard_deviation) as 'og_stddev', 
 
 		STRING_AGG(material, ', ') AS material
-FROM weight.dbo.aggregated
-WHERE scale_id = :scale_id
+FROM weight.dbo.aggregated a 
+	join weight.dbo.scale s on a.scale_id = s.scale_id
+	join weight.dbo.filler f on s.filler_id = f.filler_id
+WHERE (:scale_id = 0  or a.scale_id = :scale_id)
+AND f.line_id = :line_id
 --AND time_start >= DATEADD(month, -11, DATEADD(month, DATEDIFF(month, 0, GETDATE()), 0))
 AND time_start >= DATEADD(month, -11, DATEADD(month, DATEDIFF(month, 0, :end_dt), 0))
 AND time_start <  DATEADD(day,1,EOMONTH(:end_dt))
