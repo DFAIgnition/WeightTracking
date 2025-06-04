@@ -5,9 +5,9 @@
       "$": [
         "ts",
         192,
-        1748485186612
+        1748980280872
       ],
-      "$ts": 1748736000000
+      "$ts": 1751328000000
     },
     "heatmap_format": {
       "colorScale": {
@@ -85,9 +85,9 @@
     },
     "key": "value",
     "line": {
-      "Description": "Bag Line 1 ",
+      "Description": "",
       "MaxWeight": 30000,
-      "MinWeight": 0
+      "MinWeight": 20000
     },
     "scale": {
       "conversion_factor": 1,
@@ -107,9 +107,9 @@
       "$": [
         "ts",
         192,
-        1748485375457
+        1748980280874
       ],
-      "$ts": 1743462000000
+      "$ts": 1746057600000
     }
   },
   "params": {
@@ -517,7 +517,7 @@
                 "marginRight": 10,
                 "marginTop": 4
               },
-              "value": 1
+              "value": 0
             },
             "type": "ia.input.dropdown"
           },
@@ -1430,7 +1430,8 @@
                   50,
                   100,
                   200,
-                  500
+                  500,
+                  100
                 ]
               },
               "rows": {

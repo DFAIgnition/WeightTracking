@@ -37,7 +37,7 @@ FROM
 WHERE 
     time_start >= :start AND 
     time_start < DATEADD(DAY, 1, :start) AND
-    (:scale_id = 0 or scale_id = :scale_id )AND 
+    (:scale_id = 0 or s.scale_id = :scale_id )AND 
     f.line_id = :line_id AND 
 	material = :material
 ORDER BY 
