@@ -512,7 +512,7 @@ def GetBucketsGlobal(Start, End, site_id=0, scale_id=0):
 def UpdateRejects():
 	
 	end_dt = CORE_P.Time.currentTimestampToHour()
-	start_dt = CORE_P.Time.adjustTimestamp(end_dt, offset_hours=-(26*2))
+	start_dt = CORE_P.Time.adjustTimestamp(end_dt, offset_hours=-(24))
 	
 	# First, get the list of packing lines that have reject tags configured.
 	lines = CORE_P.Utils.datasetToDicts(
@@ -533,8 +533,10 @@ def UpdateRejects():
 ###############################################################
 def ProcessRejects(start_dt, end_dt, line):
 	
+	
 	hour_start = start_dt
 	
+	# Get all the materials from STARR, if we have them	
 	materials=[]
 	if (line['line_material']):	
 		materials = CORE_P.Tags.getTagChanges(line['line_material'], start_dt, end_dt)
@@ -548,12 +550,18 @@ def ProcessRejects(start_dt, end_dt, line):
 		po_number = materials[0]['po_number']
 	materials_index = 0
 	
+	# First, we need to clear out old rows (can't just update existing, now that we're recording materials as well, 
+	# because a material might be changed so that old row needs deleting)
+	txId = system.db.beginTransaction(timeout=60000)
+	parameters = {'line_id':line['line_id'], 'start_dt':start_dt, 'end_dt':end_dt}
+	system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/DB_Delete/Delete_Reject_Rows', parameters=parameters, tx=txId)
+	
 	hours = []
 	# Go through the time range in one hour blocks, creating an entry for each hour
 	# with a list of materials, 'All', and any materials that occurred during that time. 
-	while (hour_start < end_dt):
+	try:
+		while (hour_start < end_dt):
 	
-		try:
 			hour_end = CORE_P.Time.adjustTimestamp(hour_start, offset_hours=1)
 			
 			# -------------------------------------------------------
@@ -584,7 +592,7 @@ def ProcessRejects(start_dt, end_dt, line):
 				'weight_count':	hour['weight_count'], 
 				'material':		hour['material'] 
 			}
-			system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/Rejects_Q/UpsertReject', parameters=parameters)
+			system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/Rejects_Q/UpsertReject', parameters=parameters, tx=txId)
 			
 			# -------------------------------------------------------
 			# Then, do the materials bit (if there is a material tag or STARR link defined)
@@ -605,7 +613,7 @@ def ProcessRejects(start_dt, end_dt, line):
 					if ( materials[materials_index]['value'] != 'None'):
 						parameters['material'] = materials[materials_index]['value']
 						parameters['po_number'] = materials[materials_index]['po_number']
-						system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/Rejects_Q/UpsertReject', parameters=parameters)
+						system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/Rejects_Q/UpsertReject', parameters=parameters, tx=txId)
 				
 				else:
 				
@@ -667,15 +675,19 @@ def ProcessRejects(start_dt, end_dt, line):
 									'material':		vals[val]['material'],
 									'po_number':	vals[val]['po_number']
 								}
-						system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/Rejects_Q/UpsertReject', parameters=parameters)
+						system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/Rejects_Q/UpsertReject', parameters=parameters, tx=txId)
 			
 
 			
 			# Move on to the next hour
 			hour_start = hour_end
 		
-		except:
-			print CORE_P.Utils.getError()
+		system.db.commitTransaction(txId)
+		system.db.closeTransaction(txId)			
+	except:
+		system.db.rollbackTransaction(txId)	
+		system.db.closeTransaction(txId)	
+		print CORE_P.Utils.getError()
 	
 	end = time.time()	
 
