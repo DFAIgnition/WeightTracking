@@ -54,6 +54,11 @@
         "type": "Parameter",
         "identifier": "time_start",
         "sqlType": 8
+      },
+      {
+        "type": "Parameter",
+        "identifier": "po_number",
+        "sqlType": 2
       }
     ]
   }

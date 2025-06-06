@@ -81,7 +81,7 @@
     "selection": {}
   },
   "params": {
-    "timeZoneID": ""
+    "timeZoneID": "Pacific/Auckland"
   },
   "propConfig": {
     "custom.aggregator": {

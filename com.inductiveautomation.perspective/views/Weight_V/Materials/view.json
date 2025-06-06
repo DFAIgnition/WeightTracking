@@ -5,9 +5,9 @@
       "$": [
         "ts",
         192,
-        1748980280872
+        1749157453279
       ],
-      "$ts": 1751328000000
+      "$ts": 1751284800000
     },
     "heatmap_format": {
       "colorScale": {
@@ -85,9 +85,9 @@
     },
     "key": "value",
     "line": {
-      "Description": "",
+      "Description": "Bag Line 1 ",
       "MaxWeight": 30000,
-      "MinWeight": 20000
+      "MinWeight": 0
     },
     "scale": {
       "conversion_factor": 1,
@@ -102,18 +102,18 @@
       "index_year": "",
       "timestamp": ""
     },
-    "sqlserver_timezone": "UTC",
+    "sqlserver_timezone": "New Zealand Standard Time",
     "start_dt": {
       "$": [
         "ts",
         192,
-        1748980280874
+        1749157453442
       ],
-      "$ts": 1746057600000
+      "$ts": 1746014400000
     }
   },
   "params": {
-    "timeZoneID": ""
+    "timeZoneID": "Pacific/Auckland"
   },
   "propConfig": {
     "custom.end_dt": {
@@ -517,7 +517,7 @@
                 "marginRight": 10,
                 "marginTop": 4
               },
-              "value": 0
+              "value": 1
             },
             "type": "ia.input.dropdown"
           },

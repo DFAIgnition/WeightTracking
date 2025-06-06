@@ -39,6 +39,9 @@ CREATE TABLE weight.dbo.rejects (
 	material		nvarchar(32)
 );
 
+-- Add the po number column in
+alter table [weight].dbo.aggregated
+add po_number int default null;
 
 --------------------------------------------------------------------------------
 -- Versions table update

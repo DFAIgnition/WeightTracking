@@ -6,10 +6,10 @@ def getMaterialsFromSTARR(starr_unit_id, start_dt, end_dt):
 	payload = {'unit_id': starr_unit_id, 'start_dt':start_dt, 'end_dt':end_dt}
 	state_list = system.util.sendRequest(project='STARR', messageHandler='getUnitStatesByUnit', payload=payload)
 	
-	output = [{"value": 'None', "timestamp":start_dt}]
+	output = [{"value": 'None', "timestamp":start_dt, 'po_number':None}]
 	
 	for state in state_list:
 		if state['state_id']==1:
-			output.append({"value": state['material_number'] or 'None', "timestamp":state['start_dt']})
+			output.append({"value": state['material_number'] or 'None', "po_number": state['po_number'] or None, "timestamp":state['start_dt']})
 	
 	return output

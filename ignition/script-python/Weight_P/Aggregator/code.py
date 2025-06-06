@@ -1,7 +1,10 @@
 import system
+import time
 from java.text import SimpleDateFormat
 from java.util import Date, Calendar
 from org.apache.commons.math3.stat.descriptive import DescriptiveStatistics
+import json 
+
 
 # Helper functions, Move to CORE after done
 
@@ -509,7 +512,7 @@ def GetBucketsGlobal(Start, End, site_id=0, scale_id=0):
 def UpdateRejects():
 	
 	end_dt = CORE_P.Time.currentTimestampToHour()
-	start_dt = CORE_P.Time.adjustTimestamp(end_dt, offset_hours=-3)
+	start_dt = CORE_P.Time.adjustTimestamp(end_dt, offset_hours=-(26*2))
 	
 	# First, get the list of packing lines that have reject tags configured.
 	lines = CORE_P.Utils.datasetToDicts(
@@ -532,33 +535,47 @@ def ProcessRejects(start_dt, end_dt, line):
 	
 	hour_start = start_dt
 	
+	materials=[]
+	if (line['line_material']):	
+		materials = CORE_P.Tags.getTagChanges(line['line_material'], start_dt, end_dt)
+		if (len(materials)>0 and materials[0]['timestamp']>hour_start):
+			materials.insert(0, {"value": 'None', "timestamp":hour_start})
+	elif(line['starr_unit_id']):	
+		materials = Weight_P.STARR.getMaterialsFromSTARR(line['starr_unit_id'], start_dt, end_dt)
+	
+	if (len(materials)>0):
+		material = materials[0]['value']
+		po_number = materials[0]['po_number']
+	materials_index = 0
+	
 	hours = []
 	# Go through the time range in one hour blocks, creating an entry for each hour
 	# with a list of materials, 'All', and any materials that occurred during that time. 
 	while (hour_start < end_dt):
-		
+	
 		try:
 			hour_end = CORE_P.Time.adjustTimestamp(hour_start, offset_hours=1)
 			
 			# -------------------------------------------------------
 			# Do the full hour, not split into materials
 			# -------------------------------------------------------
+			a = time.time()
 			hour = {'time_start':start_dt,'material':'All', 'metal_count':0, 'weight_count':0}
-			
+
 			# Get the metal reject count
 			if (line['metal_reject_tag']):	
 				if (line['metal_reject_tag_type'] == 'c'):
 					hour['metal_count'] = CORE_P.Tags.getTotalizerUsage(line['metal_reject_tag'], hour_start, hour_end)
 				elif (line['metal_reject_tag_type'] == 'b'):
 					hour['metal_count'] = CORE_P.Tags.countHigh(line['metal_reject_tag'], hour_start, hour_end)
-			
+
 			# Get the weight reject count
 			if (line['weight_reject_tag']):
 				if (line['weight_reject_tag_type'] == 'c'):
 					hour['weight_count'] = CORE_P.Tags.getTotalizerUsage(line['weight_reject_tag'], hour_start, hour_end)
 				elif (line['weight_reject_tag_type'] == 'b'):
 					hour['weight_count'] = CORE_P.Tags.countHigh(line['weight_reject_tag'], hour_start, hour_end)
-					
+
 			# Save hour to database
 			parameters = {
 			    'line_id':		line['line_id'],
@@ -570,15 +587,25 @@ def ProcessRejects(start_dt, end_dt, line):
 			system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/Rejects_Q/UpsertReject', parameters=parameters)
 			
 			# -------------------------------------------------------
-			# Then, do the materials bit (if there is a material tag defined
+			# Then, do the materials bit (if there is a material tag or STARR link defined)
 			# -------------------------------------------------------
-			if (line['line_material']):	
-				materials = CORE_P.Tags.getTagChanges(line['line_material'], hour_start, hour_end)
-				
+			start = hour_start
+			if (materials_index+1) < len(materials):
+				end = materials[materials_index+1]['timestamp']
+				if (end > hour_end):
+					end = hour_end
+			
+			if(len(materials)>0):
+				material = materials[materials_index]['value']
+				po_number = materials[materials_index]['po_number']
+				key = str(material) + '_' + str(po_number)		# Key is used to collate data points into material/po_number groupings
+					 
 				# If there were no material changes detected, then the counts will be the same as the All count...
-				if len(materials)==1:
-					parameters['material'] = materials[0]['value']
-					system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/Rejects_Q/UpsertReject', parameters=parameters)
+				if ((start == hour_start) and (end == hour_end)):
+					if ( materials[materials_index]['value'] != 'None'):
+						parameters['material'] = materials[materials_index]['value']
+						parameters['po_number'] = materials[materials_index]['po_number']
+						system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/Rejects_Q/UpsertReject', parameters=parameters)
 				
 				else:
 				
@@ -586,28 +613,50 @@ def ProcessRejects(start_dt, end_dt, line):
 					# Need to do it this slightly complicated way, because we could see more than one run 
 					# of the same material within a one hour window.
 					i=0
-					materials.append(materials[-1].copy())
-					materials[-1]['timestamp'] = hour_end
 					vals={}
-					while i<(len(materials)-1):
-						material = materials[i]['value']
-						if material not in vals:
-							vals[material] = {'metal_count':	0,'weight_count':	0}
-							 
-						if (line['metal_reject_tag']):	
-							if (line['metal_reject_tag_type'] == 'c'):
-								vals[material]['metal_count'] = vals[material]['metal_count'] +  CORE_P.Tags.getTotalizerUsage(line['metal_reject_tag'], materials[i]['timestamp'], materials[i+1]['timestamp'])
-							elif (line['metal_reject_tag_type'] == 'b'):
-								vals[material]['metal_count'] = vals[material]['metal_count'] +  CORE_P.Tags.countHigh(line['metal_reject_tag'],materials[i]['timestamp'], materials[i+1]['timestamp'])
+					
+					while end <= hour_end:
 						
-						if (line['weight_reject_tag']):
-							if (line['weight_reject_tag_type'] == 'c'):
-								vals[material]['weight_count'] = vals[material]['weight_count'] +  CORE_P.Tags.getTotalizerUsage(line['weight_reject_tag'], materials[i]['timestamp'], materials[i+1]['timestamp'])
-							elif (line['weight_reject_tag_type'] == 'b'):
-								vals[material]['weight_count'] = vals[material]['weight_count'] + CORE_P.Tags.countHigh(line['weight_reject_tag'], materials[i]['timestamp'], materials[i+1]['timestamp'])
+						# If we have a material, go get the reject counts for it
+						if (material != 'None'):
+							if key not in vals:
+								vals[key] = {'metal_count':	0,'weight_count':	0, 'po_number':po_number, 'material':material}
+								 
+							if (line['metal_reject_tag']):	
+								if (line['metal_reject_tag_type'] == 'c'):
+									vals[key]['metal_count'] = vals[key]['metal_count'] +  CORE_P.Tags.getTotalizerUsage(line['metal_reject_tag'], start, end)
+								elif (line['metal_reject_tag_type'] == 'b'):
+									vals[key]['metal_count'] = vals[key]['metal_count'] +  CORE_P.Tags.countHigh(line['metal_reject_tag'],start, end)
+							
+							if (line['weight_reject_tag']):
+								if (line['weight_reject_tag_type'] == 'c'):
+									vals[key]['weight_count'] = vals[key]['weight_count'] +  CORE_P.Tags.getTotalizerUsage(line['weight_reject_tag'], start, end)
+								elif (line['weight_reject_tag_type'] == 'b'):
+									vals[key]['weight_count'] = vals[key]['weight_count'] + CORE_P.Tags.countHigh(line['weight_reject_tag'], start, end)
 						
-						i = i + 1
+						# If we've hit the end, stop working on this hour
+						if (end == hour_end):
+							break
 						
+						# Otherwise, move on to the next segment
+						start = end
+						if (materials_index+1) < len(materials):
+							materials_index = materials_index + 1
+							if (materials_index+1) < len(materials):
+								end = materials[materials_index+1]['timestamp']
+							else:
+								end = hour_end
+								
+							if (end > hour_end):
+								end = hour_end
+								
+							material = materials[materials_index]['value']
+							po_number = materials[materials_index]['po_number']
+							key = str(material) + '_' + str(po_number)		# Key is used to collate data points into material/po_number groupings
+							
+						else:
+							end = hour_end
+							
 					# Go through each material found for this hour, and save it to the database 
 					for val in vals:
 						parameters = {
@@ -615,15 +664,19 @@ def ProcessRejects(start_dt, end_dt, line):
 									'time_start':	hour_start,
 									'metal_count':	vals[val]['metal_count'], 
 									'weight_count':	vals[val]['weight_count'], 
-									'material':		val
+									'material':		vals[val]['material'],
+									'po_number':	vals[val]['po_number']
 								}
 						system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/Rejects_Q/UpsertReject', parameters=parameters)
 			
+
 			
 			# Move on to the next hour
 			hour_start = hour_end
 		
 		except:
 			print CORE_P.Utils.getError()
-		
+	
+	end = time.time()	
+
 		
