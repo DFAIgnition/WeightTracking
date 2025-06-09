@@ -169,6 +169,11 @@
         "type": "Parameter",
         "identifier": "design",
         "sqlType": 4
+      },
+      {
+        "type": "Parameter",
+        "identifier": "po_number",
+        "sqlType": 2
       }
     ]
   }

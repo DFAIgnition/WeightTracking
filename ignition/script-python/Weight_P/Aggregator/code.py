@@ -53,9 +53,10 @@ def ProcessWeek(Start, End, site_id, scale_id):
 	all_tags = []
 	tag_path_mapping = {}
 	entry_sp_values = {}
-	loop_count  = 0
+	loop_count = 0
+	#SystemLogger(LoggerActive, "Weight Tracking", "Entries: {}".format(entries.getRowCount()))
+	SystemLogger(True, "Weight Tracking", "Start:" + str(Start) + ", End:" + str(End) + ", site_id:" + str(site_id) + ", scale:" + str(scale_id))
 	
-	SystemLogger(LoggerActive, "Weight Tracking", "Entries: {}".format(entries.getRowCount()))
 	
 	# Extract and map tag names from the entries.
 	for entry in system.dataset.toPyDataSet(entries):
@@ -138,8 +139,8 @@ def ProcessWeek(Start, End, site_id, scale_id):
 			elif(entry['starr_unit_id']):
 			#	SystemLogger(True, "JAY", 'DEBUG: Getting materials from STARR!')		
 				materials = Weight_P.STARR.getMaterialsFromSTARR(entry['starr_unit_id'], Start, End)
-				SystemLogger(True, "JAY", 'DEBUG: ' + str(materials))						
-			
+#				SystemLogger(True, "JAY", 'DEBUG: ' + str(materials))		
+
 			# Otherwise...materials are None
 			else:
 			#	SystemLogger(True, "JAY", 'DEBUG: Using default materials!' +str(entry['starr_unit_id']))		
@@ -150,7 +151,7 @@ def ProcessWeek(Start, End, site_id, scale_id):
 		#######################################################################
 		# Process stuff
 		#######################################################################		
-		all_materials_key = 'All'
+		all_materials_key = 'All' # This is what will end up in the material column of the database table for the sum of all weights for the hour (not split out by material)
 		try:
 			for key, items in all_data.items():
 				material_index = 0		
@@ -181,33 +182,36 @@ def ProcessWeek(Start, End, site_id, scale_id):
 						material_index = material_index + 1 
 						
 					material = materials[material_index]['value']
-					
+					po_number = None # Get po number. Will only exist if we are using a STARR link, not a material tag
+					if ('po_number' in materials[material_index]): 
+						po_number = materials[material_index]['po_number']
+					materials_key = str(material) + "_" + str(po_number)
 					
 					if day_key not in daily_data:
 					   # daily_data[day_key] = {hour: {'time_start': '', 'scale_weight_values': []} for hour in range(24)}
 					    daily_data[day_key] = {hour: {} for hour in range(24)}
 					
-					if material not in daily_data[day_key][hour_of_day]:
-						daily_data[day_key][hour_of_day][material] = {'time_start': '', 'scale_weight_values': []}
+					if materials_key not in daily_data[day_key][hour_of_day]:
+						daily_data[day_key][hour_of_day][materials_key] = {'time_start': time_start, 'scale_weight_values': [], 'material':material, 'po_number':po_number}
 						
 					if all_materials_key not in daily_data[day_key][hour_of_day]:
-						daily_data[day_key][hour_of_day][all_materials_key] = {'time_start': '', 'scale_weight_values': []}
+						daily_data[day_key][hour_of_day][all_materials_key] = {'time_start': time_start, 'scale_weight_values': [], 'material':all_materials_key, 'po_number':None}
 						
-					if 'time_start' not in daily_data[day_key][hour_of_day][material] or not daily_data[day_key][hour_of_day][material]['time_start']:
-						daily_data[day_key][hour_of_day][material]['time_start'] = time_start
-					if 'time_start' not in daily_data[day_key][hour_of_day][all_materials_key] or not daily_data[day_key][hour_of_day][all_materials_key]['time_start']:
-						daily_data[day_key][hour_of_day][all_materials_key]['time_start'] = time_start
+#					if 'time_start' not in daily_data[day_key][hour_of_day][material] or not daily_data[day_key][hour_of_day][material]['time_start']:
+#						daily_data[day_key][hour_of_day][material]['time_start'] = time_start
+#					if 'time_start' not in daily_data[day_key][hour_of_day][all_materials_key] or not daily_data[day_key][hour_of_day][all_materials_key]['time_start']:
+#						daily_data[day_key][hour_of_day][all_materials_key]['time_start'] = time_start
 						
-					if key not in daily_data[day_key][hour_of_day][material]:
-					    daily_data[day_key][hour_of_day][material][key] = []
+					if key not in daily_data[day_key][hour_of_day][materials_key]:
+					    daily_data[day_key][hour_of_day][materials_key][key] = []
 					if key not in daily_data[day_key][hour_of_day][all_materials_key]:
 					    daily_data[day_key][hour_of_day][all_materials_key][key] = []
 					    
-					daily_data[day_key][hour_of_day][material][key].append(item['value'])
+					daily_data[day_key][hour_of_day][materials_key][key].append(item['value'])
 					daily_data[day_key][hour_of_day][all_materials_key][key].append(item['value'])
 					
 					if key == 'scale_weight':
-					    daily_data[day_key][hour_of_day][material]['scale_weight_values'].append(item['value'])
+					    daily_data[day_key][hour_of_day][materials_key]['scale_weight_values'].append(item['value'])
 					    daily_data[day_key][hour_of_day][all_materials_key]['scale_weight_values'].append(item['value'])
 					    #daily_data[day_key][hour_of_day][material]['scale_weight_values'].append(item['timestamp'])
 		except:
@@ -261,8 +265,10 @@ def ProcessWeek(Start, End, site_id, scale_id):
 #						else:
 #						    # Use the last known or default value
 #						    tags[tag] = last_known_values.get(tag, 'N/A')	
-					tags['line_material'] = material
-					    
+					#SystemLogger(True, 'JAY', str(tags.keys()) + ' - ' + str(material))
+					tags['line_material'] = tags['material'] #material
+					tags['po_number'] = tags['po_number'] 
+					    						
 					# Working on weight Statistics			    
 					if 'scale_weight_values' in tags and tags['scale_weight_values']:
 						stats = DescriptiveStatistics()
@@ -360,7 +366,7 @@ def insertOrUpdateBucketData(scale_data, start_dt, end_dt):
 	LoggerActive = False
 	try:
 		for scale_id, days_data in scale_data.items():
-			SystemLogger(True, "JAY", "scale_id:" + str(scale_id) )
+			#SystemLogger(True, "JAY", "scale_id:" + str(scale_id) )
 			
 			# Delete the old versions of the rowsrows
 			txId = system.db.beginTransaction(timeout=5000)
@@ -369,7 +375,7 @@ def insertOrUpdateBucketData(scale_data, start_dt, end_dt):
 			
 			# Then add in all the new ones
 			for day, hours_data in days_data.items():
-				SystemLogger(True, "JAY", "day:" + str(day))	
+				#SystemLogger(True, "JAY", "day:" + str(day))	
 				for hour, material_data in hours_data.items():
 			#		SystemLogger(True, "JAY", "hour:" + str(hour))					
 					for material, bucket in material_data.items():
@@ -395,7 +401,8 @@ def insertOrUpdateBucketData(scale_data, start_dt, end_dt):
 										    'reject_metal': bucket.get('reject_metal', 0),
 										    'reject_over': bucket.get('reject_over', 0),
 										    'reject_under': bucket.get('reject_under', 0),
-										    'material': bucket.get('line_material', 'N/A'),
+										    'material': bucket.get('line_material', None),
+										    'po_number': bucket.get('po_number', None),
 										    'sp_high': round(bucket.get('sp_high', 0.0),2),
 										    'sp': round(bucket.get('sp', 0.0),2),
 										    'sp_low': round(bucket.get('sp_low', 0.0),2),
@@ -447,6 +454,13 @@ def GetBuckets(Start, End, site_id=0, scale_id=0):
 	for i in range(weeksBetween):
 	
 		weekStart = createWeekCalendar(startCal, i)
+		weekStart.add(Calendar.DATE, 1)
+		weekStart.set(Calendar.HOUR_OF_DAY, 0)
+		weekStart.set(Calendar.MINUTE, 0)
+		weekStart.set(Calendar.SECOND, 0)
+		weekStart.set(Calendar.MILLISECOND, 0)	
+				
+		
 		weekEnd = createWeekCalendar(startCal, i + 1)
 		
 		 # Adjust weekEnd to include up to midnight
@@ -457,6 +471,9 @@ def GetBuckets(Start, End, site_id=0, scale_id=0):
 		weekEnd.set(Calendar.MILLISECOND, 0)
 		
 		weekEnd = weekEnd if weekEnd.before(endCal) else endCal
+		weekEnd.set(Calendar.MINUTE, 0)
+		weekEnd.set(Calendar.SECOND, 0)
+		weekEnd.set(Calendar.MILLISECOND, 0)
 		
 		SystemLogger(LoggerActive, "Weight Tracking", "{}, {}, {}, {}".format(weekStart.getTime(), weekEnd.getTime(), site_id, scale_id))
 		
@@ -487,6 +504,12 @@ def GetBucketsGlobal(Start, End, site_id=0, scale_id=0):
 	for i in range(weeksBetween):
 	
 		weekStart = createWeekCalendar(startCal, i)
+		weekStart.add(Calendar.DATE, 1)
+		weekStart.set(Calendar.HOUR_OF_DAY, 0)
+		weekStart.set(Calendar.MINUTE, 0)
+		weekStart.set(Calendar.SECOND, 0)
+		weekStart.set(Calendar.MILLISECOND, 0)		
+		
 		weekEnd = createWeekCalendar(startCal, i + 1)
 		
 		 # Adjust weekEnd to include up to midnight
@@ -497,6 +520,9 @@ def GetBucketsGlobal(Start, End, site_id=0, scale_id=0):
 		weekEnd.set(Calendar.MILLISECOND, 0)
 		
 		weekEnd = weekEnd if weekEnd.before(endCal) else endCal
+		weekEnd.set(Calendar.MINUTE, 0)
+		weekEnd.set(Calendar.SECOND, 0)
+		weekEnd.set(Calendar.MILLISECOND, 0)
 		
 		SystemLogger(LoggerActive, "Weight Tracking", "{}, {}, {}, {}".format(weekStart.getTime(), weekEnd.getTime(), site_id, scale_id))
 		
