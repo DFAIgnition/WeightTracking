@@ -18,15 +18,25 @@ SELECT
     sp_plc,
     sp_low_plc,
     sp_high_plc,
-    'material' = 
+   'material' =
     CASE :material
     WHEN 'All' THEN
-        (	select STRING_AGG(material, ', ') 
-    	from weight.dbo.aggregated a2 
-    	where a2.scale_id = a.scale_id 
-    	and a2.time_start = a.time_start 
-    	and a2.material != 'All')
-    ELSE material
+        (
+            SELECT STRING_AGG(
+                       -- Explicitly cast all parts to VARCHAR
+                       CAST(material AS NVARCHAR(MAX))
+                       + CASE
+                             WHEN a2.po_number IS NOT NULL THEN ' (PO:' + CAST(a2.po_number AS NVARCHAR(MAX)) + ')'
+                             ELSE ''
+                         END,
+                       ', '
+                   )
+            FROM weight.dbo.aggregated a2
+            WHERE a2.scale_id = a.scale_id
+            AND a2.time_start = a.time_start
+            AND a2.material != 'All'
+        )
+    ELSE CAST(material AS NVARCHAR(MAX)) -- Also cast the ELSE branch for consistency if material could be numeric here
     END
 FROM 
     weight.dbo.aggregated a
@@ -36,7 +46,7 @@ FROM
     
 WHERE 
     time_start >= :start AND 
-    time_start < DATEADD(DAY, 1, :start) AND
+    time_start < DATEADD(DAY, 10, :start) AND
     (:scale_id = 0 or s.scale_id = :scale_id )AND 
     f.line_id = :line_id AND 
 	material = :material
