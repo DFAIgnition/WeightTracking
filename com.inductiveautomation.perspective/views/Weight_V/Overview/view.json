@@ -81,7 +81,7 @@
     "selection": {}
   },
   "params": {
-    "timeZoneID": ""
+    "timeZoneID": "Pacific/Auckland"
   },
   "propConfig": {
     "custom.aggregator": {
@@ -184,7 +184,7 @@
         },
         "transforms": [
           {
-            "code": "\n    import datetime\n    SeriesIndex\u003d-1\n    \n    end_dt \u003d self.custom.end_dt\n\t\n    # Get the current month and year\n    #current_month \u003d datetime.datetime.now().month\n    #current_year \u003d datetime.datetime.now().year\n    current_month \u003d end_dt.getMonth()+1\n    current_year \u003d end_dt.getYear()+ 1900\n\n    # Custom sorting function to correctly order months with respect to the current month and year\n    def sort_key(entry):\n        month_name \u003d entry[\"name\"]\n        month_number \u003d month_to_number.get(month_name, -1)\n        entry_year \u003d entry.get(\"year\", current_year)\n\n        # Calculate how far back in time each entry is from the current month and year\n        year_diff \u003d current_year - entry_year\n        month_diff \u003d current_month - month_number\n\n        # For entries from the previous year, adjust month_diff to reflect their actual distance from the current month\n        if year_diff \u003e 0:\n            month_diff +\u003d 12\n\n        return (year_diff, month_diff)\n\n    month_to_number \u003d {\n        \"January\": 1, \"February\": 2, \"March\": 3, \"April\": 4,\n        \"May\": 5, \"June\": 6, \"July\": 7, \"August\": 8,\n        \"September\": 9, \"October\": 10, \"November\": 11, \"December\": 12\n    }\n\n    monthlyData \u003d value[\u0027aggregator\u0027]\n\n    transformedData \u003d []\n\n    for month in monthlyData:\n        monthName \u003d month[\"summary\"][\"x\"]\n        dayData \u003d month[\"days\"]\n\n        monthDataArray \u003d []\n        allDaysAreZero \u003d False # Set to true if empty months should not be shown\n        for day in dayData:\n            dayNumber \u003d day[\"x\"]\n            weight_diff \u003d day[\"weight_diff\"]\n            weight_avg \u003d day[\"weight_avg\"]\n            count \u003d day[\"count\"]\n            metal_rejects \u003d day[\"metal_rejects\"]\n            \n            if count\u003e0:\n            \tavg_diff \u003d weight_diff/count*1000/self.custom.scale.conversion_factor\n            else:\n            \tavg_diff\u003d0\n\n            if weight_diff !\u003d 0 or weight_avg !\u003d 0 or count !\u003d 0:\n                allDaysAreZero \u003d False\n\n            monthDataArray.append({\n                \"x\": dayNumber,\n                \"y\": avg_diff,\n                \"y2\": metal_rejects, #weight_avg,      # weight_diff as y\n                \"y3\": weight_diff,      # weight_avg as y2\n                \"y4\": count            # count as y3\n            })\n\n        if not allDaysAreZero:\n            month_number \u003d month_to_number.get(monthName, -1)\n            if month_number \u003e current_month:\n                inferred_year \u003d current_year - 1\n            else:\n                inferred_year \u003d current_year\n\n            transformedData.append({\n                \"data\": monthDataArray,\n                \"name\": monthName,\n                \"year\": inferred_year,\n                \"zIndex\": month_number\n            })\n\n    # Sort the transformed data using the custom sort key\n    transformedData.sort(key\u003dsort_key)\n\n    return transformedData",
+            "code": "\n    import datetime\n    SeriesIndex\u003d-1\n    \n    end_dt \u003d self.custom.end_dt\n\t\n    # Get the current month and year\n    #current_month \u003d datetime.datetime.now().month\n    #current_year \u003d datetime.datetime.now().year\n    current_month \u003d end_dt.getMonth()+1\n    current_year \u003d end_dt.getYear()+ 1900\n\n    # Custom sorting function to correctly order months with respect to the current month and year\n    def sort_key(entry):\n        month_name \u003d entry[\"name\"]\n        month_number \u003d month_to_number.get(month_name, -1)\n        entry_year \u003d entry.get(\"year\", current_year)\n\n        # Calculate how far back in time each entry is from the current month and year\n        year_diff \u003d current_year - entry_year\n        month_diff \u003d current_month - month_number\n\n        # For entries from the previous year, adjust month_diff to reflect their actual distance from the current month\n        if year_diff \u003e 0:\n            month_diff +\u003d 12\n\n        return (year_diff, month_diff)\n\n    month_to_number \u003d {\n        \"January\": 1, \"February\": 2, \"March\": 3, \"April\": 4,\n        \"May\": 5, \"June\": 6, \"July\": 7, \"August\": 8,\n        \"September\": 9, \"October\": 10, \"November\": 11, \"December\": 12\n    }\n\n    monthlyData \u003d value[\u0027aggregator\u0027]\n\n    transformedData \u003d []\n\n    for month in monthlyData:\n        monthName \u003d month[\"summary\"][\"x\"]\n        dayData \u003d month[\"days\"]\n\n        monthDataArray \u003d []\n        allDaysAreZero \u003d False # Set to true if empty months should not be shown\n        for day in dayData:\n            dayNumber \u003d day[\"x\"]\n            weight_diff \u003d day[\"weight_diff\"]\n            weight_avg \u003d day[\"weight_avg\"]\n            count \u003d day[\"count\"]\n            metal_rejects \u003d day[\"metal_rejects\"]\n            \n            if count\u003e0:\n            \tavg_diff \u003d weight_diff/count*1000/self.custom.scale.conversion_factor\n            else:\n            \tavg_diff\u003d0\n\n            if weight_diff !\u003d 0 or weight_avg !\u003d 0 or count !\u003d 0:\n                allDaysAreZero \u003d False\n\n            monthDataArray.append({\n                \"x\": dayNumber,\n                #\"y\": avg_diff,\n                \"y\": metal_rejects,\n                \"y2\": metal_rejects, #weight_avg,      # weight_diff as y\n                \"y3\": metal_rejects, #weight_avg,      # weight_diff as y\n                #\"y3\": weight_diff,      # weight_avg as y2\n                \"y4\": count            # count as y3\n            })\n\n        if not allDaysAreZero:\n            month_number \u003d month_to_number.get(monthName, -1)\n            if month_number \u003e current_month:\n                inferred_year \u003d current_year - 1\n            else:\n                inferred_year \u003d current_year\n\n            transformedData.append({\n                \"data\": monthDataArray,\n                \"name\": monthName,\n                \"year\": inferred_year,\n                \"zIndex\": month_number\n            })\n\n    # Sort the transformed data using the custom sort key\n    transformedData.sort(key\u003dsort_key)\n\n    return transformedData",
             "type": "script"
           }
         ],
@@ -204,7 +204,7 @@
         },
         "transforms": [
           {
-            "code": "\n    import datetime\n    SeriesIndex\u003d-1\n    \n    end_dt \u003d self.custom.end_dt\n\t\n    # Get the current month and year\n    #current_month \u003d datetime.datetime.now().month\n    #current_year \u003d datetime.datetime.now().year\n    current_month \u003d end_dt.getMonth()+1\n    current_year \u003d end_dt.getYear()+ 1900\n\n    # Custom sorting function to correctly order months with respect to the current month and year\n    def sort_key(entry):\n        month_name \u003d entry[\"name\"]\n        month_number \u003d month_to_number.get(month_name, -1)\n        entry_year \u003d entry.get(\"year\", current_year)\n\n        # Calculate how far back in time each entry is from the current month and year\n        year_diff \u003d current_year - entry_year\n        month_diff \u003d current_month - month_number\n\n        # For entries from the previous year, adjust month_diff to reflect their actual distance from the current month\n        if year_diff \u003e 0:\n            month_diff +\u003d 12\n\n        return (year_diff, month_diff)\n\n    month_to_number \u003d {\n        \"January\": 1, \"February\": 2, \"March\": 3, \"April\": 4,\n        \"May\": 5, \"June\": 6, \"July\": 7, \"August\": 8,\n        \"September\": 9, \"October\": 10, \"November\": 11, \"December\": 12\n    }\n\n    monthlyData \u003d value[\u0027aggregator\u0027]\n\n    transformedData \u003d []\n\n    for month in monthlyData:\n        monthName \u003d month[\"summary\"][\"x\"]\n        dayData \u003d month[\"days\"]\n\n        monthDataArray \u003d []\n        allDaysAreZero \u003d False # Set to true if empty months should not be shown\n        for day in dayData:\n            dayNumber \u003d day[\"x\"]\n            weight_diff \u003d day[\"weight_diff\"]\n            weight_avg \u003d day[\"weight_avg\"]\n            count \u003d day[\"count\"]\n            weight_rejects \u003d day[\"weight_rejects\"]\n            \n            if count\u003e0:\n            \tavg_diff \u003d weight_diff/count*1000/self.custom.scale.conversion_factor\n            else:\n            \tavg_diff\u003d0\n\n            if weight_diff !\u003d 0 or weight_avg !\u003d 0 or count !\u003d 0:\n                allDaysAreZero \u003d False\n\n            monthDataArray.append({\n                \"x\": dayNumber,\n                \"y\": avg_diff,\n                \"y2\": weight_rejects, #weight_avg,      # weight_diff as y\n                \"y3\": weight_diff,      # weight_avg as y2\n                \"y4\": count            # count as y3\n            })\n\n        if not allDaysAreZero:\n            month_number \u003d month_to_number.get(monthName, -1)\n            if month_number \u003e current_month:\n                inferred_year \u003d current_year - 1\n            else:\n                inferred_year \u003d current_year\n\n            transformedData.append({\n                \"data\": monthDataArray,\n                \"name\": monthName,\n                \"year\": inferred_year,\n                \"zIndex\": month_number\n            })\n\n    # Sort the transformed data using the custom sort key\n    transformedData.sort(key\u003dsort_key)\n\n    return transformedData",
+            "code": "\n    import datetime\n    SeriesIndex\u003d-1\n    \n    end_dt \u003d self.custom.end_dt\n\t\n    # Get the current month and year\n    #current_month \u003d datetime.datetime.now().month\n    #current_year \u003d datetime.datetime.now().year\n    current_month \u003d end_dt.getMonth()+1\n    current_year \u003d end_dt.getYear()+ 1900\n\n    # Custom sorting function to correctly order months with respect to the current month and year\n    def sort_key(entry):\n        month_name \u003d entry[\"name\"]\n        month_number \u003d month_to_number.get(month_name, -1)\n        entry_year \u003d entry.get(\"year\", current_year)\n\n        # Calculate how far back in time each entry is from the current month and year\n        year_diff \u003d current_year - entry_year\n        month_diff \u003d current_month - month_number\n\n        # For entries from the previous year, adjust month_diff to reflect their actual distance from the current month\n        if year_diff \u003e 0:\n            month_diff +\u003d 12\n\n        return (year_diff, month_diff)\n\n    month_to_number \u003d {\n        \"January\": 1, \"February\": 2, \"March\": 3, \"April\": 4,\n        \"May\": 5, \"June\": 6, \"July\": 7, \"August\": 8,\n        \"September\": 9, \"October\": 10, \"November\": 11, \"December\": 12\n    }\n\n    monthlyData \u003d value[\u0027aggregator\u0027]\n\n    transformedData \u003d []\n\n    for month in monthlyData:\n        monthName \u003d month[\"summary\"][\"x\"]\n        dayData \u003d month[\"days\"]\n\n        monthDataArray \u003d []\n        allDaysAreZero \u003d False # Set to true if empty months should not be shown\n        for day in dayData:\n            dayNumber \u003d day[\"x\"]\n            weight_diff \u003d day[\"weight_diff\"]\n            weight_avg \u003d day[\"weight_avg\"]\n            count \u003d day[\"count\"]\n            weight_rejects \u003d day[\"weight_rejects\"]\n            \n            if count\u003e0:\n            \tavg_diff \u003d weight_diff/count*1000/self.custom.scale.conversion_factor\n            else:\n            \tavg_diff\u003d0\n\n            if weight_diff !\u003d 0 or weight_avg !\u003d 0 or count !\u003d 0:\n                allDaysAreZero \u003d False\n\n            monthDataArray.append({\n                \"x\": dayNumber,\n                \"y\": weight_rejects,#avg_diff,\n                \"y2\": weight_rejects, #weight_avg,      # weight_diff as y\n                \"y3\": weight_rejects,#weight_diff,      # weight_avg as y2\n                \"y4\": count            # count as y3\n            })\n\n        if not allDaysAreZero:\n            month_number \u003d month_to_number.get(monthName, -1)\n            if month_number \u003e current_month:\n                inferred_year \u003d current_year - 1\n            else:\n                inferred_year \u003d current_year\n\n            transformedData.append({\n                \"data\": monthDataArray,\n                \"name\": monthName,\n                \"year\": inferred_year,\n                \"zIndex\": month_number\n            })\n\n    # Sort the transformed data using the custom sort key\n    transformedData.sort(key\u003dsort_key)\n\n    return transformedData",
             "type": "script"
           }
         ],
@@ -873,6 +873,36 @@
               "basis": "100%"
             },
             "propConfig": {
+              "props.columns[3].header.title": {
+                "binding": {
+                  "config": {
+                    "path": "view.custom.scale.unit"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\treturn \u0027Weight Average [\u0027+value+\u0027]\u0027",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.columns[5].visible": {
+                "binding": {
+                  "config": {
+                    "expression": "if({.../Selections/selection_scale.props.value}\u003d0,True, False)"
+                  },
+                  "type": "expr"
+                }
+              },
+              "props.columns[6].visible": {
+                "binding": {
+                  "config": {
+                    "expression": "if({.../Selections/selection_scale.props.value}\u003d0,True, False)"
+                  },
+                  "type": "expr"
+                }
+              },
               "props.data": {
                 "binding": {
                   "config": {
@@ -881,20 +911,6 @@
                   "transforms": [
                     {
                       "code": "\t\n\tfrom java.util import Calendar\n\t\n\tinput_data \u003d value\n\t\n\t# Initialize data arrays\n\tbag_counts \u003d []\n\tweight_avgs \u003d []\n\tweight_diffs \u003d []\n\t\n\t# Define month names for mapping numbers back to names later\n\tmonth_names \u003d [\"January\", \"February\", \"March\", \"April\", \"May\", \"June\", \n\t               \"July\", \"August\", \"September\", \"October\", \"November\", \"December\"]\n\t\n\t# Convert month names to numbers for sorting\n\tmonth_numbers \u003d {name: i + 1 for i, name in enumerate(month_names)}\n\t\n\t# Get current year and month\n\t#calendar \u003d Calendar.getInstance()\n\t#currentYear \u003d calendar.get(Calendar.YEAR)\n\t#currentMonth \u003d calendar.get(Calendar.MONTH) + 1  # Adjusting so January is 1, December is 12\n\t\n\tend_dt \u003d self.view.custom.end_dt\n\t\t\n    # Get the current month and year\n    #current_month \u003d datetime.datetime.now().month\n    #current_year \u003d datetime.datetime.now().year\n\tcurrentMonth \u003d end_dt.getMonth()+1\n\tcurrentYear \u003d end_dt.getYear()+ 1900\n    \t\n\t\n\t# Determine the year for each month and populate data arrays\n\tcombined_data \u003d []\n\tfor month in input_data:\n\t    summary \u003d month[\"summary\"]\n\t    month_number \u003d month_numbers[summary[\"x\"]]\n\t    year \u003d currentYear if month_number \u003c\u003d currentMonth else currentYear - 1\n\t    bag_count \u003d float(summary.get(\"count\", 0))\n\t    weight_avg \u003d float(summary.get(\"weight_avg\", 0.0))\n\t    weight_diff \u003d float(summary.get(\"weight_diff\", 0.0))\n\t    metal_rejects \u003d float(summary.get(\"metal_rejects\", 0.0))\n\t    weight_rejects \u003d float(summary.get(\"weight_rejects\", 0.0))\n\t    \n\t    combined_data.append([year, month_number, bag_count, weight_avg, weight_diff, metal_rejects, weight_rejects])\n\t\n\t# Sort the combined_data by year and month_number\n\tcombined_data.sort(key\u003dlambda x: (x[0], x[1]))\n\t\n\t# Replace month_number with month names for display, using the month_names list\n\tfor row in combined_data:\n\t    row[1] \u003d month_names[row[1] - 1]  # Convert month number back to name\n\t\n\tcombined_headers \u003d [\"Year\", \"Month\", \"Count\", \"Weight Avg\", \"Weight Diff\", \u0027Metal Rejects\u0027, \u0027Weight Rejects\u0027]\n\tcombined_dataset \u003d system.dataset.toDataSet(combined_headers, combined_data)\n\t\n\treturn combined_dataset",
-                      "type": "script"
-                    }
-                  ],
-                  "type": "property"
-                }
-              },
-              "props.headerGroups[0][3].title": {
-                "binding": {
-                  "config": {
-                    "path": "view.custom.scale.unit"
-                  },
-                  "transforms": [
-                    {
-                      "code": "\treturn \u0027Weight Average [\u0027+value+\u0027]\u0027",
                       "type": "script"
                     }
                   ],
@@ -948,7 +964,7 @@
                     },
                     "title": "Year"
                   },
-                  "justify": "center",
+                  "justify": "left",
                   "nullFormat": {
                     "includeNullStrings": false,
                     "nullFormatValue": "",
@@ -983,7 +999,7 @@
                   "render": "auto",
                   "resizable": false,
                   "sort": "ascending",
-                  "sortable": true,
+                  "sortable": false,
                   "strictWidth": false,
                   "style": {
                     "classes": ""
@@ -1040,7 +1056,7 @@
                     },
                     "title": "Month"
                   },
-                  "justify": "center",
+                  "justify": "left",
                   "nullFormat": {
                     "includeNullStrings": false,
                     "nullFormatValue": "",
@@ -1075,7 +1091,7 @@
                   "render": "auto",
                   "resizable": false,
                   "sort": "none",
-                  "sortable": true,
+                  "sortable": false,
                   "strictWidth": false,
                   "style": {
                     "classes": ""
@@ -1132,7 +1148,7 @@
                     },
                     "title": "Units"
                   },
-                  "justify": "center",
+                  "justify": "left",
                   "nullFormat": {
                     "includeNullStrings": false,
                     "nullFormatValue": "",
@@ -1167,7 +1183,7 @@
                   "render": "auto",
                   "resizable": true,
                   "sort": "none",
-                  "sortable": true,
+                  "sortable": false,
                   "strictWidth": false,
                   "style": {
                     "classes": ""
@@ -1221,10 +1237,9 @@
                     "justify": "left",
                     "style": {
                       "classes": ""
-                    },
-                    "title": ""
+                    }
                   },
-                  "justify": "center",
+                  "justify": "left",
                   "nullFormat": {
                     "includeNullStrings": false,
                     "nullFormatValue": "",
@@ -1259,7 +1274,7 @@
                   "render": "auto",
                   "resizable": true,
                   "sort": "none",
-                  "sortable": true,
+                  "sortable": false,
                   "strictWidth": false,
                   "style": {
                     "classes": ""
@@ -1314,9 +1329,9 @@
                     "style": {
                       "classes": ""
                     },
-                    "title": ""
+                    "title": "Overage [kg]"
                   },
-                  "justify": "center",
+                  "justify": "left",
                   "nullFormat": {
                     "includeNullStrings": false,
                     "nullFormatValue": "",
@@ -1351,7 +1366,7 @@
                   "render": "auto",
                   "resizable": true,
                   "sort": "none",
-                  "sortable": true,
+                  "sortable": false,
                   "strictWidth": false,
                   "style": {
                     "classes": ""
@@ -1456,7 +1471,6 @@
                   },
                   "viewParams": {},
                   "viewPath": "",
-                  "visible": true,
                   "width": ""
                 },
                 {
@@ -1548,81 +1562,12 @@
                   },
                   "viewParams": {},
                   "viewPath": "",
-                  "visible": true,
                   "width": ""
                 }
               ],
-              "enableHeader": false,
-              "enableHeaderGroups": true,
               "headerGroupStyle": {
                 "classes": "Weight_S/Framework/Card/Value"
               },
-              "headerGroups": [
-                [
-                  {
-                    "align": "center",
-                    "justify": "center",
-                    "span": 1,
-                    "style": {
-                      "classes": ""
-                    },
-                    "title": "Year"
-                  },
-                  {
-                    "align": "center",
-                    "justify": "center",
-                    "span": 1,
-                    "style": {
-                      "classes": ""
-                    },
-                    "title": "Month"
-                  },
-                  {
-                    "align": "center",
-                    "justify": "center",
-                    "span": 1,
-                    "style": {
-                      "classes": ""
-                    },
-                    "title": "Units"
-                  },
-                  {
-                    "align": "center",
-                    "justify": "center",
-                    "span": 1,
-                    "style": {
-                      "classes": ""
-                    }
-                  },
-                  {
-                    "align": "center",
-                    "justify": "center",
-                    "span": 1,
-                    "style": {
-                      "classes": ""
-                    },
-                    "title": "Overage [kg]"
-                  },
-                  {
-                    "align": "center",
-                    "justify": "center",
-                    "span": 1,
-                    "style": {
-                      "classes": ""
-                    },
-                    "title": "Metal Rejects"
-                  },
-                  {
-                    "align": "center",
-                    "justify": "center",
-                    "span": 1,
-                    "style": {
-                      "classes": ""
-                    },
-                    "title": "Weight Rejects"
-                  }
-                ]
-              ],
               "headerStyle": {
                 "classes": "Weight_S/Framework/Card/Value"
               },
@@ -1631,6 +1576,10 @@
               },
               "rows": {
                 "height": "20px"
+              },
+              "style": {
+                "paddingLeft": 4,
+                "paddingRight": 4
               }
             },
             "type": "ia.display.table"
@@ -2426,7 +2375,7 @@
                   },
                   "transforms": [
                     {
-                      "code": "\n    # Convert the Python variable \u0027value\u0027 to a string and prepare it for JavaScript injection\n    value_str \u003d str(value)\n    \n    # Create the JavaScript function as a string, injecting \u0027value\u0027 correctly\n    return (\u0027\u0027\u0027function(value, { series, seriesIndex, dataPointIndex, w }) {\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    // Accessing the data for y, y2, y3, and y4\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var data \u003d w.config.series[seriesIndex].data[dataPointIndex];\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y \u003d parseFloat(data.y).toFixed(0);  // Main value\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y2 \u003d parseFloat(data.y2).toFixed(0); // Additional value 1\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y3 \u003d parseFloat(data.y3).toFixed(1); // Additional value 2\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y4 \u003d parseFloat(data.y4).toFixed(0); // Additional value 3\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    // Concatenate the values with slashes in between\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    return \u0027Avg. Overage: \u0027 + y + \" \u0027\u0027\u0027 + value_str + \u0027\u0027\u0027 \" + \u0027 / Avg. Weight: \u0027 + y2 + \" \u0027\u0027\u0027 + value_str + \u0027\u0027\u0027 \"  + \u0027 / Overage: \u0027 + y3+ \" kg \"   + \u0027 / Units: \u0027 + y4;\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n}\u0027\u0027\u0027)",
+                      "code": "\n    # Convert the Python variable \u0027value\u0027 to a string and prepare it for JavaScript injection\n    value_str \u003d str(value)\n    \n    \n    # Create the JavaScript function as a string, injecting \u0027value\u0027 correctly\n    return (\u0027\u0027\u0027function(value, { series, seriesIndex, dataPointIndex, w }) {\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    // Accessing the data for y, y2, y3, and y4\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var data \u003d w.config.series[seriesIndex].data[dataPointIndex];\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y \u003d parseFloat(data.y).toFixed(0);  // Main value\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y2 \u003d parseFloat(data.y2).toFixed(0); // Additional value 1\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y3 \u003d parseFloat(data.y3).toFixed(1); // Additional value 2\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y4 \u003d parseFloat(data.y4).toFixed(0); // Additional value 3\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var pc \u003d 0\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    if (parseFloat(data.y4)\u003e0){\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    pc \u003d (parseFloat(data.y)*100/parseFloat(data.y4)).toFixed(0);} // Percentage\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    // Concatenate the values with slashes in between\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    return \u0027Metal Detected in \u0027 + y + \u0027 units out of \u0027 + y4 + \u0027 (\u0027 + pc + \u0027%)\u0027; \u0027\u0027\u0027\n            \u0027\u0027\u0027\\n}\u0027\u0027\u0027)\n            \n            \n            \n            #\u0027\u0027\u0027\\n    return \u0027Avg. Overage: \u0027 + y + \" \u0027\u0027\u0027 + value_str + \u0027\u0027\u0027 \" + \u0027 / Avg. Weight: \u0027 + y2 + \" \u0027\u0027\u0027 + value_str + \u0027\u0027\u0027 \"  + \u0027 / Overage: \u0027 + y3+ \" kg \"   + \u0027 / Units: \u0027 + y4;\u0027\u0027\u0027",
                       "type": "script"
                     }
                   ],
@@ -2494,14 +2443,14 @@
                     "size": 10
                   },
                   "offsetY": 0,
-                  "show": true
+                  "show": false
                 },
                 "plotOptions": {
                   "heatmap": {
                     "colorScale": {
-                      "inverse": false,
-                      "max": "",
-                      "min": "",
+                      "inverse": true,
+                      "max": 0,
+                      "min": 2000,
                       "ranges": [
                         {
                           "color": "#FFFFFF",
@@ -2511,79 +2460,16 @@
                           "to": 0
                         },
                         {
-                          "color": "#00800080",
+                          "color": "#ABCDEF",
                           "foreColor": "#000000",
-                          "from": "0.000000000000000000001",
-                          "name": "1σ",
-                          "to": 50
-                        },
-                        {
-                          "color": "#98FB9880",
-                          "foreColor": "#000000",
-                          "from": 50,
-                          "name": "2σ",
-                          "to": 100
-                        },
-                        {
-                          "color": "#FFB7B780",
-                          "foreColor": "#000000",
-                          "from": 100,
-                          "name": "3σ",
-                          "to": 150
-                        },
-                        {
-                          "color": "#FF555580",
-                          "foreColor": "#000000",
-                          "from": 150,
-                          "name": "5σ",
-                          "to": 250
-                        },
-                        {
-                          "color": "#FF000080",
-                          "foreColor": "#000000",
-                          "from": 250,
-                          "name": "\u003e5σ",
-                          "to": 50000
-                        },
-                        {
-                          "color": "#AED6F180",
-                          "foreColor": "#000000",
-                          "from": -50,
-                          "name": "-1σ",
-                          "to": "-0.000000000000000000001"
-                        },
-                        {
-                          "color": "#5DADE280",
-                          "foreColor": "#000000",
-                          "from": -100,
-                          "name": "-2σ",
-                          "to": -50
-                        },
-                        {
-                          "color": "#2E86C180",
-                          "foreColor": "#000000",
-                          "from": -150,
-                          "name": "-3σ",
-                          "to": -100
-                        },
-                        {
-                          "color": "#21618C80",
-                          "foreColor": "#000000",
-                          "from": -250,
-                          "name": "-5σ",
-                          "to": -150
-                        },
-                        {
-                          "color": "#15436080",
-                          "foreColor": "#000000",
-                          "from": -50000,
-                          "name": "\u003c-5σ",
-                          "to": -250
+                          "from": 1,
+                          "name": "Metal Detection events",
+                          "to": 1000
                         }
                       ]
                     },
                     "distributed": false,
-                    "enableShades": false,
+                    "enableShades": true,
                     "radius": 2,
                     "reverseNegativeShade": false,
                     "shadeIntensity": 0.8,
@@ -2621,8 +2507,8 @@
                   "style": {
                     "color": "#263238",
                     "fontFamily": "Roboto",
-                    "fontSize": "12px",
-                    "fontWeight": "normal"
+                    "fontSize": "18px",
+                    "fontWeight": "bold"
                   }
                 },
                 "tooltip": {
@@ -2776,7 +2662,7 @@
                   },
                   "transforms": [
                     {
-                      "code": "\tif value[\u0027description\u0027] !\u003d \u0027\u0027:\n\t\treturn  value[\u0027description\u0027] + \u0027 - Weight Detector Rejects\u0027 # + value[\u0027scale\u0027] + \u0027 - Weights are in \u0027 + value[\u0027unit\u0027] + \u0027. Overage is in kg. Filler accuracy σ set to: \u0027 + str(self.view.custom.scale.design) + \u0027 \u0027 + value[\u0027unit\u0027]\n\telse:\n\t\treturn \u0027Weight Detector Rejects\u0027 # \u0027Weights are in \u0027 + value[\u0027unit\u0027] + \u0027. Overage is in kg. Filler accuracy σ set to: \u0027 + str(self.view.custom.scale.design) + \u0027 \u0027 + value[\u0027unit\u0027]",
+                      "code": "\tif value[\u0027description\u0027] !\u003d \u0027\u0027:\n\t\treturn  value[\u0027description\u0027] + \u0027 - Weight Rejects\u0027 # + value[\u0027scale\u0027] + \u0027 - Weights are in \u0027 + value[\u0027unit\u0027] + \u0027. Overage is in kg. Filler accuracy σ set to: \u0027 + str(self.view.custom.scale.design) + \u0027 \u0027 + value[\u0027unit\u0027]\n\telse:\n\t\treturn \u0027Weight Rejects\u0027 # \u0027Weights are in \u0027 + value[\u0027unit\u0027] + \u0027. Overage is in kg. Filler accuracy σ set to: \u0027 + str(self.view.custom.scale.design) + \u0027 \u0027 + value[\u0027unit\u0027]",
                       "type": "script"
                     }
                   ],
@@ -2790,7 +2676,7 @@
                   },
                   "transforms": [
                     {
-                      "code": "\n    # Convert the Python variable \u0027value\u0027 to a string and prepare it for JavaScript injection\n    value_str \u003d str(value)\n    \n    # Create the JavaScript function as a string, injecting \u0027value\u0027 correctly\n    return (\u0027\u0027\u0027function(value, { series, seriesIndex, dataPointIndex, w }) {\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    // Accessing the data for y, y2, y3, and y4\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var data \u003d w.config.series[seriesIndex].data[dataPointIndex];\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y \u003d parseFloat(data.y).toFixed(0);  // Main value\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y2 \u003d parseFloat(data.y2).toFixed(0); // Additional value 1\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y3 \u003d parseFloat(data.y3).toFixed(1); // Additional value 2\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y4 \u003d parseFloat(data.y4).toFixed(0); // Additional value 3\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    // Concatenate the values with slashes in between\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    return \u0027Avg. Overage: \u0027 + y + \" \u0027\u0027\u0027 + value_str + \u0027\u0027\u0027 \" + \u0027 / Avg. Weight: \u0027 + y2 + \" \u0027\u0027\u0027 + value_str + \u0027\u0027\u0027 \"  + \u0027 / Overage: \u0027 + y3+ \" kg \"   + \u0027 / Units: \u0027 + y4;\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n}\u0027\u0027\u0027)",
+                      "code": "\n    # Convert the Python variable \u0027value\u0027 to a string and prepare it for JavaScript injection\n    value_str \u003d str(value)\n    \n    \n    # Create the JavaScript function as a string, injecting \u0027value\u0027 correctly\n    return (\u0027\u0027\u0027function(value, { series, seriesIndex, dataPointIndex, w }) {\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    // Accessing the data for y, y2, y3, and y4\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var data \u003d w.config.series[seriesIndex].data[dataPointIndex];\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y \u003d parseFloat(data.y).toFixed(0);  // Main value\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y2 \u003d parseFloat(data.y2).toFixed(0); // Additional value 1\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y3 \u003d parseFloat(data.y3).toFixed(1); // Additional value 2\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y4 \u003d parseFloat(data.y4).toFixed(0); // Additional value 3\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var pc \u003d 0\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    if (parseFloat(data.y4)\u003e0){\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    pc \u003d (parseFloat(data.y)*100/parseFloat(data.y4)).toFixed(0);} // Percentage\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    // Concatenate the values with slashes in between\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    return \u0027Weight Rejects for \u0027 + y + \u0027 units out of \u0027 + y4 + \u0027 (\u0027 + pc + \u0027%)\u0027; \u0027\u0027\u0027\n            \u0027\u0027\u0027\\n}\u0027\u0027\u0027)\n            \n            \n            \n            #\u0027\u0027\u0027\\n    return \u0027Avg. Overage: \u0027 + y + \" \u0027\u0027\u0027 + value_str + \u0027\u0027\u0027 \" + \u0027 / Avg. Weight: \u0027 + y2 + \" \u0027\u0027\u0027 + value_str + \u0027\u0027\u0027 \"  + \u0027 / Overage: \u0027 + y3+ \" kg \"   + \u0027 / Units: \u0027 + y4;\u0027\u0027\u0027",
                       "type": "script"
                     }
                   ],
@@ -2858,14 +2744,14 @@
                     "size": 10
                   },
                   "offsetY": 0,
-                  "show": true
+                  "show": false
                 },
                 "plotOptions": {
                   "heatmap": {
                     "colorScale": {
-                      "inverse": false,
-                      "max": "",
-                      "min": "",
+                      "inverse": true,
+                      "max": 0,
+                      "min": 2000,
                       "ranges": [
                         {
                           "color": "#FFFFFF",
@@ -2875,79 +2761,16 @@
                           "to": 0
                         },
                         {
-                          "color": "#00800080",
+                          "color": "#ABCDEF",
                           "foreColor": "#000000",
-                          "from": "0.000000000000000000001",
-                          "name": "1σ",
-                          "to": 50
-                        },
-                        {
-                          "color": "#98FB9880",
-                          "foreColor": "#000000",
-                          "from": 50,
-                          "name": "2σ",
-                          "to": 100
-                        },
-                        {
-                          "color": "#FFB7B780",
-                          "foreColor": "#000000",
-                          "from": 100,
-                          "name": "3σ",
-                          "to": 150
-                        },
-                        {
-                          "color": "#FF555580",
-                          "foreColor": "#000000",
-                          "from": 150,
-                          "name": "5σ",
-                          "to": 250
-                        },
-                        {
-                          "color": "#FF000080",
-                          "foreColor": "#000000",
-                          "from": 250,
-                          "name": "\u003e5σ",
-                          "to": 50000
-                        },
-                        {
-                          "color": "#AED6F180",
-                          "foreColor": "#000000",
-                          "from": -50,
-                          "name": "-1σ",
-                          "to": "-0.000000000000000000001"
-                        },
-                        {
-                          "color": "#5DADE280",
-                          "foreColor": "#000000",
-                          "from": -100,
-                          "name": "-2σ",
-                          "to": -50
-                        },
-                        {
-                          "color": "#2E86C180",
-                          "foreColor": "#000000",
-                          "from": -150,
-                          "name": "-3σ",
-                          "to": -100
-                        },
-                        {
-                          "color": "#21618C80",
-                          "foreColor": "#000000",
-                          "from": -250,
-                          "name": "-5σ",
-                          "to": -150
-                        },
-                        {
-                          "color": "#15436080",
-                          "foreColor": "#000000",
-                          "from": -50000,
-                          "name": "\u003c-5σ",
-                          "to": -250
+                          "from": 1,
+                          "name": "Metal Detection events",
+                          "to": 1000
                         }
                       ]
                     },
                     "distributed": false,
-                    "enableShades": false,
+                    "enableShades": true,
                     "radius": 2,
                     "reverseNegativeShade": false,
                     "shadeIntensity": 0.8,
@@ -2985,8 +2808,8 @@
                   "style": {
                     "color": "#263238",
                     "fontFamily": "Roboto",
-                    "fontSize": "12px",
-                    "fontWeight": "normal"
+                    "fontSize": "18px",
+                    "fontWeight": "bold"
                   }
                 },
                 "tooltip": {
