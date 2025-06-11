@@ -1,0 +1,1 @@
+select * from system.dbo.materials where material_number = :material_number

@@ -217,29 +217,11 @@ def ProcessWeek(Start, End, site_id, scale_id):
 		except:
 			SystemLogger(True, "JAY", CORE_P.Utils.getError())				
 
-	#	SystemLogger(True, "JAY", "Materials:" + str(materials))
+
 		
-		#SystemLogger(True, "JAY", "Daily Data:" + str(daily_data))
-		#return #DEBUG
+		material_config = {} # Hold the materials config
 		
-# OLD VERSION		
-#				if day_key not in daily_data:
-#				    daily_data[day_key] = {hour: {'time_start': '', 'scale_weight_values': []} for hour in range(24)}
-#				    
-#				if 'time_start' not in daily_data[day_key][hour_of_day] or not daily_data[day_key][hour_of_day]['time_start']:
-#					daily_data[day_key][hour_of_day]['time_start'] = time_start
-#					SystemLogger(LoggerActive, "Weight Tracking", "Time: {}".format(time_start))
-#				
-#				if key not in daily_data[day_key][hour_of_day]:
-#				    daily_data[day_key][hour_of_day][key] = []
-#				
-#				daily_data[day_key][hour_of_day][key].append(item['value'])
-#				
-#				if key == 'scale_weight':
-#				    daily_data[day_key][hour_of_day]['scale_weight_values'].append(item['value'])
-#				    
-		#LoggerActive = True
-	#	SystemLogger(True, 'JAY', str(daily_data.items()))
+		
 		# Aggregate and calculate statistics for each tag.
 		for day, hours in daily_data.items():
 		
@@ -254,9 +236,16 @@ def ProcessWeek(Start, End, site_id, scale_id):
 						    # Store the first value directly
 						    tags[sp_tag] = tags[sp_tag][0]
 						else:
-						    # Use the last known or default value
-						    tags[sp_tag] = last_known_values.get(sp_tag, default_sp_values[sp_tag])	
-						    
+							if (material):
+								if material not in material_config:
+									material_config[material] = system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/DB_Query/Get_Material', parameters={'material_number':material})
+								
+								tags[sp_tag] = material_config[material]['
+										
+							## Use the last known or default value
+							#else:
+							#	tags[sp_tag] = last_known_values.get(sp_tag, default_sp_values[sp_tag])	
+							
 					# Setting material:
 #					for tag in ['line_material']:
 #						if tag in tags and tags[tag]:
@@ -330,8 +319,7 @@ def ProcessWeek(Start, End, site_id, scale_id):
 					        tags[tag] = values.count(2)
 					    elif tag == 'filler_reason_metal':
 					        tags[tag] = values.count(3)
-					        
-					        
+
 					        
 					 # Update last known values for next iteration
 					for tag in ['filler_sp_tag', 'filler_sp_high_tag', 'filler_sp_low_tag','line_material']:

@@ -2,6 +2,7 @@
   "custom": {},
   "params": {
     "edit": true,
+    "fill_type": "",
     "line_desc": "",
     "line_id": "",
     "line_material": "",
@@ -28,6 +29,10 @@
   },
   "propConfig": {
     "params.edit": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.fill_type": {
       "paramDirection": "input",
       "persistent": true
     },
@@ -94,42 +99,12 @@
   },
   "props": {
     "defaultSize": {
-      "height": 620,
+      "height": 652,
       "width": 880
     }
   },
   "root": {
     "children": [
-      {
-        "meta": {
-          "name": "Icon"
-        },
-        "position": {
-          "height": 95,
-          "width": 115,
-          "x": 738.5,
-          "y": 1
-        },
-        "props": {
-          "path": "material/construction"
-        },
-        "type": "ia.display.icon"
-      },
-      {
-        "meta": {
-          "name": "Type_Label"
-        },
-        "position": {
-          "height": 32,
-          "width": 140,
-          "x": 12,
-          "y": 11
-        },
-        "props": {
-          "text": "Type:"
-        },
-        "type": "ia.display.label"
-      },
       {
         "meta": {
           "name": "Type_Dropdown"
@@ -175,21 +150,6 @@
       },
       {
         "meta": {
-          "name": "Line_Label"
-        },
-        "position": {
-          "height": 32,
-          "width": 140,
-          "x": 12,
-          "y": 52
-        },
-        "props": {
-          "text": "Line:"
-        },
-        "type": "ia.display.label"
-      },
-      {
-        "meta": {
           "name": "Line_Entry"
         },
         "position": {
@@ -215,13 +175,72 @@
       },
       {
         "meta": {
+          "name": "Description_Entry"
+        },
+        "position": {
+          "height": 36,
+          "width": 536,
+          "x": 161,
+          "y": 93
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "expression": "toStr({view.params.line_desc},\"\")"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "placeholder": "Enter Description"
+        },
+        "type": "ia.input.text-field"
+      },
+      {
+        "meta": {
+          "name": "FillType"
+        },
+        "position": {
+          "height": 36,
+          "width": 172,
+          "x": 161,
+          "y": 133.5
+        },
+        "propConfig": {
+          "props.value": {
+            "binding": {
+              "config": {
+                "expression": "toStr({view.params.fill_type},\"\")"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "options": [
+            {
+              "label": "Whole Cartons",
+              "value": "cartons"
+            },
+            {
+              "label": "Individual Items",
+              "value": "items"
+            }
+          ]
+        },
+        "type": "ia.input.dropdown"
+      },
+      {
+        "meta": {
           "name": "Material_Tag"
         },
         "position": {
           "height": 39,
           "width": 721,
           "x": 158,
-          "y": 175
+          "y": 218
         },
         "propConfig": {
           "props.params.initial_tag": {
@@ -242,6 +261,240 @@
           "path": "CORE_V/Selections/chooseHistoryTagTree"
         },
         "type": "ia.display.view"
+      },
+      {
+        "meta": {
+          "name": "STARR_Unit"
+        },
+        "position": {
+          "height": 36,
+          "width": 538,
+          "x": 161,
+          "y": 260
+        },
+        "propConfig": {
+          "props.options": {
+            "binding": {
+              "config": {
+                "parameters": {
+                  "site_id": "{view.params.site_id}"
+                },
+                "queryPath": "Weight_Q/DB_Query/Get_STARR_Units_Dropdown",
+                "returnFormat": "json"
+              },
+              "type": "query"
+            }
+          },
+          "props.value": {
+            "binding": {
+              "config": {
+                "path": "view.params.starr_unit_id"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "placeholder": {
+            "text": "Select STARR Unit..."
+          },
+          "showClearIcon": true
+        },
+        "type": "ia.input.dropdown"
+      },
+      {
+        "meta": {
+          "name": "Min_Entry"
+        },
+        "position": {
+          "height": 36,
+          "width": 120,
+          "x": 161,
+          "y": 333
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "expression": "toStr({view.params.line_weight_min},\"\")"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "placeholder": "Enter Minimum Weight For Fixed Scale"
+        },
+        "type": "ia.input.text-field"
+      },
+      {
+        "meta": {
+          "name": "Max_Entry"
+        },
+        "position": {
+          "height": 36,
+          "width": 119,
+          "x": 417,
+          "y": 333
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "expression": "toStr({view.params.line_weight_max},\"\")"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "placeholder": "Enter Maximum Weight For Fixed Scale"
+        },
+        "type": "ia.input.text-field"
+      },
+      {
+        "meta": {
+          "name": "MetalRejectTag"
+        },
+        "position": {
+          "height": 39,
+          "width": 721,
+          "x": 157,
+          "y": 416
+        },
+        "propConfig": {
+          "props.params.initial_tag": {
+            "binding": {
+              "config": {
+                "expression": "toStr({view.params.metal_reject_tag},\"\")"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "params": {
+            "buttonText": "Select a tag",
+            "inputName": "Metal_Reject_Tag",
+            "selectedTag": ""
+          },
+          "path": "CORE_V/Selections/chooseHistoryTagTree"
+        },
+        "type": "ia.display.view"
+      },
+      {
+        "meta": {
+          "name": "MetalRejectTagType"
+        },
+        "position": {
+          "height": 35,
+          "width": 441,
+          "x": 150,
+          "y": 451
+        },
+        "propConfig": {
+          "props.value": {
+            "binding": {
+              "config": {
+                "path": "view.params.metal_reject_tag_type"
+              },
+              "transforms": [
+                {
+                  "code": "\tif (not value):\n\t\treturn \u0027b\u0027\n\treturn value",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "radios": [
+            {
+              "selected": true,
+              "text": "Boolean",
+              "value": "b"
+            },
+            {
+              "selected": false,
+              "text": "Counter",
+              "value": "c"
+            }
+          ]
+        },
+        "type": "ia.input.radio-group"
+      },
+      {
+        "meta": {
+          "name": "WeightRejectTag"
+        },
+        "position": {
+          "height": 39,
+          "width": 721,
+          "x": 157,
+          "y": 491
+        },
+        "propConfig": {
+          "props.params.initial_tag": {
+            "binding": {
+              "config": {
+                "expression": "toStr({view.params.weight_reject_tag},\"\")"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "params": {
+            "buttonText": "Select a tag",
+            "inputName": "Weight_Reject_Tag",
+            "selectedTag": ""
+          },
+          "path": "CORE_V/Selections/chooseHistoryTagTree"
+        },
+        "type": "ia.display.view"
+      },
+      {
+        "meta": {
+          "name": "WeightRejectTagType"
+        },
+        "position": {
+          "height": 35,
+          "width": 441,
+          "x": 150,
+          "y": 527
+        },
+        "propConfig": {
+          "props.value": {
+            "binding": {
+              "config": {
+                "path": "view.params.weight_reject_tag_type"
+              },
+              "transforms": [
+                {
+                  "code": "\tif (not value):\n\t\treturn \u0027b\u0027\n\treturn value",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "radios": [
+            {
+              "selected": true,
+              "text": "Boolean",
+              "value": "b"
+            },
+            {
+              "selected": false,
+              "text": "Counter",
+              "value": "c"
+            }
+          ]
+        },
+        "type": "ia.input.radio-group"
       },
       {
         "custom": {
@@ -265,7 +518,7 @@
           "height": 34,
           "width": 250,
           "x": 12,
-          "y": 572
+          "y": 606
         },
         "props": {
           "text": "Save Packaging Line"
@@ -273,19 +526,31 @@
         "type": "ia.input.button"
       },
       {
+        "events": {
+          "dom": {
+            "onClick": {
+              "config": {
+                "script": "\n\tsystem.perspective.closePopup(\u0027\u0027)"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
         "meta": {
-          "name": "Material_Label"
+          "name": "CancelButton"
         },
         "position": {
-          "height": 32,
-          "width": 140,
-          "x": 12,
-          "y": 179
+          "height": 34,
+          "width": 250,
+          "x": 268.5,
+          "y": 606
         },
         "props": {
-          "text": "Material Tag:"
+          "primary": false,
+          "text": "Cancel"
         },
-        "type": "ia.display.label"
+        "type": "ia.input.button"
       },
       {
         "events": {
@@ -306,7 +571,7 @@
           "height": 34,
           "width": 127,
           "x": 736.5,
-          "y": 572
+          "y": 606
         },
         "propConfig": {
           "meta.visible": {
@@ -365,31 +630,64 @@
         "type": "ia.input.oneshotbutton"
       },
       {
-        "events": {
-          "dom": {
-            "onClick": {
-              "config": {
-                "script": "\n\tsystem.perspective.closePopup(\u0027\u0027)"
-              },
-              "scope": "G",
-              "type": "script"
-            }
-          }
-        },
         "meta": {
-          "name": "CancelButton"
+          "name": "Icon"
         },
         "position": {
-          "height": 34,
-          "width": 250,
-          "x": 268.5,
-          "y": 572
+          "height": 95,
+          "width": 115,
+          "x": 738.5,
+          "y": 1
         },
         "props": {
-          "primary": false,
-          "text": "Cancel"
+          "path": "material/construction"
         },
-        "type": "ia.input.button"
+        "type": "ia.display.icon"
+      },
+      {
+        "meta": {
+          "name": "Type_Label"
+        },
+        "position": {
+          "height": 32,
+          "width": 140,
+          "x": 12,
+          "y": 11
+        },
+        "props": {
+          "text": "Type:"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Line_Label"
+        },
+        "position": {
+          "height": 32,
+          "width": 140,
+          "x": 12,
+          "y": 52
+        },
+        "props": {
+          "text": "Line:"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Material_Label"
+        },
+        "position": {
+          "height": 32,
+          "width": 140,
+          "x": 12,
+          "y": 222
+        },
+        "props": {
+          "text": "Material Tag:"
+        },
+        "type": "ia.display.label"
       },
       {
         "meta": {
@@ -408,63 +706,13 @@
       },
       {
         "meta": {
-          "name": "Description_Entry"
-        },
-        "position": {
-          "height": 36,
-          "width": 536,
-          "x": 161,
-          "y": 93
-        },
-        "propConfig": {
-          "props.text": {
-            "binding": {
-              "config": {
-                "expression": "toStr({view.params.line_desc},\"\")"
-              },
-              "type": "expr"
-            }
-          }
-        },
-        "props": {
-          "placeholder": "Enter Description"
-        },
-        "type": "ia.input.text-field"
-      },
-      {
-        "meta": {
-          "name": "Min_Entry"
-        },
-        "position": {
-          "height": 36,
-          "width": 120,
-          "x": 161,
-          "y": 299
-        },
-        "propConfig": {
-          "props.text": {
-            "binding": {
-              "config": {
-                "expression": "toStr({view.params.line_weight_min},\"\")"
-              },
-              "type": "expr"
-            }
-          }
-        },
-        "props": {
-          "placeholder": "Enter Minimum Weight For Fixed Scale"
-        },
-        "type": "ia.input.text-field"
-      },
-      {
-        "meta": {
           "name": "Min_Label"
         },
         "position": {
           "height": 32,
           "width": 140,
           "x": 12,
-          "y": 299
+          "y": 333
         },
         "props": {
           "text": "Weight Min:"
@@ -479,37 +727,12 @@
           "height": 32,
           "width": 106,
           "x": 307,
-          "y": 301
+          "y": 335
         },
         "props": {
           "text": "Weight Max:"
         },
         "type": "ia.display.label"
-      },
-      {
-        "meta": {
-          "name": "Max_Entry"
-        },
-        "position": {
-          "height": 36,
-          "width": 119,
-          "x": 417,
-          "y": 299
-        },
-        "propConfig": {
-          "props.text": {
-            "binding": {
-              "config": {
-                "expression": "toStr({view.params.line_weight_max},\"\")"
-              },
-              "type": "expr"
-            }
-          }
-        },
-        "props": {
-          "placeholder": "Enter Maximum Weight For Fixed Scale"
-        },
-        "type": "ia.input.text-field"
       },
       {
         "custom": {
@@ -537,7 +760,7 @@
           },
           "width": 30,
           "x": 574.979,
-          "y": 302
+          "y": 336
         },
         "props": {
           "path": "material/help",
@@ -549,53 +772,13 @@
       },
       {
         "meta": {
-          "name": "STARR_Unit"
-        },
-        "position": {
-          "height": 36,
-          "width": 538,
-          "x": 161,
-          "y": 217
-        },
-        "propConfig": {
-          "props.options": {
-            "binding": {
-              "config": {
-                "parameters": {
-                  "site_id": "{view.params.site_id}"
-                },
-                "queryPath": "Weight_Q/DB_Query/Get_STARR_Units_Dropdown",
-                "returnFormat": "json"
-              },
-              "type": "query"
-            }
-          },
-          "props.value": {
-            "binding": {
-              "config": {
-                "path": "view.params.starr_unit_id"
-              },
-              "type": "property"
-            }
-          }
-        },
-        "props": {
-          "placeholder": {
-            "text": "Select STARR Unit..."
-          },
-          "showClearIcon": true
-        },
-        "type": "ia.input.dropdown"
-      },
-      {
-        "meta": {
           "name": "Material_Label_0"
         },
         "position": {
           "height": 32,
           "width": 140,
           "x": 12,
-          "y": 219
+          "y": 262
         },
         "props": {
           "text": "STARR Unit:"
@@ -610,7 +793,7 @@
           "height": 32,
           "width": 82,
           "x": 12,
-          "y": 144
+          "y": 187
         },
         "props": {
           "text": "Material",
@@ -628,7 +811,7 @@
           "height": 32,
           "width": 688,
           "x": 162,
-          "y": 145
+          "y": 188
         },
         "props": {
           "style": {
@@ -646,7 +829,7 @@
           "height": 32,
           "width": 192,
           "x": 12,
-          "y": 269
+          "y": 303
         },
         "props": {
           "text": "Graph Y-axis min/max",
@@ -658,43 +841,13 @@
       },
       {
         "meta": {
-          "name": "MetalRejectTag"
-        },
-        "position": {
-          "height": 39,
-          "width": 721,
-          "x": 157,
-          "y": 382
-        },
-        "propConfig": {
-          "props.params.initial_tag": {
-            "binding": {
-              "config": {
-                "expression": "toStr({view.params.metal_reject_tag},\"\")"
-              },
-              "type": "expr"
-            }
-          }
-        },
-        "props": {
-          "params": {
-            "buttonText": "Select a tag",
-            "inputName": "Metal_Reject_Tag",
-            "selectedTag": ""
-          },
-          "path": "CORE_V/Selections/chooseHistoryTagTree"
-        },
-        "type": "ia.display.view"
-      },
-      {
-        "meta": {
           "name": "Material_Label_5"
         },
         "position": {
           "height": 32,
           "width": 140,
           "x": 11,
-          "y": 386
+          "y": 420
         },
         "props": {
           "text": "Metal Reject Tag:"
@@ -709,7 +862,7 @@
           "height": 32,
           "width": 154,
           "x": 11,
-          "y": 351
+          "y": 385
         },
         "props": {
           "text": "Reject counters",
@@ -721,132 +874,18 @@
       },
       {
         "meta": {
-          "name": "MetalRejectTagType"
-        },
-        "position": {
-          "height": 35,
-          "width": 441,
-          "x": 150,
-          "y": 417
-        },
-        "propConfig": {
-          "props.value": {
-            "binding": {
-              "config": {
-                "path": "view.params.metal_reject_tag_type"
-              },
-              "transforms": [
-                {
-                  "code": "\tif (not value):\n\t\treturn \u0027b\u0027\n\treturn value",
-                  "type": "script"
-                }
-              ],
-              "type": "property"
-            }
-          }
-        },
-        "props": {
-          "radios": [
-            {
-              "selected": true,
-              "text": "Boolean",
-              "value": "b"
-            },
-            {
-              "selected": false,
-              "text": "Counter",
-              "value": "c"
-            }
-          ]
-        },
-        "type": "ia.input.radio-group"
-      },
-      {
-        "meta": {
           "name": "Material_Label_6"
         },
         "position": {
           "height": 32,
           "width": 140,
           "x": 11,
-          "y": 423
+          "y": 457
         },
         "props": {
           "text": "Metal Tag Type:"
         },
         "type": "ia.display.label"
-      },
-      {
-        "meta": {
-          "name": "WeightRejectTagType"
-        },
-        "position": {
-          "height": 35,
-          "width": 441,
-          "x": 150,
-          "y": 493
-        },
-        "propConfig": {
-          "props.value": {
-            "binding": {
-              "config": {
-                "path": "view.params.weight_reject_tag_type"
-              },
-              "transforms": [
-                {
-                  "code": "\tif (not value):\n\t\treturn \u0027b\u0027\n\treturn value",
-                  "type": "script"
-                }
-              ],
-              "type": "property"
-            }
-          }
-        },
-        "props": {
-          "radios": [
-            {
-              "selected": true,
-              "text": "Boolean",
-              "value": "b"
-            },
-            {
-              "selected": false,
-              "text": "Counter",
-              "value": "c"
-            }
-          ]
-        },
-        "type": "ia.input.radio-group"
-      },
-      {
-        "meta": {
-          "name": "WeightRejectTag"
-        },
-        "position": {
-          "height": 39,
-          "width": 721,
-          "x": 157,
-          "y": 457
-        },
-        "propConfig": {
-          "props.params.initial_tag": {
-            "binding": {
-              "config": {
-                "expression": "toStr({view.params.weight_reject_tag},\"\")"
-              },
-              "type": "expr"
-            }
-          }
-        },
-        "props": {
-          "params": {
-            "buttonText": "Select a tag",
-            "inputName": "Weight_Reject_Tag",
-            "selectedTag": ""
-          },
-          "path": "CORE_V/Selections/chooseHistoryTagTree"
-        },
-        "type": "ia.display.view"
       },
       {
         "meta": {
@@ -856,7 +895,7 @@
           "height": 32,
           "width": 140,
           "x": 11,
-          "y": 461
+          "y": 495
         },
         "props": {
           "text": "Weight Reject Tag:"
@@ -871,10 +910,43 @@
           "height": 32,
           "width": 140,
           "x": 11,
-          "y": 498
+          "y": 532
         },
         "props": {
           "text": "Weight Tag Type:"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Material_Label_4"
+        },
+        "position": {
+          "height": 32,
+          "width": 140,
+          "x": 12,
+          "y": 132.5
+        },
+        "props": {
+          "text": "Fill type:"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Material_Label_10"
+        },
+        "position": {
+          "height": 32,
+          "width": 437,
+          "x": 342,
+          "y": 135.5
+        },
+        "props": {
+          "style": {
+            "classes": "CORE_S/Page/Text"
+          },
+          "text": "(eg, are weighing the carton, or the individual block of cheese?)"
         },
         "type": "ia.display.label"
       }

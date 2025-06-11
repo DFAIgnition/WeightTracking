@@ -1,2 +1,2 @@
-SELECT		type_id,type_name
+SELECT		*
 FROM 		weight.dbo.type

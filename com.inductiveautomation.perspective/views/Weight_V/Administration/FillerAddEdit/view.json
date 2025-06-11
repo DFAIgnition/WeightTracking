@@ -149,8 +149,8 @@
   },
   "props": {
     "defaultSize": {
-      "height": 448,
-      "width": 881
+      "height": 428,
+      "width": 788
     }
   },
   "root": {
@@ -162,7 +162,7 @@
         "position": {
           "height": 95,
           "width": 115,
-          "x": 650,
+          "x": 653,
           "y": 23.5
         },
         "props": {
@@ -177,7 +177,7 @@
         "position": {
           "height": 32,
           "width": 140,
-          "x": 4,
+          "x": 7,
           "y": 15
         },
         "props": {
@@ -192,7 +192,7 @@
         "position": {
           "height": 36,
           "width": 256,
-          "x": 52,
+          "x": 65,
           "y": 13
         },
         "propConfig": {
@@ -238,7 +238,7 @@
         "position": {
           "height": 32,
           "width": 140,
-          "x": 4,
+          "x": 7,
           "y": 55
         },
         "props": {
@@ -253,7 +253,7 @@
         "position": {
           "height": 36,
           "width": 256,
-          "x": 52,
+          "x": 65,
           "y": 53
         },
         "propConfig": {
@@ -278,7 +278,7 @@
         "position": {
           "height": 32,
           "width": 140,
-          "x": 4,
+          "x": 7,
           "y": 95
         },
         "props": {
@@ -293,7 +293,7 @@
         "position": {
           "height": 36,
           "width": 256,
-          "x": 52,
+          "x": 65,
           "y": 93
         },
         "propConfig": {
@@ -336,8 +336,8 @@
         "position": {
           "height": 39,
           "width": 721,
-          "x": 154,
-          "y": 181.5
+          "x": 62,
+          "y": 232.5
         },
         "propConfig": {
           "props.params.initial_tag": {
@@ -365,13 +365,14 @@
           "tooltip": {
             "enabled": true,
             "text": "SP Low"
-          }
+          },
+          "visible": false
         },
         "position": {
           "height": 36,
           "width": 100,
-          "x": 52,
-          "y": 183
+          "x": 436.5,
+          "y": 11.5
         },
         "propConfig": {
           "props.text": {
@@ -398,10 +399,11 @@
         "position": {
           "height": 32,
           "width": 50,
-          "y": 185
+          "x": 6,
+          "y": 236
         },
         "props": {
-          "text": "SP L:"
+          "text": "Low:"
         },
         "type": "ia.display.label"
       },
@@ -411,11 +413,12 @@
         },
         "position": {
           "height": 32,
-          "width": 50,
-          "y": 227
+          "width": 62,
+          "x": 6,
+          "y": 278
         },
         "props": {
-          "text": "SP:"
+          "text": "Target:"
         },
         "type": "ia.display.label"
       },
@@ -425,13 +428,14 @@
           "tooltip": {
             "enabled": true,
             "text": "SP Low"
-          }
+          },
+          "visible": false
         },
         "position": {
           "height": 36,
           "width": 100,
-          "x": 52,
-          "y": 225
+          "x": 436.5,
+          "y": 53.5
         },
         "propConfig": {
           "props.text": {
@@ -458,8 +462,8 @@
         "position": {
           "height": 39,
           "width": 721,
-          "x": 154,
-          "y": 223.5
+          "x": 62,
+          "y": 274.5
         },
         "propConfig": {
           "props.params.initial_tag": {
@@ -487,11 +491,12 @@
         },
         "position": {
           "height": 32,
-          "width": 50,
-          "y": 268
+          "width": 69,
+          "x": 6,
+          "y": 319
         },
         "props": {
-          "text": "SP H:"
+          "text": "High:"
         },
         "type": "ia.display.label"
       },
@@ -501,13 +506,14 @@
           "tooltip": {
             "enabled": true,
             "text": "SP Low"
-          }
+          },
+          "visible": false
         },
         "position": {
           "height": 36,
           "width": 100,
-          "x": 52,
-          "y": 266
+          "x": 436.5,
+          "y": 94.5
         },
         "propConfig": {
           "props.text": {
@@ -534,8 +540,8 @@
         "position": {
           "height": 39,
           "width": 721,
-          "x": 154,
-          "y": 264.5
+          "x": 62,
+          "y": 315.5
         },
         "propConfig": {
           "props.params.initial_tag": {
@@ -578,7 +584,7 @@
         "position": {
           "height": 34,
           "width": 250,
-          "x": 11.75,
+          "x": 14.75,
           "y": 382
         },
         "props": {
@@ -604,7 +610,7 @@
         "position": {
           "height": 34,
           "width": 127,
-          "x": 736.25,
+          "x": 641.25,
           "y": 382
         },
         "propConfig": {
@@ -681,7 +687,7 @@
         "position": {
           "height": 34,
           "width": 250,
-          "x": 268.25,
+          "x": 271.25,
           "y": 382
         },
         "props": {
@@ -697,8 +703,8 @@
         "position": {
           "height": 32,
           "width": 50,
-          "x": 1,
-          "y": 309
+          "x": 6,
+          "y": 133
         },
         "props": {
           "text": "Scale:"
@@ -711,13 +717,14 @@
           "tooltip": {
             "enabled": true,
             "text": "Design in units selected"
-          }
+          },
+          "visible": false
         },
         "position": {
           "height": 36,
           "width": 100,
-          "x": 53,
-          "y": 307
+          "x": 321,
+          "y": 89
         },
         "propConfig": {
           "props.text": {
@@ -743,9 +750,9 @@
         },
         "position": {
           "height": 39,
-          "width": 721,
-          "x": 155,
-          "y": 305.5
+          "width": 716,
+          "x": 62,
+          "y": 129.5
         },
         "propConfig": {
           "props.params.initial_tag": {
@@ -792,7 +799,7 @@
             "anchor": "50% 37%"
           },
           "width": 54,
-          "x": 563.979,
+          "x": 566.979,
           "y": 46.5
         },
         "props": {
@@ -802,6 +809,21 @@
           }
         },
         "type": "ia.display.icon"
+      },
+      {
+        "meta": {
+          "name": "Setpoint_Low_Label_0"
+        },
+        "position": {
+          "height": 32,
+          "width": 776,
+          "x": 7,
+          "y": 200.5
+        },
+        "props": {
+          "text": "Set Points (optional - will use tag value if given, or Material defaults otherwise)"
+        },
+        "type": "ia.display.label"
       }
     ],
     "meta": {

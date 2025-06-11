@@ -94,14 +94,20 @@
               "props.value": {
                 "binding": {
                   "config": {
-                    "expression": "addMonths(now(0), -1)"
+                    "expression": "1"
                   },
+                  "transforms": [
+                    {
+                      "code": "\treturn CORE_P.Time.adjustTimestamp(offset_hours\u003d(-24*30), rounding\u003d\u0027hourdown\u0027)",
+                      "type": "script"
+                    }
+                  ],
                   "type": "expr"
                 }
               }
             },
             "props": {
-              "formattedValue": "Apr 29, 2025 4:23 PM",
+              "formattedValue": "May 13, 2025 8:00 AM",
               "pickerType": "date",
               "style": {
                 "marginRight": 10,
@@ -153,14 +159,20 @@
               "props.value": {
                 "binding": {
                   "config": {
-                    "expression": "now(0)"
+                    "expression": "1"
                   },
+                  "transforms": [
+                    {
+                      "code": "\treturn CORE_P.Time.adjustTimestamp(rounding\u003d\u0027hourdown\u0027)",
+                      "type": "script"
+                    }
+                  ],
                   "type": "expr"
                 }
               }
             },
             "props": {
-              "formattedValue": "May 29, 2025 4:23 PM",
+              "formattedValue": "Jun 12, 2025 8:00 AM",
               "pickerType": "date",
               "style": {
                 "marginRight": 10,
@@ -342,7 +354,7 @@
               "dom": {
                 "onClick": {
                   "config": {
-                    "script": "\t\n\tself.session.custom.aggregator.progress_scale \u003d 0\n\tself.session.custom.aggregator.progress_week \u003d 0\n\t\n\t# Use the function\n\tstart_time \u003d self.parent.parent.getChild(\"StartTime\").getChild(\"Start\").props.value\n\tend_time \u003d self.parent.parent.getChild(\"EndTime\").getChild(\"End\").props.value\n\tsite_id \u003d self.parent.parent.getChild(\"CurrentSite\").props.params.site_id\n\tscale_id \u003d self.parent.parent.getChild(\"ScaleSelection\").getChild(\"Scale\").props.value\n\tsystem.util.invokeAsynchronous(Weight_P.Aggregator.GetBuckets, args\u003d(start_time, end_time,site_id,scale_id))\n\t\n\t"
+                    "script": "\t\n\tself.session.custom.aggregator.progress_scale \u003d 0\n\tself.session.custom.aggregator.progress_week \u003d 0\n\t\n\t# Use the function\n\tstart_time \u003d self.parent.parent.getChild(\"StartTime\").getChild(\"Start\").props.value\n\tend_time \u003d self.parent.parent.getChild(\"EndTime\").getChild(\"End\").props.value\n\tsite_id \u003d self.parent.parent.getChild(\"CurrentSite\").props.params.site_id\n\tscale_id \u003d self.parent.parent.getChild(\"ScaleSelection\").getChild(\"Scale\").props.value\n\tsystem.util.invokeAsynchronous(Weight_P.Aggregator.GetBuckets, args\u003d(start_time, end_time,site_id,scale_id))\n\t\n\t\n\t#-----------------------------------------------------------------------\n\t# Call the Update Reject bit too\n\t#-----------------------------------------------------------------------\n\tparameters \u003d {\u0027scale_id\u0027:scale_id, \u0027site_id\u0027:site_id}\n\tlines \u003d CORE_P.Utils.datasetToDicts(system.db.runNamedQuery(\n\t\tproject\u003dsystem.project.getProjectName(), \n\t\tpath\u003d\u0027Weight_Q/DB_Query/Get_Lines_By_Scale_Id\u0027, \n\t\tparameters\u003dparameters))\n\t\n\t#logger.warn(\u0027DEBUG: Found these scales:\u0027 + str(scales))\t\n\tif len(lines)\u003d\u003d0:\n\t\treturn # Nothing to do here\n\t\t\t\n\t# Only need to process each line once (even though it might have multiple fillers/scales\n\tfor line in lines:\n\t\tsystem.util.invokeAsynchronous(Weight_P.Aggregator.ProcessRejects, args\u003d(start_time, end_time,line))\n"
                   },
                   "scope": "G",
                   "type": "script"

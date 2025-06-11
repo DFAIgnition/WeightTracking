@@ -28,6 +28,13 @@
     "lastModification": {
       "actor": "system",
       "timestamp": "2022-01-01T00:00:00Z"
-    }
+    },
+    "parameters": [
+      {
+        "type": "Parameter",
+        "identifier": "material_number",
+        "sqlType": 7
+      }
+    ]
   }
 }

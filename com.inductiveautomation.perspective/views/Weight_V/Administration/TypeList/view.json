@@ -55,7 +55,7 @@
               "dom": {
                 "onClick": {
                   "config": {
-                    "script": "\t\t\n\t# Make sure we have edit permission to do this\n\tif (not CORE_P.User.hasPermission(self, Constants_P.PROJECT[\u0027project_name\u0027], \u0027SITEADMIN\u0027)):\n\t\treturn\n\t\t\t\n\t# Opens a popup view. We are passing in two parameters, called \"myParam\" and \"myParam2\". We also set some additional properties of the popup.\n\tsystem.perspective.openPopup(\"TypeAddEdit\",\n\t\t\t\t\t\t\t\t  \u0027Weight_V/Administration/TypeAddEdit\u0027, \n\t\t\t\t\t\t\t\t  params \u003d {\u0027type_id\u0027:\u0027\u0027,\n\t\t\t\t\t\t\t\t  \t\t\t\u0027type_name\u0027:\u0027\u0027,\n\t\t\t\t\t\t\t\t  \t\t\t\u0027edit\u0027:False,\n\t\t\t\t\t\t\t\t  \t\t\t}, \n\t\t\t\t\t\t\t\t  showCloseIcon \u003d True, \n\t\t\t\t\t\t\t\t  title \u003d \u0027Add Packaging Line Type\u0027, \n\t\t\t\t\t\t\t\t  modal \u003d True)\t"
+                    "script": "\t\t\n\t# Make sure we have edit permission to do this\n\tif (not CORE_P.User.hasPermission(self, Constants_P.PROJECT[\u0027project_name\u0027], \u0027SITEADMIN\u0027)):\n\t\treturn\n\t\t\t\n\t# Opens a popup view. We are passing in two parameters, called \"myParam\" and \"myParam2\". We also set some additional properties of the popup.\n\tsystem.perspective.openPopup(\"TypeAddEdit\",\n\t\t\t\t\t\t\t\t  \u0027Weight_V/Administration/TypeAddEdit\u0027, \n\t\t\t\t\t\t\t\t  params \u003d {\u0027type_id\u0027:\u0027\u0027,\n\t\t\t\t\t\t\t\t  \t\t\t\u0027type_name\u0027:\u0027\u0027,\n\t\t\t\t\t\t\t\t  \t\t\t\u0027fill_type\u0027:\u0027item\u0027,\n\t\t\t\t\t\t\t\t  \t\t\t\u0027edit\u0027:False,\n\t\t\t\t\t\t\t\t  \t\t\t}, \n\t\t\t\t\t\t\t\t  showCloseIcon \u003d True, \n\t\t\t\t\t\t\t\t  title \u003d \u0027Add Packaging Line Type\u0027, \n\t\t\t\t\t\t\t\t  modal \u003d True)\t"
                   },
                   "scope": "G",
                   "type": "script"
@@ -122,7 +122,7 @@
           "component": {
             "onRowDoubleClick": {
               "config": {
-                "script": "\t\n\t# Make sure we have edit permission to do this\n\tif (not CORE_P.User.hasPermission(self, Constants_P.PROJECT[\u0027project_name\u0027], \u0027SITEADMIN\u0027)):\n\t\treturn\n\t\t\t\n\t# Opens a popup view. We are passing in two parameters, called \"myParam\" and \"myParam2\". We also set some additional properties of the popup.\n\tsystem.perspective.openPopup(\"TypeAddEdit\",\n\t\t\t\t\t\t\t\t  \u0027Weight_V/Administration/TypeAddEdit\u0027, \n\t\t\t\t\t\t\t\t  params \u003d {\u0027type_id\u0027:event.value[\u0027type_id\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027type_name\u0027:event.value[\u0027type_name\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027edit\u0027:True,\n\t\t\t\t\t\t\t\t  \t\t\t}, \n\t\t\t\t\t\t\t\t  showCloseIcon \u003d True, \n\t\t\t\t\t\t\t\t  title \u003d \u0027Edit Packaging Line Type\u0027, \n\t\t\t\t\t\t\t\t  modal \u003d True)\t"
+                "script": "\t\n\t# Make sure we have edit permission to do this\n\tif (not CORE_P.User.hasPermission(self, Constants_P.PROJECT[\u0027project_name\u0027], \u0027SITEADMIN\u0027)):\n\t\treturn\n\t\t\t\n\t# Opens a popup view. We are passing in two parameters, called \"myParam\" and \"myParam2\". We also set some additional properties of the popup.\n\tsystem.perspective.openPopup(\"TypeAddEdit\",\n\t\t\t\t\t\t\t\t  \u0027Weight_V/Administration/TypeAddEdit\u0027, \n\t\t\t\t\t\t\t\t  params \u003d {\u0027type_id\u0027:event.value[\u0027type_id\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027type_name\u0027:event.value[\u0027type_name\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027fill_type\u0027:event.value[\u0027fill_type\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027edit\u0027:True,\n\t\t\t\t\t\t\t\t  \t\t\t}, \n\t\t\t\t\t\t\t\t  showCloseIcon \u003d True, \n\t\t\t\t\t\t\t\t  title \u003d \u0027Edit Packaging Line Type\u0027, \n\t\t\t\t\t\t\t\t  modal \u003d True)\t"
               },
               "scope": "G",
               "type": "script"
@@ -349,6 +349,98 @@
               "viewPath": "",
               "visible": false,
               "width": 100
+            },
+            {
+              "align": "center",
+              "boolean": "checkbox",
+              "dateFormat": "MM/DD/YYYY",
+              "editable": false,
+              "field": "fill_type",
+              "filter": {
+                "boolean": {
+                  "condition": ""
+                },
+                "date": {
+                  "condition": "",
+                  "value": ""
+                },
+                "enabled": false,
+                "number": {
+                  "condition": "",
+                  "value": ""
+                },
+                "string": {
+                  "condition": "",
+                  "value": ""
+                },
+                "visible": "on-hover"
+              },
+              "footer": {
+                "align": "center",
+                "justify": "left",
+                "style": {
+                  "classes": ""
+                },
+                "title": ""
+              },
+              "header": {
+                "align": "center",
+                "justify": "left",
+                "style": {
+                  "classes": ""
+                },
+                "title": "Fill Type"
+              },
+              "justify": "auto",
+              "nullFormat": {
+                "includeNullStrings": false,
+                "nullFormatValue": "",
+                "strict": false
+              },
+              "number": "value",
+              "numberFormat": "0,0.##",
+              "progressBar": {
+                "bar": {
+                  "color": "",
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                "max": 100,
+                "min": 0,
+                "track": {
+                  "color": "",
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                "value": {
+                  "enabled": true,
+                  "format": "0,0.##",
+                  "justify": "center",
+                  "style": {
+                    "classes": ""
+                  }
+                }
+              },
+              "render": "auto",
+              "resizable": true,
+              "sort": "none",
+              "sortable": true,
+              "strictWidth": false,
+              "style": {
+                "classes": ""
+              },
+              "toggleSwitch": {
+                "color": {
+                  "selected": "",
+                  "unselected": ""
+                }
+              },
+              "viewParams": {},
+              "viewPath": "",
+              "visible": true,
+              "width": ""
             }
           ],
           "dragOrderable": false,

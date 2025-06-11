@@ -2,6 +2,7 @@
   "custom": {},
   "params": {
     "edit": true,
+    "fill_type": "item",
     "type_id": "",
     "type_name": ""
   },
@@ -11,6 +12,10 @@
   },
   "propConfig": {
     "params.edit": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.fill_type": {
       "paramDirection": "input",
       "persistent": true
     },
@@ -30,41 +35,11 @@
   "props": {
     "defaultSize": {
       "height": 147,
-      "width": 880
+      "width": 571
     }
   },
   "root": {
     "children": [
-      {
-        "meta": {
-          "name": "Icon"
-        },
-        "position": {
-          "height": 95,
-          "width": 115,
-          "x": 738.5,
-          "y": 1
-        },
-        "props": {
-          "path": "material/construction"
-        },
-        "type": "ia.display.icon"
-      },
-      {
-        "meta": {
-          "name": "Type_Label"
-        },
-        "position": {
-          "height": 32,
-          "width": 140,
-          "x": 12,
-          "y": 10
-        },
-        "props": {
-          "text": "Type:"
-        },
-        "type": "ia.display.label"
-      },
       {
         "meta": {
           "name": "Type_Entry"
@@ -91,6 +66,40 @@
         "type": "ia.input.text-field"
       },
       {
+        "meta": {
+          "name": "FillType"
+        },
+        "position": {
+          "height": 36,
+          "width": 134,
+          "x": 161,
+          "y": 49.5
+        },
+        "propConfig": {
+          "props.value": {
+            "binding": {
+              "config": {
+                "expression": "toStr({view.params.fill_type},\"\")"
+              },
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "options": [
+            {
+              "label": "Item",
+              "value": "item"
+            },
+            {
+              "label": "Case",
+              "value": "case"
+            }
+          ]
+        },
+        "type": "ia.input.dropdown"
+      },
+      {
         "custom": {
           "exists": 0
         },
@@ -98,7 +107,7 @@
           "dom": {
             "onClick": {
               "config": {
-                "script": "\t\n\t# Get all the parameters we need to save\n\ttype_id\t\t\t\u003d self.view.params.type_id\n\ttype_name\t\t\u003d self.getSibling(\"Type_Entry\").props.text\n\tedit\t\t\t\u003d self.view.params.edit\n\t\n\t\n\t# Do some validation...make sure everything has been entered correctly\n\t\n\tnamedQuery \u003d \"Weight_Q/DB_Scalar/Count_Type\"\n\tparameters \u003d {\n\t\t\u0027type_name\u0027:\t\ttype_name\n\t}\n\t\n\texists \u003d system.db.runNamedQuery(system.project.getProjectName(), namedQuery, parameters)\n\t\n\t\n\tif exists \u003e 0:\n\t\tCORE_P.Utils.errorPopup(\u0027A line type with that name already exists.\u0027) \n\t\treturn\n\t\t\t\n\t\n\ttxId \u003d system.db.beginTransaction(timeout\u003d5000)\n\n\ttry:\n\t\n\t\tif edit \u003d\u003d False:\n\t\n\t\t\tnamedQuery \u003d \"Weight_Q/DB_Insert/Insert_Type\"\n\t\t\tparameters \u003d {\n\t\t\t\t\u0027type_name\u0027:\t\ttype_name\n\t\t\t}\n\t\t\t\n\t\telse:\n\t\t\n\t\t\tnamedQuery \u003d \"Weight_Q/DB_Update/Update_Type\"\n\t\t\tparameters \u003d {\n\t\t\t\t\u0027type_id\u0027:\t\t\ttype_id, \n\t\t\t\t\u0027type_name\u0027:\t\ttype_name,\n\t\t\t}\n\t\t\t\n\t\taffected_rows \u003d system.db.runNamedQuery(system.project.getProjectName(), namedQuery, parameters,tx\u003dtxId)\n\t\t\n\t\tmessage \u003d  \u0027Added/Edited new packaging line type:\u0027 + str(parameters)\n\t\t\n\t\t# Audit log\n\t\tCORE_P.Utils.logChanges(self, \n                     \u0027AddEditPackagingLineType\u0027,\n                     message, \n                     txId\u003dtxId,\n                    )\n\t\tsystem.db.commitTransaction(txId)\n                        \t\t\t\n\t\t# Update the table with lines \n\t\tsystem.perspective.sendMessage(\"update_bindings\", payload \u003d {}, scope \u003d \"page\")\n\n\t\tCORE_P.Utils.showSuccess(self, \"Saved!\") \n\t\t\n\t\tsystem.perspective.closePopup(\u0027\u0027)\n\n\texcept:\n\t\tsystem.db.rollbackTransaction(txId)\n\t\tCORE_P.Utils.errorPopup(\u0027Error adding/editing Packaging Line Type:\u0027) #  + str(sys.exc_info())\n"
+                "script": "\t\n\t# Get all the parameters we need to save\n\ttype_id\t\t\t\u003d self.view.params.type_id\n\ttype_name\t\t\u003d self.getSibling(\"Type_Entry\").props.text\n\tedit\t\t\t\u003d self.view.params.edit\n\tfill_type\t\t\u003d self.getSibling(\"FillType\").props.value\n\t\n\t# Do some validation...make sure everything has been entered correctly\n\t\n\tnamedQuery \u003d \"Weight_Q/DB_Scalar/Count_Type\"\n\tparameters \u003d {\n\t\t\u0027type_name\u0027:\ttype_name, \n\t\t\u0027type_id\u0027:\t\ttype_id\n\t}\n\t\n\texists \u003d system.db.runNamedQuery(system.project.getProjectName(), namedQuery, parameters)\n\t\n\t\n\tif exists \u003e 0:\n\t\tCORE_P.Utils.errorPopup(\u0027A line type with that name already exists.\u0027) \n\t\treturn\n\t\t\t\n\t\n\ttxId \u003d system.db.beginTransaction(timeout\u003d5000)\n\n\ttry:\n\t\n\t\tif edit \u003d\u003d False:\n\t\n\t\t\tnamedQuery \u003d \"Weight_Q/DB_Insert/Insert_Type\"\n\t\t\tparameters \u003d {\n\t\t\t\t\u0027type_name\u0027:\t\ttype_name,\n\t\t\t\t\u0027fill_type\u0027:\t\tfill_type\n\t\t\t}\n\t\t\t\n\t\telse:\n\t\t\n\t\t\tnamedQuery \u003d \"Weight_Q/DB_Update/Update_Type\"\n\t\t\tparameters \u003d {\n\t\t\t\t\u0027type_id\u0027:\t\t\ttype_id, \n\t\t\t\t\u0027type_name\u0027:\t\ttype_name,\n\t\t\t\t\u0027fill_type\u0027:\t\tfill_type\n\t\t\t}\n\t\t\t\n\t\taffected_rows \u003d system.db.runNamedQuery(system.project.getProjectName(), namedQuery, parameters,tx\u003dtxId)\n\t\t\n\t\tmessage \u003d  \u0027Added/Edited new packaging line type:\u0027 + str(parameters)\n\t\t\n\t\t# Audit log\n\t\tCORE_P.Utils.logChanges(self, \n                     \u0027AddEditPackagingLineType\u0027,\n                     message, \n                     txId\u003dtxId,\n                    )\n\t\tsystem.db.commitTransaction(txId)\n                        \t\t\t\n\t\t# Update the table with lines \n\t\tsystem.perspective.sendMessage(\"update_bindings\", payload \u003d {}, scope \u003d \"page\")\n\n\t\tCORE_P.Utils.showSuccess(self, \"Saved!\") \n\t\t\n\t\tsystem.perspective.closePopup(\u0027\u0027)\n\n\texcept:\n\t\tsystem.db.rollbackTransaction(txId)\n\t\tCORE_P.Utils.errorPopup(\u0027Error adding/editing Packaging Line Type:\u0027) #  + str(sys.exc_info())\n"
               },
               "scope": "G",
               "type": "script"
@@ -121,6 +130,33 @@
       },
       {
         "events": {
+          "dom": {
+            "onClick": {
+              "config": {
+                "script": "\n\tsystem.perspective.closePopup(\u0027\u0027)"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "CancelButton"
+        },
+        "position": {
+          "height": 34,
+          "width": 148,
+          "x": 268,
+          "y": 100
+        },
+        "props": {
+          "primary": false,
+          "text": "Cancel"
+        },
+        "type": "ia.input.button"
+      },
+      {
+        "events": {
           "component": {
             "onActionPerformed": {
               "config": {
@@ -137,7 +173,7 @@
         "position": {
           "height": 34,
           "width": 127,
-          "x": 736,
+          "x": 430,
           "y": 100
         },
         "propConfig": {
@@ -197,31 +233,49 @@
         "type": "ia.input.oneshotbutton"
       },
       {
-        "events": {
-          "dom": {
-            "onClick": {
-              "config": {
-                "script": "\n\tsystem.perspective.closePopup(\u0027\u0027)"
-              },
-              "scope": "G",
-              "type": "script"
-            }
-          }
-        },
         "meta": {
-          "name": "CancelButton"
+          "name": "Icon"
         },
         "position": {
-          "height": 34,
-          "width": 250,
-          "x": 268,
-          "y": 100
+          "height": 95,
+          "width": 115,
+          "x": 432.5,
+          "y": 1
         },
         "props": {
-          "primary": false,
-          "text": "Cancel"
+          "path": "material/construction"
         },
-        "type": "ia.input.button"
+        "type": "ia.display.icon"
+      },
+      {
+        "meta": {
+          "name": "Type_Label"
+        },
+        "position": {
+          "height": 32,
+          "width": 140,
+          "x": 12,
+          "y": 10
+        },
+        "props": {
+          "text": "Type Name:"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Type_Label_0"
+        },
+        "position": {
+          "height": 32,
+          "width": 140,
+          "x": 12,
+          "y": 50.5
+        },
+        "props": {
+          "text": "Fill Type:"
+        },
+        "type": "ia.display.label"
       }
     ],
     "meta": {

@@ -1,1 +1,1 @@
-SELECT COUNT(*) FROM weight.dbo.type WHERE type_name = :type_name
+SELECT COUNT(*) FROM weight.dbo.type WHERE type_name = :type_name and type_id != :type_id

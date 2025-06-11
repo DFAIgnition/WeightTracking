@@ -448,7 +448,7 @@
               },
               "viewParams": {},
               "viewPath": "",
-              "visible": true,
+              "visible": false,
               "width": 100
             },
             {
@@ -540,7 +540,7 @@
               },
               "viewParams": {},
               "viewPath": "",
-              "visible": true,
+              "visible": false,
               "width": 100
             },
             {
@@ -632,7 +632,7 @@
               },
               "viewParams": {},
               "viewPath": "",
-              "visible": true,
+              "visible": false,
               "width": 100
             },
             {
@@ -724,7 +724,7 @@
               },
               "viewParams": {},
               "viewPath": "",
-              "visible": true,
+              "visible": false,
               "width": 100
             },
             {
