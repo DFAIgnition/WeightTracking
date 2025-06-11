@@ -529,7 +529,10 @@ def GetBucketsGlobal(Start, End, site_id=0, scale_id=0):
 		scale_data = ProcessWeek(weekStart.getTime(),weekEnd.getTime(), site_id, scale_id)
 		insertOrUpdateBucketData(scale_data,weekStart.getTime(), weekEnd.getTime())
 		
-
+		
+def RecalcAggregates(Start, End, site_id=0, scale_id=0):
+	scale_data = ProcessWeek(Start,End, site_id, scale_id)
+	insertOrUpdateBucketData(scale_data,Start,End)
 
 ###############################################################
 # UpdateRejects
@@ -558,7 +561,6 @@ def UpdateRejects():
 # ProcessRejects
 ###############################################################
 def ProcessRejects(start_dt, end_dt, line):
-	
 	
 	hour_start = start_dt
 	
