@@ -563,6 +563,9 @@ def UpdateRejects():
 def ProcessRejects(start_dt, end_dt, line):
 	
 	hour_start = start_dt
+	# Don't process times in the future (or where the current hour isn't yet finished
+	if (end_dt>CORE_P.Time.adjustTimestamp(rounding='hourdown')):
+		end_dt = CORE_P.Time.adjustTimestamp(rounding='hourdown')
 	
 	# Get all the materials from STARR, if we have them	
 	materials=[]

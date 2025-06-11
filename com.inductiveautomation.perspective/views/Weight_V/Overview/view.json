@@ -82,7 +82,7 @@
     "selection": {}
   },
   "params": {
-    "timeZoneID": "Pacific/Auckland"
+    "timeZoneID": ""
   },
   "propConfig": {
     "custom.aggregator": {
@@ -145,7 +145,7 @@
         },
         "transforms": [
           {
-            "code": "\n\tfrom java.util import Calendar, TimeZone\n\ttry:\n\t    if self.custom.selection.timestamp \u003d\u003d \u0027\u0027:\n\t        return []\n\t\n\t    # Assuming start_timestamp is provided or determined somehow\n\t    start_timestamp \u003d self.custom.selection.timestamp\n\t\n\t    # Get the time zone ID from a session property or another source\n\t    timeZoneId \u003d self.params.timeZoneID\n\t    tz \u003d TimeZone.getTimeZone(timeZoneId)\n\t\n\t    # Generate the list of all hourly timestamps\n\t    all_hours \u003d [start_timestamp + 3600000 * i for i in range(24)]\n\t\n\t    # Convert the value list to a dictionary for easier access\n\t    data_dict \u003d {bucket[\"time_start\"]: bucket for bucket in value}\n\t\n\t    # Transform the data\n\t    transformed_data \u003d []\n\t    for hour_timestamp in all_hours:\n\t        # Create a calendar instance set to the hour_timestamp and the specified time zone\n\t        cal \u003d Calendar.getInstance(tz)\n\t        cal.setTimeInMillis(hour_timestamp)\n\t\n\t        # Format the hour string\n\t        hour_str \u003d \u0027{:02d}:00\u0027.format(cal.get(Calendar.HOUR_OF_DAY))\n\t\n\t        bucket \u003d data_dict.get(hour_timestamp)\n\t\n\t        if bucket:\n\t            # Data exists for this hour\n\t            y_values \u003d bucket[\"count\"] #metal_rejects\n\t        else:\n\t            # No data for this hour, use empty or placeholder values\n\t            y_values \u003d 0\n\t\n\t        transformed_item \u003d {\n\t            \"x\": hour_str,\n\t            \"y\": y_values\n\t        }\n\t        transformed_data.append(transformed_item)\n\t\n\t    return transformed_data\n\texcept:\n\t\tCORE_P.Utils.errorPopup(\u0027Error getting metal rejects for day:\u0027)",
+            "code": "\n\tfrom java.util import Calendar, TimeZone\n\ttry:\n\t    if self.custom.selection.timestamp \u003d\u003d \u0027\u0027:\n\t        return []\n\t\n\t    # Assuming start_timestamp is provided or determined somehow\n\t    start_timestamp \u003d self.custom.selection.timestamp\n\t\n\t    # Get the time zone ID from a session property or another source\n\t    timeZoneId \u003d self.params.timeZoneID\n\t    tz \u003d TimeZone.getTimeZone(timeZoneId)\n\t\n\t    # Generate the list of all hourly timestamps\n\t    all_hours \u003d [start_timestamp + 3600000 * i for i in range(24)]\n\t\n\t    # Convert the value list to a dictionary for easier access\n\t    data_dict \u003d {bucket[\"time_start\"]: bucket for bucket in value}\n\t\n\t    # Transform the data\n\t    transformed_data \u003d []\n\t    for hour_timestamp in all_hours:\n\t        # Create a calendar instance set to the hour_timestamp and the specified time zone\n\t        cal \u003d Calendar.getInstance(tz)\n\t        cal.setTimeInMillis(hour_timestamp)\n\t\n\t        # Format the hour string\n\t        hour_str \u003d \u0027{:02d}:00\u0027.format(cal.get(Calendar.HOUR_OF_DAY))\n\t\n\t        bucket \u003d data_dict.get(hour_timestamp)\n\t\n\t        if bucket:\n\t            # Data exists for this hour\n\t            y_values \u003d bucket[\"count\"] #metal_rejects\n\t        else:\n\t            # No data for this hour, use empty or placeholder values\n\t            y_values \u003d 0\n\t\n\t        transformed_item \u003d {\n\t            \"x\": hour_str,\n\t            \"y\": y_values\n\t        }\n\t        transformed_data.append(transformed_item)\n\t\n\t    return transformed_data\n\texcept:\n\t\tpass\n\t\t#CORE_P.Utils.errorPopup(\u0027Error getting metal rejects for day:\u0027)",
             "type": "script"
           }
         ],
@@ -645,7 +645,7 @@
                 "marginRight": 10,
                 "marginTop": 2
               },
-              "value": 0
+              "value": 1
             },
             "type": "ia.input.dropdown"
           },

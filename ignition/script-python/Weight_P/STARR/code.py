@@ -29,8 +29,8 @@ def getMaterialsFromSTARR(starr_unit_id, start_dt, end_dt):
 # Update aggregates and rejects tables when STARR data changes	
 ##########################################################################
 def STARR_Material_Changed(payload):
-	logger = system.util.getLogger("JAY")
-	logger.warn('DEBUG: Got message from STARR' + str(payload))
+	#logger = system.util.getLogger("JAY")
+	#logger.warn('DEBUG: Got message from STARR' + str(payload))
 
 
 	# This message handler should be called whenever a STARR Run state has its Material manually changed
@@ -50,7 +50,7 @@ def STARR_Material_Changed(payload):
 		path='Weight_Q/DB_Query/Get_Scales_By_STARR_Unit', 
 		parameters=parameters))
 	
-	logger.warn('DEBUG: Found these scales:' + str(scales))	
+	#logger.warn('DEBUG: Found these scales:' + str(scales))	
 	if len(scales)==0:
 		return # Nothing to do here
 	
@@ -83,7 +83,7 @@ def STARR_Material_Changed(payload):
 	#-----------------------------------------------------------------------
 	processed_lines = {}
 	for scale in scales:
-		logger.warn('DEBUG: Updating scale:' + str(scale))
+	#	logger.warn('DEBUG: Updating scale:' + str(scale))
 		#system.util.invokeAsynchronous(Weight_P.Aggregator.GetBucketsGlobal, args=(start_dt, end_dt,scale['site_id'],scale['scale_id']))
 		system.util.invokeAsynchronous(Weight_P.Aggregator.RecalcAggregates, args=(start_dt, end_dt,scale['site_id'],scale['scale_id']))
 		
