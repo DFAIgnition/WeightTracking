@@ -512,7 +512,8 @@ def insertOrUpdateBucketData(scale_data, start_dt, end_dt):
 				for hour, material_data in hours_data.items():
 			#		SystemLogger(True, "JAY", "hour:" + str(hour))					
 					for material, bucket in material_data.items():
-					#	SystemLogger(True, "JAY", "material:" + str(material))						
+						#SystemLogger(True, "JAY", "sp_low:" + str(bucket.get('sp_low')))						
+																		
 						updateParams = {
 										    'scale_id': bucket['scale_id'],
 										    'time_start': bucket['time_start'],
@@ -539,9 +540,9 @@ def insertOrUpdateBucketData(scale_data, start_dt, end_dt):
 										    'sp_high': round(bucket.get('sp_high', 0.0),2),
 										    'sp': round(bucket.get('sp', 0.0),2),
 										    'sp_low': round(bucket.get('sp_low', 0.0),2),
-										    'sp_high_plc': round(bucket.get('filler_sp_high_tag', 0.0),2),
-										    'sp_plc': round(bucket.get('filler_sp_tag', 0.0),2),
-										    'sp_low_plc': round(bucket.get('filler_sp_low_tag', 0.0),2),
+										    'sp_high_plc': 0, #round(bucket.get('filler_sp_high_tag', 0.0),2),
+										    'sp_plc': 0, #round(bucket.get('filler_sp_tag', 0.0),2),
+										    'sp_low_plc': 0, #round(bucket.get('filler_sp_low_tag', 0.0),2),
 										    'design': round(bucket.get('design', 50.0),2)
 										}
 										
