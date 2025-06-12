@@ -47,7 +47,7 @@ def ProcessWeek(Start, End, site_id, scale_id):
 	scale_data = {}
 	progress2 = 0
 	
-	# Retrieve data entries based on site and scale ID.
+	# This seems to be the list of Fillers/scales (either the specified one, or all of the scales/fillers on the given site
 	entries = system.db.runNamedQuery("Weight_Q/DB_Query/Get_All", {'site_id': site_id, 'scale_id': scale_id})
 		
 	all_tags = []
@@ -58,7 +58,9 @@ def ProcessWeek(Start, End, site_id, scale_id):
 	SystemLogger(True, "Weight Tracking", "Start:" + str(Start) + ", End:" + str(End) + ", site_id:" + str(site_id) + ", scale:" + str(scale_id))
 	
 	
-	# Extract and map tag names from the entries.
+	#----------------------------------------------------------------------------
+	# Go through each filler and map tag names from the entries.
+	#----------------------------------------------------------------------------
 	for entry in system.dataset.toPyDataSet(entries):
 
 		loop_count  += 1
@@ -76,7 +78,7 @@ def ProcessWeek(Start, End, site_id, scale_id):
 		
 		
 		original_tags = [	(entry['scale_weight'], 			'scale_weight'),
-						    (entry['line_material'], 			'line_material'),
+						   # (entry['line_material'], 			'line_material'),
 						    (entry['filler_sp_tag'], 			'filler_sp_tag'),
 						    (entry['filler_sp_high_tag'], 		'filler_sp_high_tag'),
 						    (entry['filler_sp_low_tag'], 		'filler_sp_low_tag'),
@@ -121,15 +123,14 @@ def ProcessWeek(Start, End, site_id, scale_id):
 					all_data[key].append(item)
 		
 		
-		#######################################################################
-		# Materials stuff
-		#######################################################################
+		#----------------------------------------------------------------------------
+		# Get the list of material changes, either from a Tag, or from STARR, or a default list on Material = None
+		#----------------------------------------------------------------------------
 		materials = []
 		material_index = 0		
 		try:
 			# If we have a tag defined, use that. 
 			if ('line_material' in all_data and all_data['line_material']):
-			#	SystemLogger(True, "JAY", 'DEBUG: Getting materials from Tags!')		
 				materials = CORE_P.Tags.getTagChanges(entry['line_material'], Start, End)
 				
 				if (len(materials)>0 and materials[0]['timestamp']>Start):
@@ -137,9 +138,7 @@ def ProcessWeek(Start, End, site_id, scale_id):
 			
 			# Else, if we have a link to a STARR unit...work out materials from that instead
 			elif(entry['starr_unit_id']):
-			#	SystemLogger(True, "JAY", 'DEBUG: Getting materials from STARR!')		
 				materials = Weight_P.STARR.getMaterialsFromSTARR(entry['starr_unit_id'], Start, End)
-#				SystemLogger(True, "JAY", 'DEBUG: ' + str(materials))		
 
 			# Otherwise...materials are None
 			else:
@@ -148,16 +147,57 @@ def ProcessWeek(Start, End, site_id, scale_id):
 		except:
 			SystemLogger(True, "JAY", CORE_P.Utils.getError())			
 		
-		#######################################################################
-		# Process stuff
-		#######################################################################		
+		#----------------------------------------------------------------------------
+		# Work out the set points/targets for this material. Will be either from a tag value, or from a material default, or a line default
+		#----------------------------------------------------------------------------
+		material_config = {} # Hold the materials config		
+		for row in materials:
+			
+			# If we don't know what material we have, revert to default values (if we have them)
+			if (row['value'] == 'None'):
+				row['setpoint_low']		= entry['filler_sp_low'] or 0
+				row['setpoint'] 		= entry['filler_sp'] or 0
+				row['setpoint_high']	= entry['filler_sp_high'] or 0
+			else:
+				
+				# Pull the material data out of the database if we haven't yet
+				if str(row['value']) not in material_config:
+					tmp = CORE_P.Utils.datasetToDicts(system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/DB_Query/Get_Material', parameters={'material_number':row['value']}))
+					if (len(tmp)>0):
+						material_config[str(row['value'])] = tmp[0]
+					#else:
+					#	material_config[str(row['value'])] = 0
+					
+				# Then, use either the item limits, or total limits, depending on the line type
+				if (str(row['value']) in material_config and material_config[str(row['value'])]):
+					if entry['fill_type'] == 'item':
+						row['setpoint_low']		= material_config[str(row['value'])]['item_lower_limit'] or 0
+						row['setpoint'] 		= material_config[str(row['value'])]['item_target_weight'] or 0
+						row['setpoint_high']	= material_config[str(row['value'])]['item_upper_limit'] or 0
+					elif entry['fill_type'] == 'case':
+						row['setpoint_low']		= material_config[str(row['value'])]['lower_limit'] or 0
+						row['setpoint'] 		= material_config[str(row['value'])]['target_weight'] or 0
+						row['setpoint_high']	= material_config[str(row['value'])]['upper_limit'] or 0
+
+				else:
+					# Defaults, if we couldn't find material info
+					row['setpoint_low'] 	= entry['filler_sp_low'] or 0 
+					row['setpoint'] 		= entry['filler_sp'] or 0
+					row['setpoint_high']	= entry['filler_sp_high'] or 0		
+		
+	#	SystemLogger(True, "JAY", 'Material Config: ' + str(material_config))		
+		
+		#----------------------------------------------------------------------------
+		# Process all the tag data in hourly blocks, further broken down into materials/po_numbers
+		# all_data = the set of tag data relating to all the tags configured for this filler/scale
+		#----------------------------------------------------------------------------		
 		all_materials_key = 'All' # This is what will end up in the material column of the database table for the sum of all weights for the hour (not split out by material)
 		try:
-			for key, items in all_data.items():
+			for tagname, items in all_data.items():
 				material_index = 0		
 				#SystemLogger(True, "JAY", str(key))
 				for item in items:
-				#	SystemLogger(True, "JAY", str(item))
+
 					timestamp = Date.from(item['timestamp'].toInstant())
 					calendar_instance = Calendar.getInstance()
 					calendar_instance.setTime(timestamp)
@@ -168,97 +208,120 @@ def ProcessWeek(Start, End, site_id, scale_id):
 					day_key = sdf_day.format(timestamp)
 					hour_of_day = calendar_instance.get(Calendar.HOUR_OF_DAY)
 					time_start = sdf_day_hour.format(calendar_instance.getTime())
-					
-					#for tag in ['line_material']:
-					#						if tag in tags and tags[tag]:
-					#						    # Store the first value directly
-					#						    tags[tag] = tags[tag][0]
-					#						else:
-					#						    # Use the last known or default value
-					#						    tags[tag] = last_known_values.get(tag, 'N/A')	
+
 					
 					# Work out which material to use
 					while ( (material_index < (len(materials)-1))  and (timestamp >= materials[material_index + 1]['timestamp']) ):
 						material_index = material_index + 1 
-						
-					material = materials[material_index]['value']
-					po_number = None # Get po number. Will only exist if we are using a STARR link, not a material tag
+					
+					material 		= str(materials[material_index]['value'])
+					po_number 		= None # Get po number. Will only exist if we are using a STARR link, not a material tag
 					if ('po_number' in materials[material_index]): 
-						po_number = materials[material_index]['po_number']
-					materials_key = str(material) + "_" + str(po_number)
+						po_number 	= materials[material_index]['po_number']
+					materials_key	= str(material) + "_" + str(po_number)
+					setpoint 		= materials[material_index]['setpoint']
+					setpoint_high 	= materials[material_index]['setpoint_high']
+					setpoint_low 	= materials[material_index]['setpoint_low']
+					
 					
 					if day_key not in daily_data:
 					   # daily_data[day_key] = {hour: {'time_start': '', 'scale_weight_values': []} for hour in range(24)}
 					    daily_data[day_key] = {hour: {} for hour in range(24)}
 					
 					if materials_key not in daily_data[day_key][hour_of_day]:
-						daily_data[day_key][hour_of_day][materials_key] = {'time_start': time_start, 'scale_weight_values': [], 'material':material, 'po_number':po_number}
+						daily_data[day_key][hour_of_day][materials_key] = {'time_start': time_start, 'scale_weight_values': [], 'material':material, 'po_number':po_number, 'setpoint':[], 'setpoint_high':[], 'setpoint_low':[], 'over_threshold':[], 'under_threshold':[], 'out_of_threshold':[]}
 						
 					if all_materials_key not in daily_data[day_key][hour_of_day]:
-						daily_data[day_key][hour_of_day][all_materials_key] = {'time_start': time_start, 'scale_weight_values': [], 'material':all_materials_key, 'po_number':None}
+						daily_data[day_key][hour_of_day][all_materials_key] = {'time_start': time_start, 'scale_weight_values': [], 'material':all_materials_key, 'po_number':None, 'setpoint':[], 'setpoint_high':[], 'setpoint_low':[], 'over_threshold':[], 'under_threshold':[], 'out_of_threshold':[]}
 						
-#					if 'time_start' not in daily_data[day_key][hour_of_day][material] or not daily_data[day_key][hour_of_day][material]['time_start']:
-#						daily_data[day_key][hour_of_day][material]['time_start'] = time_start
-#					if 'time_start' not in daily_data[day_key][hour_of_day][all_materials_key] or not daily_data[day_key][hour_of_day][all_materials_key]['time_start']:
-#						daily_data[day_key][hour_of_day][all_materials_key]['time_start'] = time_start
-						
-					if key not in daily_data[day_key][hour_of_day][materials_key]:
-					    daily_data[day_key][hour_of_day][materials_key][key] = []
-					if key not in daily_data[day_key][hour_of_day][all_materials_key]:
-					    daily_data[day_key][hour_of_day][all_materials_key][key] = []
+					if tagname not in daily_data[day_key][hour_of_day][materials_key]:
+					    daily_data[day_key][hour_of_day][materials_key][tagname] = []
 					    
-					daily_data[day_key][hour_of_day][materials_key][key].append(item['value'])
-					daily_data[day_key][hour_of_day][all_materials_key][key].append(item['value'])
+					if tagname not in daily_data[day_key][hour_of_day][all_materials_key]:
+					    daily_data[day_key][hour_of_day][all_materials_key][tagname] = []
+					    
+					daily_data[day_key][hour_of_day][materials_key][tagname].append(item['value'])
+					daily_data[day_key][hour_of_day][all_materials_key][tagname].append(item['value'])
 					
-					if key == 'scale_weight':
+					# Keep track of the scale weights. This is the key bit...
+					if tagname == 'scale_weight':
 					    daily_data[day_key][hour_of_day][materials_key]['scale_weight_values'].append(item['value'])
 					    daily_data[day_key][hour_of_day][all_materials_key]['scale_weight_values'].append(item['value'])
+					    
+					    # Keep track of the setpoints and targets, and what was out of range
+					    for a in [all_materials_key, materials_key]:
+							daily_data[day_key][hour_of_day][a]['setpoint'].append(setpoint)
+							daily_data[day_key][hour_of_day][a]['setpoint_high'].append(setpoint_high)
+							daily_data[day_key][hour_of_day][a]['setpoint_low'].append(setpoint_low)
+						    
+							if item['value'] > setpoint_high:
+								daily_data[day_key][hour_of_day][a]['over_threshold'].append(item['value'])
+							if item['value'] < setpoint_low:
+								daily_data[day_key][hour_of_day][a]['under_threshold'].append(item['value'])
+							if item['value'] < setpoint_low or item['value'] > setpoint_high :
+								daily_data[day_key][hour_of_day][a]['out_of_threshold'].append(item['value'])
+							#	count_out_of_threshold += 1
+
+					    
 					    #daily_data[day_key][hour_of_day][material]['scale_weight_values'].append(item['timestamp'])
 		except:
 			SystemLogger(True, "JAY", CORE_P.Utils.getError())				
 
-
 		
+		#----------------------------------------------------------------------------
+		# Aggregate and calculate statistics for hourly block
+		#----------------------------------------------------------------------------
 		material_config = {} # Hold the materials config
-		
-		
-		# Aggregate and calculate statistics for each tag.
 		for day, hours in daily_data.items():
 		
 			#for hour, tags in hours.items():
-			for hour, materials in hours.items():
+			for hour, materials_keys in hours.items():
 			
-				for material, tags in materials.items():
+				for materials_key, tags in materials_keys.items():
 				
-					# Setting set points:
-					for sp_tag in ['filler_sp_tag', 'filler_sp_high_tag', 'filler_sp_low_tag']:
-						if sp_tag in tags and tags[sp_tag]:
-						    # Store the first value directly
-						    tags[sp_tag] = tags[sp_tag][0]
-						else:
-							if (material):
-								if material not in material_config:
-									material_config[material] = system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/DB_Query/Get_Material', parameters={'material_number':material})
-								
-								tags[sp_tag] = material_config[material]['
-										
-							## Use the last known or default value
-							#else:
-							#	tags[sp_tag] = last_known_values.get(sp_tag, default_sp_values[sp_tag])	
-							
-					# Setting material:
-#					for tag in ['line_material']:
-#						if tag in tags and tags[tag]:
+#					#----------------------------------------------------------------------------
+#					# Work out the set points for this material
+#					#----------------------------------------------------------------------------
+#					for sp_tag in ['filler_sp_tag', 'filler_sp_high_tag', 'filler_sp_low_tag']:
+#						if sp_tag in tags and tags[sp_tag]:
 #						    # Store the first value directly
-#						    tags[tag] = tags[tag][0]
+#						    tags[sp_tag] = tags[sp_tag][0]
 #						else:
-#						    # Use the last known or default value
-#						    tags[tag] = last_known_values.get(tag, 'N/A')	
-					#SystemLogger(True, 'JAY', str(tags.keys()) + ' - ' + str(material))
-					tags['line_material'] = tags['material'] #material
-					tags['po_number'] = tags['po_number'] 
+#							# If we don't have a tag configured for this setpoint, use the Material defaults instead
+#							if (tags['material'] and tags['material'] != 'All'):
+#								# Pull the material data out of the database if we haven't yet
+#								if tags['material'] not in material_config:
+#									tmp = CORE_P.Utils.datasetToDicts(system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/DB_Query/Get_Material', parameters={'material_number':tags['material']}))
+#									if (len(tmp)>0):
+#										material_config[str(tags['material'])] = tmp[0]
+#									else:
+#										material_config[str(tags['material'])] = None
+#								
+#								# Then, use either the item limits, or total limits, depending on the line type
+#								if (material_config[str(tags['material'])]):
+#									if entry['fill_type'] == 'item':
+#										if (sp_tag == 'filler_sp_tag'):
+#											tags[sp_tag] = material_config[str(tags['material'])]['item_target_weight']
+#										elif (sp_tag == 'filler_sp_high_tag'):
+#											tags[sp_tag] = material_config[str(tags['material'])]['item_upper_limit']
+#										elif (sp_tag == 'filler_sp_low_tag'):
+#											tags[sp_tag] = material_config[str(tags['material'])]['item_lower_limit']
+#									elif entry['fill_type'] == 'case':
+#										if (sp_tag == 'filler_sp_tag'):
+#											tags[sp_tag] = material_config[str(tags['material'])]['target_weight']
+#										elif (sp_tag == 'filler_sp_high_tag'):
+#											tags[sp_tag] = material_config[str(tags['material'])]['upper_limit']
+#										elif (sp_tag == 'filler_sp_low_tag'):
+#											tags[sp_tag] = material_config[str(tags['material'])]['lower_limit']
+#								else:
+#									tags[sp_tag] = last_known_values.get(sp_tag, default_sp_values[sp_tag])			
+#							# Use the last known or default value
+#							else:
+#								tags[sp_tag] = last_known_values.get(sp_tag, default_sp_values[sp_tag])	
 					    						
+					#----------------------------------------------------------------------------
 					# Working on weight Statistics			    
+					#----------------------------------------------------------------------------
 					if 'scale_weight_values' in tags and tags['scale_weight_values']:
 						stats = DescriptiveStatistics()
 						stats.clear()
@@ -270,12 +333,12 @@ def ProcessWeek(Start, End, site_id, scale_id):
 							
 						for value in tags['scale_weight_values']:
 							stats.addValue(value)
-							if value > tags['filler_sp_high_tag']:
-								count_over_threshold += 1
-							if value < tags['filler_sp_low_tag']:
-								count_under_threshold += 1
-							if value < tags['filler_sp_low_tag'] or value > tags['filler_sp_high_tag'] :
-								count_out_of_threshold += 1
+#							if value > tags['filler_sp_high_tag']:
+#								count_over_threshold += 1
+#							if value < tags['filler_sp_low_tag']:
+#								count_under_threshold += 1
+#							if value < tags['filler_sp_low_tag'] or value > tags['filler_sp_high_tag'] :
+#								count_out_of_threshold += 1
 								
 						tags['scale_id']=entry['scale_id']
 						tags['count']=len(tags['scale_weight_values'])
@@ -289,15 +352,62 @@ def ProcessWeek(Start, End, site_id, scale_id):
 						tags['percentile50'] = stats.getPercentile(50)
 						tags['percentile75'] = stats.getPercentile(75)
 						tags['weight_sum'] = sum(tags['scale_weight_values'])
-						tags['weight_target'] = tags['count']*tags['filler_sp_tag']
+						
+						# Things related to targets and setpoints...
+						if(materials_key == 'All'):
+							# If this is an 'All' block, we need to work out averages for the set points 
+							# as there can be different setpoints for different materials now)
+							sp_low_stats = DescriptiveStatistics()
+							sp_low_stats.clear()
+							for value in tags['setpoint_low']:
+								sp_low_stats.addValue(value)
+							tags['sp_low'] = sp_low_stats.getMean()
+							
+							sp_high_stats = DescriptiveStatistics()
+							sp_high_stats.clear()
+							for value in tags['setpoint_high']:
+								sp_high_stats.addValue(value)
+							tags['sp_high'] = sp_high_stats.getMean()		
+							
+							sp_stats = DescriptiveStatistics()
+							sp_stats.clear()
+							for value in tags['setpoint']:
+								sp_stats.addValue(value)
+							tags['sp'] = sp_stats.getMean()	
+						else:	
+							
+							if 'setpoint_low' in tags and len(tags['setpoint_low'])>0:
+								tags['sp_low'] = tags['setpoint_low'][0]
+							else:
+								tags['sp_low'] = 0
+							if 'setpoint_high' in tags and len(tags['setpoint_high'])>0:
+								tags['sp_high'] = tags['setpoint_high'][0]
+							else:
+								tags['setpoint_high'] = 0
+							if 'setpoint' in tags and len(tags['setpoint'])>0:
+								tags['sp'] = tags['setpoint'][0]
+							else:
+								tags['setpoint_high'] = 0
+						
+						#SystemLogger(True, "JAY", 'Count: ' + str(tags['count']) + ', Set Point ' + str(tags['sp']) + ', ' + str(materials_key) + ', Setpoint: ' + str(tags['setpoint']))			
+								
+						tags['weight_target'] = tags['count']*tags['sp']
 						tags['weight_diff'] = tags['weight_sum']- tags['weight_target']
-						tags['pct_weight_over'] = (count_over_threshold / float(tags['count'])) * 100 if tags['count'] > 0 else 0
-						tags['pct_weight_under'] = (count_under_threshold / float(tags['count'])) * 100 if tags['count'] > 0 else 0
-						tags['pct_out_of_range'] = (count_out_of_threshold / float(tags['count'])) * 100 if tags['count'] > 0 else 0
-						tags['sp_low'] = entry['filler_sp_low']
-						tags['sp'] = entry['filler_sp']
-						tags['sp_high'] = entry['filler_sp_high']
-						tags['design'] = entry['filler_design']
+						
+						tags['pct_weight_over'] = (len(tags['over_threshold']) / float(tags['count'])) * 100 if tags['count'] > 0 else 0
+						tags['pct_weight_under'] = (len(tags['under_threshold']) / float(tags['count'])) * 100 if tags['count'] > 0 else 0
+						tags['pct_out_of_range'] = (len(tags['out_of_threshold']) / float(tags['count'])) * 100 if tags['count'] > 0 else 0
+												
+#						tags['weight_diff'] = tags['weight_sum']- tags['weight_target']
+#						tags['sp_low'] = entry['filler_sp_low']
+#						tags['sp'] = entry['filler_sp']
+#						tags['sp_high'] = entry['filler_sp_high']
+#						tags['weight_target'] = tags['count']*tags['filler_sp_tag']
+#						tags['pct_weight_over'] = (count_over_threshold / float(tags['count'])) * 100 if tags['count'] > 0 else 0
+#						tags['pct_weight_under'] = (count_under_threshold / float(tags['count'])) * 100 if tags['count'] > 0 else 0
+#						tags['pct_out_of_range'] = (count_out_of_threshold / float(tags['count'])) * 100 if tags['count'] > 0 else 0
+												
+						#tags['design'] = entry['filler_design']
 						
 					
 					# Clean up to save memory.
@@ -343,8 +453,10 @@ def ProcessWeek(Start, End, site_id, scale_id):
 		if entry['scale_id'] not in scale_data:
 		    scale_data[entry['scale_id']] = {}
 		scale_data[entry['scale_id']].update(daily_data)  
-		  
+	
+	
 	return scale_data
+# END OF ProcessWeek
 	
 ###############################################################
 # insertOrUpdateBucketData
@@ -389,7 +501,7 @@ def insertOrUpdateBucketData(scale_data, start_dt, end_dt):
 										    'reject_metal': bucket.get('reject_metal', 0),
 										    'reject_over': bucket.get('reject_over', 0),
 										    'reject_under': bucket.get('reject_under', 0),
-										    'material': bucket.get('line_material', None),
+										    'material': bucket.get('material', None),
 										    'po_number': bucket.get('po_number', None),
 										    'sp_high': round(bucket.get('sp_high', 0.0),2),
 										    'sp': round(bucket.get('sp', 0.0),2),
