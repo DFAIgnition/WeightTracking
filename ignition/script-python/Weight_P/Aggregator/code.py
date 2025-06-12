@@ -151,39 +151,72 @@ def ProcessWeek(Start, End, site_id, scale_id):
 		# Work out the set points/targets for this material. Will be either from a tag value, or from a material default, or a line default
 		#----------------------------------------------------------------------------
 		material_config = {} # Hold the materials config		
+		sp_low_index = 0
+		sp_index = 0
+		sp_high_index = 0
 		for row in materials:
 			
-			# If we don't know what material we have, revert to default values (if we have them)
-			if (row['value'] == 'None'):
-				row['setpoint_low']		= entry['filler_sp_low'] or 0
-				row['setpoint'] 		= entry['filler_sp'] or 0
-				row['setpoint_high']	= entry['filler_sp_high'] or 0
-			else:
+			# Work through the filler_sp_tag dataset until we get to the time relevant to this material/po block
+			if ('filler_sp_low_tag' in all_data and all_data['filler_sp_low_tag']):
+				while (((sp_low_index+1) < len(all_data['filler_sp_low_tag'])) and (all_data['filler_sp_low_tag'][sp_low_index+1]['timestamp'] <= row['timestamp'])):
+					sp_low_index += 1
+				row['setpoint_low'] = all_data['filler_sp_low_tag'][sp_low_index]['value']
 				
-				# Pull the material data out of the database if we haven't yet
-				if str(row['value']) not in material_config:
-					tmp = CORE_P.Utils.datasetToDicts(system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/DB_Query/Get_Material', parameters={'material_number':row['value']}))
-					if (len(tmp)>0):
-						material_config[str(row['value'])] = tmp[0]
-					#else:
-					#	material_config[str(row['value'])] = 0
-					
-				# Then, use either the item limits, or total limits, depending on the line type
-				if (str(row['value']) in material_config and material_config[str(row['value'])]):
-					if entry['fill_type'] == 'item':
-						row['setpoint_low']		= material_config[str(row['value'])]['item_lower_limit'] or 0
-						row['setpoint'] 		= material_config[str(row['value'])]['item_target_weight'] or 0
-						row['setpoint_high']	= material_config[str(row['value'])]['item_upper_limit'] or 0
-					elif entry['fill_type'] == 'case':
-						row['setpoint_low']		= material_config[str(row['value'])]['lower_limit'] or 0
-						row['setpoint'] 		= material_config[str(row['value'])]['target_weight'] or 0
-						row['setpoint_high']	= material_config[str(row['value'])]['upper_limit'] or 0
-
+			# Work through the filler_sp_tag dataset until we get to the time relevant to this material/po block
+			if ('filler_sp_tag' in all_data and all_data['filler_sp_tag']):
+				while (((sp_index+1) < len(all_data['filler_sp_tag'])) and (all_data['filler_sp_tag'][sp_index+1]['timestamp'] <= row['timestamp'])):
+					sp_index += 1
+				row['setpoint'] = all_data['filler_sp_tag'][sp_index]['value']
+				
+			# Work through the filler_sp_tag dataset until we get to the time relevant to this material/po block
+			if ('filler_sp_high_tag' in all_data and all_data['filler_sp_high_tag']):
+				while (((sp_high_index+1) < len(all_data['filler_sp_high_tag'])) and (all_data['filler_sp_high_tag'][sp_high_index+1]['timestamp'] <= row['timestamp'])):
+					sp_high_index += 1
+				row['setpoint_high'] = all_data['filler_sp_high_tag'][sp_high_index]['value']				
+			
+			# If there are any of the setpoints we didn't manage to get from tags...
+			if (('setpoint_low' not in row) or ('setpoint' not in row) or ('setpoint_high' not in row) ):
+				# If we don't know what material we have, revert to default values (if we have them)
+				if (row['value'] == 'None'):
+					if ('setpoint_low' not in row):
+						row['setpoint_low']		= entry['filler_sp_low'] or 0
+					if ('setpoint' not in row):
+						row['setpoint'] 		= entry['filler_sp'] or 0
+					if ('setpoint_high' not in row):
+						row['setpoint_high']	= entry['filler_sp_high'] or 0
 				else:
-					# Defaults, if we couldn't find material info
-					row['setpoint_low'] 	= entry['filler_sp_low'] or 0 
-					row['setpoint'] 		= entry['filler_sp'] or 0
-					row['setpoint_high']	= entry['filler_sp_high'] or 0		
+					
+					# Pull the material data out of the database if we haven't yet
+					if str(row['value']) not in material_config:
+						tmp = CORE_P.Utils.datasetToDicts(system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/DB_Query/Get_Material', parameters={'material_number':row['value']}))
+						if (len(tmp)>0):
+							material_config[str(row['value'])] = tmp[0]
+
+					# Then, use either the item limits, or total limits, depending on the line type
+					if (str(row['value']) in material_config and material_config[str(row['value'])]):
+						if entry['fill_type'] == 'item':
+							if ('setpoint_low' not in row):						
+								row['setpoint_low']		= material_config[str(row['value'])]['item_lower_limit'] or 0
+							if ('setpoint' not in row):
+								row['setpoint'] 		= material_config[str(row['value'])]['item_target_weight'] or 0
+							if ('setpoint_high' not in row):
+								row['setpoint_high']	= material_config[str(row['value'])]['item_upper_limit'] or 0
+						elif entry['fill_type'] == 'case':
+							if ('setpoint_low' not in row):						
+								row['setpoint_low']		= material_config[str(row['value'])]['lower_limit'] or 0
+							if ('setpoint' not in row):
+								row['setpoint'] 		= material_config[str(row['value'])]['target_weight'] or 0
+							if ('setpoint_high' not in row):
+								row['setpoint_high']	= material_config[str(row['value'])]['upper_limit'] or 0
+	
+					else:
+						# Defaults, if we couldn't find material info
+						if ('setpoint_low' not in row):
+							row['setpoint_low']		= entry['filler_sp_low'] or 0
+						if ('setpoint' not in row):
+							row['setpoint'] 		= entry['filler_sp'] or 0
+						if ('setpoint_high' not in row):
+							row['setpoint_high']	= entry['filler_sp_high'] or 0	
 		
 	#	SystemLogger(True, "JAY", 'Material Config: ' + str(material_config))		
 		
