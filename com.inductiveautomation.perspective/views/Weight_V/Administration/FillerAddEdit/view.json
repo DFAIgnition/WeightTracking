@@ -149,7 +149,7 @@
   },
   "props": {
     "defaultSize": {
-      "height": 428,
+      "height": 564,
       "width": 788
     }
   },
@@ -337,7 +337,7 @@
           "height": 39,
           "width": 721,
           "x": 62,
-          "y": 232.5
+          "y": 217.5
         },
         "propConfig": {
           "props.params.initial_tag": {
@@ -365,14 +365,13 @@
           "tooltip": {
             "enabled": true,
             "text": "SP Low"
-          },
-          "visible": false
+          }
         },
         "position": {
           "height": 36,
           "width": 100,
-          "x": 436.5,
-          "y": 11.5
+          "x": 65,
+          "y": 391
         },
         "propConfig": {
           "props.text": {
@@ -400,7 +399,7 @@
           "height": 32,
           "width": 50,
           "x": 6,
-          "y": 236
+          "y": 221
         },
         "props": {
           "text": "Low:"
@@ -415,7 +414,7 @@
           "height": 32,
           "width": 62,
           "x": 6,
-          "y": 278
+          "y": 263
         },
         "props": {
           "text": "Target:"
@@ -428,14 +427,13 @@
           "tooltip": {
             "enabled": true,
             "text": "SP Low"
-          },
-          "visible": false
+          }
         },
         "position": {
           "height": 36,
           "width": 100,
-          "x": 436.5,
-          "y": 53.5
+          "x": 65,
+          "y": 433
         },
         "propConfig": {
           "props.text": {
@@ -463,7 +461,7 @@
           "height": 39,
           "width": 721,
           "x": 62,
-          "y": 274.5
+          "y": 259.5
         },
         "propConfig": {
           "props.params.initial_tag": {
@@ -493,7 +491,7 @@
           "height": 32,
           "width": 69,
           "x": 6,
-          "y": 319
+          "y": 304
         },
         "props": {
           "text": "High:"
@@ -506,14 +504,13 @@
           "tooltip": {
             "enabled": true,
             "text": "SP Low"
-          },
-          "visible": false
+          }
         },
         "position": {
           "height": 36,
           "width": 100,
-          "x": 436.5,
-          "y": 94.5
+          "x": 65,
+          "y": 474
         },
         "propConfig": {
           "props.text": {
@@ -541,7 +538,7 @@
           "height": 39,
           "width": 721,
           "x": 62,
-          "y": 315.5
+          "y": 300.5
         },
         "propConfig": {
           "props.params.initial_tag": {
@@ -585,7 +582,7 @@
           "height": 34,
           "width": 250,
           "x": 14.75,
-          "y": 382
+          "y": 521
         },
         "props": {
           "text": "Save Filler"
@@ -611,7 +608,7 @@
           "height": 34,
           "width": 127,
           "x": 641.25,
-          "y": 382
+          "y": 521
         },
         "propConfig": {
           "meta.visible": {
@@ -688,7 +685,7 @@
           "height": 34,
           "width": 250,
           "x": 271.25,
-          "y": 382
+          "y": 521
         },
         "props": {
           "primary": false,
@@ -818,10 +815,70 @@
           "height": 32,
           "width": 776,
           "x": 7,
-          "y": 200.5
+          "y": 185.5
         },
         "props": {
-          "text": "Set Points (optional - will use tag value if given, or Material defaults otherwise)"
+          "text": "Set Point Tags (optional - will use Tag value if given, or Material defaults otherwise)"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Setpoint_Low_Label_1"
+        },
+        "position": {
+          "height": 32,
+          "width": 776,
+          "x": 7,
+          "y": 360.5
+        },
+        "props": {
+          "text": "Set Point Defaults (fallback if we can\u0027t find values from Tags or Materials)"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Setpoint_Low_Label_2"
+        },
+        "position": {
+          "height": 32,
+          "width": 50,
+          "x": 10,
+          "y": 391
+        },
+        "props": {
+          "text": "Low:"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Setpoint_Label_0"
+        },
+        "position": {
+          "height": 32,
+          "width": 62,
+          "x": 10,
+          "y": 433
+        },
+        "props": {
+          "text": "Target:"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Setpoint_High_Label_1"
+        },
+        "position": {
+          "height": 32,
+          "width": 69,
+          "x": 10,
+          "y": 474
+        },
+        "props": {
+          "text": "High:"
         },
         "type": "ia.display.label"
       }

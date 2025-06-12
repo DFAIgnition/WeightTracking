@@ -99,7 +99,7 @@
   },
   "props": {
     "defaultSize": {
-      "height": 652,
+      "height": 608,
       "width": 880
     }
   },
@@ -200,47 +200,13 @@
       },
       {
         "meta": {
-          "name": "FillType"
-        },
-        "position": {
-          "height": 36,
-          "width": 172,
-          "x": 161,
-          "y": 133.5
-        },
-        "propConfig": {
-          "props.value": {
-            "binding": {
-              "config": {
-                "expression": "toStr({view.params.fill_type},\"\")"
-              },
-              "type": "expr"
-            }
-          }
-        },
-        "props": {
-          "options": [
-            {
-              "label": "Whole Cartons",
-              "value": "cartons"
-            },
-            {
-              "label": "Individual Items",
-              "value": "items"
-            }
-          ]
-        },
-        "type": "ia.input.dropdown"
-      },
-      {
-        "meta": {
           "name": "Material_Tag"
         },
         "position": {
           "height": 39,
           "width": 721,
           "x": 158,
-          "y": 218
+          "y": 177
         },
         "propConfig": {
           "props.params.initial_tag": {
@@ -270,7 +236,7 @@
           "height": 36,
           "width": 538,
           "x": 161,
-          "y": 260
+          "y": 219
         },
         "propConfig": {
           "props.options": {
@@ -310,7 +276,7 @@
           "height": 36,
           "width": 120,
           "x": 161,
-          "y": 333
+          "y": 292
         },
         "propConfig": {
           "props.text": {
@@ -335,7 +301,7 @@
           "height": 36,
           "width": 119,
           "x": 417,
-          "y": 333
+          "y": 292
         },
         "propConfig": {
           "props.text": {
@@ -360,7 +326,7 @@
           "height": 39,
           "width": 721,
           "x": 157,
-          "y": 416
+          "y": 375
         },
         "propConfig": {
           "props.params.initial_tag": {
@@ -390,7 +356,7 @@
           "height": 35,
           "width": 441,
           "x": 150,
-          "y": 451
+          "y": 410
         },
         "propConfig": {
           "props.value": {
@@ -432,7 +398,7 @@
           "height": 39,
           "width": 721,
           "x": 157,
-          "y": 491
+          "y": 450
         },
         "propConfig": {
           "props.params.initial_tag": {
@@ -462,7 +428,7 @@
           "height": 35,
           "width": 441,
           "x": 150,
-          "y": 527
+          "y": 486
         },
         "propConfig": {
           "props.value": {
@@ -518,7 +484,7 @@
           "height": 34,
           "width": 250,
           "x": 12,
-          "y": 606
+          "y": 565
         },
         "props": {
           "text": "Save Packaging Line"
@@ -544,7 +510,7 @@
           "height": 34,
           "width": 250,
           "x": 268.5,
-          "y": 606
+          "y": 565
         },
         "props": {
           "primary": false,
@@ -571,7 +537,7 @@
           "height": 34,
           "width": 127,
           "x": 736.5,
-          "y": 606
+          "y": 565
         },
         "propConfig": {
           "meta.visible": {
@@ -682,7 +648,7 @@
           "height": 32,
           "width": 140,
           "x": 12,
-          "y": 222
+          "y": 181
         },
         "props": {
           "text": "Material Tag:"
@@ -712,7 +678,7 @@
           "height": 32,
           "width": 140,
           "x": 12,
-          "y": 333
+          "y": 292
         },
         "props": {
           "text": "Weight Min:"
@@ -727,7 +693,7 @@
           "height": 32,
           "width": 106,
           "x": 307,
-          "y": 335
+          "y": 294
         },
         "props": {
           "text": "Weight Max:"
@@ -760,7 +726,7 @@
           },
           "width": 30,
           "x": 574.979,
-          "y": 336
+          "y": 295
         },
         "props": {
           "path": "material/help",
@@ -778,7 +744,7 @@
           "height": 32,
           "width": 140,
           "x": 12,
-          "y": 262
+          "y": 221
         },
         "props": {
           "text": "STARR Unit:"
@@ -793,7 +759,7 @@
           "height": 32,
           "width": 82,
           "x": 12,
-          "y": 187
+          "y": 146
         },
         "props": {
           "text": "Material",
@@ -811,7 +777,7 @@
           "height": 32,
           "width": 688,
           "x": 162,
-          "y": 188
+          "y": 147
         },
         "props": {
           "style": {
@@ -829,7 +795,7 @@
           "height": 32,
           "width": 192,
           "x": 12,
-          "y": 303
+          "y": 262
         },
         "props": {
           "text": "Graph Y-axis min/max",
@@ -847,7 +813,7 @@
           "height": 32,
           "width": 140,
           "x": 11,
-          "y": 420
+          "y": 379
         },
         "props": {
           "text": "Metal Reject Tag:"
@@ -862,7 +828,7 @@
           "height": 32,
           "width": 154,
           "x": 11,
-          "y": 385
+          "y": 344
         },
         "props": {
           "text": "Reject counters",
@@ -880,7 +846,7 @@
           "height": 32,
           "width": 140,
           "x": 11,
-          "y": 457
+          "y": 416
         },
         "props": {
           "text": "Metal Tag Type:"
@@ -895,7 +861,7 @@
           "height": 32,
           "width": 140,
           "x": 11,
-          "y": 495
+          "y": 454
         },
         "props": {
           "text": "Weight Reject Tag:"
@@ -910,43 +876,10 @@
           "height": 32,
           "width": 140,
           "x": 11,
-          "y": 532
+          "y": 491
         },
         "props": {
           "text": "Weight Tag Type:"
-        },
-        "type": "ia.display.label"
-      },
-      {
-        "meta": {
-          "name": "Material_Label_4"
-        },
-        "position": {
-          "height": 32,
-          "width": 140,
-          "x": 12,
-          "y": 132.5
-        },
-        "props": {
-          "text": "Fill type:"
-        },
-        "type": "ia.display.label"
-      },
-      {
-        "meta": {
-          "name": "Material_Label_10"
-        },
-        "position": {
-          "height": 32,
-          "width": 437,
-          "x": 342,
-          "y": 135.5
-        },
-        "props": {
-          "style": {
-            "classes": "CORE_S/Page/Text"
-          },
-          "text": "(eg, are weighing the carton, or the individual block of cheese?)"
         },
         "type": "ia.display.label"
       }

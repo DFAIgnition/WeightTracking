@@ -5,9 +5,9 @@
       "$": [
         "ts",
         192,
-        1749157453279
+        1749705228879
       ],
-      "$ts": 1751284800000
+      "$ts": 1751328000000
     },
     "heatmap_format": {
       "colorScale": {
@@ -102,18 +102,18 @@
       "index_year": "",
       "timestamp": ""
     },
-    "sqlserver_timezone": "New Zealand Standard Time",
+    "sqlserver_timezone": "UTC",
     "start_dt": {
       "$": [
         "ts",
         192,
-        1749157453442
+        1749705228881
       ],
-      "$ts": 1746014400000
+      "$ts": 1746057600000
     }
   },
   "params": {
-    "timeZoneID": "Pacific/Auckland"
+    "timeZoneID": ""
   },
   "propConfig": {
     "custom.end_dt": {
@@ -395,7 +395,7 @@
   },
   "props": {
     "defaultSize": {
-      "width": 1200
+      "width": 1340
     }
   },
   "root": {
@@ -756,7 +756,7 @@
                   },
                   "transforms": [
                     {
-                      "code": "\t\t\n\ttry:\n\t\tsqlserver_tz \u003d value[\u0027timezone\u0027] # Note, the Ignition timezone has already been converted here into a format that SQLServer understands...\n\t\tscale_id \u003d value[\u0027scale_id\u0027]\n\t\tend_dt \u003d value[\u0027end_dt\u0027]\n\t\t\n\t\tmonths \u003d (int(value[\u0027months\u0027]) - 1) * -1\n\t\t\n\t\t# Build the query. \n\t\t# Note - had to build the query in code, because SQLServer/ignition doesn\u0027t seem to allow the passing of the timezone as a parameter\n\t\t# This is generally a \u0027Bad Idea\u0027, due to SQl injection attacks. In this case, I\u0027m only directly substituting in a timezone string that \n\t\t# comes from a database entry that is manually controlled by us (so should be safe). The other params are run through Prep as normal. \n\t\tquery \u003d \"\"\"\n\t\tSELECT\n\t\t    material,\n\t\t    FORMAT(time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM\u0027) as \u0027date\u0027,\n\t\t    FORMAT(time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027MMM yyyy\u0027) as \u0027display_date\u0027,\n\t\t    SUM([count]) AS \u0027count\u0027,\n\t\t    (SUM(weight_sum) / SUM([count])) AS \u0027weight_avg\u0027,\n\t\t    SUM(weight_diff) /1000 AS \u0027weight_diff_kg\u0027,\n\t\t    SUM(weight_sum) /1000 AS \u0027weight_sum_kg\u0027,\n  \t\t\t(\n\t\t            SELECT material_description\n\t\t            FROM system.dbo.materials m\n\t\t            WHERE m.material_number \u003d TRY_CAST(a.material AS INT)\n\t\t        ) AS material_description\t\t    \n\t\tFROM weight.dbo.aggregated a\n\t\tWHERE material !\u003d \u0027All\u0027\n\t\tAND (0 \u003d ? or scale_id \u003d ?)\n\t\tAND time_start \u003e\u003d ?\n\t\tAND time_start \u003c ?\n\t\tGROUP BY\n\t\t    material,\n\t\t    FORMAT(time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM\u0027), \n\t\t    FORMAT(time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027MMM yyyy\u0027)  \n\t\tORDER BY FORMAT(time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM\u0027), material\n\t\t\"\"\"\n\t\t\n\t\t#AND time_start \u003e\u003d DATEADD(month, ?, DATEADD(month, DATEDIFF(month, 0, ?), 0)) \n\t\t#AND time_start \u003c DATEADD(day, 1, EOMONTH(?))            \n\t\t\t\t\t\t\n\t\t# Substitute in the timezone\t\t\n\t\tquery \u003d query.replace(\u0027:timezone\u0027,sqlserver_tz)\n\t\t\n\t\t# Note: You need to repeat parameters if they are used multiple times.\n\t\t# IMPORTANT: The order of \u0027?\u0027 must match the order of arguments passed.\n\t\targs \u003d [\n\t\t    int(scale_id),  \n\t\t    int(scale_id),\n\t\t    value[\u0027start_dt\u0027],    \n\t\t    value[\u0027end_dt\u0027] \n\t\t]\n\t\t\n\t\tresults \u003d CORE_P.Utils.datasetToDicts(system.db.runPrepQuery(query, args, \u0027system\u0027))\n\t\t#CORE_P.Utils.errorPopup(\u0027Dates:\u0027 + str(value[\u0027start_dt\u0027]) + \u0027 - \u0027  + str(value[\u0027end_dt\u0027]))\n\t\treturn results\n\texcept:\n\t    # Handle error\n\t   # CORE_P.Utils.errorPopup(\u0027Error getting materials list:\u0027 + str(type(value[\u0027end_dt\u0027])))\n\t    return []\n\t",
+                      "code": "\t\t\n\ttry:\n\t\tsqlserver_tz \u003d value[\u0027timezone\u0027] # Note, the Ignition timezone has already been converted here into a format that SQLServer understands...\n\t\tscale_id \u003d value[\u0027scale_id\u0027]\n\t\tend_dt \u003d value[\u0027end_dt\u0027]\n\t\t\n\t\tmonths \u003d (int(value[\u0027months\u0027]) - 1) * -1\n\t\t\n\t\t# Build the query. \n\t\t# Note - had to build the query in code, because SQLServer/ignition doesn\u0027t seem to allow the passing of the timezone as a parameter\n\t\t# This is generally a \u0027Bad Idea\u0027, due to SQl injection attacks. In this case, I\u0027m only directly substituting in a timezone string that \n\t\t# comes from a database entry that is manually controlled by us (so should be safe). The other params are run through Prep as normal. \n\t\tquery \u003d \"\"\"\n\t\tSELECT\n\t\t    material,\n\t\t    FORMAT(time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM\u0027) as \u0027date\u0027,\n\t\t    FORMAT(time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027MMM yyyy\u0027) as \u0027display_date\u0027,\n\t\t    SUM([count]) AS \u0027count\u0027,\n\t\t    (SUM(weight_sum) / SUM([count])) AS \u0027weight_avg\u0027,\n\t\t    SUM(weight_diff) /1000 AS \u0027weight_diff_kg\u0027,\n\t\t    SUM(weight_sum) /1000 AS \u0027weight_sum_kg\u0027,\n\t\t    (SUM( (pct_weight_under/100) * count)/ SUM([count]))*100 as \u0027pct_weight_under\u0027,\n\t\t    (SUM( (pct_weight_over/100) * count)/ SUM([count]))*100 as \u0027pct_weight_over\u0027,\n\t\t    (\n\t\t            SELECT material_description\n\t\t            FROM system.dbo.materials m\n\t\t            WHERE m.material_number \u003d TRY_CAST(a.material AS INT)\n\t\t        ) AS material_description\t\t    \n\t\tFROM weight.dbo.aggregated a\n\t\tWHERE material !\u003d \u0027All\u0027\n\t\tAND (0 \u003d ? or scale_id \u003d ?)\n\t\tAND time_start \u003e\u003d ?\n\t\tAND time_start \u003c ?\n\t\tGROUP BY\n\t\t    material,\n\t\t    FORMAT(time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM\u0027), \n\t\t    FORMAT(time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027MMM yyyy\u0027)  \n\t\tORDER BY FORMAT(time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM\u0027), material\n\t\t\"\"\"\n\t\t\n\t\t#AND time_start \u003e\u003d DATEADD(month, ?, DATEADD(month, DATEDIFF(month, 0, ?), 0)) \n\t\t#AND time_start \u003c DATEADD(day, 1, EOMONTH(?))            \n\t\t\t\t\t\t\n\t\t# Substitute in the timezone\t\t\n\t\tquery \u003d query.replace(\u0027:timezone\u0027,sqlserver_tz)\n\t\t\n\t\t# Note: You need to repeat parameters if they are used multiple times.\n\t\t# IMPORTANT: The order of \u0027?\u0027 must match the order of arguments passed.\n\t\targs \u003d [\n\t\t    int(scale_id),  \n\t\t    int(scale_id),\n\t\t    value[\u0027start_dt\u0027],    \n\t\t    value[\u0027end_dt\u0027] \n\t\t]\n\t\t\n\t\tresults \u003d CORE_P.Utils.datasetToDicts(system.db.runPrepQuery(query, args, \u0027system\u0027))\n\t\t#CORE_P.Utils.errorPopup(\u0027Dates:\u0027 + str(value[\u0027start_dt\u0027]) + \u0027 - \u0027  + str(value[\u0027end_dt\u0027]))\n\t\treturn results\n\texcept:\n\t    # Handle error\n\t   # CORE_P.Utils.errorPopup(\u0027Error getting materials list:\u0027 + str(type(value[\u0027end_dt\u0027])))\n\t    return []\n\t",
                       "type": "script"
                     }
                   ],
@@ -1395,6 +1395,190 @@
                     }
                   },
                   "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": 1
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "pct_weight_under",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "% Underweight"
+                  },
+                  "justify": "left",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "number",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": 1
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "pct_weight_over",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "% Overweight"
+                  },
+                  "justify": "left",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "number",
                   "resizable": true,
                   "sort": "none",
                   "sortable": true,
