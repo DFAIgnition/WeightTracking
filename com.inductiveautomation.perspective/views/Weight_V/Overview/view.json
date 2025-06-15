@@ -1,6 +1,7 @@
 {
   "custom": {
     "aggregator_day_metal": [],
+    "aggregator_day_weight": [],
     "design": null,
     "heatmap_format": {
       "colorScale": {
@@ -100,7 +101,7 @@
         },
         "transforms": [
           {
-            "code": "\t\n\timport system\n\tfrom java.util import Calendar, TimeZone, Locale\n\tfrom java.text import SimpleDateFormat\n\t\n\t\n\tdef aggregateData(queryResults, timeZoneId):\n\t    yearlyData \u003d initializeYearlyData(timeZoneId)\n\t\n\t    for record in queryResults:\n\t        timestamp \u003d system.date.fromMillis(record[\u0027time_start\u0027])\n\t        calendar \u003d Calendar.getInstance(TimeZone.getTimeZone(timeZoneId))\n\t        calendar.setTime(timestamp)\n\t        monthIndex \u003d calendar.get(Calendar.MONTH)  # Zero-based indexing for months\n\t        dayIndex \u003d calendar.get(Calendar.DAY_OF_MONTH) - 1  # Zero-based indexing for days\n\t\n\t        updateDataStructure(yearlyData[monthIndex][\u0027days\u0027][dayIndex], record)\n\t        updateDataStructure(yearlyData[monthIndex][\u0027summary\u0027], record)\n\t\n\t    # Calculate final values for each day and month\n\t    for monthData in yearlyData:\n\t        for dayData in monthData[\u0027days\u0027]:\n\t            calculateFinalValues(dayData)\n\t        calculateFinalValues(monthData[\u0027summary\u0027])\n\t\n\t    return yearlyData\n\t\n\tdef initializeYearlyData(timeZoneId):\n\t    yearlyData \u003d []\n\t    for month in range(12):  # For each month\n\t        calendar \u003d Calendar.getInstance(TimeZone.getTimeZone(timeZoneId))\n\t        calendar.set(Calendar.MONTH, month)\n\t        monthName \u003d calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())\n\t        yearlyData.append({\n\t            \u0027days\u0027: initializeDaysOfMonth(calendar),\n\t            \u0027summary\u0027: initializeSummaryStructure(monthName)\n\t        })\n\t    return yearlyData\n\t\n\tdef initializeDaysOfMonth(calendar):\n\t    daysInMonth \u003d []\n\t    maxDay \u003d calendar.getActualMaximum(Calendar.DAY_OF_MONTH)\n\t    year \u003d calendar.get(Calendar.YEAR)\n\t    month \u003d calendar.get(Calendar.MONTH)\n\t    for day in range(1, maxDay + 1):  # One-based indexing\n\t        calendar.set(Calendar.YEAR, year)\n\t        calendar.set(Calendar.MONTH, month)\n\t        calendar.set(Calendar.DAY_OF_MONTH, day)\n\t        calendar.set(Calendar.HOUR_OF_DAY, 0)  # Set hour to midnight\n\t        calendar.set(Calendar.MINUTE, 0)       # Set minute to 0\n\t        calendar.set(Calendar.SECOND, 0)       # Set second to 0\n\t        calendar.set(Calendar.MILLISECOND, 0)  # Ensure millisecond is 0 for completeness\n\t        \n\t        timestamp \u003d system.date.toMillis(calendar.getTime())\n\t        daysInMonth.append({\u0027x\u0027: timestamp, \u0027weight_avg\u0027: 0, \u0027count\u0027: 0, \u0027weight_diff\u0027: 0, \u0027metal_rejects\u0027:0, \u0027weight_rejects\u0027:0})\n\t    return daysInMonth\n\t\n\tdef initializeSummaryStructure(monthName):\n\t    summary \u003d initializeDataStructure()\n\t    summary[\u0027x\u0027] \u003d monthName\n\t    return summary\n\t\n\tdef initializeDataStructure():\n\t    return {\u0027weight_avg\u0027: 0, \u0027count\u0027: 0, \u0027weight_diff\u0027: 0, \u0027metal_rejects\u0027:0, \u0027weight_rejects\u0027:0}\n\t\n\tdef updateDataStructure(data, record):\n\t    data[\u0027weight_avg\u0027] +\u003d record[\u0027weight_sum\u0027]\n\t    data[\u0027count\u0027] +\u003d record[\u0027count\u0027]\n\t    \n\t    if(record[\u0027metal_rejects\u0027]):\n\t    \tdata[\u0027metal_rejects\u0027] +\u003d int(record[\u0027metal_rejects\u0027])\n\t    \n\t    if(record[\u0027weight_rejects\u0027]):\n\t    \tdata[\u0027weight_rejects\u0027] +\u003d int(record[\u0027weight_rejects\u0027])\n\t    \n\t    data[\u0027weight_diff\u0027] +\u003d record[\u0027weight_diff\u0027]\n\t\n\tdef calculateFinalValues(data):\n\t    if data[\u0027count\u0027] \u003e 0:\n\t        data[\u0027weight_avg\u0027] \u003d data[\u0027weight_avg\u0027] / data[\u0027count\u0027]\n\t    data[\u0027weight_diff\u0027] \u003d data[\u0027weight_diff\u0027] * self.custom.scale.conversion_factor / 1000\n\t\n\ttimeZoneId \u003d self.params.timeZoneID\n\taggregatedData \u003d aggregateData(value, timeZoneId)\n\tself.getChild(\"root\").getChild(\"Data\").getChild(\"ScrollBack\").meta.visible \u003d True\n\tself.getChild(\"root\").getChild(\"Data\").getChild(\"ScrollForward\").meta.visible \u003d True\n\t\n\treturn aggregatedData",
+            "code": "\t\n\timport system\n\tfrom java.util import Calendar, TimeZone, Locale\n\tfrom java.text import SimpleDateFormat\n\t\n\t\n\tdef aggregateData(queryResults, timeZoneId):\n\t    yearlyData \u003d initializeYearlyData(timeZoneId)\n\t\n\t    for record in queryResults:\n\t        timestamp \u003d system.date.fromMillis(record[\u0027time_start\u0027])\n\t        calendar \u003d Calendar.getInstance(TimeZone.getTimeZone(timeZoneId))\n\t        calendar.setTime(timestamp)\n\t        monthIndex \u003d calendar.get(Calendar.MONTH)  # Zero-based indexing for months\n\t        dayIndex \u003d calendar.get(Calendar.DAY_OF_MONTH) - 1  # Zero-based indexing for days\n\t\n\t        updateDataStructure(yearlyData[monthIndex][\u0027days\u0027][dayIndex], record)\n\t        updateDataStructure(yearlyData[monthIndex][\u0027summary\u0027], record)\n\t\n\t    # Calculate final values for each day and month\n\t    for monthData in yearlyData:\n\t        for dayData in monthData[\u0027days\u0027]:\n\t            calculateFinalValues(dayData)\n\t        calculateFinalValues(monthData[\u0027summary\u0027])\n\t\n\t    return yearlyData\n\t\n\tdef initializeYearlyData(timeZoneId):\n\t    yearlyData \u003d []\n\t    for month in range(12):  # For each month\n\t        calendar \u003d Calendar.getInstance(TimeZone.getTimeZone(timeZoneId))\n\t        calendar.set(Calendar.MONTH, month)\n\t        \n\t        # Ok, so the heatmap graph seems to expect times in UTC, and then it transforms them into local\n\t        # If you pass in local, the time gets transformed twice, and shows up wrong\n\t        calendar2 \u003d Calendar.getInstance(TimeZone.getTimeZone(\u0027UTC\u0027))\n\t        calendar2.set(Calendar.MONTH, month)\n\t        \n\t        monthName \u003d calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())\n\t        yearlyData.append({\n\t            \u0027days\u0027: initializeDaysOfMonth(calendar2),\n\t            \u0027summary\u0027: initializeSummaryStructure(monthName)\n\t        })\n\t    return yearlyData\n\t\n\tdef initializeDaysOfMonth(calendar):\n\t    daysInMonth \u003d []\n\t    maxDay \u003d calendar.getActualMaximum(Calendar.DAY_OF_MONTH)\n\t    year \u003d calendar.get(Calendar.YEAR)\n\t    month \u003d calendar.get(Calendar.MONTH)\n\t    for day in range(1, maxDay + 1):  # One-based indexing\n\t        calendar.set(Calendar.YEAR, year)\n\t        calendar.set(Calendar.MONTH, month)\n\t        calendar.set(Calendar.DAY_OF_MONTH, day)\n\t        calendar.set(Calendar.HOUR_OF_DAY, 0)  # Set hour to midnight\n\t        calendar.set(Calendar.MINUTE, 0)       # Set minute to 0\n\t        calendar.set(Calendar.SECOND, 0)       # Set second to 0\n\t        calendar.set(Calendar.MILLISECOND, 0)  # Ensure millisecond is 0 for completeness\n\t        \n\t        timestamp \u003d system.date.toMillis(calendar.getTime())\n\t        daysInMonth.append({\u0027x\u0027: timestamp, \u0027weight_avg\u0027: 0, \u0027count\u0027: 0, \u0027weight_diff\u0027: 0, \u0027metal_rejects\u0027:0, \u0027weight_rejects\u0027:0})\n\t    return daysInMonth\n\t\n\tdef initializeSummaryStructure(monthName):\n\t    summary \u003d initializeDataStructure()\n\t    summary[\u0027x\u0027] \u003d monthName\n\t    return summary\n\t\n\tdef initializeDataStructure():\n\t    return {\u0027weight_avg\u0027: 0, \u0027count\u0027: 0, \u0027weight_diff\u0027: 0, \u0027metal_rejects\u0027:0, \u0027weight_rejects\u0027:0}\n\t\n\tdef updateDataStructure(data, record):\n\t    data[\u0027weight_avg\u0027] +\u003d record[\u0027weight_sum\u0027]\n\t    data[\u0027count\u0027] +\u003d record[\u0027count\u0027]\n\t    \n\t    if(record[\u0027metal_rejects\u0027]):\n\t    \tdata[\u0027metal_rejects\u0027] +\u003d int(record[\u0027metal_rejects\u0027])\n\t    \n\t    if(record[\u0027weight_rejects\u0027]):\n\t    \tdata[\u0027weight_rejects\u0027] +\u003d int(record[\u0027weight_rejects\u0027])\n\t    \n\t    data[\u0027weight_diff\u0027] +\u003d record[\u0027weight_diff\u0027]\n\t\n\tdef calculateFinalValues(data):\n\t    if data[\u0027count\u0027] \u003e 0:\n\t        data[\u0027weight_avg\u0027] \u003d data[\u0027weight_avg\u0027] / data[\u0027count\u0027]\n\t    data[\u0027weight_diff\u0027] \u003d data[\u0027weight_diff\u0027] * self.custom.scale.conversion_factor / 1000\n\t\n\ttimeZoneId \u003d self.params.timeZoneID\n\taggregatedData \u003d aggregateData(value, timeZoneId)\n\tself.getChild(\"root\").getChild(\"Data\").getChild(\"ScrollBack\").meta.visible \u003d True\n\tself.getChild(\"root\").getChild(\"Data\").getChild(\"ScrollForward\").meta.visible \u003d True\n\t\n\treturn aggregatedData",
             "type": "script"
           }
         ],
@@ -145,7 +146,7 @@
         },
         "transforms": [
           {
-            "code": "\n\tfrom java.util import Calendar, TimeZone\n\ttry:\n\t    if self.custom.selection.timestamp \u003d\u003d \u0027\u0027:\n\t        return []\n\t\n\t    # Assuming start_timestamp is provided or determined somehow\n\t    start_timestamp \u003d self.custom.selection.timestamp\n\t\n\t    # Get the time zone ID from a session property or another source\n\t    timeZoneId \u003d self.params.timeZoneID\n\t    tz \u003d TimeZone.getTimeZone(timeZoneId)\n\t\n\t    # Generate the list of all hourly timestamps\n\t    all_hours \u003d [start_timestamp + 3600000 * i for i in range(24)]\n\t\n\t    # Convert the value list to a dictionary for easier access\n\t    data_dict \u003d {bucket[\"time_start\"]: bucket for bucket in value}\n\t\n\t    # Transform the data\n\t    transformed_data \u003d []\n\t    for hour_timestamp in all_hours:\n\t        # Create a calendar instance set to the hour_timestamp and the specified time zone\n\t        cal \u003d Calendar.getInstance(tz)\n\t        cal.setTimeInMillis(hour_timestamp)\n\t\n\t        # Format the hour string\n\t        hour_str \u003d \u0027{:02d}:00\u0027.format(cal.get(Calendar.HOUR_OF_DAY))\n\t\n\t        bucket \u003d data_dict.get(hour_timestamp)\n\t\n\t        if bucket:\n\t            # Data exists for this hour\n\t            y_values \u003d bucket[\"count\"] #metal_rejects\n\t        else:\n\t            # No data for this hour, use empty or placeholder values\n\t            y_values \u003d 0\n\t\n\t        transformed_item \u003d {\n\t            \"x\": hour_str,\n\t            \"y\": y_values\n\t        }\n\t        transformed_data.append(transformed_item)\n\t\n\t    return transformed_data\n\texcept:\n\t\tpass\n\t\t#CORE_P.Utils.errorPopup(\u0027Error getting metal rejects for day:\u0027)",
+            "code": "\n\tfrom java.util import Calendar, TimeZone\n\ttry:\n\t    if self.custom.selection.timestamp \u003d\u003d \u0027\u0027:\n\t        return []\n\t\n\t    # Assuming start_timestamp is provided or determined somehow\n\t    start_timestamp \u003d self.custom.selection.timestamp\n\t\n\t    # Get the time zone ID from a session property or another source\n\t    timeZoneId \u003d self.params.timeZoneID\n\t    tz \u003d TimeZone.getTimeZone(timeZoneId)\n\t\n\t    # Generate the list of all hourly timestamps\n\t    all_hours \u003d [start_timestamp + 3600000 * i for i in range(24)]\n\t\n\t    # Convert the value list to a dictionary for easier access\n\t    data_dict \u003d {bucket[\"time_start\"]: bucket for bucket in value}\n\t\n\t    # Transform the data\n\t    transformed_data \u003d []\n\t    for hour_timestamp in all_hours:\n\t        # Create a calendar instance set to the hour_timestamp and the specified time zone\n\t        cal \u003d Calendar.getInstance(tz)\n\t        cal.setTimeInMillis(hour_timestamp)\n\t\n\t        # Format the hour string\n\t        hour_str \u003d \u0027{:02d}:00\u0027.format(cal.get(Calendar.HOUR_OF_DAY))\n\t\n\t        bucket \u003d data_dict.get(hour_timestamp)\n\t\n\t        if bucket:\n\t            # Data exists for this hour\n\t            y_values \u003d bucket[\"metal_rejects\"] #metal_rejects\n\t        else:\n\t            # No data for this hour, use empty or placeholder values\n\t            y_values \u003d 0\n\t\n\t        transformed_item \u003d {\n\t            \"x\": hour_str,\n\t            \"y\": y_values\n\t        }\n\t        transformed_data.append(transformed_item)\n\t\n\t    return transformed_data\n\texcept:\n\t\tpass\n\t\t#CORE_P.Utils.errorPopup(\u0027Error getting metal rejects for day:\u0027)",
             "type": "script"
           }
         ],
@@ -167,6 +168,21 @@
         "type": "property"
       },
       "persistent": false
+    },
+    "custom.aggregator_day_weight": {
+      "binding": {
+        "config": {
+          "path": "view.custom.day_data"
+        },
+        "transforms": [
+          {
+            "code": "\n\tfrom java.util import Calendar, TimeZone\n\ttry:\n\t    if self.custom.selection.timestamp \u003d\u003d \u0027\u0027:\n\t        return []\n\t\n\t    # Assuming start_timestamp is provided or determined somehow\n\t    start_timestamp \u003d self.custom.selection.timestamp\n\t\n\t    # Get the time zone ID from a session property or another source\n\t    timeZoneId \u003d self.params.timeZoneID\n\t    tz \u003d TimeZone.getTimeZone(timeZoneId)\n\t\n\t    # Generate the list of all hourly timestamps\n\t    all_hours \u003d [start_timestamp + 3600000 * i for i in range(24)]\n\t\n\t    # Convert the value list to a dictionary for easier access\n\t    data_dict \u003d {bucket[\"time_start\"]: bucket for bucket in value}\n\t\n\t    # Transform the data\n\t    transformed_data \u003d []\n\t    for hour_timestamp in all_hours:\n\t        # Create a calendar instance set to the hour_timestamp and the specified time zone\n\t        cal \u003d Calendar.getInstance(tz)\n\t        cal.setTimeInMillis(hour_timestamp)\n\t\n\t        # Format the hour string\n\t        hour_str \u003d \u0027{:02d}:00\u0027.format(cal.get(Calendar.HOUR_OF_DAY))\n\t\n\t        bucket \u003d data_dict.get(hour_timestamp)\n\t\n\t        if bucket:\n\t            # Data exists for this hour\n\t            y_values \u003d bucket[\"weight_rejects\"] #metal_rejects\n\t        else:\n\t            # No data for this hour, use empty or placeholder values\n\t            y_values \u003d 0\n\t\n\t        transformed_item \u003d {\n\t            \"x\": hour_str,\n\t            \"y\": y_values\n\t        }\n\t        transformed_data.append(transformed_item)\n\t\n\t    return transformed_data\n\texcept:\n\t\tpass\n\t\t#CORE_P.Utils.errorPopup(\u0027Error getting metal rejects for day:\u0027)",
+            "type": "script"
+          }
+        ],
+        "type": "property"
+      },
+      "persistent": true
     },
     "custom.aggregator_year": {
       "binding": {
@@ -924,6 +940,7 @@
                   "config": {
                     "path": "view.custom.aggregator"
                   },
+                  "overlayOptOut": true,
                   "transforms": [
                     {
                       "code": "\t\n\tfrom java.util import Calendar\n\t\n\tinput_data \u003d value\n\t\n\t# Initialize data arrays\n\tbag_counts \u003d []\n\tweight_avgs \u003d []\n\tweight_diffs \u003d []\n\t\n\t# Define month names for mapping numbers back to names later\n\tmonth_names \u003d [\"January\", \"February\", \"March\", \"April\", \"May\", \"June\", \n\t               \"July\", \"August\", \"September\", \"October\", \"November\", \"December\"]\n\t\n\t# Convert month names to numbers for sorting\n\tmonth_numbers \u003d {name: i + 1 for i, name in enumerate(month_names)}\n\t\n\t# Get current year and month\n\t#calendar \u003d Calendar.getInstance()\n\t#currentYear \u003d calendar.get(Calendar.YEAR)\n\t#currentMonth \u003d calendar.get(Calendar.MONTH) + 1  # Adjusting so January is 1, December is 12\n\t\n\tend_dt \u003d self.view.custom.end_dt\n\t\t\n    # Get the current month and year\n    #current_month \u003d datetime.datetime.now().month\n    #current_year \u003d datetime.datetime.now().year\n\tcurrentMonth \u003d end_dt.getMonth()+1\n\tcurrentYear \u003d end_dt.getYear()+ 1900\n    \t\n\t\n\t# Determine the year for each month and populate data arrays\n\tcombined_data \u003d []\n\tfor month in input_data:\n\t    summary \u003d month[\"summary\"]\n\t    month_number \u003d month_numbers[summary[\"x\"]]\n\t    year \u003d currentYear if month_number \u003c\u003d currentMonth else currentYear - 1\n\t    bag_count \u003d float(summary.get(\"count\", 0))\n\t    weight_avg \u003d float(summary.get(\"weight_avg\", 0.0))\n\t    weight_diff \u003d float(summary.get(\"weight_diff\", 0.0))\n\t    metal_rejects \u003d float(summary.get(\"metal_rejects\", 0.0))\n\t    weight_rejects \u003d float(summary.get(\"weight_rejects\", 0.0))\n\t    \n\t    combined_data.append([year, month_number, bag_count, weight_avg, weight_diff, metal_rejects, weight_rejects])\n\t\n\t# Sort the combined_data by year and month_number\n\tcombined_data.sort(key\u003dlambda x: (x[0], x[1]))\n\t\n\t# Replace month_number with month names for display, using the month_names list\n\tfor row in combined_data:\n\t    row[1] \u003d month_names[row[1] - 1]  # Convert month number back to name\n\t\n\tcombined_headers \u003d [\"Year\", \"Month\", \"Count\", \"Weight Avg\", \"Weight Diff\", \u0027Metal Rejects\u0027, \u0027Weight Rejects\u0027]\n\tcombined_dataset \u003d system.dataset.toDataSet(combined_headers, combined_data)\n\t\n\treturn combined_dataset",
@@ -1746,6 +1763,7 @@
                   "config": {
                     "path": "view.custom.aggregator_year"
                   },
+                  "overlayOptOut": true,
                   "type": "property"
                 }
               }
@@ -2027,6 +2045,7 @@
                   "config": {
                     "path": "this.props.options.yaxis[0].min"
                   },
+                  "enabled": false,
                   "type": "property"
                 }
               },
@@ -2035,6 +2054,7 @@
                   "config": {
                     "path": "view.custom.aggregator_day"
                   },
+                  "overlayOptOut": true,
                   "type": "property"
                 }
               },
@@ -2043,21 +2063,35 @@
                   "config": {
                     "path": "view.custom.aggregator_day_bag"
                   },
+                  "overlayOptOut": true,
+                  "transforms": [
+                    {
+                      "code": "\t#CORE_P.Utils.warningPopup(\u0027DEBUG: Units:\u0027 + str(value))\n\treturn value",
+                      "type": "script"
+                    }
+                  ],
                   "type": "property"
                 }
               },
               "props.series[2].data": {
                 "binding": {
                   "config": {
-                    "path": "view.custom.aggregator_day_sp"
+                    "path": "view.custom.aggregator_day_metal"
                   },
+                  "enabled": false,
+                  "transforms": [
+                    {
+                      "code": "\t#CORE_P.Utils.errorPopup(\u0027DEBUG: Metal rejects:\u0027 + str(value))\n\treturn value",
+                      "type": "script"
+                    }
+                  ],
                   "type": "property"
                 }
               },
               "props.series[3].data": {
                 "binding": {
                   "config": {
-                    "path": "view.custom.aggregator_day_metal"
+                    "path": "view.custom.aggregator_day_sp"
                   },
                   "type": "property"
                 }
@@ -2085,10 +2119,10 @@
                   "width": 480
                 },
                 "colors": [
-                  "#AAAAAA50",
-                  "#AAAAAA50",
-                  "#AAAAAA50",
-                  "#AAAAAA50"
+                  "#AAAAAA20",
+                  "#AA00AA20",
+                  "#00AAAA50",
+                  "#00AAAA50"
                 ],
                 "dataLabels": {
                   "enabled": false,
@@ -2145,9 +2179,11 @@
                   "colors": [
                     "#555555",
                     "#555555",
+                    "#FF00FF",
                     "#FF00FF"
                   ],
                   "curve": [
+                    "straight",
                     "straight",
                     "straight",
                     "straight"
@@ -2155,11 +2191,13 @@
                   "dashArray": [
                     0,
                     0,
+                    5,
                     5
                   ],
                   "width": [
                     0.5,
                     0,
+                    1,
                     1
                   ]
                 },
@@ -2200,6 +2238,7 @@
                   },
                   {
                     "forceNiceScale": true,
+                    "min": 0,
                     "opposite": false,
                     "show": false,
                     "title": {
@@ -2215,21 +2254,19 @@
                 },
                 {
                   "name": "Units",
-                  "type": "area"
+                  "type": "area",
+                  "yAxis": 1
+                },
+                {
+                  "color": "#FF000050",
+                  "data": [],
+                  "name": "Metal Rejects",
+                  "type": "area",
+                  "yAxis": 1
                 },
                 {
                   "name": "SP",
                   "type": "line"
-                },
-                {
-                  "color": "#FF000050",
-                  "fill": {
-                    "color": "#FF000050",
-                    "opacity": 0.5
-                  },
-                  "name": "Metal Rejects",
-                  "type": "area",
-                  "yAxis": 1
                 }
               ],
               "type": "boxPlot"
@@ -2424,6 +2461,7 @@
                   "config": {
                     "path": "view.custom.aggregator_year_metal_rejects"
                   },
+                  "overlayOptOut": true,
                   "type": "property"
                 }
               }
@@ -2725,6 +2763,7 @@
                   "config": {
                     "path": "view.custom.aggregator_year_weight_rejects"
                   },
+                  "overlayOptOut": true,
                   "type": "property"
                 }
               }
@@ -2933,6 +2972,368 @@
         },
         "props": {
           "alignContent": "flex-start",
+          "style": {
+            "borderColor": "#808080",
+            "borderStyle": "solid",
+            "borderWidth": 0.5,
+            "marginBottom": 5,
+            "marginLeft": 5,
+            "marginRight": 5,
+            "marginTop": 5,
+            "overflow": "hidden",
+            "overflowX": "hidden",
+            "overflowY": "hidden"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "dailychart"
+            },
+            "position": {
+              "basis": "100%",
+              "shrink": 0
+            },
+            "propConfig": {
+              "position.display": {
+                "binding": {
+                  "config": {
+                    "path": "view.custom.selection.timestamp"
+                  },
+                  "enabled": false,
+                  "transforms": [
+                    {
+                      "code": "\tif value\u003d\u003d\u0027\u0027:\n\t\treturn False\n\telse:\n\t\treturn True",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.options.title.text": {
+                "binding": {
+                  "config": {
+                    "path": "view.custom.selection.datetime"
+                  },
+                  "type": "property"
+                }
+              },
+              "props.options.tooltip.custom": {
+                "binding": {
+                  "config": {
+                    "expression": "now(0)"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\t\n\tscript\u003d\u0027\u0027\u0027function({series, seriesIndex, dataPointIndex, w}) {\n\t    let htmlContent \u003d \u0027\u003cdiv class\u003d\"arrow_box\" style\u003d\"\u0027\n\t        + \u0027background-color: #f9f9f9; padding: 10px; border: 1px solid #ddd; \u0027\n\t        + \u0027box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); border-radius: 5px; \u0027\n\t        + \u0027font-family: Arial, sans-serif; font-size: 14px; color: #333; \u0027\n\t        + \u0027line-height: 1; text-align: left;\"\u003e\u0027;\n\t\n\t    const formatValue \u003d value \u003d\u003e Math.round(value).toString();\n\t    var data \u003d w.config.series[seriesIndex].data[dataPointIndex];\n\t\n\t\n\t    // Added margin-right to the span for spacing\n\t    htmlContent +\u003d\u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003eMaterial:\u003c/span\u003e\u003cb\u003e\u0027 + data.material + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\n\t    \t\t\t + \u0027\u003cbr\u003e\u0027 // Line break before SP\n\t    \t\t\t  +\u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003eMaximum:\u003c/span\u003e\u003cb\u003e\u0027 + formatValue(w.globals.seriesCandleC[0][dataPointIndex]) + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\n\t                 + \u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003e75%:\u003c/span\u003e\u003cb\u003e\u0027 + formatValue(w.globals.seriesCandleL[0][dataPointIndex]) + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\n\t                 + \u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003eMedian:\u003c/span\u003e\u003cb\u003e\u0027 + formatValue(w.globals.seriesCandleM[0][dataPointIndex]) + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\n\t                 + \u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003e25%:\u003c/span\u003e\u003cb\u003e\u0027 + formatValue(w.globals.seriesCandleH[0][dataPointIndex]) + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\n\t                 + \u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003eMinimum:\u003c/span\u003e\u003cb\u003e\u0027 + formatValue(w.globals.seriesCandleO[0][dataPointIndex]) + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\n\t                 + \u0027\u003cbr\u003e\u0027 // Line break before Count\n\t                 + \u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003eCount:\u003c/span\u003e\u003cb\u003e\u0027 + formatValue(series[1][dataPointIndex]) + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\n\t                 + \u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003eSP:\u003c/span\u003e\u003cb\u003e\u0027 + formatValue(series[2][dataPointIndex]) + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\n\t                 \n\t\n\t    return htmlContent;\n\t}\u0027\u0027\u0027\n\t\n\t\n\treturn script",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "expr"
+                }
+              },
+              "props.options.yaxis[0].max": {
+                "binding": {
+                  "config": {
+                    "path": "view.custom.day_data"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\ttry:\n\t\tif self.parent.parent.getChild(\"Settings\").getChild(\"Fix Scale\").props.selected:\n\t\t\treturn self.view.custom.line.MaxWeight\n\t\telse:\n\t\t\t# Extract weight_max values from each row and find the maximum\n\t\t    max_weight \u003d max(row[\u0027weight_max\u0027] for row in value)\n\t\t    return max_weight\n\texcept:\n\t\treturn 100",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.options.yaxis[0].min": {
+                "binding": {
+                  "config": {
+                    "path": "view.custom.day_data"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\ttry:\n\t\tif self.parent.parent.getChild(\"Settings\").getChild(\"Fix Scale\").props.selected:\n\t\t\treturn self.view.custom.line.MinWeight\n\t\telse:\n\t\t\t# Extract weight_max values from each row and find the maximum\n\t\t    min_weight \u003d min(row[\u0027weight_min\u0027] for row in value)\n\t\t    return min_weight\n\texcept:\n\t\treturn 0",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.options.yaxis[2].max": {
+                "binding": {
+                  "config": {
+                    "path": "this.props.options.yaxis[0].max"
+                  },
+                  "type": "property"
+                }
+              },
+              "props.options.yaxis[2].min": {
+                "binding": {
+                  "config": {
+                    "path": "this.props.options.yaxis[0].min"
+                  },
+                  "type": "property"
+                }
+              },
+              "props.series[0].data": {
+                "binding": {
+                  "config": {
+                    "path": "view.custom.aggregator_day"
+                  },
+                  "type": "property"
+                }
+              },
+              "props.series[1].data": {
+                "binding": {
+                  "config": {
+                    "path": "view.custom.aggregator_day_bag"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\t#CORE_P.Utils.warningPopup(\u0027DEBUG: Units:\u0027 + str(value))\n\treturn value",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.series[2].data": {
+                "binding": {
+                  "config": {
+                    "path": "view.custom.aggregator_day_metal"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\t#CORE_P.Utils.errorPopup(\u0027DEBUG: Metal rejects:\u0027 + str(value))\n\treturn value",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.series[3].data": {
+                "binding": {
+                  "config": {
+                    "path": "view.custom.aggregator_day_weight"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\t#CORE_P.Utils.errorPopup(\u0027DEBUG: Metal rejects:\u0027 + str(value))\n\treturn value",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "options": {
+                "annotations": {},
+                "chart": {
+                  "animations": {
+                    "enabled": false
+                  },
+                  "background": "",
+                  "events": {
+                    "dataPointSelection": true
+                  },
+                  "fontFamily": "Roboto",
+                  "foreColor": "#333",
+                  "height": 220,
+                  "id": "",
+                  "toolbar": {
+                    "show": false
+                  },
+                  "type": "boxPlot",
+                  "width": 480
+                },
+                "colors": [
+                  "#AAAAAA50",
+                  "#AAAAAA50",
+                  "#AAAAAA50",
+                  "#AAAAAA50"
+                ],
+                "dataLabels": {
+                  "enabled": false,
+                  "formatter": "function (value) {return value.toFixed(0).toLocaleString()}",
+                  "style": {
+                    "fontWeight": 700
+                  }
+                },
+                "grid": {
+                  "padding": {
+                    "left": 15,
+                    "right": 25
+                  }
+                },
+                "legend": {
+                  "fontSize": 14,
+                  "itemMargin": {
+                    "vertical": 0
+                  },
+                  "markers": {
+                    "offsetY": 2,
+                    "shape": "square",
+                    "size": 10
+                  },
+                  "offsetY": 0,
+                  "show": true
+                },
+                "markers": {
+                  "colors": [
+                    "#FF0000",
+                    "#FF0000",
+                    "#FF00FF"
+                  ],
+                  "shape": [
+                    "circle",
+                    "circle",
+                    "square"
+                  ],
+                  "size": [
+                    0,
+                    0,
+                    1
+                  ]
+                },
+                "plotOptions": {
+                  "boxPlot": {
+                    "colors": {
+                      "lower": "#4169E1",
+                      "upper": "#B22222"
+                    }
+                  }
+                },
+                "stroke": {
+                  "colors": [
+                    "#555555",
+                    "#555555",
+                    "#FF00FF"
+                  ],
+                  "curve": [
+                    "straight",
+                    "straight",
+                    "straight"
+                  ],
+                  "dashArray": [
+                    0,
+                    0,
+                    5
+                  ],
+                  "width": [
+                    0.5,
+                    0,
+                    1
+                  ]
+                },
+                "title": {
+                  "align": "center"
+                },
+                "tooltip": {
+                  "enabled": true,
+                  "followCursor": false,
+                  "marker": {
+                    "show": false
+                  },
+                  "shared": false,
+                  "x": {
+                    "show": true
+                  }
+                },
+                "xaxis": {
+                  "tooltip": {
+                    "enabled": false
+                  },
+                  "type": "category"
+                },
+                "yaxis": [
+                  {
+                    "forceNiceScale": true,
+                    "opposite": false,
+                    "title": {
+                      "text": "Weight"
+                    }
+                  },
+                  {
+                    "forceNiceScale": true,
+                    "opposite": true,
+                    "title": {
+                      "text": "Units"
+                    }
+                  },
+                  {
+                    "forceNiceScale": true,
+                    "opposite": false,
+                    "show": false,
+                    "title": {
+                      "text": "SP"
+                    }
+                  }
+                ]
+              },
+              "series": [
+                {
+                  "name": "Weight",
+                  "type": "boxPlot"
+                },
+                {
+                  "name": "Units",
+                  "type": "area",
+                  "yAxis": 1
+                },
+                {
+                  "color": "#FF000050",
+                  "name": "Metal Rejects",
+                  "type": "area",
+                  "yAxis": 1
+                },
+                {
+                  "color": "#0000FF50",
+                  "name": "Weight Rejects",
+                  "type": "area",
+                  "yAxis": 1
+                },
+                {
+                  "data": [],
+                  "name": "SP",
+                  "type": "line"
+                }
+              ],
+              "type": "boxPlot"
+            },
+            "type": "kyvislabs.display.apexchart"
+          }
+        ],
+        "meta": {
+          "name": "Day_0"
+        },
+        "position": {
+          "basis": "500px",
+          "shrink": 0
+        },
+        "propConfig": {
+          "position.display": {
+            "binding": {
+              "config": {
+                "path": "view.custom.selection.timestamp"
+              },
+              "enabled": false,
+              "transforms": [
+                {
+                  "code": "\tif value\u003d\u003d\u0027\u0027:\n\t\treturn False\n\telse:\n\t\treturn True",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "direction": "column",
           "style": {
             "borderColor": "#808080",
             "borderStyle": "solid",

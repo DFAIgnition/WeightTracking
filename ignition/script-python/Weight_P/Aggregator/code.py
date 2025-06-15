@@ -311,47 +311,7 @@ def ProcessWeek(Start, End, site_id, scale_id):
 			for hour, materials_keys in hours.items():
 			
 				for materials_key, tags in materials_keys.items():
-				
-#					#----------------------------------------------------------------------------
-#					# Work out the set points for this material
-#					#----------------------------------------------------------------------------
-#					for sp_tag in ['filler_sp_tag', 'filler_sp_high_tag', 'filler_sp_low_tag']:
-#						if sp_tag in tags and tags[sp_tag]:
-#						    # Store the first value directly
-#						    tags[sp_tag] = tags[sp_tag][0]
-#						else:
-#							# If we don't have a tag configured for this setpoint, use the Material defaults instead
-#							if (tags['material'] and tags['material'] != 'All'):
-#								# Pull the material data out of the database if we haven't yet
-#								if tags['material'] not in material_config:
-#									tmp = CORE_P.Utils.datasetToDicts(system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/DB_Query/Get_Material', parameters={'material_number':tags['material']}))
-#									if (len(tmp)>0):
-#										material_config[str(tags['material'])] = tmp[0]
-#									else:
-#										material_config[str(tags['material'])] = None
-#								
-#								# Then, use either the item limits, or total limits, depending on the line type
-#								if (material_config[str(tags['material'])]):
-#									if entry['fill_type'] == 'item':
-#										if (sp_tag == 'filler_sp_tag'):
-#											tags[sp_tag] = material_config[str(tags['material'])]['item_target_weight']
-#										elif (sp_tag == 'filler_sp_high_tag'):
-#											tags[sp_tag] = material_config[str(tags['material'])]['item_upper_limit']
-#										elif (sp_tag == 'filler_sp_low_tag'):
-#											tags[sp_tag] = material_config[str(tags['material'])]['item_lower_limit']
-#									elif entry['fill_type'] == 'case':
-#										if (sp_tag == 'filler_sp_tag'):
-#											tags[sp_tag] = material_config[str(tags['material'])]['target_weight']
-#										elif (sp_tag == 'filler_sp_high_tag'):
-#											tags[sp_tag] = material_config[str(tags['material'])]['upper_limit']
-#										elif (sp_tag == 'filler_sp_low_tag'):
-#											tags[sp_tag] = material_config[str(tags['material'])]['lower_limit']
-#								else:
-#									tags[sp_tag] = last_known_values.get(sp_tag, default_sp_values[sp_tag])			
-#							# Use the last known or default value
-#							else:
-#								tags[sp_tag] = last_known_values.get(sp_tag, default_sp_values[sp_tag])	
-					    						
+					    						
 					#----------------------------------------------------------------------------
 					# Working on weight Statistics			    
 					#----------------------------------------------------------------------------
@@ -366,12 +326,6 @@ def ProcessWeek(Start, End, site_id, scale_id):
 							
 						for value in tags['scale_weight_values']:
 							stats.addValue(value)
-#							if value > tags['filler_sp_high_tag']:
-#								count_over_threshold += 1
-#							if value < tags['filler_sp_low_tag']:
-#								count_under_threshold += 1
-#							if value < tags['filler_sp_low_tag'] or value > tags['filler_sp_high_tag'] :
-#								count_out_of_threshold += 1
 								
 						tags['scale_id']=entry['scale_id']
 						tags['count']=len(tags['scale_weight_values'])
@@ -431,17 +385,6 @@ def ProcessWeek(Start, End, site_id, scale_id):
 						tags['pct_weight_under'] = (len(tags['under_threshold']) / float(tags['count'])) * 100 if tags['count'] > 0 else 0
 						tags['pct_out_of_range'] = (len(tags['out_of_threshold']) / float(tags['count'])) * 100 if tags['count'] > 0 else 0
 												
-#						tags['weight_diff'] = tags['weight_sum']- tags['weight_target']
-#						tags['sp_low'] = entry['filler_sp_low']
-#						tags['sp'] = entry['filler_sp']
-#						tags['sp_high'] = entry['filler_sp_high']
-#						tags['weight_target'] = tags['count']*tags['filler_sp_tag']
-#						tags['pct_weight_over'] = (count_over_threshold / float(tags['count'])) * 100 if tags['count'] > 0 else 0
-#						tags['pct_weight_under'] = (count_under_threshold / float(tags['count'])) * 100 if tags['count'] > 0 else 0
-#						tags['pct_out_of_range'] = (count_out_of_threshold / float(tags['count'])) * 100 if tags['count'] > 0 else 0
-												
-						#tags['design'] = entry['filler_design']
-						
 					
 					# Clean up to save memory.
 					del tags['scale_weight_values']
@@ -567,7 +510,7 @@ def insertOrUpdateBucketData(scale_data, start_dt, end_dt):
 		SystemLogger(True, "JAY", CORE_P.Utils.getError())		
 		system.db.rollbackTransaction(txId)	
 		system.db.closeTransaction(txId)	
-	SystemLogger(True, "JAY", "Finished processing")		
+	#SystemLogger(True, "JAY", "Finished processing")		
 
 ###############################################################
 # GetBuckets
