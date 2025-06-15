@@ -12,8 +12,9 @@ def getProjectMenu():
 	menu_header		= 'WEIGHT'
 	
 	menu_items = [
-		{'label': "Weight Tracking",		'icon':"material/linear_scale",	"target": "/main"},
+		{'label': "Weight Overview",		'icon':"material/linear_scale",	"target": "/main"},
 		{'label': "Weight by Material",		'icon':"material/linear_scale",	"target": "/materials"},
+		{'label': "Weight by Day",		'icon':"material/linear_scale",	"target": "/weightsbyday"},
 		{'label': "Admin",				'icon':"material/settings",		"target": "", "items":[
 			{'label': "Filler Setup",		'icon':"material/settings",	"target": "/admin",  'permission_code':'SITEADMIN', 'project_name':project_name},
 			{'label': "User Admin",					'icon':"material/settings",		"target": "/useradmin", 		'permission_code':'SITEADMIN', 'project_name':project_name},

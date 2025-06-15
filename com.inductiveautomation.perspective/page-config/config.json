@@ -23,6 +23,10 @@
     "/useradmin": {
       "title": "User Administration",
       "viewPath": "Users_V/UserAdmin"
+    },
+    "/weightsbyday": {
+      "title": "Weights by Day",
+      "viewPath": "Weight_V/WeightsByDay"
     }
   },
   "sharedDocks": {

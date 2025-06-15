@@ -1,0 +1,1900 @@
+{
+  "custom": {
+    "design": null,
+    "end_dt": {
+      "$": [
+        "ts",
+        192,
+        1750026475133
+      ],
+      "$ts": 1750075200000
+    },
+    "heatmap_format": {
+      "colorScale": {
+        "inverse": false,
+        "max": "",
+        "min": "",
+        "ranges": [
+          {
+            "color": "#FFFFFF",
+            "foreColor": "#FFFFFF",
+            "from": 0,
+            "name": " ",
+            "to": 0
+          },
+          {
+            "color": "#00800080",
+            "foreColor": "#000000",
+            "from": "0.000000000000000000001",
+            "name": "1σ"
+          },
+          {
+            "color": "#98FB9880",
+            "foreColor": "#000000",
+            "name": "2σ"
+          },
+          {
+            "color": "#FFB7B780",
+            "foreColor": "#000000",
+            "name": "3σ"
+          },
+          {
+            "color": "#FF555580",
+            "foreColor": "#000000",
+            "name": "5σ"
+          },
+          {
+            "color": "#FF000080",
+            "foreColor": "#000000",
+            "name": "\u003e5σ"
+          },
+          {
+            "color": "#AED6F180",
+            "foreColor": "#000000",
+            "name": "-1σ",
+            "to": "-0.000000000000000000001"
+          },
+          {
+            "color": "#5DADE280",
+            "foreColor": "#000000",
+            "name": "-2σ"
+          },
+          {
+            "color": "#2E86C180",
+            "foreColor": "#000000",
+            "name": "-3σ"
+          },
+          {
+            "color": "#21618C80",
+            "foreColor": "#000000",
+            "name": "-5σ"
+          },
+          {
+            "color": "#15436080",
+            "foreColor": "#000000",
+            "name": "\u003c-5σ"
+          }
+        ]
+      },
+      "distributed": false,
+      "enableShades": false,
+      "radius": 2,
+      "reverseNegativeShade": false,
+      "shadeIntensity": 0.8,
+      "useFillColorAsStroke": false
+    },
+    "key": "value",
+    "line": {
+      "Description": "Bag Line 1 ",
+      "MaxWeight": 30000,
+      "MinWeight": 0
+    },
+    "scale": {
+      "conversion_factor": 1,
+      "design": 50,
+      "scale_name": "Scale",
+      "setpoint": 25000,
+      "unit": "g"
+    },
+    "selection": {
+      "index_day": "",
+      "index_series": "",
+      "index_year": "",
+      "timestamp": ""
+    },
+    "sqlserver_timezone": "UTC",
+    "start_dt": {
+      "$": [
+        "ts",
+        192,
+        1750026492359
+      ],
+      "$ts": 1749902400000
+    }
+  },
+  "params": {
+    "timeZoneID": ""
+  },
+  "propConfig": {
+    "custom.end_dt": {
+      "binding": {
+        "config": {
+          "path": "session.props.timeZoneId"
+        },
+        "transforms": [
+          {
+            "code": "\tfrom java.util import Date\n\tfrom system.date import now, addMonths\n\t\n\t# Start with the end of the current day\n\treturn CORE_P.Time.adjustTimestamp(rounding\u003d\u0027dayup\u0027)\n\t#return addMonths(CORE_P.Time.month_start(self.session.props.timeZoneId), 1)\n\t \n\t ",
+            "type": "script"
+          }
+        ],
+        "type": "property"
+      },
+      "persistent": true
+    },
+    "custom.heatmap_format": {
+      "persistent": true
+    },
+    "custom.heatmap_format.colorScale.ranges[10].from": {
+      "binding": {
+        "config": {
+          "expression": "-1000*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[10].to": {
+      "binding": {
+        "config": {
+          "expression": "-5*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[1].to": {
+      "binding": {
+        "config": {
+          "expression": "{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[2].from": {
+      "binding": {
+        "config": {
+          "expression": "{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[2].to": {
+      "binding": {
+        "config": {
+          "expression": "2*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[3].from": {
+      "binding": {
+        "config": {
+          "expression": "2*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[3].to": {
+      "binding": {
+        "config": {
+          "expression": "3*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[4].from": {
+      "binding": {
+        "config": {
+          "expression": "3*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[4].to": {
+      "binding": {
+        "config": {
+          "expression": "5*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[5].from": {
+      "binding": {
+        "config": {
+          "expression": "5*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[5].to": {
+      "binding": {
+        "config": {
+          "expression": "1000*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[6].from": {
+      "binding": {
+        "config": {
+          "expression": "-{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[7].from": {
+      "binding": {
+        "config": {
+          "expression": "-2*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[7].to": {
+      "binding": {
+        "config": {
+          "expression": "-{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[8].from": {
+      "binding": {
+        "config": {
+          "expression": "-3*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[8].to": {
+      "binding": {
+        "config": {
+          "expression": "-2*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[9].from": {
+      "binding": {
+        "config": {
+          "expression": "-5*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.heatmap_format.colorScale.ranges[9].to": {
+      "binding": {
+        "config": {
+          "expression": "-3*{view.custom.scale.design}"
+        },
+        "type": "expr"
+      }
+    },
+    "custom.key": {
+      "persistent": true
+    },
+    "custom.line": {
+      "binding": {
+        "config": {
+          "parameters": {
+            "line_id": "{/root/Selections/selection_line.props.value}"
+          },
+          "queryPath": "Weight_Q/DB_Query/Get_Line_Info"
+        },
+        "transforms": [
+          {
+            "code": "\n    # Create an empty dictionary to hold the results\n    result \u003d {}\n\n    # Check if the dataset contains at least one row\n    if value.getRowCount() \u003e 0:\n        # Extract values from the first row\n        line_desc \u003d value.getValueAt(0, \"line_desc\")\n        line_weight_min \u003d value.getValueAt(0, \"line_weight_min\")\n        line_weight_max \u003d value.getValueAt(0, \"line_weight_max\")\n\n        # Assign these values to the keys \u0027design\u0027 and \u0027setpoint\u0027 in the result dictionary\n        result[\u0027Description\u0027] \u003d line_desc\n        result[\u0027MinWeight\u0027] \u003d line_weight_min\n        result[\u0027MaxWeight\u0027] \u003d line_weight_max\n    else:\n        # Handle the case where no rows are returned\n        result[\u0027Description\u0027] \u003d \u0027\u0027\n        result[\u0027MinWeight\u0027] \u003d 20000\n        result[\u0027MaxWeight\u0027] \u003d 30000\n\n    # Return the dictionary containing the design and setpoint\n    return result",
+            "type": "script"
+          }
+        ],
+        "type": "query"
+      },
+      "persistent": true
+    },
+    "custom.scale": {
+      "binding": {
+        "config": {
+          "enableValueCache": false,
+          "parameters": {
+            "scale_id": "{/root/Selections/selection_scale.props.value}"
+          },
+          "queryPath": "Weight_Q/DB_Query/Get_Scale_Info"
+        },
+        "transforms": [
+          {
+            "code": "\n    # Create an empty dictionary to hold the results\n    result \u003d {}\n\n    # Check if the dataset contains at least one row\n    if value.getRowCount() \u003e 0:\n        # Extract values from the first row\n        filler_design \u003d value.getValueAt(0, \"filler_design\")\n        filler_sp \u003d value.getValueAt(0, \"filler_sp\")\n        unit_name \u003d value.getValueAt(0, \"unit_name\")\n        unit_conversion \u003d value.getValueAt(0, \"unit_conversion\")\n        scale_name \u003d value.getValueAt(0, \"scale_name\")\n\n        # Assign these values to the keys \u0027design\u0027 and \u0027setpoint\u0027 in the result dictionary\n        result[\u0027design\u0027] \u003d filler_design\n        result[\u0027setpoint\u0027] \u003d filler_sp\n        result[\u0027unit\u0027] \u003d unit_name\n        result[\u0027conversion_factor\u0027] \u003d unit_conversion\n        result[\u0027scale_name\u0027] \u003d scale_name\n    else:\n        # Handle the case where no rows are returned\n        result[\u0027design\u0027] \u003d 50\n        result[\u0027setpoint\u0027] \u003d 25000\n        result[\u0027unit\u0027] \u003d \u0027g\u0027\n        result[\u0027conversion_factor\u0027] \u003d 1\n        result[\u0027scale_name\u0027] \u003d \u0027Scale\u0027\n\n    # Return the dictionary containing the design and setpoint\n    return result",
+            "type": "script"
+          }
+        ],
+        "type": "query"
+      },
+      "persistent": true
+    },
+    "custom.scale.unit": {
+      "onChange": {
+        "enabled": null,
+        "script": "\tself.getChild(\"root\").getChild(\"Day\").getChild(\"dailychart\").refreshBinding(\u0027props.options.title.text\u0027)\n\t"
+      }
+    },
+    "custom.selection": {
+      "persistent": true
+    },
+    "custom.selection.datetime": {
+      "binding": {
+        "config": {
+          "path": "view.custom.selection.timestamp"
+        },
+        "transforms": [
+          {
+            "formatType": "datetime",
+            "formatValue": {
+              "date": "full"
+            },
+            "type": "format"
+          }
+        ],
+        "type": "property"
+      }
+    },
+    "custom.sqlserver_timezone": {
+      "binding": {
+        "config": {
+          "path": "session.props.timeZoneId"
+        },
+        "transforms": [
+          {
+            "code": "\treturn CORE_P.Time.getSQLServerTimezone(value) or \u0027UTC\u0027\n\t",
+            "type": "script"
+          }
+        ],
+        "type": "property"
+      },
+      "persistent": true
+    },
+    "custom.start_dt": {
+      "binding": {
+        "config": {
+          "struct": {
+            "end_dt": "{view.custom.end_dt}",
+            "months": "{/root/Selections/selection_months.props.value}"
+          },
+          "waitOnAll": true
+        },
+        "transforms": [
+          {
+            "code": "\tfrom java.util import Date\n\tfrom system.date import now, addMonths, addDays\n\t\n\t# Start exactly one month before the end_dt...\n\treturn addDays(value[\u0027end_dt\u0027], -value[\u0027months\u0027])\n\t#return addMonths(value[\u0027end_dt\u0027], -value[\u0027months\u0027])\n\t",
+            "type": "script"
+          }
+        ],
+        "type": "expr-struct"
+      },
+      "persistent": true
+    },
+    "params.timeZoneID": {
+      "binding": {
+        "config": {
+          "path": "session.props.timeZoneId"
+        },
+        "type": "property"
+      },
+      "onChange": {
+        "enabled": null,
+        "script": "\t\n\ttry:\n\t\tfrom java.util import Calendar, TimeZone\n\t\t\n\t\t# Get the timezone ID from a session property or another source\n\t\ttimeZoneId \u003d self.view.params.timeZoneID\n\t\ttz \u003d TimeZone.getTimeZone(timeZoneId)\n\t\t\n\t\tself.refreshBinding(\"custom.aggregator\")\n\t\tself.refreshBinding(\"custom.aggregator_day\")\n\t\tself.refreshBinding(\"custom.aggregator_day_bag\")\n\t\tself.refreshBinding(\"custom.aggregator_day_sp\")\n\t\t\n\t\t # Retrieve the year from the series data\n\t\tseries_year \u003d self.custom.aggregator_year[self.custom.selection.index_series].year\n\t\t\n\t\t# Convert to seconds for Python datetime operations\n\t\ttimestamp_seconds \u003d self.custom.aggregator_year[self.custom.selection.index_series].data[self.custom.selection.index_day].x / 1000.0\n\t\t\n\t\t# Create a calendar instance, set the time and adjust to the specified timezone\n\t\tcalendar \u003d Calendar.getInstance(tz)\n\t\tcalendar.setTimeInMillis(long(timestamp_seconds * 1000))\n\t\t\n\t\t# Correctly set the year based on the series data\n\t\tcalendar.set(Calendar.YEAR, series_year)\n\t\t\n\t\t# Set hour, minute, second, and millisecond to 0 to get the start of the day\n\t\tcalendar.set(Calendar.HOUR_OF_DAY, 0)\n\t\tcalendar.set(Calendar.MINUTE, 0)\n\t\tcalendar.set(Calendar.SECOND, 0)\n\t\tcalendar.set(Calendar.MILLISECOND, 0)\n\t\t\n\t\t# Convert back to epoch milliseconds adjusted for the specified timezone\n\t\tmidnight_timestamp \u003d calendar.getTimeInMillis()\n\t\tself.view.custom.selection.timestamp \u003d midnight_timestamp\n\texcept:\n\t\treturn"
+      },
+      "paramDirection": "inout",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "width": 1340
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "Header"
+        },
+        "position": {
+          "basis": "32px",
+          "shrink": 0
+        },
+        "props": {
+          "params": {
+            "help_text": "This report shows the Weights stats broken down by Day and Material",
+            "help_title": "Weights By Day",
+            "icon": "material/format_list_bulleted",
+            "text": "Weights By Day"
+          },
+          "path": "CORE_V/Headers/SubHeader"
+        },
+        "type": "ia.display.view"
+      },
+      {
+        "meta": {
+          "name": "CurrentSite"
+        },
+        "position": {
+          "basis": "0px",
+          "shrink": 0
+        },
+        "propConfig": {
+          "props.params.site_id": {
+            "onChange": {
+              "enabled": null,
+              "script": "\tself.view.custom.selection.index_day\u003d\u0027\u0027\n\tself.view.custom.selection.index_series\u003d\u0027\u0027\n\tself.view.custom.selection.timestamp\u003d\u0027\u0027\n\tself.view.custom.selection.datetime\u003d\u0027\u0027\n\tself.parent.getChild(\"Selections\").getChild(\"selection_line\").props.value\u003d0\n\tself.parent.getChild(\"Selections\").getChild(\"selection_scale\").props.value\u003d0"
+            }
+          }
+        },
+        "props": {
+          "params": {
+            "site": null,
+            "site_id": null
+          },
+          "path": "CORE_V/Utils/CurrentSite"
+        },
+        "type": "ia.display.view"
+      },
+      {
+        "children": [
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\t#self.parent.parent.getChild(\"Year\").getChild(\"heatmap\").refreshBinding(\"props.series\")\n\tpass"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "selection_line",
+              "tooltip": {
+                "text": "Select Line"
+              }
+            },
+            "position": {
+              "basis": "200px",
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.options": {
+                "binding": {
+                  "config": {
+                    "enableValueCache": false,
+                    "parameters": {
+                      "site_id": "{.../CurrentSite.props.params.site_id}"
+                    },
+                    "queryPath": "Weight_Q/DB_Query/Get_Line",
+                    "returnFormat": "dataset"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\t\n\t# Create an empty list to hold our formatted data\n    formatted_data \u003d []\n\n    # Iterate through each row in the dataset\n    for row in range(value.getRowCount()):\n        # Extract line_id and line_name from the current row\n        line_id \u003d value.getValueAt(row, \"line_id\")\n        line_name \u003d value.getValueAt(row, \"line_name\")\n\n        # Create a dictionary with the \u0027value\u0027 and \u0027label\u0027 keys\n        item \u003d {\"value\": line_id, \"label\": line_name}\n\n        # Add the dictionary to our list\n        formatted_data.append(item)\n        \n    # Check if the formatted data has only one row\n\tif len(formatted_data) \u003d\u003d 1:\n\t    # Set self.props.value to the scale_id of the single row\n\t    self.props.value \u003d formatted_data[0][\u0027value\u0027]\n\telif len(formatted_data)\u003e1:\n\t\tself.props.value \u003d formatted_data[0][\u0027value\u0027]\n\n    # Return the formatted list\n    return formatted_data",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "query"
+                },
+                "persistent": true
+              },
+              "props.value": {
+                "onChange": {
+                  "enabled": null,
+                  "script": "\tself.getSibling(\"selection_scale\").props.value\u003d0\n\t"
+                },
+                "persistent": true
+              }
+            },
+            "props": {
+              "options": [
+                {
+                  "label": "Bag Line 1",
+                  "value": 1
+                },
+                {
+                  "label": "Bottle Line 1",
+                  "value": 2
+                }
+              ],
+              "placeholder": {
+                "text": "Select Line..."
+              },
+              "style": {
+                "marginBottom": 2,
+                "marginLeft": 5,
+                "marginRight": 10,
+                "marginTop": 4
+              },
+              "value": 1
+            },
+            "type": "ia.input.dropdown"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\t#self.parent.parent.getChild(\"Year\").getChild(\"heatmap\").refreshBinding(\"props.series\")\n\tpass"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "selection_scale",
+              "tooltip": {
+                "text": "Select Scale"
+              }
+            },
+            "position": {
+              "basis": "200px",
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.options": {
+                "binding": {
+                  "config": {
+                    "enableValueCache": false,
+                    "parameters": {
+                      "line_id": "{../selection_line.props.value}",
+                      "site_id": "{.../CurrentSite.props.params.site_id}"
+                    },
+                    "queryPath": "Weight_Q/DB_Query/Get_Scale",
+                    "returnFormat": "dataset"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\t\n\t# Create an empty list to hold our formatted data\n    formatted_data \u003d []\n\n    # Iterate through each row in the dataset\n    for row in range(value.getRowCount()):\n        # Extract line_id and line_name from the current row\n        scale_id \u003d value.getValueAt(row, \"scale_id\")\n        scale_name \u003d value.getValueAt(row, \"scale_name\")\n\n        # Create a dictionary with the \u0027value\u0027 and \u0027label\u0027 keys\n        item \u003d {\"value\": scale_id, \"label\": scale_name}\n\n        # Add the dictionary to our list\n        formatted_data.append(item)\n        \n    # Check if the formatted data has only one row\n\tif len(formatted_data) \u003d\u003d 1:\n\t    # Set self.props.value to the scale_id of the single row\n\t    self.props.value \u003d formatted_data[0][\u0027value\u0027]\n\telif len(formatted_data)\u003e1:\n\t \tformatted_data.append({\"value\": 0, \"label\": \u0027All Fillers\u0027})\n\t\tself.props.value \u003d 0\n\n    # Return the formatted list\n    return formatted_data\n",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "query"
+                },
+                "persistent": true
+              },
+              "props.value": {
+                "persistent": true
+              }
+            },
+            "props": {
+              "placeholder": {
+                "text": "Select Filler..."
+              },
+              "style": {
+                "marginBottom": 2,
+                "marginRight": 10,
+                "marginTop": 2
+              },
+              "value": 0
+            },
+            "type": "ia.input.dropdown"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\t#self.parent.parent.getChild(\"Year\").getChild(\"heatmap\").refreshBinding(\"props.series\")\n\tpass"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "selection_type",
+              "tooltip": {
+                "text": "Select Scale"
+              }
+            },
+            "position": {
+              "basis": "320px",
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.options": {
+                "persistent": true
+              },
+              "props.value": {
+                "persistent": true
+              }
+            },
+            "props": {
+              "options": [
+                {
+                  "label": "Group by Day, Material, and PO",
+                  "value": "all"
+                },
+                {
+                  "label": "Group by Day",
+                  "value": "day"
+                },
+                {
+                  "label": "Group by Material",
+                  "value": "material"
+                },
+                {
+                  "label": "Group by PO Number",
+                  "value": "po"
+                }
+              ],
+              "placeholder": {
+                "text": ""
+              },
+              "style": {
+                "marginBottom": 2,
+                "marginRight": 10,
+                "marginTop": 2
+              },
+              "value": "all"
+            },
+            "type": "ia.input.dropdown"
+          },
+          {
+            "events": {
+              "component": {
+                "onActionPerformed": {
+                  "config": {
+                    "script": "\t#self.parent.parent.getChild(\"Year\").getChild(\"heatmap\").refreshBinding(\"props.series\")\n\tpass"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "selection_months",
+              "tooltip": {
+                "text": "Select Scale"
+              }
+            },
+            "position": {
+              "basis": "200px",
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.options": {
+                "persistent": true
+              },
+              "props.value": {
+                "persistent": true
+              }
+            },
+            "props": {
+              "options": [
+                {
+                  "label": "One Day",
+                  "value": 1
+                },
+                {
+                  "label": "Two Days",
+                  "value": 2
+                },
+                {
+                  "label": "7 Days",
+                  "value": 7
+                },
+                {
+                  "label": "30 Days",
+                  "value": 30
+                },
+                {
+                  "label": "90 Days",
+                  "value": 90
+                },
+                {
+                  "label": "One Year",
+                  "value": 365
+                }
+              ],
+              "placeholder": {
+                "text": ""
+              },
+              "style": {
+                "marginBottom": 2,
+                "marginRight": 10,
+                "marginTop": 2
+              },
+              "value": 2
+            },
+            "type": "ia.input.dropdown"
+          },
+          {
+            "meta": {
+              "name": "Spacer"
+            },
+            "position": {
+              "basis": "50px",
+              "grow": 1
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\timport re\n\t\t\t\t\n\t# Get the set of results currently showing in the table \n\tif (len(self.parent.parent.getChild(\"Data\").getChild(\"Month\").props.filter.results.data)\u003e0):\n\t\tdata \u003d  CORE_P.Utils.pythonify(self.parent.parent.getChild(\"Data\").getChild(\"Month\").props.filter.results.data)\n\telse:\n\t\tdata \u003d  CORE_P.Utils.pythonify(self.parent.parent.getChild(\"Data\").getChild(\"Month\").props.data)\n\t\n\treport_type \u003d self.getSibling(\"selection_type\").props.value\n\t\n#\tCORE_P.Utils.errorPopup(str(data))\n#\treturn\t\n\t\t\n\tresults \u003d []\n\ttest_headers \u003d {}\n\ttry: \n\t\tif (report_type \u003d\u003d \u0027all\u0027):\n\t\t\theaders \u003d [\t\u0027Packing Line\u0027,\n\t\t\t\t\t\t\u0027Filler\u0027, \n\t\t\t\t\t\t\u0027Day\u0027, \n\t\t\t\t\t\t\u0027Material Number\u0027, \n\t\t\t\t\t\t\u0027Material Description\u0027, \n\t\t\t\t\t\t\u0027PO Number\u0027,\n\t\t\t\t\t\t\u0027Units Produced\u0027, \n\t\t\t\t\t\t\u0027Weight Average (g)\u0027, \n\t\t\t\t\t\t\u0027Total Production (kg)\u0027, \n\t\t\t\t\t\t\u0027Overage (kg)\u0027, \n\t\t\t\t\t\t\u0027% Underweight\u0027,\n\t\t\t\t\t\t\u0027% Overweight\u0027,\n\t\t\t\t\t\t]\n\t\telif (report_type \u003d\u003d \u0027day\u0027):\n\t\t\theaders \u003d [\t\u0027Packing Line\u0027,\n\t\t\t\t\t\t\u0027Filler\u0027, \n\t\t\t\t\t\t\u0027Day\u0027, \n\t\t\t\t\t\t\u0027Units Produced\u0027, \n\t\t\t\t\t\t\u0027Weight Average (g)\u0027, \n\t\t\t\t\t\t\u0027Total Production (kg)\u0027, \n\t\t\t\t\t\t\u0027Overage (kg)\u0027, \n\t\t\t\t\t\t\u0027% Underweight\u0027,\n\t\t\t\t\t\t\u0027% Overweight\u0027,\n\t\t\t\t\t\t]\t\t\n\t\telif (report_type \u003d\u003d \u0027material\u0027):\n\t\t\theaders \u003d [\t\u0027Packing Line\u0027,\n\t\t\t\t\t\t\u0027Filler\u0027, \n\t\t\t\t\t\t\u0027Material Number\u0027, \n\t\t\t\t\t\t\u0027Material Description\u0027, \n\t\t\t\t\t\t\u0027Units Produced\u0027, \n\t\t\t\t\t\t\u0027Weight Average (g)\u0027, \n\t\t\t\t\t\t\u0027Total Production (kg)\u0027, \n\t\t\t\t\t\t\u0027Overage (kg)\u0027, \n\t\t\t\t\t\t\u0027% Underweight\u0027,\n\t\t\t\t\t\t\u0027% Overweight\u0027,\n\t\t\t\t\t\t]\t\n\t\telif (report_type \u003d\u003d \u0027po\u0027):\n\t\t\theaders \u003d [\t\u0027Packing Line\u0027,\n\t\t\t\t\t\t\u0027Filler\u0027, \n\t\t\t\t\t\t\u0027Material Number\u0027, \n\t\t\t\t\t\t\u0027Material Description\u0027,\n\t\t\t\t\t\t\u0027PO Number\u0027, \n\t\t\t\t\t\t\u0027Units Produced\u0027, \n\t\t\t\t\t\t\u0027Weight Average (g)\u0027, \n\t\t\t\t\t\t\u0027Total Production (kg)\u0027, \n\t\t\t\t\t\t\u0027Overage (kg)\u0027, \n\t\t\t\t\t\t\u0027% Underweight\u0027,\n\t\t\t\t\t\t\u0027% Overweight\u0027,\n\t\t\t\t\t\t]\t\n\t\tpacking_line \u003d CORE_P.Utils.get_dropdown_label(self.getSibling(\"selection_line\"))\n\t\tfiller \u003d CORE_P.Utils.get_dropdown_label(self.getSibling(\"selection_scale\"))\n   \t\t# Build the dataset\n\t\tfor row in data:\n\t\t\n\t\t\tif (report_type \u003d\u003d \u0027all\u0027):\n\t\t\t\tnew_row \u003d {\n\t\t\t\t\t\u0027Packing Line\u0027: \t\tpacking_line,\n\t\t\t\t\t\u0027Filler\u0027: \t\t\t\tfiller,\n\t\t\t\t\t\u0027Day\u0027: \t\t\t\t\trow[\u0027display_date\u0027], \n\t\t\t\t\t\u0027Material Number\u0027:\t\trow[\u0027material\u0027], \n\t\t\t\t\t\u0027Material Description\u0027:\trow[\u0027material_description\u0027], \n\t\t\t\t\t\u0027PO Number\u0027:\t\t\trow[\u0027po_number\u0027], \n\t\t\t\t\t\u0027Units Produced\u0027: \t\trow[\u0027count\u0027], \n\t\t\t\t\t\u0027Weight Average (g)\u0027: \trow[\u0027weight_avg\u0027], \n\t\t\t\t\t\u0027Total Production (kg)\u0027:row[\u0027weight_sum_kg\u0027], \n\t\t\t\t\t\u0027Overage (kg)\u0027: \t\trow[\u0027weight_diff_kg\u0027],\n\t\t\t\t\t\u0027% Underweight\u0027: \t\trow[\u0027pct_weight_under\u0027],\n\t\t\t\t\t\u0027% Overweight\u0027: \t\trow[\u0027pct_weight_over\u0027],\n\t\t\t\t}\n\t\t\telif (report_type \u003d\u003d \u0027day\u0027):\n\t\t\t\tnew_row \u003d {\n\t\t\t\t\t\u0027Packing Line\u0027: \t\tpacking_line,\n\t\t\t\t\t\u0027Filler\u0027: \t\t\t\tfiller,\n\t\t\t\t\t\u0027Day\u0027: \t\t\t\t\trow[\u0027display_date\u0027], \n\t\t\t\t\t\u0027Units Produced\u0027: \t\trow[\u0027count\u0027], \n\t\t\t\t\t\u0027Weight Average (g)\u0027: \trow[\u0027weight_avg\u0027], \n\t\t\t\t\t\u0027Total Production (kg)\u0027:row[\u0027weight_sum_kg\u0027], \n\t\t\t\t\t\u0027Overage (kg)\u0027: \t\trow[\u0027weight_diff_kg\u0027],\n\t\t\t\t\t\u0027% Underweight\u0027: \t\trow[\u0027pct_weight_under\u0027],\n\t\t\t\t\t\u0027% Overweight\u0027: \t\trow[\u0027pct_weight_over\u0027],\n\t\t\t\t}\n\t\t\telif (report_type \u003d\u003d \u0027material\u0027):\n\t\t\t\tnew_row \u003d {\n\t\t\t\t\t\u0027Packing Line\u0027: \t\tpacking_line,\n\t\t\t\t\t\u0027Filler\u0027: \t\t\t\tfiller,\n\t\t\t\t\t\u0027Material Number\u0027:\t\trow[\u0027material\u0027], \n\t\t\t\t\t\u0027Material Description\u0027:\trow[\u0027material_description\u0027], \n\t\t\t\t\t\u0027Units Produced\u0027: \t\trow[\u0027count\u0027], \n\t\t\t\t\t\u0027Weight Average (g)\u0027: \trow[\u0027weight_avg\u0027], \n\t\t\t\t\t\u0027Total Production (kg)\u0027:row[\u0027weight_sum_kg\u0027], \n\t\t\t\t\t\u0027Overage (kg)\u0027: \t\trow[\u0027weight_diff_kg\u0027],\n\t\t\t\t\t\u0027% Underweight\u0027: \t\trow[\u0027pct_weight_under\u0027],\n\t\t\t\t\t\u0027% Overweight\u0027: \t\trow[\u0027pct_weight_over\u0027],\n\t\t\t\t}\n\t\t\telif (report_type \u003d\u003d \u0027po\u0027):\t\t\t\t\n\t\t\t\tnew_row \u003d {\n\t\t\t\t\t\u0027Packing Line\u0027: \t\tpacking_line,\n\t\t\t\t\t\u0027Filler\u0027: \t\t\t\tfiller,\n\t\t\t\t\t\u0027Material Number\u0027:\t\trow[\u0027material\u0027], \n\t\t\t\t\t\u0027Material Description\u0027:\trow[\u0027material_description\u0027], \n\t\t\t\t\t\u0027PO Number\u0027:\t\t\trow[\u0027po_number\u0027], \n\t\t\t\t\t\u0027Units Produced\u0027: \t\trow[\u0027count\u0027], \n\t\t\t\t\t\u0027Weight Average (g)\u0027: \trow[\u0027weight_avg\u0027], \n\t\t\t\t\t\u0027Total Production (kg)\u0027:row[\u0027weight_sum_kg\u0027], \n\t\t\t\t\t\u0027Overage (kg)\u0027: \t\trow[\u0027weight_diff_kg\u0027],\n\t\t\t\t\t\u0027% Underweight\u0027: \t\trow[\u0027pct_weight_under\u0027],\n\t\t\t\t\t\u0027% Overweight\u0027: \t\trow[\u0027pct_weight_over\u0027],\n\t\t\t\t}\n\t\t\t\t\n\t\t\tresults.append(new_row)\n\t\t\t\t\n\t#\tzone \u003d self.session.props.timeZoneId.replace(\u0027/\u0027,\u0027-\u0027)\n\t\t\t\t\n\t\tspreadsheet \u003d system.dataset.toExcel(True, [CORE_P.Utils.dictToDataset(results, headers)])\n\t\tfilePath \u003d \u0027Weight Tracking - Materials\u0027 + str(CORE_P.Time.display_local_dt(CORE_P.Time.currentTimestamp(), self\u003dself, format\u003d\u0027yyyy-MM-dd\u0027)) + \u0027.xlsx\u0027\n\t\t\n\t\t#system.file.writeFile(filePath, spreadsheet)\n\t\tsystem.perspective.download(filePath, spreadsheet)\n\t\tCORE_P.Utils.showSuccess(self, \u0027Downloading...\u0027)\n\texcept:\n\t\tCORE_P.Utils.errorPopup(\"Error exporting material weights to Excel:\" )\n   \t\treturn\t   \n\t\t\t\t\t   \t\t\t\t"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "DownloadButton"
+            },
+            "position": {
+              "basis": "160px",
+              "shrink": 0
+            },
+            "props": {
+              "style": {
+                "marginRight": 5
+              },
+              "text": "Download"
+            },
+            "type": "ia.input.button"
+          }
+        ],
+        "meta": {
+          "name": "Selections"
+        },
+        "position": {
+          "basis": "32px",
+          "shrink": 0
+        },
+        "props": {
+          "style": {
+            "borderColor": "#808080",
+            "borderStyle": "none",
+            "borderWidth": 0.5,
+            "marginTop": 2,
+            "overflow": "hidden",
+            "overflowX": "hidden",
+            "overflowY": "hidden"
+          }
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "children": [
+          {
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\tfrom java.util import Date\n\tfrom system.date import now, addMonths, addDays\n\t\n\tself.view.custom.end_dt \u003d addDays(self.view.custom.end_dt, -self.parent.parent.getChild(\"Selections\").getChild(\"selection_months\").props.value)\n\t"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "ScrollBack"
+            },
+            "position": {
+              "basis": "30px",
+              "shrink": 0
+            },
+            "props": {
+              "path": "material/arrow_back",
+              "style": {
+                "cursor": "pointer"
+              }
+            },
+            "type": "ia.display.icon"
+          },
+          {
+            "meta": {
+              "name": "Month"
+            },
+            "position": {
+              "basis": "100%"
+            },
+            "propConfig": {
+              "props.columns[0].visible": {
+                "binding": {
+                  "config": {
+                    "path": ".../Selections/selection_type.props.value"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tif (value in [\u0027all\u0027,\u0027day\u0027]):\n\t\treturn True\n\treturn False",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.columns[1].visible": {
+                "binding": {
+                  "config": {
+                    "path": ".../Selections/selection_type.props.value"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tif (value in [\u0027all\u0027,\u0027material\u0027,\u0027po\u0027]):\n\t\treturn True\n\treturn False",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.columns[2].visible": {
+                "binding": {
+                  "config": {
+                    "path": ".../Selections/selection_type.props.value"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tif (value in [\u0027all\u0027,\u0027material\u0027,\u0027po\u0027]):\n\t\treturn True\n\treturn False",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.columns[3].visible": {
+                "binding": {
+                  "config": {
+                    "path": ".../Selections/selection_type.props.value"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tif (value in [\u0027all\u0027,\u0027po\u0027]):\n\t\treturn True\n\treturn False",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.data": {
+                "binding": {
+                  "config": {
+                    "struct": {
+                      "end_dt": "{view.custom.end_dt}",
+                      "months": "{.../Selections/selection_months.props.value}",
+                      "report_type": "{.../Selections/selection_type.props.value}",
+                      "scale_id": "{.../Selections/selection_scale.props.value}",
+                      "start_dt": "{view.custom.start_dt}",
+                      "timezone": "{view.custom.sqlserver_timezone}"
+                    },
+                    "waitOnAll": true
+                  },
+                  "transforms": [
+                    {
+                      "code": "\t\t\n\ttry:\n\t\tsqlserver_tz \u003d value[\u0027timezone\u0027] # Note, the Ignition timezone has already been converted here into a format that SQLServer understands...\n\t\tscale_id \u003d value[\u0027scale_id\u0027]\n\t\tend_dt \u003d value[\u0027end_dt\u0027]\n\t\treport_type \u003d value[\u0027report_type\u0027]\n\t\t\n\t\tmonths \u003d (int(value[\u0027months\u0027]) - 1) * -1\n\t\t\n\t\t# Build the query. \n\t\t# Note - had to build the query in code, because SQLServer/ignition doesn\u0027t seem to allow the passing of the timezone as a parameter\n\t\t# This is generally a \u0027Bad Idea\u0027, due to SQl injection attacks. In this case, I\u0027m only directly substituting in a timezone string that \n\t\t# comes from a database entry that is manually controlled by us (so should be safe). The other params are run through Prep as normal. \n\t\tif (report_type\t\u003d\u003d \u0027all\u0027):\n\t\t\t\n\t\t\tquery \u003d \"\"\"\n\t\t\tSELECT\n\t\t\t    material,\n\t\t\t    po_number,\n\t\t\t    FORMAT(time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027) as \u0027date\u0027,\n\t\t\t    FORMAT(time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027MMM dd, yyyy\u0027) as \u0027display_date\u0027,\n\t\t\t    SUM([count]) AS \u0027count\u0027,\n\t\t\t    (SUM(weight_sum) / SUM([count])) AS \u0027weight_avg\u0027,\n\t\t\t    SUM(weight_diff) /1000 AS \u0027weight_diff_kg\u0027,\n\t\t\t    SUM(weight_sum) /1000 AS \u0027weight_sum_kg\u0027,\n\t\t\t    (SUM( (pct_weight_under/100) * count)/ SUM([count]))*100 as \u0027pct_weight_under\u0027,\n\t\t\t    (SUM( (pct_weight_over/100) * count)/ SUM([count]))*100 as \u0027pct_weight_over\u0027,\n\t\t\t    (\n\t\t\t            SELECT material_description\n\t\t\t            FROM system.dbo.materials m\n\t\t\t            WHERE m.material_number \u003d TRY_CAST(a.material AS INT)\n\t\t\t        ) AS material_description\t\t    \n\t\t\tFROM weight.dbo.aggregated a\n\t\t\tWHERE material !\u003d \u0027All\u0027\n\t\t\tAND (0 \u003d ? or scale_id \u003d ?)\n\t\t\tAND time_start \u003e\u003d ?\n\t\t\tAND time_start \u003c ?\n\t\t\tGROUP BY\n\t\t\t    material,\n\t\t\t    po_number,\n\t\t\t    FORMAT(time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027), \n\t\t\t    FORMAT(time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027MMM dd, yyyy\u0027)  \n\t\t\tORDER BY FORMAT(time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027), material, po_number\n\t\t\t\"\"\"\n\t\t\n\t\telif (report_type\t\u003d\u003d \u0027day\u0027):\n\t\t\tquery \u003d \"\"\"\n\t\t\tSELECT\n\t\t\t    FORMAT(time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027) as \u0027date\u0027,\n\t\t\t    FORMAT(time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027MMM dd, yyyy\u0027) as \u0027display_date\u0027,\n\t\t\t    SUM([count]) AS \u0027count\u0027,\n\t\t\t    (SUM(weight_sum) / SUM([count])) AS \u0027weight_avg\u0027,\n\t\t\t    SUM(weight_diff) /1000 AS \u0027weight_diff_kg\u0027,\n\t\t\t    SUM(weight_sum) /1000 AS \u0027weight_sum_kg\u0027,\n\t\t\t    (SUM( (pct_weight_under/100) * count)/ SUM([count]))*100 as \u0027pct_weight_under\u0027,\n\t\t\t    (SUM( (pct_weight_over/100) * count)/ SUM([count]))*100 as \u0027pct_weight_over\u0027\n\t\t\tFROM weight.dbo.aggregated a\n\t\t\tWHERE material \u003d \u0027All\u0027\n\t\t\tAND (0 \u003d ? or scale_id \u003d ?)\n\t\t\tAND time_start \u003e\u003d ?\n\t\t\tAND time_start \u003c ?\n\t\t\tGROUP BY\n\t\t\t    FORMAT(time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027), \n\t\t\t    FORMAT(time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027MMM dd, yyyy\u0027)  \n\t\t\tORDER BY FORMAT(time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027)\n\t\t\t\"\"\"\t\t\n\t\t\t\n\t\telif (report_type\t\u003d\u003d \u0027material\u0027):\n\t\t\tquery \u003d \"\"\"\n\t\t\tSELECT\n\t\t\t    material,\n\t\t\t    SUM([count]) AS \u0027count\u0027,\n\t\t\t    (SUM(weight_sum) / SUM([count])) AS \u0027weight_avg\u0027,\n\t\t\t    SUM(weight_diff) /1000 AS \u0027weight_diff_kg\u0027,\n\t\t\t    SUM(weight_sum) /1000 AS \u0027weight_sum_kg\u0027,\n\t\t\t    (SUM( (pct_weight_under/100) * count)/ SUM([count]))*100 as \u0027pct_weight_under\u0027,\n\t\t\t    (SUM( (pct_weight_over/100) * count)/ SUM([count]))*100 as \u0027pct_weight_over\u0027,\n\t\t\t    (\n\t\t\t            SELECT material_description\n\t\t\t            FROM system.dbo.materials m\n\t\t\t            WHERE m.material_number \u003d TRY_CAST(a.material AS INT)\n\t\t\t        ) AS material_description\t\t    \n\t\t\tFROM weight.dbo.aggregated a\n\t\t\tWHERE material !\u003d \u0027All\u0027\n\t\t\tAND (0 \u003d ? or scale_id \u003d ?)\n\t\t\tAND time_start \u003e\u003d ?\n\t\t\tAND time_start \u003c ?\n\t\t\tGROUP BY\n\t\t\t    material\n\t\t\tORDER BY material\n\t\t\t\"\"\"\n\t\t\t\n\t\telif (report_type\t\u003d\u003d \u0027po\u0027):\n\t\t\tquery \u003d \"\"\"\n\t\t\tSELECT\n\t\t\t    material,\n\t\t\t    po_number,\n\t\t\t    SUM([count]) AS \u0027count\u0027,\n\t\t\t    (SUM(weight_sum) / SUM([count])) AS \u0027weight_avg\u0027,\n\t\t\t    SUM(weight_diff) /1000 AS \u0027weight_diff_kg\u0027,\n\t\t\t    SUM(weight_sum) /1000 AS \u0027weight_sum_kg\u0027,\n\t\t\t    (SUM( (pct_weight_under/100) * count)/ SUM([count]))*100 as \u0027pct_weight_under\u0027,\n\t\t\t    (SUM( (pct_weight_over/100) * count)/ SUM([count]))*100 as \u0027pct_weight_over\u0027,\n\t\t\t    (\n\t\t\t            SELECT material_description\n\t\t\t            FROM system.dbo.materials m\n\t\t\t            WHERE m.material_number \u003d TRY_CAST(a.material AS INT)\n\t\t\t        ) AS material_description\t\t    \n\t\t\tFROM weight.dbo.aggregated a\n\t\t\tWHERE material !\u003d \u0027All\u0027\n\t\t\tAND (0 \u003d ? or scale_id \u003d ?)\n\t\t\tAND time_start \u003e\u003d ?\n\t\t\tAND time_start \u003c ?\n\t\t\tGROUP BY\n\t\t\t    material,\n\t\t\t    po_number\n\t\t\tORDER BY po_number, material\n\t\t\t\"\"\"\n\t\t\n\t\t#AND time_start \u003e\u003d DATEADD(month, ?, DATEADD(month, DATEDIFF(month, 0, ?), 0)) \n\t\t#AND time_start \u003c DATEADD(day, 1, EOMONTH(?))            \n\t\t\t\t\t\t\n\t\t# Substitute in the timezone\t\t\n\t\tquery \u003d query.replace(\u0027:timezone\u0027,sqlserver_tz)\n\t\t\n\t\t# Note: You need to repeat parameters if they are used multiple times.\n\t\t# IMPORTANT: The order of \u0027?\u0027 must match the order of arguments passed.\n\t\targs \u003d [\n\t\t    int(scale_id),  \n\t\t    int(scale_id),\n\t\t    value[\u0027start_dt\u0027],    \n\t\t    value[\u0027end_dt\u0027] \n\t\t]\n\t\t\n\t\tresults \u003d CORE_P.Utils.datasetToDicts(system.db.runPrepQuery(query, args, \u0027system\u0027))\n\t\t\n\t\t\n\t\t#CORE_P.Utils.errorPopup(\u0027Dates:\u0027 + str(value[\u0027start_dt\u0027]) + \u0027 - \u0027  + str(value[\u0027end_dt\u0027]))\n\t\treturn results\n\texcept:\n\t    # Handle error\n\t #   CORE_P.Utils.errorPopup(\u0027Error getting weights data:\u0027)\n\t    return []\n\t",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "expr-struct"
+                }
+              }
+            },
+            "props": {
+              "bodyStyle": {
+                "classes": "Weight_S/Framework/Card/Label"
+              },
+              "columns": [
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "display_date",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Day"
+                  },
+                  "justify": "left",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "none",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": false,
+                  "sort": "ascending",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "width": ""
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "material",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Material"
+                  },
+                  "justify": "left",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": false,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": true,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "width": 80
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "material_description",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Material Description"
+                  },
+                  "justify": "left",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": false,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "width": 240
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "po_number",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "PO Number"
+                  },
+                  "justify": "left",
+                  "nullFormat": {
+                    "includeNullStrings": true,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "string",
+                  "resizable": false,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "width": ""
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "count",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Units"
+                  },
+                  "justify": "left",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": ""
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "weight_avg",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Weight Average [g]"
+                  },
+                  "justify": "left",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": ""
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "weight_sum_kg",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Total Production [kg]"
+                  },
+                  "justify": "left",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": ""
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "weight_diff_kg",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Overage [kg]"
+                  },
+                  "justify": "left",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": ""
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "pct_weight_under",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "% Underweight"
+                  },
+                  "justify": "left",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "number",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": ""
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "pct_weight_over",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "% Overweight"
+                  },
+                  "justify": "left",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "number",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": ""
+                }
+              ],
+              "enableHeaderGroups": true,
+              "filter": {
+                "enabled": true
+              },
+              "headerGroupStyle": {
+                "classes": "Weight_S/Framework/Card/Value"
+              },
+              "headerStyle": {
+                "classes": "Weight_S/Framework/Card/Value"
+              },
+              "pager": {
+                "initialOption": 200,
+                "options": [
+                  50,
+                  100,
+                  200,
+                  500,
+                  100
+                ]
+              },
+              "rows": {
+                "height": "20px"
+              },
+              "style": {
+                "padding": 4
+              }
+            },
+            "type": "ia.display.table"
+          },
+          {
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "script": "\tfrom java.util import Date\n\tfrom system.date import now, addMonths, addDays\n\t\n\tt \u003d  addDays(self.view.custom.end_dt, self.parent.parent.getChild(\"Selections\").getChild(\"selection_months\").props.value)\n\t\t\n\tif (t\u003eCORE_P.Time.currentTimestamp()):\t\n\t\tt \u003d CORE_P.Time.adjustTimestamp(rounding\u003d\u0027dayup\u0027)\n\t\t#t \u003d CORE_P.Time.month_start(self.session.props.timeZoneId) \n\t\t\n\tself.view.custom.end_dt \u003d t\n\t"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "ScrollForward"
+            },
+            "position": {
+              "basis": "30px",
+              "shrink": 0
+            },
+            "props": {
+              "path": "material/arrow_forward",
+              "style": {
+                "cursor": "pointer"
+              }
+            },
+            "type": "ia.display.icon"
+          }
+        ],
+        "meta": {
+          "name": "Data"
+        },
+        "position": {
+          "basis": "275px",
+          "grow": 1
+        },
+        "props": {
+          "style": {
+            "borderColor": "#808080",
+            "borderStyle": "solid",
+            "borderWidth": 0.5,
+            "marginBottom": 5,
+            "marginLeft": 5,
+            "marginRight": 5,
+            "marginTop": 5,
+            "overflow": "hidden",
+            "overflowX": "hidden",
+            "overflowY": "hidden"
+          }
+        },
+        "type": "ia.container.flex"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column"
+    },
+    "type": "ia.container.flex"
+  }
+}
