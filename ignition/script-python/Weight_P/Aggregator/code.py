@@ -122,7 +122,6 @@ def ProcessWeek(Start, End, site_id, scale_id):
 		        if converted_tag_name == item['path']:
 					all_data[key].append(item)
 		
-		
 		#----------------------------------------------------------------------------
 		# Get the list of material changes, either from a Tag, or from STARR, or a default list on Material = None
 		#----------------------------------------------------------------------------
@@ -146,6 +145,16 @@ def ProcessWeek(Start, End, site_id, scale_id):
 				materials = [{"value": 'None', "timestamp":Start},{"value": 'None', "timestamp":End}]
 		except:
 			SystemLogger(True, "JAY", CORE_P.Utils.getError())			
+		
+		# If we're using limits from the Materials database, we'll need to convert from lbs to the units for this line
+		conversion = 1
+		if (entry['unit_name']!='lbs'):
+			if (entry['unit_name']=='g'):
+				conversion = 453.59237
+			elif (entry['unit_name']=='kg'):
+				conversion = 0.45359237
+			elif (entry['unit_name']=='oz'):
+				conversion = 16		
 		
 		#----------------------------------------------------------------------------
 		# Work out the set points/targets for this material. Will be either from a tag value, or from a material default, or a line default
@@ -185,11 +194,19 @@ def ProcessWeek(Start, End, site_id, scale_id):
 					if ('setpoint_high' not in row):
 						row['setpoint_high']	= entry['filler_sp_high'] or 0
 				else:
-					
+
 					# Pull the material data out of the database if we haven't yet
 					if str(row['value']) not in material_config:
 						tmp = CORE_P.Utils.datasetToDicts(system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/DB_Query/Get_Material', parameters={'material_number':row['value']}))
 						if (len(tmp)>0):
+							# Convert the materials data (in lb) to the units for this filler, if the line is not running in lbs
+							for col in ['item_lower_limit', 'item_target_weight', 'item_upper_limit', 'lower_limit', 'target_weight', 'upper_limit']:
+								try:
+									tmp[0][col] = float(tmp[0][col]) * conversion
+								except:
+									tmp[0][col] = 0
+							
+							# Then record the values for later
 							material_config[str(row['value'])] = tmp[0]
 
 					# Then, use either the item limits, or total limits, depending on the line type
