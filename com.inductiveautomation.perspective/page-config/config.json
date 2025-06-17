@@ -16,10 +16,6 @@
       "title": "Aggregator",
       "viewPath": "Weight_V/Overview"
     },
-    "/materials": {
-      "title": "Weights by Material",
-      "viewPath": "Weight_V/Materials"
-    },
     "/useradmin": {
       "title": "User Administration",
       "viewPath": "Users_V/UserAdmin"
@@ -27,6 +23,10 @@
     "/weightsbyday": {
       "title": "Weights by Day",
       "viewPath": "Weight_V/WeightsByDay"
+    },
+    "/weightsbymonth": {
+      "title": "Weights by Month",
+      "viewPath": "Weight_V/WeightsByMonth"
     }
   },
   "sharedDocks": {
