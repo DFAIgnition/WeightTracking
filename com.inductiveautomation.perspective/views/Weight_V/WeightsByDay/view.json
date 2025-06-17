@@ -412,7 +412,7 @@
           "params": {
             "help_text": "This report shows the Weights stats broken down by Day and Material",
             "help_title": "Weights By Day",
-            "icon": "material/format_list_bulleted",
+            "icon": "material/event",
             "text": "Weights By Day"
           },
           "path": "CORE_V/Headers/SubHeader"

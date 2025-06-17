@@ -9,12 +9,12 @@ def getProjectMenu():
 		
 	"""
 	project_name	= system.project.getProjectName()
-	menu_header		= 'WEIGHT'
+	menu_header		= 'Menu'
 	
 	menu_items = [
-		{'label': "Weight Overview",		'icon':"material/linear_scale",	"target": "/main"},
-		{'label': "Weight by Material",		'icon':"material/linear_scale",	"target": "/materials"},
-		{'label': "Weight by Day",		'icon':"material/linear_scale",	"target": "/weightsbyday"},
+		{'label': "Overview",		'icon':"material/aspect_ratio",	"target": "/main"},
+		{'label': "Weights By Month",		'icon':"material/calendar_today",	"target": "/materials"},
+		{'label': "Weights By Day",		'icon':"material/event",	"target": "/weightsbyday"},
 		{'label': "Admin",				'icon':"material/settings",		"target": "", "items":[
 			{'label': "Filler Setup",		'icon':"material/settings",	"target": "/admin",  'permission_code':'SITEADMIN', 'project_name':project_name},
 			{'label': "User Admin",					'icon':"material/settings",		"target": "/useradmin", 		'permission_code':'SITEADMIN', 'project_name':project_name},

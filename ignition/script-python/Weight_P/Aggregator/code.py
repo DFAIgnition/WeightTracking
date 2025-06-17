@@ -55,7 +55,7 @@ def ProcessWeek(Start, End, site_id, scale_id):
 	entry_sp_values = {}
 	loop_count = 0
 	#SystemLogger(LoggerActive, "Weight Tracking", "Entries: {}".format(entries.getRowCount()))
-	SystemLogger(True, "Weight Tracking", "Start:" + str(Start) + ", End:" + str(End) + ", site_id:" + str(site_id) + ", scale:" + str(scale_id))
+	SystemLogger(LoggerActive, "Weight Tracking", "Start:" + str(Start) + ", End:" + str(End) + ", site_id:" + str(site_id) + ", scale:" + str(scale_id))
 	
 	
 	#----------------------------------------------------------------------------
@@ -122,6 +122,7 @@ def ProcessWeek(Start, End, site_id, scale_id):
 		        if converted_tag_name == item['path']:
 					all_data[key].append(item)
 		
+		
 		#----------------------------------------------------------------------------
 		# Get the list of material changes, either from a Tag, or from STARR, or a default list on Material = None
 		#----------------------------------------------------------------------------
@@ -144,7 +145,7 @@ def ProcessWeek(Start, End, site_id, scale_id):
 			#	SystemLogger(True, "JAY", 'DEBUG: Using default materials!' +str(entry['starr_unit_id']))		
 				materials = [{"value": 'None', "timestamp":Start},{"value": 'None', "timestamp":End}]
 		except:
-			SystemLogger(True, "JAY", CORE_P.Utils.getError())			
+			SystemLogger(LoggerActive, "JAY", CORE_P.Utils.getError())			
 		
 		# If we're using limits from the Materials database, we'll need to convert from lbs to the units for this line
 		conversion = 1
@@ -155,6 +156,7 @@ def ProcessWeek(Start, End, site_id, scale_id):
 				conversion = 0.45359237
 			elif (entry['unit_name']=='oz'):
 				conversion = 16		
+		
 		
 		#----------------------------------------------------------------------------
 		# Work out the set points/targets for this material. Will be either from a tag value, or from a material default, or a line default
@@ -234,8 +236,7 @@ def ProcessWeek(Start, End, site_id, scale_id):
 							row['setpoint'] 		= entry['filler_sp'] or 0
 						if ('setpoint_high' not in row):
 							row['setpoint_high']	= entry['filler_sp_high'] or 0	
-		
-	#	SystemLogger(True, "JAY", 'Material Config: ' + str(material_config))		
+	
 		
 		#----------------------------------------------------------------------------
 		# Process all the tag data in hourly blocks, further broken down into materials/po_numbers
@@ -447,7 +448,6 @@ def ProcessWeek(Start, End, site_id, scale_id):
 		    scale_data[entry['scale_id']] = {}
 		scale_data[entry['scale_id']].update(daily_data)  
 	
-	
 	return scale_data
 # END OF ProcessWeek
 	
@@ -456,10 +456,10 @@ def ProcessWeek(Start, End, site_id, scale_id):
 ###############################################################
 def insertOrUpdateBucketData(scale_data, start_dt, end_dt):
 
-	LoggerActive = False
+	LoggerActive = True
 	try:
 		for scale_id, days_data in scale_data.items():
-			#SystemLogger(True, "JAY", "scale_id:" + str(scale_id) )
+		#	SystemLogger(True, "JAY", "insertOrUpdateBucketData:" + str(scale_id) )
 			
 			# Delete the old versions of the rowsrows
 			txId = system.db.beginTransaction(timeout=5000)
@@ -527,7 +527,7 @@ def insertOrUpdateBucketData(scale_data, start_dt, end_dt):
 		SystemLogger(True, "JAY", CORE_P.Utils.getError())		
 		system.db.rollbackTransaction(txId)	
 		system.db.closeTransaction(txId)	
-	#SystemLogger(True, "JAY", "Finished processing")		
+#	SystemLogger(True, "JAY", "Finished processing")		
 
 ###############################################################
 # GetBuckets

@@ -5,7 +5,7 @@
       "$": [
         "ts",
         192,
-        1749761009603
+        1750104006708
       ],
       "$ts": 1751328000000
     },
@@ -107,7 +107,7 @@
       "$": [
         "ts",
         192,
-        1749761009603
+        1750104006709
       ],
       "$ts": 1746057600000
     }
@@ -410,10 +410,10 @@
         },
         "props": {
           "params": {
-            "help_text": "This report shows the Weights stats broken down by Material",
-            "help_title": "Materials Report",
-            "icon": "material/format_list_bulleted",
-            "text": "Materials Report"
+            "help_text": "This report shows the Weights stats broken down by Month",
+            "help_title": "Weights By Month",
+            "icon": "material/calendar_today",
+            "text": "Weights By Month"
           },
           "path": "CORE_V/Headers/SubHeader"
         },
