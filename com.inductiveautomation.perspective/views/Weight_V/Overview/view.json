@@ -575,7 +575,7 @@
           "props.params.site_id": {
             "onChange": {
               "enabled": null,
-              "script": "\tself.view.custom.selection.index_day\u003d\u0027\u0027\n\tself.view.custom.selection.index_series\u003d\u0027\u0027\n\tself.view.custom.selection.timestamp\u003d\u0027\u0027\n\tself.view.custom.selection.datetime\u003d\u0027\u0027\n\tself.parent.getChild(\"Selections\").getChild(\"selection_line\").props.value\u003d0\n\tself.parent.getChild(\"Selections\").getChild(\"selection_scale\").props.value\u003d0"
+              "script": "\tself.view.custom.selection.index_day\u003d\u0027\u0027\n\tself.view.custom.selection.index_series\u003d\u0027\u0027\n\tself.view.custom.selection.timestamp\u003d\u0027\u0027\n\tself.view.custom.selection.datetime\u003d\u0027\u0027\n\tself.parent.getChild(\"Selections\").getChild(\"selection_line\").props.value\u003d0\n\tself.parent.getChild(\"Selections\").getChild(\"selection_scale\").props.value\u003d0\n\tself.parent.getChild(\"Selections\").getChild(\"selection_material\").refreshBinding(\u0027props.options\u0027)"
             }
           }
         },
@@ -662,7 +662,7 @@
                 "marginRight": 10,
                 "marginTop": 2
               },
-              "value": 1
+              "value": 0
             },
             "type": "ia.input.dropdown"
           },
@@ -700,10 +700,9 @@
                     "queryPath": "Weight_Q/DB_Query/Get_Scale",
                     "returnFormat": "dataset"
                   },
-                  "overlayOptOut": true,
                   "transforms": [
                     {
-                      "code": "\t\n\t# Create an empty list to hold our formatted data\n    formatted_data \u003d []\n\n    # Iterate through each row in the dataset\n    for row in range(value.getRowCount()):\n        # Extract line_id and line_name from the current row\n        scale_id \u003d value.getValueAt(row, \"scale_id\")\n        scale_name \u003d value.getValueAt(row, \"scale_name\")\n\n        # Create a dictionary with the \u0027value\u0027 and \u0027label\u0027 keys\n        item \u003d {\"value\": scale_id, \"label\": scale_name}\n\n        # Add the dictionary to our list\n        formatted_data.append(item)\n        \n    # Check if the formatted data has only one row\n\tif len(formatted_data) \u003d\u003d 1:\n\t    # Set self.props.value to the scale_id of the single row\n\t    self.props.value \u003d formatted_data[0][\u0027value\u0027]\n\telif len(formatted_data)\u003e1:\n\t\tformatted_data.append({\"value\": 0, \"label\": \u0027All Fillers\u0027})\n\t\tself.props.value \u003d 0\n\t\t#self.props.value \u003d formatted_data[-1][\u0027value\u0027]\n\n    # Return the formatted list\n    return formatted_data\n",
+                      "code": "\t\n\t# Create an empty list to hold our formatted data\n    formatted_data \u003d []\n\n    # Iterate through each row in the dataset\n    for row in range(value.getRowCount()):\n        # Extract line_id and line_name from the current row\n        scale_id \u003d value.getValueAt(row, \"scale_id\")\n        scale_name \u003d value.getValueAt(row, \"scale_name\")\n\n        # Create a dictionary with the \u0027value\u0027 and \u0027label\u0027 keys\n        item \u003d {\"value\": scale_id, \"label\": scale_name}\n\n        # Add the dictionary to our list\n        formatted_data.append(item)\n        \n    # Check if the formatted data has only one row\n\tif len(formatted_data) \u003d\u003d 1:\n\t    # Set self.props.value to the scale_id of the single row\n\t    self.props.value \u003d formatted_data[0][\u0027value\u0027]\n\t    #formatted_data.append({\"value\": 0, \"label\": \u0027All Fillers\u0027})\n\t    #self.props.value \u003d 0\n\t\t\n\telif len(formatted_data)\u003e1:\n\t\tformatted_data.append({\"value\": 0, \"label\": \u0027All Fillers\u0027})\n\t\tself.props.value \u003d 0\n\t\t#self.props.value \u003d formatted_data[-1][\u0027value\u0027]\n\t\n\t#logger \u003d system.util.getLogger(\"JAY\")\t\n\t#logger.warn(\"Fillers dropdown:\" + str(formatted_data))\n\t#CORE_P.Utils.errorPopup(str(formatted_data))\n    # Return the formatted list\n    return formatted_data\n",
                       "type": "script"
                     }
                   ],
@@ -819,16 +818,16 @@
               "props.options": {
                 "binding": {
                   "config": {
+                    "enableValueCache": false,
                     "parameters": {
                       "scale_id": "{../selection_scale.props.value}"
                     },
-                    "queryPath": "Weight_Q/DB_Query/Get_Materials_Dropdown",
-                    "returnFormat": "json"
+                    "queryPath": "Weight_Q/DB_Query/Get_Materials_Dropdown"
                   },
                   "overlayOptOut": true,
                   "transforms": [
                     {
-                      "code": "\treturn value\n\t#return [{\u0027value\u0027:\u0027\u0027,\u0027label\u0027:\u0027All Materials\u0027}] + CORE_P.Utils.datasetToDicts(value)",
+                      "code": "\t#return value\n\treturn [{\u0027value\u0027:\u0027All\u0027,\u0027label\u0027:\u0027All Materials\u0027}] + CORE_P.Utils.datasetToDicts(value)",
                       "type": "script"
                     }
                   ],

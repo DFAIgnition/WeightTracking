@@ -62,392 +62,396 @@ def ProcessWeek(Start, End, site_id, scale_id):
 	# Go through each filler and map tag names from the entries.
 	#----------------------------------------------------------------------------
 	for entry in system.dataset.toPyDataSet(entries):
-
-		loop_count  += 1
-		SystemLogger(LoggerActive, "Weight Tracking", "Scale: {}".format(entry['scale_id']))
-		SystemLogger(LoggerActive, "Weight Tracking", "Loop: {}".format(loop_count))
-	
-		progress2 = float(loop_count) / float(entries.getRowCount()) * 100
-		system.util.sendMessage(project="WeightTracking", messageHandler="AggregatorUpdateBarScale", scope='S', payload={"progress": progress2})
-	
-		default_sp_values = {
-					    	    'filler_sp_tag': entry['filler_sp'],
-					    	    'filler_sp_high_tag': entry['filler_sp_high'],
-					    	    'filler_sp_low_tag': entry['filler_sp_low']
-					    	}
-		
-		
-		original_tags = [	(entry['scale_weight'], 			'scale_weight'),
-						   # (entry['line_material'], 			'line_material'),
-						    (entry['filler_sp_tag'], 			'filler_sp_tag'),
-						    (entry['filler_sp_high_tag'], 		'filler_sp_high_tag'),
-						    (entry['filler_sp_low_tag'], 		'filler_sp_low_tag'),
-						    (entry['filler_reject'], 			'filler_reject'),
-						    (entry['filler_metal'], 			'filler_metal'),
-						    (entry['filler_reason_over'], 		'filler_reason_over'),
-						    (entry['filler_reason_under'], 	'filler_reason_under'),
-						    (entry['filler_reason_metal'], 	'filler_reason_metal')		]
-		
-		# Make sure to only use exisiting tags
-		filtered_tags = [(CORE_P.Tags.getFullyQualifiedTagName(tag), key) for tag, key in original_tags if tag is not None and tag != '']
-		all_tags, keys = zip(*filtered_tags)
-		tag_path_mapping = dict(zip(keys, all_tags))
-			
-		# Query historical data for the extracted tags.
-		history_data = system.tag.queryTagHistory(
-		    paths=all_tags,
-		    startDate=Start,
-		    endDate=End,
-		    returnSize=-1,
-		    includeBoundingValues=True,
-		    noInterpolation=False,
-		    ignoreBadQuality=True,
-		    columnNames=all_tags,  
-		    returnFormat='Tall'
-		)
-		
-		# Prepare data structures for processing.
-		all_data = {key: [] for key in tag_path_mapping.keys()}
-		last_known_values = {}
-		daily_data = {}
-		
-		# Formatters for date and time.
-		sdf_day = SimpleDateFormat("yyyy-MM-dd")
-		sdf_hour = SimpleDateFormat("HH")
-		sdf_day_hour = SimpleDateFormat("yyyy-MM-dd HH:00:00")
-		
-		# Process historical data to structure it by day and hour.
-		for item in CORE_P.Utils.datasetToDicts(history_data):
-		    for key, converted_tag_name in tag_path_mapping.items():
-		        if converted_tag_name == item['path']:
-					all_data[key].append(item)
-		
-		
-		#----------------------------------------------------------------------------
-		# Get the list of material changes, either from a Tag, or from STARR, or a default list on Material = None
-		#----------------------------------------------------------------------------
-		materials = []
-		material_index = 0		
+		
 		try:
-			# If we have a tag defined, use that. 
-			if ('line_material' in all_data and all_data['line_material']):
-				materials = CORE_P.Tags.getTagChanges(entry['line_material'], Start, End)
-				
-				if (len(materials)>0 and materials[0]['timestamp']>Start):
-					materials.insert(0, {"value": 'None', "timestamp":Start})
-			
-			# Else, if we have a link to a STARR unit...work out materials from that instead
-			elif(entry['starr_unit_id']):
-				materials = Weight_P.STARR.getMaterialsFromSTARR(entry['starr_unit_id'], Start, End)
-
-			# Otherwise...materials are None
-			else:
-			#	SystemLogger(True, "JAY", 'DEBUG: Using default materials!' +str(entry['starr_unit_id']))		
-				materials = [{"value": 'None', "timestamp":Start},{"value": 'None', "timestamp":End}]
-		except:
-			SystemLogger(LoggerActive, "JAY", CORE_P.Utils.getError())			
+			loop_count  += 1
+			SystemLogger(LoggerActive, "Weight Tracking", "Scale: {}".format(entry['scale_id']))
+			SystemLogger(LoggerActive, "Weight Tracking", "Loop: {}".format(loop_count))
 		
-		# If we're using limits from the Materials database, we'll need to convert from lbs to the units for this line
-		conversion = 1
-		if (entry['unit_name']!='lbs'):
-			if (entry['unit_name']=='g'):
-				conversion = 453.59237
-			elif (entry['unit_name']=='kg'):
-				conversion = 0.45359237
-			elif (entry['unit_name']=='oz'):
-				conversion = 16		
+			progress2 = float(loop_count) / float(entries.getRowCount()) * 100
+			system.util.sendMessage(project="WeightTracking", messageHandler="AggregatorUpdateBarScale", scope='S', payload={"progress": progress2})
 		
-		
-		#----------------------------------------------------------------------------
-		# Work out the set points/targets for this material. Will be either from a tag value, or from a material default, or a line default
-		#----------------------------------------------------------------------------
-		material_config = {} # Hold the materials config		
-		sp_low_index = 0
-		sp_index = 0
-		sp_high_index = 0
-		for row in materials:
+			default_sp_values = {
+						    	    'filler_sp_tag': entry['filler_sp'],
+						    	    'filler_sp_high_tag': entry['filler_sp_high'],
+						    	    'filler_sp_low_tag': entry['filler_sp_low']
+						    	}
 			
-			# Work through the filler_sp_tag dataset until we get to the time relevant to this material/po block
-			if ('filler_sp_low_tag' in all_data and all_data['filler_sp_low_tag']):
-				while (((sp_low_index+1) < len(all_data['filler_sp_low_tag'])) and (all_data['filler_sp_low_tag'][sp_low_index+1]['timestamp'] <= row['timestamp'])):
-					sp_low_index += 1
-				row['setpoint_low'] = all_data['filler_sp_low_tag'][sp_low_index]['value']
-				
-			# Work through the filler_sp_tag dataset until we get to the time relevant to this material/po block
-			if ('filler_sp_tag' in all_data and all_data['filler_sp_tag']):
-				while (((sp_index+1) < len(all_data['filler_sp_tag'])) and (all_data['filler_sp_tag'][sp_index+1]['timestamp'] <= row['timestamp'])):
-					sp_index += 1
-				row['setpoint'] = all_data['filler_sp_tag'][sp_index]['value']
-				
-			# Work through the filler_sp_tag dataset until we get to the time relevant to this material/po block
-			if ('filler_sp_high_tag' in all_data and all_data['filler_sp_high_tag']):
-				while (((sp_high_index+1) < len(all_data['filler_sp_high_tag'])) and (all_data['filler_sp_high_tag'][sp_high_index+1]['timestamp'] <= row['timestamp'])):
-					sp_high_index += 1
-				row['setpoint_high'] = all_data['filler_sp_high_tag'][sp_high_index]['value']				
 			
-			# If there are any of the setpoints we didn't manage to get from tags...
-			if (('setpoint_low' not in row) or ('setpoint' not in row) or ('setpoint_high' not in row) ):
-				# If we don't know what material we have, revert to default values (if we have them)
-				if (row['value'] == 'None'):
-					if ('setpoint_low' not in row):
-						row['setpoint_low']		= entry['filler_sp_low'] or 0
-					if ('setpoint' not in row):
-						row['setpoint'] 		= entry['filler_sp'] or 0
-					if ('setpoint_high' not in row):
-						row['setpoint_high']	= entry['filler_sp_high'] or 0
-				else:
-
-					# Pull the material data out of the database if we haven't yet
-					if str(row['value']) not in material_config:
-						tmp = CORE_P.Utils.datasetToDicts(system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/DB_Query/Get_Material', parameters={'material_number':row['value']}))
-						if (len(tmp)>0):
-							# Convert the materials data (in lb) to the units for this filler, if the line is not running in lbs
-							for col in ['item_lower_limit', 'item_target_weight', 'item_upper_limit', 'lower_limit', 'target_weight', 'upper_limit']:
-								try:
-									tmp[0][col] = float(tmp[0][col]) * conversion
-								except:
-									tmp[0][col] = 0
-							
-							# Then record the values for later
-							material_config[str(row['value'])] = tmp[0]
-
-					# Then, use either the item limits, or total limits, depending on the line type
-					if (str(row['value']) in material_config and material_config[str(row['value'])]):
-						if entry['fill_type'] == 'item':
-							if ('setpoint_low' not in row):						
-								row['setpoint_low']		= material_config[str(row['value'])]['item_lower_limit'] or 0
-							if ('setpoint' not in row):
-								row['setpoint'] 		= material_config[str(row['value'])]['item_target_weight'] or 0
-							if ('setpoint_high' not in row):
-								row['setpoint_high']	= material_config[str(row['value'])]['item_upper_limit'] or 0
-						elif entry['fill_type'] == 'case':
-							if ('setpoint_low' not in row):						
-								row['setpoint_low']		= material_config[str(row['value'])]['lower_limit'] or 0
-							if ('setpoint' not in row):
-								row['setpoint'] 		= material_config[str(row['value'])]['target_weight'] or 0
-							if ('setpoint_high' not in row):
-								row['setpoint_high']	= material_config[str(row['value'])]['upper_limit'] or 0
+			original_tags = [	(entry['scale_weight'], 			'scale_weight'),
+							   # (entry['line_material'], 			'line_material'),
+							    (entry['filler_sp_tag'], 			'filler_sp_tag'),
+							    (entry['filler_sp_high_tag'], 		'filler_sp_high_tag'),
+							    (entry['filler_sp_low_tag'], 		'filler_sp_low_tag'),
+							    (entry['filler_reject'], 			'filler_reject'),
+							    (entry['filler_metal'], 			'filler_metal'),
+							    (entry['filler_reason_over'], 		'filler_reason_over'),
+							    (entry['filler_reason_under'], 	'filler_reason_under'),
+							    (entry['filler_reason_metal'], 	'filler_reason_metal')		]
+			
+			# Make sure to only use exisiting tags
+			filtered_tags = [(CORE_P.Tags.getFullyQualifiedTagName(tag), key) for tag, key in original_tags if tag is not None and tag != '']
+			all_tags, keys = zip(*filtered_tags)
+			tag_path_mapping = dict(zip(keys, all_tags))
+				
+			# Query historical data for the extracted tags.
+			history_data = system.tag.queryTagHistory(
+			    paths=all_tags,
+			    startDate=Start,
+			    endDate=End,
+			    returnSize=-1,
+			    includeBoundingValues=True,
+			    noInterpolation=False,
+			    ignoreBadQuality=True,
+			    columnNames=all_tags,  
+			    returnFormat='Tall'
+			)
+			
+			# Prepare data structures for processing.
+			all_data = {key: [] for key in tag_path_mapping.keys()}
+			last_known_values = {}
+			daily_data = {}
+			
+			# Formatters for date and time.
+			sdf_day = SimpleDateFormat("yyyy-MM-dd")
+			sdf_hour = SimpleDateFormat("HH")
+			sdf_day_hour = SimpleDateFormat("yyyy-MM-dd HH:00:00")
+			
+			# Process historical data to structure it by day and hour.
+			for item in CORE_P.Utils.datasetToDicts(history_data):
+			    for key, converted_tag_name in tag_path_mapping.items():
+			        if converted_tag_name == item['path']:
+						all_data[key].append(item)
+			
+			
+			#----------------------------------------------------------------------------
+			# Get the list of material changes, either from a Tag, or from STARR, or a default list on Material = None
+			#----------------------------------------------------------------------------
+			materials = []
+			material_index = 0		
+			try:
+				# If we have a tag defined, use that. 
+				if ('line_material' in all_data and all_data['line_material']):
+					materials = CORE_P.Tags.getTagChanges(entry['line_material'], Start, End)
+					
+					if (len(materials)>0 and materials[0]['timestamp']>Start):
+						materials.insert(0, {"value": 'None', "timestamp":Start})
+				
+				# Else, if we have a link to a STARR unit...work out materials from that instead
+				elif(entry['starr_unit_id']):
+					materials = Weight_P.STARR.getMaterialsFromSTARR(entry['starr_unit_id'], Start, End)
 	
-					else:
-						# Defaults, if we couldn't find material info
+				# Otherwise...materials are None
+				else:
+				#	SystemLogger(True, "JAY", 'DEBUG: Using default materials!' +str(entry['starr_unit_id']))		
+					materials = [{"value": 'None', "timestamp":Start},{"value": 'None', "timestamp":End}]
+			except:
+				SystemLogger(LoggerActive, "JAY", CORE_P.Utils.getError())			
+			
+			# If we're using limits from the Materials database, we'll need to convert from lbs to the units for this line
+			conversion = 1
+			if (entry['unit_name']!='lbs'):
+				if (entry['unit_name']=='g'):
+					conversion = 453.59237
+				elif (entry['unit_name']=='kg'):
+					conversion = 0.45359237
+				elif (entry['unit_name']=='oz'):
+					conversion = 16		
+			
+			
+			#----------------------------------------------------------------------------
+			# Work out the set points/targets for this material. Will be either from a tag value, or from a material default, or a line default
+			#----------------------------------------------------------------------------
+			material_config = {} # Hold the materials config		
+			sp_low_index = 0
+			sp_index = 0
+			sp_high_index = 0
+			for row in materials:
+				
+				# Work through the filler_sp_tag dataset until we get to the time relevant to this material/po block
+				if ('filler_sp_low_tag' in all_data and all_data['filler_sp_low_tag']):
+					while (((sp_low_index+1) < len(all_data['filler_sp_low_tag'])) and (all_data['filler_sp_low_tag'][sp_low_index+1]['timestamp'] <= row['timestamp'])):
+						sp_low_index += 1
+					row['setpoint_low'] = all_data['filler_sp_low_tag'][sp_low_index]['value']
+					
+				# Work through the filler_sp_tag dataset until we get to the time relevant to this material/po block
+				if ('filler_sp_tag' in all_data and all_data['filler_sp_tag']):
+					while (((sp_index+1) < len(all_data['filler_sp_tag'])) and (all_data['filler_sp_tag'][sp_index+1]['timestamp'] <= row['timestamp'])):
+						sp_index += 1
+					row['setpoint'] = all_data['filler_sp_tag'][sp_index]['value']
+					
+				# Work through the filler_sp_tag dataset until we get to the time relevant to this material/po block
+				if ('filler_sp_high_tag' in all_data and all_data['filler_sp_high_tag']):
+					while (((sp_high_index+1) < len(all_data['filler_sp_high_tag'])) and (all_data['filler_sp_high_tag'][sp_high_index+1]['timestamp'] <= row['timestamp'])):
+						sp_high_index += 1
+					row['setpoint_high'] = all_data['filler_sp_high_tag'][sp_high_index]['value']				
+				
+				# If there are any of the setpoints we didn't manage to get from tags...
+				if (('setpoint_low' not in row) or ('setpoint' not in row) or ('setpoint_high' not in row) ):
+					# If we don't know what material we have, revert to default values (if we have them)
+					if (row['value'] == 'None'):
 						if ('setpoint_low' not in row):
 							row['setpoint_low']		= entry['filler_sp_low'] or 0
 						if ('setpoint' not in row):
 							row['setpoint'] 		= entry['filler_sp'] or 0
 						if ('setpoint_high' not in row):
-							row['setpoint_high']	= entry['filler_sp_high'] or 0	
+							row['setpoint_high']	= entry['filler_sp_high'] or 0
+					else:
 	
+						# Pull the material data out of the database if we haven't yet
+						if str(row['value']) not in material_config:
+							tmp = CORE_P.Utils.datasetToDicts(system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/DB_Query/Get_Material', parameters={'material_number':row['value']}))
+							if (len(tmp)>0):
+								# Convert the materials data (in lb) to the units for this filler, if the line is not running in lbs
+								for col in ['item_lower_limit', 'item_target_weight', 'item_upper_limit', 'lower_limit', 'target_weight', 'upper_limit']:
+									try:
+										tmp[0][col] = float(tmp[0][col]) * conversion
+									except:
+										tmp[0][col] = 0
+								
+								# Then record the values for later
+								material_config[str(row['value'])] = tmp[0]
+	
+						# Then, use either the item limits, or total limits, depending on the line type
+						if (str(row['value']) in material_config and material_config[str(row['value'])]):
+							if entry['fill_type'] == 'item':
+								if ('setpoint_low' not in row):						
+									row['setpoint_low']		= material_config[str(row['value'])]['item_lower_limit'] or 0
+								if ('setpoint' not in row):
+									row['setpoint'] 		= material_config[str(row['value'])]['item_target_weight'] or 0
+								if ('setpoint_high' not in row):
+									row['setpoint_high']	= material_config[str(row['value'])]['item_upper_limit'] or 0
+							elif entry['fill_type'] == 'case':
+								if ('setpoint_low' not in row):						
+									row['setpoint_low']		= material_config[str(row['value'])]['lower_limit'] or 0
+								if ('setpoint' not in row):
+									row['setpoint'] 		= material_config[str(row['value'])]['target_weight'] or 0
+								if ('setpoint_high' not in row):
+									row['setpoint_high']	= material_config[str(row['value'])]['upper_limit'] or 0
 		
-		#----------------------------------------------------------------------------
-		# Process all the tag data in hourly blocks, further broken down into materials/po_numbers
-		# all_data = the set of tag data relating to all the tags configured for this filler/scale
-		#----------------------------------------------------------------------------		
-		all_materials_key = 'All' # This is what will end up in the material column of the database table for the sum of all weights for the hour (not split out by material)
-		try:
-			for tagname, items in all_data.items():
-				material_index = 0		
-				#SystemLogger(True, "JAY", str(key))
-				for item in items:
-
-					timestamp = Date.from(item['timestamp'].toInstant())
-					calendar_instance = Calendar.getInstance()
-					calendar_instance.setTime(timestamp)
-					calendar_instance.set(Calendar.MINUTE, 0)
-					calendar_instance.set(Calendar.SECOND, 0)
-					calendar_instance.set(Calendar.MILLISECOND, 0)
-					
-					day_key = sdf_day.format(timestamp)
-					hour_of_day = calendar_instance.get(Calendar.HOUR_OF_DAY)
-					time_start = sdf_day_hour.format(calendar_instance.getTime())
-
-					
-					# Work out which material to use
-					while ( (material_index < (len(materials)-1))  and (timestamp >= materials[material_index + 1]['timestamp']) ):
-						material_index = material_index + 1 
-					
-					material 		= str(materials[material_index]['value'])
-					po_number 		= None # Get po number. Will only exist if we are using a STARR link, not a material tag
-					if ('po_number' in materials[material_index]): 
-						po_number 	= materials[material_index]['po_number']
-					materials_key	= str(material) + "_" + str(po_number)
-					setpoint 		= materials[material_index]['setpoint']
-					setpoint_high 	= materials[material_index]['setpoint_high']
-					setpoint_low 	= materials[material_index]['setpoint_low']
-					
-					
-					if day_key not in daily_data:
-					   # daily_data[day_key] = {hour: {'time_start': '', 'scale_weight_values': []} for hour in range(24)}
-					    daily_data[day_key] = {hour: {} for hour in range(24)}
-					
-					if materials_key not in daily_data[day_key][hour_of_day]:
-						daily_data[day_key][hour_of_day][materials_key] = {'time_start': time_start, 'scale_weight_values': [], 'material':material, 'po_number':po_number, 'setpoint':[], 'setpoint_high':[], 'setpoint_low':[], 'over_threshold':[], 'under_threshold':[], 'out_of_threshold':[]}
-						
-					if all_materials_key not in daily_data[day_key][hour_of_day]:
-						daily_data[day_key][hour_of_day][all_materials_key] = {'time_start': time_start, 'scale_weight_values': [], 'material':all_materials_key, 'po_number':None, 'setpoint':[], 'setpoint_high':[], 'setpoint_low':[], 'over_threshold':[], 'under_threshold':[], 'out_of_threshold':[]}
-						
-					if tagname not in daily_data[day_key][hour_of_day][materials_key]:
-					    daily_data[day_key][hour_of_day][materials_key][tagname] = []
-					    
-					if tagname not in daily_data[day_key][hour_of_day][all_materials_key]:
-					    daily_data[day_key][hour_of_day][all_materials_key][tagname] = []
-					    
-					daily_data[day_key][hour_of_day][materials_key][tagname].append(item['value'])
-					daily_data[day_key][hour_of_day][all_materials_key][tagname].append(item['value'])
-					
-					# Keep track of the scale weights. This is the key bit...
-					if tagname == 'scale_weight':
-					    daily_data[day_key][hour_of_day][materials_key]['scale_weight_values'].append(item['value'])
-					    daily_data[day_key][hour_of_day][all_materials_key]['scale_weight_values'].append(item['value'])
-					    
-					    # Keep track of the setpoints and targets, and what was out of range
-					    for a in [all_materials_key, materials_key]:
-							daily_data[day_key][hour_of_day][a]['setpoint'].append(setpoint)
-							daily_data[day_key][hour_of_day][a]['setpoint_high'].append(setpoint_high)
-							daily_data[day_key][hour_of_day][a]['setpoint_low'].append(setpoint_low)
-						    
-							if item['value'] > setpoint_high:
-								daily_data[day_key][hour_of_day][a]['over_threshold'].append(item['value'])
-							if item['value'] < setpoint_low:
-								daily_data[day_key][hour_of_day][a]['under_threshold'].append(item['value'])
-							if item['value'] < setpoint_low or item['value'] > setpoint_high :
-								daily_data[day_key][hour_of_day][a]['out_of_threshold'].append(item['value'])
-							#	count_out_of_threshold += 1
-
-					    
-					    #daily_data[day_key][hour_of_day][material]['scale_weight_values'].append(item['timestamp'])
-		except:
-			SystemLogger(True, "JAY", CORE_P.Utils.getError())				
-
+						else:
+							# Defaults, if we couldn't find material info
+							if ('setpoint_low' not in row):
+								row['setpoint_low']		= entry['filler_sp_low'] or 0
+							if ('setpoint' not in row):
+								row['setpoint'] 		= entry['filler_sp'] or 0
+							if ('setpoint_high' not in row):
+								row['setpoint_high']	= entry['filler_sp_high'] or 0	
 		
-		#----------------------------------------------------------------------------
-		# Aggregate and calculate statistics for hourly block
-		#----------------------------------------------------------------------------
-		material_config = {} # Hold the materials config
-		for day, hours in daily_data.items():
-		
-			#for hour, tags in hours.items():
-			for hour, materials_keys in hours.items():
 			
-				for materials_key, tags in materials_keys.items():
-					    						
-					#----------------------------------------------------------------------------
-					# Working on weight Statistics			    
-					#----------------------------------------------------------------------------
-					if 'scale_weight_values' in tags and tags['scale_weight_values']:
-						stats = DescriptiveStatistics()
-						stats.clear()
-						
-						count_over_threshold = 0
-						count_under_threshold = 0
-						count_out_of_threshold = 0
-						
-							
-						for value in tags['scale_weight_values']:
-							stats.addValue(value)
-								
-						tags['scale_id']=entry['scale_id']
-						tags['count']=len(tags['scale_weight_values'])
-						tags['standard_deviation'] = stats.getStandardDeviation()
-						tags['variance'] = stats.getVariance()
-						tags['weight_avg'] =  stats.getMean()
-						tags['weight_max'] = stats.getMax()
-						tags['weight_min'] = stats.getMin()
-						tags['weight_range'] = tags['weight_max']-tags['weight_min']
-						tags['percentile25'] = stats.getPercentile(25)
-						tags['percentile50'] = stats.getPercentile(50)
-						tags['percentile75'] = stats.getPercentile(75)
-						tags['weight_sum'] = sum(tags['scale_weight_values'])
-						
-						# Things related to targets and setpoints...
-						if(materials_key == 'All'):
-							# If this is an 'All' block, we need to work out averages for the set points 
-							# as there can be different setpoints for different materials now)
-							sp_low_stats = DescriptiveStatistics()
-							sp_low_stats.clear()
-							for value in tags['setpoint_low']:
-								sp_low_stats.addValue(value)
-							tags['sp_low'] = sp_low_stats.getMean()
-							
-							sp_high_stats = DescriptiveStatistics()
-							sp_high_stats.clear()
-							for value in tags['setpoint_high']:
-								sp_high_stats.addValue(value)
-							tags['sp_high'] = sp_high_stats.getMean()		
-							
-							sp_stats = DescriptiveStatistics()
-							sp_stats.clear()
-							for value in tags['setpoint']:
-								sp_stats.addValue(value)
-							tags['sp'] = sp_stats.getMean()	
-						else:	
-							
-							if 'setpoint_low' in tags and len(tags['setpoint_low'])>0:
-								tags['sp_low'] = tags['setpoint_low'][0]
-							else:
-								tags['sp_low'] = 0
-							if 'setpoint_high' in tags and len(tags['setpoint_high'])>0:
-								tags['sp_high'] = tags['setpoint_high'][0]
-							else:
-								tags['setpoint_high'] = 0
-							if 'setpoint' in tags and len(tags['setpoint'])>0:
-								tags['sp'] = tags['setpoint'][0]
-							else:
-								tags['setpoint_high'] = 0
-						
-						#SystemLogger(True, "JAY", 'Count: ' + str(tags['count']) + ', Set Point ' + str(tags['sp']) + ', ' + str(materials_key) + ', Setpoint: ' + str(tags['setpoint']))			
-								
-						tags['weight_target'] = tags['count']*tags['sp']
-						tags['weight_diff'] = tags['weight_sum']- tags['weight_target']
-						
-						tags['pct_weight_over'] = (len(tags['over_threshold']) / float(tags['count'])) * 100 if tags['count'] > 0 else 0
-						tags['pct_weight_under'] = (len(tags['under_threshold']) / float(tags['count'])) * 100 if tags['count'] > 0 else 0
-						tags['pct_out_of_range'] = (len(tags['out_of_threshold']) / float(tags['count'])) * 100 if tags['count'] > 0 else 0
-												
-					
-					# Clean up to save memory.
-					del tags['scale_weight_values']
-					
-					
-					# Calculate aggregates and maintain last known values for certain tags.
-					for tag, values in tags.items():
-					    if not isinstance(values, list):
-					        values = [values]  # Ensure values is a list, even if it's a single value
-					
-					    if tag == 'scale_weight':
-					        tags[tag] = sum(values) / len(values) if values else None
-					    elif tag in ['filler_reject', 'filler_metal']:
-					        tags[tag] = values.count(1)
-					    elif tag == 'filler_reason_over':
-					        tags[tag] = values.count(1)
-					    elif tag == 'filler_reason_under':
-					        tags[tag] = values.count(2)
-					    elif tag == 'filler_reason_metal':
-					        tags[tag] = values.count(3)
-
-					        
-					 # Update last known values for next iteration
-					for tag in ['filler_sp_tag', 'filler_sp_high_tag', 'filler_sp_low_tag','line_material']:
-					    if tag in tags and tags[tag]:
-					        last_known_values[tag] = tags[tag]    
-					        	                    
-		# Remove keys that have no hourly data or less than 2 bags per hour
-		for day_key in list(daily_data.keys()):  # Iterate over each day
-		    for hour_key in list(daily_data[day_key].keys()):  # Iterate over each hour
-		    	for material_key in list(daily_data[day_key][hour_key].keys()):  # Iterate over each material
-			        hour_data = daily_data[day_key][hour_key][material_key]
-			        # Check if 'count' key exists and if its value is less than 1
-			        if 'count' not in hour_data or hour_data['count'] <= 1:
-			            del daily_data[day_key][hour_key][material_key]  # Delete the hour bucket
-		            
-		    # After processing hours, check if the day has any hours left
-			if not daily_data[day_key]:  # Check if the day is empty
-			    del daily_data[day_key]  # Delete the day if it has no hours
-		
-		# After processing, add daily_data to scale_data under the current scale_id
-		if entry['scale_id'] not in scale_data:
-		    scale_data[entry['scale_id']] = {}
-		scale_data[entry['scale_id']].update(daily_data)  
+			#----------------------------------------------------------------------------
+			# Process all the tag data in hourly blocks, further broken down into materials/po_numbers
+			# all_data = the set of tag data relating to all the tags configured for this filler/scale
+			#----------------------------------------------------------------------------		
+			all_materials_key = 'All' # This is what will end up in the material column of the database table for the sum of all weights for the hour (not split out by material)
+			try:
+				for tagname, items in all_data.items():
+					material_index = 0		
+					#SystemLogger(True, "JAY", str(key))
+					for item in items:
 	
+						timestamp = Date.from(item['timestamp'].toInstant())
+						calendar_instance = Calendar.getInstance()
+						calendar_instance.setTime(timestamp)
+						calendar_instance.set(Calendar.MINUTE, 0)
+						calendar_instance.set(Calendar.SECOND, 0)
+						calendar_instance.set(Calendar.MILLISECOND, 0)
+						
+						day_key = sdf_day.format(timestamp)
+						hour_of_day = calendar_instance.get(Calendar.HOUR_OF_DAY)
+						time_start = sdf_day_hour.format(calendar_instance.getTime())
+	
+						
+						# Work out which material to use
+						while ( (material_index < (len(materials)-1))  and (timestamp >= materials[material_index + 1]['timestamp']) ):
+							material_index = material_index + 1 
+						
+						material 		= str(materials[material_index]['value'])
+						po_number 		= None # Get po number. Will only exist if we are using a STARR link, not a material tag
+						if ('po_number' in materials[material_index]): 
+							po_number 	= materials[material_index]['po_number']
+						materials_key	= str(material) + "_" + str(po_number)
+						setpoint 		= materials[material_index]['setpoint']
+						setpoint_high 	= materials[material_index]['setpoint_high']
+						setpoint_low 	= materials[material_index]['setpoint_low']
+						
+						
+						if day_key not in daily_data:
+						   # daily_data[day_key] = {hour: {'time_start': '', 'scale_weight_values': []} for hour in range(24)}
+						    daily_data[day_key] = {hour: {} for hour in range(24)}
+						
+						if materials_key not in daily_data[day_key][hour_of_day]:
+							daily_data[day_key][hour_of_day][materials_key] = {'time_start': time_start, 'scale_weight_values': [], 'material':material, 'po_number':po_number, 'setpoint':[], 'setpoint_high':[], 'setpoint_low':[], 'over_threshold':[], 'under_threshold':[], 'out_of_threshold':[]}
+							
+						if all_materials_key not in daily_data[day_key][hour_of_day]:
+							daily_data[day_key][hour_of_day][all_materials_key] = {'time_start': time_start, 'scale_weight_values': [], 'material':all_materials_key, 'po_number':None, 'setpoint':[], 'setpoint_high':[], 'setpoint_low':[], 'over_threshold':[], 'under_threshold':[], 'out_of_threshold':[]}
+							
+						if tagname not in daily_data[day_key][hour_of_day][materials_key]:
+						    daily_data[day_key][hour_of_day][materials_key][tagname] = []
+						    
+						if tagname not in daily_data[day_key][hour_of_day][all_materials_key]:
+						    daily_data[day_key][hour_of_day][all_materials_key][tagname] = []
+						    
+						daily_data[day_key][hour_of_day][materials_key][tagname].append(item['value'])
+						daily_data[day_key][hour_of_day][all_materials_key][tagname].append(item['value'])
+						
+						# Keep track of the scale weights. This is the key bit...
+						if tagname == 'scale_weight':
+						    daily_data[day_key][hour_of_day][materials_key]['scale_weight_values'].append(item['value'])
+						    daily_data[day_key][hour_of_day][all_materials_key]['scale_weight_values'].append(item['value'])
+						    
+						    # Keep track of the setpoints and targets, and what was out of range
+						    for a in [all_materials_key, materials_key]:
+								daily_data[day_key][hour_of_day][a]['setpoint'].append(setpoint)
+								daily_data[day_key][hour_of_day][a]['setpoint_high'].append(setpoint_high)
+								daily_data[day_key][hour_of_day][a]['setpoint_low'].append(setpoint_low)
+							    
+								if item['value'] > setpoint_high:
+									daily_data[day_key][hour_of_day][a]['over_threshold'].append(item['value'])
+								if item['value'] < setpoint_low:
+									daily_data[day_key][hour_of_day][a]['under_threshold'].append(item['value'])
+								if item['value'] < setpoint_low or item['value'] > setpoint_high :
+									daily_data[day_key][hour_of_day][a]['out_of_threshold'].append(item['value'])
+								#	count_out_of_threshold += 1
+	
+						    
+						    #daily_data[day_key][hour_of_day][material]['scale_weight_values'].append(item['timestamp'])
+			except:
+				SystemLogger(True, "JAY", CORE_P.Utils.getError())				
+	
+			
+			#----------------------------------------------------------------------------
+			# Aggregate and calculate statistics for hourly block
+			#----------------------------------------------------------------------------
+			material_config = {} # Hold the materials config
+			for day, hours in daily_data.items():
+			
+				#for hour, tags in hours.items():
+				for hour, materials_keys in hours.items():
+				
+					for materials_key, tags in materials_keys.items():
+						    						
+						#----------------------------------------------------------------------------
+						# Working on weight Statistics			    
+						#----------------------------------------------------------------------------
+						if 'scale_weight_values' in tags and tags['scale_weight_values']:
+							stats = DescriptiveStatistics()
+							stats.clear()
+							
+							count_over_threshold = 0
+							count_under_threshold = 0
+							count_out_of_threshold = 0
+							
+								
+							for value in tags['scale_weight_values']:
+								stats.addValue(value)
+									
+							tags['scale_id']=entry['scale_id']
+							tags['count']=len(tags['scale_weight_values'])
+							tags['standard_deviation'] = stats.getStandardDeviation()
+							tags['variance'] = stats.getVariance()
+							tags['weight_avg'] =  stats.getMean()
+							tags['weight_max'] = stats.getMax()
+							tags['weight_min'] = stats.getMin()
+							tags['weight_range'] = tags['weight_max']-tags['weight_min']
+							tags['percentile25'] = stats.getPercentile(25)
+							tags['percentile50'] = stats.getPercentile(50)
+							tags['percentile75'] = stats.getPercentile(75)
+							tags['weight_sum'] = sum(tags['scale_weight_values'])
+							
+							# Things related to targets and setpoints...
+							if(materials_key == 'All'):
+								# If this is an 'All' block, we need to work out averages for the set points 
+								# as there can be different setpoints for different materials now)
+								sp_low_stats = DescriptiveStatistics()
+								sp_low_stats.clear()
+								for value in tags['setpoint_low']:
+									sp_low_stats.addValue(value)
+								tags['sp_low'] = sp_low_stats.getMean()
+								
+								sp_high_stats = DescriptiveStatistics()
+								sp_high_stats.clear()
+								for value in tags['setpoint_high']:
+									sp_high_stats.addValue(value)
+								tags['sp_high'] = sp_high_stats.getMean()		
+								
+								sp_stats = DescriptiveStatistics()
+								sp_stats.clear()
+								for value in tags['setpoint']:
+									sp_stats.addValue(value)
+								tags['sp'] = sp_stats.getMean()	
+							else:	
+								
+								if 'setpoint_low' in tags and len(tags['setpoint_low'])>0:
+									tags['sp_low'] = tags['setpoint_low'][0]
+								else:
+									tags['sp_low'] = 0
+								if 'setpoint_high' in tags and len(tags['setpoint_high'])>0:
+									tags['sp_high'] = tags['setpoint_high'][0]
+								else:
+									tags['setpoint_high'] = 0
+								if 'setpoint' in tags and len(tags['setpoint'])>0:
+									tags['sp'] = tags['setpoint'][0]
+								else:
+									tags['setpoint_high'] = 0
+							
+							#SystemLogger(True, "JAY", 'Count: ' + str(tags['count']) + ', Set Point ' + str(tags['sp']) + ', ' + str(materials_key) + ', Setpoint: ' + str(tags['setpoint']))			
+									
+							tags['weight_target'] = tags['count']*tags['sp']
+							tags['weight_diff'] = tags['weight_sum']- tags['weight_target']
+							
+							tags['pct_weight_over'] = (len(tags['over_threshold']) / float(tags['count'])) * 100 if tags['count'] > 0 else 0
+							tags['pct_weight_under'] = (len(tags['under_threshold']) / float(tags['count'])) * 100 if tags['count'] > 0 else 0
+							tags['pct_out_of_range'] = (len(tags['out_of_threshold']) / float(tags['count'])) * 100 if tags['count'] > 0 else 0
+													
+						
+						# Clean up to save memory.
+						del tags['scale_weight_values']
+						
+						
+						# Calculate aggregates and maintain last known values for certain tags.
+						for tag, values in tags.items():
+						    if not isinstance(values, list):
+						        values = [values]  # Ensure values is a list, even if it's a single value
+						
+						    if tag == 'scale_weight':
+						        tags[tag] = sum(values) / len(values) if values else None
+						    elif tag in ['filler_reject', 'filler_metal']:
+						        tags[tag] = values.count(1)
+						    elif tag == 'filler_reason_over':
+						        tags[tag] = values.count(1)
+						    elif tag == 'filler_reason_under':
+						        tags[tag] = values.count(2)
+						    elif tag == 'filler_reason_metal':
+						        tags[tag] = values.count(3)
+	
+						        
+						 # Update last known values for next iteration
+						for tag in ['filler_sp_tag', 'filler_sp_high_tag', 'filler_sp_low_tag','line_material']:
+						    if tag in tags and tags[tag]:
+						        last_known_values[tag] = tags[tag]    
+						        	                    
+			# Remove keys that have no hourly data or less than 2 bags per hour
+			for day_key in list(daily_data.keys()):  # Iterate over each day
+			    for hour_key in list(daily_data[day_key].keys()):  # Iterate over each hour
+			    	for material_key in list(daily_data[day_key][hour_key].keys()):  # Iterate over each material
+				        hour_data = daily_data[day_key][hour_key][material_key]
+				        # Check if 'count' key exists and if its value is less than 1
+				        if 'count' not in hour_data or hour_data['count'] <= 1:
+				            del daily_data[day_key][hour_key][material_key]  # Delete the hour bucket
+			            
+			    # After processing hours, check if the day has any hours left
+				if not daily_data[day_key]:  # Check if the day is empty
+				    del daily_data[day_key]  # Delete the day if it has no hours
+			
+			# After processing, add daily_data to scale_data under the current scale_id
+			if entry['scale_id'] not in scale_data:
+			    scale_data[entry['scale_id']] = {}
+			scale_data[entry['scale_id']].update(daily_data)  
+		except:
+			SystemLogger(True, "Weight Tracking", "Error running aggregator. Start:" + str(Start) + ", End:" + str(End) + ", site_id:" + str(site_id) + ", scale:" + str(scale_id) + str(CORE_P.Utils.getError()))
+			pass # Move on to the next scale - don't let one bad scale ruin the whole process
+			
 	return scale_data
 # END OF ProcessWeek
 	
@@ -524,7 +528,7 @@ def insertOrUpdateBucketData(scale_data, start_dt, end_dt):
 			system.db.closeTransaction(txId)					
 							
 	except:
-		SystemLogger(True, "JAY", CORE_P.Utils.getError())		
+		SystemLogger(True, "Weight Tracking", CORE_P.Utils.getError())		
 		system.db.rollbackTransaction(txId)	
 		system.db.closeTransaction(txId)	
 #	SystemLogger(True, "JAY", "Finished processing")		
