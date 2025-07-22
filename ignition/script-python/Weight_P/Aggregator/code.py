@@ -149,14 +149,16 @@ def ProcessWeek(Start, End, site_id, scale_id):
 				SystemLogger(LoggerActive, "JAY", CORE_P.Utils.getError())			
 			
 			# If we're using limits from the Materials database, we'll need to convert from lbs to the units for this line
-			conversion = 1
-			if (entry['unit_name']!='lbs'):
-				if (entry['unit_name']=='g'):
-					conversion = 453.59237
-				elif (entry['unit_name']=='kg'):
-					conversion = 0.45359237
-				elif (entry['unit_name']=='oz'):
-					conversion = 16		
+#			conversion = 1
+#			if (entry['unit_name']!='lbs'):
+#				if (entry['unit_name']=='g'):
+#					conversion = 453.59237
+#				elif (entry['unit_name']=='kg'):
+#					conversion = 0.45359237
+#				elif (entry['unit_name']=='oz'):
+#					conversion = 16		
+			materials_conversion = 453.59237 # We're going to convert everything to grams, for consistency
+			filler_conversion = entry['unit_conversion']
 			
 			
 			#----------------------------------------------------------------------------
@@ -172,30 +174,30 @@ def ProcessWeek(Start, End, site_id, scale_id):
 				if ('filler_sp_low_tag' in all_data and all_data['filler_sp_low_tag']):
 					while (((sp_low_index+1) < len(all_data['filler_sp_low_tag'])) and (all_data['filler_sp_low_tag'][sp_low_index+1]['timestamp'] <= row['timestamp'])):
 						sp_low_index += 1
-					row['setpoint_low'] = all_data['filler_sp_low_tag'][sp_low_index]['value']
+					row['setpoint_low'] = all_data['filler_sp_low_tag'][sp_low_index]['value'] * filler_conversion
 					
 				# Work through the filler_sp_tag dataset until we get to the time relevant to this material/po block
 				if ('filler_sp_tag' in all_data and all_data['filler_sp_tag']):
 					while (((sp_index+1) < len(all_data['filler_sp_tag'])) and (all_data['filler_sp_tag'][sp_index+1]['timestamp'] <= row['timestamp'])):
 						sp_index += 1
-					row['setpoint'] = all_data['filler_sp_tag'][sp_index]['value']
+					row['setpoint'] = all_data['filler_sp_tag'][sp_index]['value'] * filler_conversion
 					
 				# Work through the filler_sp_tag dataset until we get to the time relevant to this material/po block
 				if ('filler_sp_high_tag' in all_data and all_data['filler_sp_high_tag']):
 					while (((sp_high_index+1) < len(all_data['filler_sp_high_tag'])) and (all_data['filler_sp_high_tag'][sp_high_index+1]['timestamp'] <= row['timestamp'])):
 						sp_high_index += 1
-					row['setpoint_high'] = all_data['filler_sp_high_tag'][sp_high_index]['value']				
+					row['setpoint_high'] = all_data['filler_sp_high_tag'][sp_high_index]['value']	* filler_conversion			
 				
 				# If there are any of the setpoints we didn't manage to get from tags...
 				if (('setpoint_low' not in row) or ('setpoint' not in row) or ('setpoint_high' not in row) ):
 					# If we don't know what material we have, revert to default values (if we have them)
 					if (row['value'] == 'None'):
 						if ('setpoint_low' not in row):
-							row['setpoint_low']		= entry['filler_sp_low'] or 0
+							row['setpoint_low']		= (entry['filler_sp_low'] or 0) * filler_conversion
 						if ('setpoint' not in row):
-							row['setpoint'] 		= entry['filler_sp'] or 0
+							row['setpoint'] 		= (entry['filler_sp'] or 0) * filler_conversion 
 						if ('setpoint_high' not in row):
-							row['setpoint_high']	= entry['filler_sp_high'] or 0
+							row['setpoint_high']	= (entry['filler_sp_high'] or 0) * filler_conversion
 					else:
 	
 						# Pull the material data out of the database if we haven't yet
@@ -205,7 +207,7 @@ def ProcessWeek(Start, End, site_id, scale_id):
 								# Convert the materials data (in lb) to the units for this filler, if the line is not running in lbs
 								for col in ['item_lower_limit', 'item_target_weight', 'item_upper_limit', 'lower_limit', 'target_weight', 'upper_limit']:
 									try:
-										tmp[0][col] = float(tmp[0][col]) * conversion
+										tmp[0][col] = float(tmp[0][col]) * materials_conversion
 									except:
 										tmp[0][col] = 0
 								
@@ -232,11 +234,11 @@ def ProcessWeek(Start, End, site_id, scale_id):
 						else:
 							# Defaults, if we couldn't find material info
 							if ('setpoint_low' not in row):
-								row['setpoint_low']		= entry['filler_sp_low'] or 0
+								row['setpoint_low']		= (entry['filler_sp_low'] or 0) * filler_conversion
 							if ('setpoint' not in row):
-								row['setpoint'] 		= entry['filler_sp'] or 0
+								row['setpoint'] 		= (entry['filler_sp'] or 0) * filler_conversion
 							if ('setpoint_high' not in row):
-								row['setpoint_high']	= entry['filler_sp_high'] or 0	
+								row['setpoint_high']	= (entry['filler_sp_high'] or 0	) * filler_conversion
 		
 			
 			#----------------------------------------------------------------------------
@@ -275,7 +277,6 @@ def ProcessWeek(Start, End, site_id, scale_id):
 						setpoint_high 	= materials[material_index]['setpoint_high']
 						setpoint_low 	= materials[material_index]['setpoint_low']
 						
-						
 						if day_key not in daily_data:
 						   # daily_data[day_key] = {hour: {'time_start': '', 'scale_weight_values': []} for hour in range(24)}
 						    daily_data[day_key] = {hour: {} for hour in range(24)}
@@ -291,14 +292,16 @@ def ProcessWeek(Start, End, site_id, scale_id):
 						    
 						if tagname not in daily_data[day_key][hour_of_day][all_materials_key]:
 						    daily_data[day_key][hour_of_day][all_materials_key][tagname] = []
-						    
-						daily_data[day_key][hour_of_day][materials_key][tagname].append(item['value'])
-						daily_data[day_key][hour_of_day][all_materials_key][tagname].append(item['value'])
+						
+						converted_value =  item['value'] * filler_conversion # Convert this value to grams
+						
+						daily_data[day_key][hour_of_day][materials_key][tagname].append(converted_value)
+						daily_data[day_key][hour_of_day][all_materials_key][tagname].append(converted_value)
 						
 						# Keep track of the scale weights. This is the key bit...
 						if tagname == 'scale_weight':
-						    daily_data[day_key][hour_of_day][materials_key]['scale_weight_values'].append(item['value'])
-						    daily_data[day_key][hour_of_day][all_materials_key]['scale_weight_values'].append(item['value'])
+						    daily_data[day_key][hour_of_day][materials_key]['scale_weight_values'].append(converted_value)
+						    daily_data[day_key][hour_of_day][all_materials_key]['scale_weight_values'].append(converted_value)
 						    
 						    # Keep track of the setpoints and targets, and what was out of range
 						    for a in [all_materials_key, materials_key]:
@@ -306,18 +309,18 @@ def ProcessWeek(Start, End, site_id, scale_id):
 								daily_data[day_key][hour_of_day][a]['setpoint_high'].append(setpoint_high)
 								daily_data[day_key][hour_of_day][a]['setpoint_low'].append(setpoint_low)
 							    
-								if item['value'] > setpoint_high:
-									daily_data[day_key][hour_of_day][a]['over_threshold'].append(item['value'])
-								if item['value'] < setpoint_low:
-									daily_data[day_key][hour_of_day][a]['under_threshold'].append(item['value'])
-								if item['value'] < setpoint_low or item['value'] > setpoint_high :
-									daily_data[day_key][hour_of_day][a]['out_of_threshold'].append(item['value'])
+								if converted_value > setpoint_high:
+									daily_data[day_key][hour_of_day][a]['over_threshold'].append(converted_value)
+								if converted_value < setpoint_low:
+									daily_data[day_key][hour_of_day][a]['under_threshold'].append(converted_value)
+								if converted_value < setpoint_low or converted_value > setpoint_high :
+									daily_data[day_key][hour_of_day][a]['out_of_threshold'].append(converted_value)
 								#	count_out_of_threshold += 1
 	
 						    
 						    #daily_data[day_key][hour_of_day][material]['scale_weight_values'].append(item['timestamp'])
 			except:
-				SystemLogger(True, "JAY", CORE_P.Utils.getError())				
+				SystemLogger(True, "WeightTracking", CORE_P.Utils.getError())				
 	
 			
 			#----------------------------------------------------------------------------
