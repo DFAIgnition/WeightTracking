@@ -5,9 +5,9 @@
       "$": [
         "ts",
         192,
-        1750026475133
+        1753237017273
       ],
-      "$ts": 1750075200000
+      "$ts": 1753272000000
     },
     "heatmap_format": {
       "colorScale": {
@@ -107,9 +107,9 @@
       "$": [
         "ts",
         192,
-        1750026492359
+        1753237017273
       ],
-      "$ts": 1749902400000
+      "$ts": 1753099200000
     }
   },
   "params": {
@@ -714,6 +714,35 @@
           },
           {
             "meta": {
+              "name": "selection_units"
+            },
+            "position": {
+              "basis": "180px",
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.options": {
+                "binding": {
+                  "config": {
+                    "queryPath": "Weight_Q/DB_Query/Get_Unit_Dropdown"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tvalue \u003d CORE_P.Utils.datasetToDicts(value)\n\tvalue.append({\u0027value\u0027:\u0027gkg\u0027,\u0027label\u0027:\u0027Grams and Kgs\u0027})\n\tvalue.append({\u0027value\u0027:\u0027olbs\u0027,\u0027label\u0027:\u0027Ounces and Pounds\u0027})\n\treturn value",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "query"
+                }
+              }
+            },
+            "props": {
+              "value": "lbs"
+            },
+            "type": "ia.input.dropdown"
+          },
+          {
+            "meta": {
               "name": "Spacer"
             },
             "position": {
@@ -727,7 +756,7 @@
               "dom": {
                 "onClick": {
                   "config": {
-                    "script": "\timport re\n\t\t\t\t\n\t# Get the set of results currently showing in the table \n\tif (len(self.parent.parent.getChild(\"Data\").getChild(\"Month\").props.filter.results.data)\u003e0):\n\t\tdata \u003d  CORE_P.Utils.pythonify(self.parent.parent.getChild(\"Data\").getChild(\"Month\").props.filter.results.data)\n\telse:\n\t\tdata \u003d  CORE_P.Utils.pythonify(self.parent.parent.getChild(\"Data\").getChild(\"Month\").props.data)\n\t\n\treport_type \u003d self.getSibling(\"selection_type\").props.value\n\tscale_id \u003d self.getSibling(\"selection_scale\").props.value\n\t\n#\tCORE_P.Utils.errorPopup(str(data))\n#\treturn\t\n\t\t\n\tresults \u003d []\n\ttest_headers \u003d {}\n\ttry: \n\t\tif (report_type \u003d\u003d \u0027all\u0027):\n\t\t\theaders \u003d [\t\u0027Packing Line\u0027,\n\t\t\t\t\t\t\u0027Filler\u0027, \n\t\t\t\t\t\t\u0027Day\u0027, \n\t\t\t\t\t\t\u0027Material Number\u0027, \n\t\t\t\t\t\t\u0027Material Description\u0027, \n\t\t\t\t\t\t\u0027PO Number\u0027,\n\t\t\t\t\t\t\u0027Units Produced\u0027, \n\t\t\t\t\t\t\u0027Weight Average (g)\u0027, \n\t\t\t\t\t\t\u0027Total Production (kg)\u0027, \n\t\t\t\t\t\t\u0027Overage (kg)\u0027, \n\t\t\t\t\t\t\u0027% Underweight\u0027,\n\t\t\t\t\t\t\u0027% Overweight\u0027,\n\t\t\t\t\t\t]\n\t\telif (report_type \u003d\u003d \u0027day\u0027):\n\t\t\theaders \u003d [\t\u0027Packing Line\u0027,\n\t\t\t\t\t\t\u0027Filler\u0027, \n\t\t\t\t\t\t\u0027Day\u0027, \n\t\t\t\t\t\t\u0027Units Produced\u0027, \n\t\t\t\t\t\t\u0027Weight Average (g)\u0027, \n\t\t\t\t\t\t\u0027Total Production (kg)\u0027, \n\t\t\t\t\t\t\u0027Overage (kg)\u0027, \n\t\t\t\t\t\t\u0027% Underweight\u0027,\n\t\t\t\t\t\t\u0027% Overweight\u0027,\n\t\t\t\t\t\t]\t\t\n\t\telif (report_type \u003d\u003d \u0027material\u0027):\n\t\t\theaders \u003d [\t\u0027Packing Line\u0027,\n\t\t\t\t\t\t\u0027Filler\u0027, \n\t\t\t\t\t\t\u0027Material Number\u0027, \n\t\t\t\t\t\t\u0027Material Description\u0027, \n\t\t\t\t\t\t\u0027Units Produced\u0027, \n\t\t\t\t\t\t\u0027Weight Average (g)\u0027, \n\t\t\t\t\t\t\u0027Total Production (kg)\u0027, \n\t\t\t\t\t\t\u0027Overage (kg)\u0027, \n\t\t\t\t\t\t\u0027% Underweight\u0027,\n\t\t\t\t\t\t\u0027% Overweight\u0027,\n\t\t\t\t\t\t]\t\n\t\telif (report_type \u003d\u003d \u0027po\u0027):\n\t\t\theaders \u003d [\t\u0027Packing Line\u0027,\n\t\t\t\t\t\t\u0027Filler\u0027, \n\t\t\t\t\t\t\u0027Material Number\u0027, \n\t\t\t\t\t\t\u0027Material Description\u0027,\n\t\t\t\t\t\t\u0027PO Number\u0027, \n\t\t\t\t\t\t\u0027Units Produced\u0027, \n\t\t\t\t\t\t\u0027Weight Average (g)\u0027, \n\t\t\t\t\t\t\u0027Total Production (kg)\u0027, \n\t\t\t\t\t\t\u0027Overage (kg)\u0027, \n\t\t\t\t\t\t\u0027% Underweight\u0027,\n\t\t\t\t\t\t\u0027% Overweight\u0027,\n\t\t\t\t\t\t]\t\n\t\t\t\t\t\t\n\t\tif(scale_id \u003d\u003d 0):\n\t\t\theaders.append(\u0027Metal Rejects\u0027)\n\t\t\theaders.append(\u0027Weight Rejects\u0027)\n\t\t\t\n\t\tpacking_line \u003d CORE_P.Utils.get_dropdown_label(self.getSibling(\"selection_line\"))\n\t\tfiller \u003d CORE_P.Utils.get_dropdown_label(self.getSibling(\"selection_scale\"))\n   \t\t# Build the dataset\n\t\tfor row in data:\n\t\t\n\t\t\tif (report_type \u003d\u003d \u0027all\u0027):\n\t\t\t\tnew_row \u003d {\n\t\t\t\t\t\u0027Packing Line\u0027: \t\tpacking_line,\n\t\t\t\t\t\u0027Filler\u0027: \t\t\t\tfiller,\n\t\t\t\t\t\u0027Day\u0027: \t\t\t\t\trow[\u0027display_date\u0027], \n\t\t\t\t\t\u0027Material Number\u0027:\t\trow[\u0027material\u0027], \n\t\t\t\t\t\u0027Material Description\u0027:\trow[\u0027material_description\u0027], \n\t\t\t\t\t\u0027PO Number\u0027:\t\t\trow[\u0027po_number\u0027], \n\t\t\t\t\t\u0027Units Produced\u0027: \t\trow[\u0027count\u0027], \n\t\t\t\t\t\u0027Weight Average (g)\u0027: \trow[\u0027weight_avg\u0027], \n\t\t\t\t\t\u0027Total Production (kg)\u0027:row[\u0027weight_sum_kg\u0027], \n\t\t\t\t\t\u0027Overage (kg)\u0027: \t\trow[\u0027weight_diff_kg\u0027],\n\t\t\t\t\t\u0027% Underweight\u0027: \t\trow[\u0027pct_weight_under\u0027],\n\t\t\t\t\t\u0027% Overweight\u0027: \t\trow[\u0027pct_weight_over\u0027],\n\t\t\t\t}\n\t\t\telif (report_type \u003d\u003d \u0027day\u0027):\n\t\t\t\tnew_row \u003d {\n\t\t\t\t\t\u0027Packing Line\u0027: \t\tpacking_line,\n\t\t\t\t\t\u0027Filler\u0027: \t\t\t\tfiller,\n\t\t\t\t\t\u0027Day\u0027: \t\t\t\t\trow[\u0027display_date\u0027], \n\t\t\t\t\t\u0027Units Produced\u0027: \t\trow[\u0027count\u0027], \n\t\t\t\t\t\u0027Weight Average (g)\u0027: \trow[\u0027weight_avg\u0027], \n\t\t\t\t\t\u0027Total Production (kg)\u0027:row[\u0027weight_sum_kg\u0027], \n\t\t\t\t\t\u0027Overage (kg)\u0027: \t\trow[\u0027weight_diff_kg\u0027],\n\t\t\t\t\t\u0027% Underweight\u0027: \t\trow[\u0027pct_weight_under\u0027],\n\t\t\t\t\t\u0027% Overweight\u0027: \t\trow[\u0027pct_weight_over\u0027],\n\t\t\t\t}\n\t\t\telif (report_type \u003d\u003d \u0027material\u0027):\n\t\t\t\tnew_row \u003d {\n\t\t\t\t\t\u0027Packing Line\u0027: \t\tpacking_line,\n\t\t\t\t\t\u0027Filler\u0027: \t\t\t\tfiller,\n\t\t\t\t\t\u0027Material Number\u0027:\t\trow[\u0027material\u0027], \n\t\t\t\t\t\u0027Material Description\u0027:\trow[\u0027material_description\u0027], \n\t\t\t\t\t\u0027Units Produced\u0027: \t\trow[\u0027count\u0027], \n\t\t\t\t\t\u0027Weight Average (g)\u0027: \trow[\u0027weight_avg\u0027], \n\t\t\t\t\t\u0027Total Production (kg)\u0027:row[\u0027weight_sum_kg\u0027], \n\t\t\t\t\t\u0027Overage (kg)\u0027: \t\trow[\u0027weight_diff_kg\u0027],\n\t\t\t\t\t\u0027% Underweight\u0027: \t\trow[\u0027pct_weight_under\u0027],\n\t\t\t\t\t\u0027% Overweight\u0027: \t\trow[\u0027pct_weight_over\u0027],\n\t\t\t\t}\n\t\t\telif (report_type \u003d\u003d \u0027po\u0027):\t\t\t\t\n\t\t\t\tnew_row \u003d {\n\t\t\t\t\t\u0027Packing Line\u0027: \t\tpacking_line,\n\t\t\t\t\t\u0027Filler\u0027: \t\t\t\tfiller,\n\t\t\t\t\t\u0027Material Number\u0027:\t\trow[\u0027material\u0027], \n\t\t\t\t\t\u0027Material Description\u0027:\trow[\u0027material_description\u0027], \n\t\t\t\t\t\u0027PO Number\u0027:\t\t\trow[\u0027po_number\u0027], \n\t\t\t\t\t\u0027Units Produced\u0027: \t\trow[\u0027count\u0027], \n\t\t\t\t\t\u0027Weight Average (g)\u0027: \trow[\u0027weight_avg\u0027], \n\t\t\t\t\t\u0027Total Production (kg)\u0027:row[\u0027weight_sum_kg\u0027], \n\t\t\t\t\t\u0027Overage (kg)\u0027: \t\trow[\u0027weight_diff_kg\u0027],\n\t\t\t\t\t\u0027% Underweight\u0027: \t\trow[\u0027pct_weight_under\u0027],\n\t\t\t\t\t\u0027% Overweight\u0027: \t\trow[\u0027pct_weight_over\u0027],\n\t\t\t\t}\n\t\t\t\n\t\t\tif(scale_id \u003d\u003d 0):\n\t\t\t\tnew_row[\u0027Metal Rejects\u0027] \u003d row[\u0027metal_rejects\u0027]\n\t\t\t\tnew_row[\u0027Weight Rejects\u0027] \u003d row[\u0027weight_rejects\u0027]\n\t\t\t\t\n\t\t\tresults.append(new_row)\n\t\t\t\t\n\t#\tzone \u003d self.session.props.timeZoneId.replace(\u0027/\u0027,\u0027-\u0027)\n\t\t\t\t\n\t\tspreadsheet \u003d system.dataset.toExcel(True, [CORE_P.Utils.dictToDataset(results, headers)])\n\t\tfilePath \u003d \u0027Weight Tracking - Materials\u0027 + str(CORE_P.Time.display_local_dt(CORE_P.Time.currentTimestamp(), self\u003dself, format\u003d\u0027yyyy-MM-dd\u0027)) + \u0027.xlsx\u0027\n\t\t\n\t\t#system.file.writeFile(filePath, spreadsheet)\n\t\tsystem.perspective.download(filePath, spreadsheet)\n\t\tCORE_P.Utils.showSuccess(self, \u0027Downloading...\u0027)\n\texcept:\n\t\tCORE_P.Utils.errorPopup(\"Error exporting material weights to Excel:\" )\n   \t\treturn\t   \n\t\t\t\t\t   \t\t\t\t"
+                    "script": "\timport re\n\t\t\t\t\n\t# Get the set of results currently showing in the table \n\tif (len(self.parent.parent.getChild(\"Data\").getChild(\"Month\").props.filter.results.data)\u003e0):\n\t\tdata \u003d  CORE_P.Utils.pythonify(self.parent.parent.getChild(\"Data\").getChild(\"Month\").props.filter.results.data)\n\telse:\n\t\tdata \u003d  CORE_P.Utils.pythonify(self.parent.parent.getChild(\"Data\").getChild(\"Month\").props.data)\n\n\t# Work out which units we\u0027re using for header columns\n\tunits \u003d str(self.getSibling(\"selection_units\").props.value)\n\ttotal_units \u003d units\n\tif units\u003d\u003d\u0027gkg\u0027:\n\t\tunits \u003d \u0027g\u0027\n\t\ttotal_units \u003d \u0027kg\u0027\n\telif units\u003d\u003d\u0027olbs\u0027:\n\t\tunits \u003d \u0027oz\u0027\n\t\ttotal_units \u003d \u0027lbs\u0027\t\n\t\t\n\t\t\n\treport_type \u003d self.getSibling(\"selection_type\").props.value\n\tscale_id \u003d self.getSibling(\"selection_scale\").props.value\n\t\n#\tCORE_P.Utils.errorPopup(str(data))\n#\treturn\t\n\t\t\n\tresults \u003d []\n\ttest_headers \u003d {}\n\ttry: \n\t\tif (report_type \u003d\u003d \u0027all\u0027):\n\t\t\theaders \u003d [\t\u0027Packing Line\u0027,\n\t\t\t\t\t\t\u0027Filler\u0027, \n\t\t\t\t\t\t\u0027Day\u0027, \n\t\t\t\t\t\t\u0027Material Number\u0027, \n\t\t\t\t\t\t\u0027Material Description\u0027, \n\t\t\t\t\t\t\u0027PO Number\u0027,\n\t\t\t\t\t\t\u0027Units Produced\u0027, \n\t\t\t\t\t\t\u0027Weight Average (\u0027 + units + \u0027)\u0027, \n\t\t\t\t\t\t\u0027Total Production (\u0027 + total_units + \u0027)\u0027, \n\t\t\t\t\t\t\u0027Overage (\u0027 + total_units + \u0027)\u0027, \n\t\t\t\t\t\t\u0027% Underweight\u0027,\n\t\t\t\t\t\t\u0027% Overweight\u0027,\n\t\t\t\t\t\t]\n\t\telif (report_type \u003d\u003d \u0027day\u0027):\n\t\t\theaders \u003d [\t\u0027Packing Line\u0027,\n\t\t\t\t\t\t\u0027Filler\u0027, \n\t\t\t\t\t\t\u0027Day\u0027, \n\t\t\t\t\t\t\u0027Units Produced\u0027, \n\t\t\t\t\t\t\u0027Weight Average (\u0027 + units + \u0027)\u0027, \n\t\t\t\t\t\t\u0027Total Production (\u0027 + total_units + \u0027)\u0027, \n\t\t\t\t\t\t\u0027Overage (\u0027 + total_units + \u0027)\u0027, \n\t\t\t\t\t\t\u0027% Underweight\u0027,\n\t\t\t\t\t\t\u0027% Overweight\u0027,\n\t\t\t\t\t\t]\t\t\n\t\telif (report_type \u003d\u003d \u0027material\u0027):\n\t\t\theaders \u003d [\t\u0027Packing Line\u0027,\n\t\t\t\t\t\t\u0027Filler\u0027, \n\t\t\t\t\t\t\u0027Material Number\u0027, \n\t\t\t\t\t\t\u0027Material Description\u0027, \n\t\t\t\t\t\t\u0027Units Produced\u0027, \n\t\t\t\t\t\t\u0027Weight Average (\u0027 + units + \u0027)\u0027, \n\t\t\t\t\t\t\u0027Total Production (\u0027 + total_units + \u0027)\u0027, \n\t\t\t\t\t\t\u0027Overage (\u0027 + total_units + \u0027)\u0027, \n\t\t\t\t\t\t\u0027% Underweight\u0027,\n\t\t\t\t\t\t\u0027% Overweight\u0027,\n\t\t\t\t\t\t]\t\n\t\telif (report_type \u003d\u003d \u0027po\u0027):\n\t\t\theaders \u003d [\t\u0027Packing Line\u0027,\n\t\t\t\t\t\t\u0027Filler\u0027, \n\t\t\t\t\t\t\u0027Material Number\u0027, \n\t\t\t\t\t\t\u0027Material Description\u0027,\n\t\t\t\t\t\t\u0027PO Number\u0027, \n\t\t\t\t\t\t\u0027Units Produced\u0027, \n\t\t\t\t\t\t\u0027Weight Average (\u0027 + units + \u0027)\u0027, \n\t\t\t\t\t\t\u0027Total Production (\u0027 + total_units + \u0027)\u0027, \n\t\t\t\t\t\t\u0027Overage (\u0027 + total_units + \u0027)\u0027, \n\t\t\t\t\t\t\u0027% Underweight\u0027,\n\t\t\t\t\t\t\u0027% Overweight\u0027,\n\t\t\t\t\t\t]\t\n\t\t\t\t\t\t\n\t\tif(scale_id \u003d\u003d 0):\n\t\t\theaders.append(\u0027Metal Rejects\u0027)\n\t\t\theaders.append(\u0027Weight Rejects\u0027)\n\t\t\t\n\t\tpacking_line \u003d CORE_P.Utils.get_dropdown_label(self.getSibling(\"selection_line\"))\n\t\tfiller \u003d CORE_P.Utils.get_dropdown_label(self.getSibling(\"selection_scale\"))\n   \t\t# Build the dataset\n\t\tfor row in data:\n\t\t\n\t\t\tif (report_type \u003d\u003d \u0027all\u0027):\n\t\t\t\tnew_row \u003d {\n\t\t\t\t\t\u0027Packing Line\u0027: \t\tpacking_line,\n\t\t\t\t\t\u0027Filler\u0027: \t\t\t\tfiller,\n\t\t\t\t\t\u0027Day\u0027: \t\t\t\t\trow[\u0027display_date\u0027], \n\t\t\t\t\t\u0027Material Number\u0027:\t\trow[\u0027material\u0027], \n\t\t\t\t\t\u0027Material Description\u0027:\trow[\u0027material_description\u0027], \n\t\t\t\t\t\u0027PO Number\u0027:\t\t\trow[\u0027po_number\u0027], \n\t\t\t\t\t\u0027Units Produced\u0027: \t\trow[\u0027count\u0027], \n\t\t\t\t\t\u0027Weight Average (\u0027 + units + \u0027)\u0027 : \trow[\u0027weight_avg\u0027], \n\t\t\t\t\t\u0027Total Production (\u0027 + total_units + \u0027)\u0027:row[\u0027weight_sum\u0027], \n\t\t\t\t\t\u0027Overage (\u0027 + total_units + \u0027)\u0027: \t\trow[\u0027weight_diff\u0027],\n\t\t\t\t\t\u0027% Underweight\u0027: \t\trow[\u0027pct_weight_under\u0027],\n\t\t\t\t\t\u0027% Overweight\u0027: \t\trow[\u0027pct_weight_over\u0027],\n\t\t\t\t}\n\t\t\telif (report_type \u003d\u003d \u0027day\u0027):\n\t\t\t\tnew_row \u003d {\n\t\t\t\t\t\u0027Packing Line\u0027: \t\tpacking_line,\n\t\t\t\t\t\u0027Filler\u0027: \t\t\t\tfiller,\n\t\t\t\t\t\u0027Day\u0027: \t\t\t\t\trow[\u0027display_date\u0027], \n\t\t\t\t\t\u0027Units Produced\u0027: \t\trow[\u0027count\u0027], \n\t\t\t\t\t\u0027Weight Average (\u0027 + units + \u0027)\u0027: \trow[\u0027weight_avg\u0027], \n\t\t\t\t\t\u0027Total Production (\u0027 + total_units + \u0027)\u0027:row[\u0027weight_sum\u0027], \n\t\t\t\t\t\u0027Overage (\u0027 + total_units + \u0027)\u0027: \t\trow[\u0027weight_diff\u0027],\n\t\t\t\t\t\u0027% Underweight\u0027: \t\trow[\u0027pct_weight_under\u0027],\n\t\t\t\t\t\u0027% Overweight\u0027: \t\trow[\u0027pct_weight_over\u0027],\n\t\t\t\t}\n\t\t\telif (report_type \u003d\u003d \u0027material\u0027):\n\t\t\t\tnew_row \u003d {\n\t\t\t\t\t\u0027Packing Line\u0027: \t\tpacking_line,\n\t\t\t\t\t\u0027Filler\u0027: \t\t\t\tfiller,\n\t\t\t\t\t\u0027Material Number\u0027:\t\trow[\u0027material\u0027], \n\t\t\t\t\t\u0027Material Description\u0027:\trow[\u0027material_description\u0027], \n\t\t\t\t\t\u0027Units Produced\u0027: \t\trow[\u0027count\u0027], \n\t\t\t\t\t\u0027Weight Average (\u0027 + units + \u0027)\u0027: \trow[\u0027weight_avg\u0027], \n\t\t\t\t\t\u0027Total Production (\u0027 + total_units + \u0027)\u0027:row[\u0027weight_sum\u0027], \n\t\t\t\t\t\u0027Overage (\u0027 + total_units + \u0027)\u0027: \t\trow[\u0027weight_diff\u0027],\n\t\t\t\t\t\u0027% Underweight\u0027: \t\trow[\u0027pct_weight_under\u0027],\n\t\t\t\t\t\u0027% Overweight\u0027: \t\trow[\u0027pct_weight_over\u0027],\n\t\t\t\t}\n\t\t\telif (report_type \u003d\u003d \u0027po\u0027):\t\t\t\t\n\t\t\t\tnew_row \u003d {\n\t\t\t\t\t\u0027Packing Line\u0027: \t\tpacking_line,\n\t\t\t\t\t\u0027Filler\u0027: \t\t\t\tfiller,\n\t\t\t\t\t\u0027Material Number\u0027:\t\trow[\u0027material\u0027], \n\t\t\t\t\t\u0027Material Description\u0027:\trow[\u0027material_description\u0027], \n\t\t\t\t\t\u0027PO Number\u0027:\t\t\trow[\u0027po_number\u0027], \n\t\t\t\t\t\u0027Units Produced\u0027: \t\trow[\u0027count\u0027], \n\t\t\t\t\t\u0027Weight Average (\u0027 + units + \u0027)\u0027: \trow[\u0027weight_avg\u0027], \n\t\t\t\t\t\u0027Total Production (\u0027 + total_units + \u0027)\u0027:row[\u0027weight_sum\u0027], \n\t\t\t\t\t\u0027Overage (\u0027 + total_units + \u0027)\u0027: \t\trow[\u0027weight_diff\u0027],\n\t\t\t\t\t\u0027% Underweight\u0027: \t\trow[\u0027pct_weight_under\u0027],\n\t\t\t\t\t\u0027% Overweight\u0027: \t\trow[\u0027pct_weight_over\u0027],\n\t\t\t\t}\n\t\t\t\n\t\t\tif(scale_id \u003d\u003d 0):\n\t\t\t\tnew_row[\u0027Metal Rejects\u0027] \u003d row[\u0027metal_rejects\u0027]\n\t\t\t\tnew_row[\u0027Weight Rejects\u0027] \u003d row[\u0027weight_rejects\u0027]\n\t\t\t\t\n\t\t\tresults.append(new_row)\n\t\t\t\t\n\t#\tzone \u003d self.session.props.timeZoneId.replace(\u0027/\u0027,\u0027-\u0027)\n\t\t\t\t\n\t\tspreadsheet \u003d system.dataset.toExcel(True, [CORE_P.Utils.dictToDataset(results, headers)])\n\t\tfilePath \u003d \u0027Weight Tracking - Materials\u0027 + str(CORE_P.Time.display_local_dt(CORE_P.Time.currentTimestamp(), self\u003dself, format\u003d\u0027yyyy-MM-dd\u0027)) + \u0027.xlsx\u0027\n\t\t\n\t\t#system.file.writeFile(filePath, spreadsheet)\n\t\tsystem.perspective.download(filePath, spreadsheet)\n\t\tCORE_P.Utils.showSuccess(self, \u0027Downloading...\u0027)\n\texcept:\n\t\tCORE_P.Utils.errorPopup(\"Error exporting material weights to Excel:\" )\n   \t\treturn\t   \n\t\t\t\t\t   \t\t\t\t"
                   },
                   "scope": "G",
                   "type": "script"
@@ -891,6 +920,48 @@
                   "type": "property"
                 }
               },
+              "props.columns[5].header.title": {
+                "binding": {
+                  "config": {
+                    "path": ".../Selections/selection_units.props.value"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tif value\u003d\u003d\u0027gkg\u0027:\n\t\treturn \u0027Weight Average [g]\u0027\n\telif value\u003d\u003d\u0027olbs\u0027:\n\t\treturn \u0027Weight Average [oz]\u0027\n\t\t\n\treturn \u0027Weight Average [\u0027 + str(value) + \u0027]\u0027",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.columns[6].header.title": {
+                "binding": {
+                  "config": {
+                    "path": ".../Selections/selection_units.props.value"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tif value\u003d\u003d\u0027gkg\u0027:\n\t\treturn \u0027Weight Average [kg]\u0027\n\telif value\u003d\u003d\u0027olbs\u0027:\n\t\treturn \u0027Weight Average [lbs]\u0027\n\t\t\t\t\n\treturn \u0027Total Production [\u0027 + str(value) + \u0027]\u0027\t",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.columns[7].header.title": {
+                "binding": {
+                  "config": {
+                    "path": ".../Selections/selection_units.props.value"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tif value\u003d\u003d\u0027gkg\u0027:\n\t\treturn \u0027Overage [kg]\u0027\n\telif value\u003d\u003d\u0027olbs\u0027:\n\t\treturn \u0027Overage [lbs]\u0027\n\t\t\t\t\n\treturn \u0027Overage [\u0027 + str(value) + \u0027]\u0027\t",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
               "props.data": {
                 "binding": {
                   "config": {
@@ -900,13 +971,14 @@
                       "report_type": "{.../Selections/selection_type.props.value}",
                       "scale_id": "{.../Selections/selection_scale.props.value}",
                       "start_dt": "{view.custom.start_dt}",
-                      "timezone": "{view.custom.sqlserver_timezone}"
+                      "timezone": "{view.custom.sqlserver_timezone}",
+                      "units": "{.../Selections/selection_units.props.value}"
                     },
                     "waitOnAll": true
                   },
                   "transforms": [
                     {
-                      "code": "\t\t\n\ttry:\n\t\tsqlserver_tz \u003d value[\u0027timezone\u0027] # Note, the Ignition timezone has already been converted here into a format that SQLServer understands...\n\t\tscale_id \u003d value[\u0027scale_id\u0027]\n\t\tend_dt \u003d value[\u0027end_dt\u0027]\n\t\treport_type \u003d value[\u0027report_type\u0027]\n\t\t\n\t\tmonths \u003d (int(value[\u0027months\u0027]) - 1) * -1\n\t\t\n\t\t# Build the query. \n\t\t# Note - had to build the query in code, because SQLServer/ignition doesn\u0027t seem to allow the passing of the timezone as a parameter\n\t\t# This is generally a \u0027Bad Idea\u0027, due to SQl injection attacks. In this case, I\u0027m only directly substituting in a timezone string that \n\t\t# comes from a database entry that is manually controlled by us (so should be safe). The other params are run through Prep as normal. \n\t\tif (report_type\t\u003d\u003d \u0027all\u0027):\n\t\t\t \n\t\t\t# FORMAT(a.time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027) as \u0027date\u0027,\n\t\t\t\n\t\t\tquery \u003d \"\"\"\n\t\t\t\n\t\t\tSELECT\n\t\t\t    a.material,\n\t\t\t    a.po_number,\n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027) as \u0027date\u0027,\n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027MMM dd, yyyy\u0027) as \u0027display_date\u0027,\n\t\t\t    SUM([count]) AS \u0027count\u0027,\n\t\t\t    (SUM(a.weight_sum) / SUM([count])) AS \u0027weight_avg\u0027,\n\t\t\t    SUM(a.weight_diff) /1000 AS \u0027weight_diff_kg\u0027,\n\t\t\t    SUM(a.weight_sum) /1000 AS \u0027weight_sum_kg\u0027,\n\t\t\t    (SUM( (a.pct_weight_under/100) * count)/ SUM([count]))*100 as \u0027pct_weight_under\u0027,\n\t\t\t    (SUM( (a.pct_weight_over/100) * count)/ SUM([count]))*100 as \u0027pct_weight_over\u0027,\n\t\t\t    (\n\t\t\t            SELECT material_description\n\t\t\t            FROM system.dbo.materials m\n\t\t\t            WHERE m.material_number \u003d TRY_CAST(a.material AS INT)\n\t\t\t        ) AS material_description,\n\t\t\t\tsum(r.metal_count) as \u0027metal_rejects\u0027, \n\t\t\t\tsum(r.weight_count) as \u0027weight_rejects\u0027 \n\t\t\t\n\t\t\tFROM weight.dbo.aggregated a\n\t\t\t\tjoin weight.dbo.scale s on a.scale_id \u003d s.scale_id\n\t\t\t\tjoin weight.dbo.filler f on s.filler_id \u003d f.filler_id\n\t\t\t\tLEFT JOIN weight.dbo.rejects r on (r.line_id \u003d f.line_id and r.time_start \u003d a.time_start and r.material \u003d a.material and ?\u003d0) \n\t\t\tWHERE a.material !\u003d \u0027All\u0027\n\t\t\tAND (0 \u003d ? or a.scale_id \u003d ?)\n\t\t\tAND a.time_start \u003e\u003d ?\n\t\t\tAND a.time_start \u003c ?\n\t\t\tGROUP BY\n\t\t\t    a.material,\n\t\t\t    a.po_number,\n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027), \n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027MMM dd, yyyy\u0027)  \n\t\t\tORDER BY FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027), a.material, a.po_number\n\t\t\t\"\"\"\n\t\t\n\t\telif (report_type\t\u003d\u003d \u0027day\u0027):\n\t\t\tquery \u003d \"\"\"\n\t\t\t\n\t\t\tSELECT\n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027) as \u0027date\u0027,\n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027MMM dd, yyyy\u0027) as \u0027display_date\u0027,\n\t\t\t    SUM([count]) AS \u0027count\u0027,\n\t\t\t    (SUM(a.weight_sum) / SUM([count])) AS \u0027weight_avg\u0027,\n\t\t\t    SUM(a.weight_diff) /1000 AS \u0027weight_diff_kg\u0027,\n\t\t\t    SUM(a.weight_sum) /1000 AS \u0027weight_sum_kg\u0027,\n\t\t\t    (SUM( (a.pct_weight_under/100) * count)/ SUM([count]))*100 as \u0027pct_weight_under\u0027,\n\t\t\t    (SUM( (a.pct_weight_over/100) * count)/ SUM([count]))*100 as \u0027pct_weight_over\u0027,\n\t\t\t\tsum(r.metal_count) as \u0027metal_rejects\u0027, \n\t\t\t\tsum(r.weight_count) as \u0027weight_rejects\u0027 \n\t\t\t\n\t\t\tFROM weight.dbo.aggregated a\n\t\t\t\tjoin weight.dbo.scale s on a.scale_id \u003d s.scale_id\n\t\t\t\tjoin weight.dbo.filler f on s.filler_id \u003d f.filler_id\n\t\t\t\tLEFT JOIN weight.dbo.rejects r on (r.line_id \u003d f.line_id and r.time_start \u003d a.time_start and r.material \u003d a.material and ?\u003d0) \n\t\t\tWHERE a.material \u003d \u0027All\u0027\n\t\t\tAND (0 \u003d ? or a.scale_id \u003d ?)\n\t\t\tAND a.time_start \u003e\u003d ?\n\t\t\tAND a.time_start \u003c ?\n\t\t\tGROUP BY\n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027), \n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027MMM dd, yyyy\u0027)  \n\t\t\tORDER BY FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027)\n\t\t\t\n\t\t\t\"\"\"\t\t\n\t\t\t\n\t\telif (report_type\t\u003d\u003d \u0027material\u0027):\n\t\t\tquery \u003d \"\"\"\n\t\t\t\n\t\t\t\n\t\t\tSELECT\n\t\t\t    a.material,\n\t\t\t    SUM([count]) AS \u0027count\u0027,\n\t\t\t    (SUM(a.weight_sum) / SUM([count])) AS \u0027weight_avg\u0027,\n\t\t\t    SUM(a.weight_diff) /1000 AS \u0027weight_diff_kg\u0027,\n\t\t\t    SUM(a.weight_sum) /1000 AS \u0027weight_sum_kg\u0027,\n\t\t\t    (SUM( (a.pct_weight_under/100) * count)/ SUM([count]))*100 as \u0027pct_weight_under\u0027,\n\t\t\t    (SUM( (a.pct_weight_over/100) * count)/ SUM([count]))*100 as \u0027pct_weight_over\u0027,\n\t\t\t    (\n\t\t\t            SELECT material_description\n\t\t\t            FROM system.dbo.materials m\n\t\t\t            WHERE m.material_number \u003d TRY_CAST(a.material AS INT)\n\t\t\t        ) AS material_description,\n\t\t\t\tsum(r.metal_count) as \u0027metal_rejects\u0027, \n\t\t\t\tsum(r.weight_count) as \u0027weight_rejects\u0027 \n\t\t\t\n\t\t\tFROM weight.dbo.aggregated a\n\t\t\t\tjoin weight.dbo.scale s on a.scale_id \u003d s.scale_id\n\t\t\t\tjoin weight.dbo.filler f on s.filler_id \u003d f.filler_id\n\t\t\t\tLEFT JOIN weight.dbo.rejects r on (r.line_id \u003d f.line_id and r.time_start \u003d a.time_start and r.material \u003d a.material and ?\u003d0) \n\t\t\tWHERE a.material !\u003d \u0027All\u0027\n\t\t\tAND (0 \u003d ? or a.scale_id \u003d ?)\n\t\t\tAND a.time_start \u003e\u003d ?\n\t\t\tAND a.time_start \u003c ?\n\t\t\tGROUP BY\n\t\t\t    a.material\n\t\t\tORDER BY a.material\n\n\t\t\t\"\"\"\n\t\t\t\n\t\telif (report_type\t\u003d\u003d \u0027po\u0027):\n\t\t\tquery \u003d \"\"\"\n\t\t\t\n\t\t\tSELECT\n\t\t\t    a.material,\n\t\t\t    a.po_number,\n\t\t\t    SUM([count]) AS \u0027count\u0027,\n\t\t\t    (SUM(a.weight_sum) / SUM([count])) AS \u0027weight_avg\u0027,\n\t\t\t    SUM(a.weight_diff) /1000 AS \u0027weight_diff_kg\u0027,\n\t\t\t    SUM(a.weight_sum) /1000 AS \u0027weight_sum_kg\u0027,\n\t\t\t    (SUM( (a.pct_weight_under/100) * count)/ SUM([count]))*100 as \u0027pct_weight_under\u0027,\n\t\t\t    (SUM( (a.pct_weight_over/100) * count)/ SUM([count]))*100 as \u0027pct_weight_over\u0027,\n\t\t\t    (\n\t\t\t            SELECT material_description\n\t\t\t            FROM system.dbo.materials m\n\t\t\t            WHERE m.material_number \u003d TRY_CAST(a.material AS INT)\n\t\t\t        ) AS material_description,\n\t\t\t\tsum(r.metal_count) as \u0027metal_rejects\u0027, \n\t\t\t\tsum(r.weight_count) as \u0027weight_rejects\u0027 \n\t\t\t\n\t\t\tFROM weight.dbo.aggregated a\n\t\t\t\tjoin weight.dbo.scale s on a.scale_id \u003d s.scale_id\n\t\t\t\tjoin weight.dbo.filler f on s.filler_id \u003d f.filler_id\n\t\t\t\tLEFT JOIN weight.dbo.rejects r on (r.line_id \u003d f.line_id and r.time_start \u003d a.time_start and r.material \u003d a.material and ?\u003d0) \n\t\t\tWHERE a.material !\u003d \u0027All\u0027\n\t\t\tAND (0 \u003d ? or a.scale_id \u003d ?)\n\t\t\tAND a.time_start \u003e\u003d ?\n\t\t\tAND a.time_start \u003c ?\n\t\t\tGROUP BY\n\t\t\t    a.po_number, \n\t\t\t    a.material\n\t\t\tORDER BY a.po_number, a.material\n\t\t\t\n\t\t\t\"\"\"\n\t\t\n\t\t#AND time_start \u003e\u003d DATEADD(month, ?, DATEADD(month, DATEDIFF(month, 0, ?), 0)) \n\t\t#AND time_start \u003c DATEADD(day, 1, EOMONTH(?))            \n\t\t\t\t\t\t\n\t\t# Substitute in the timezone\t\t\n\t\tquery \u003d query.replace(\u0027:timezone\u0027,sqlserver_tz)\n\t\t\n\t\t# Note: You need to repeat parameters if they are used multiple times.\n\t\t# IMPORTANT: The order of \u0027?\u0027 must match the order of arguments passed.\n\t\targs \u003d [\n\t\t    int(scale_id),  \n\t\t    int(scale_id),\n\t\t    int(scale_id),\t\t    \n\t\t    value[\u0027start_dt\u0027],    \n\t\t    value[\u0027end_dt\u0027] \n\t\t]\n\t\t\n\t\tresults \u003d CORE_P.Utils.datasetToDicts(system.db.runPrepQuery(query, args, \u0027system\u0027))\n\t\t\n\t\t\n\t\t#CORE_P.Utils.errorPopup(\u0027Dates:\u0027 + str(value[\u0027start_dt\u0027]) + \u0027 - \u0027  + str(value[\u0027end_dt\u0027]))\n\t\treturn results\n\texcept:\n\t    # Handle error\n\t #   CORE_P.Utils.errorPopup(\u0027Error getting weights data:\u0027)\n\t    return []\n\t",
+                      "code": "\t\t\n\ttry:\n\t\tsqlserver_tz \u003d value[\u0027timezone\u0027] # Note, the Ignition timezone has already been converted here into a format that SQLServer understands...\n\t\tscale_id \u003d value[\u0027scale_id\u0027]\n\t\tend_dt \u003d value[\u0027end_dt\u0027]\n\t\treport_type \u003d value[\u0027report_type\u0027]\n\t\tmonths \u003d (int(value[\u0027months\u0027]) - 1) * -1\n\t\t\n\t\t# Get the unit conversion factor\n\t\tunits \u003d value[\u0027units\u0027]\n\t\tunit_conversion \u003d 1\n\t\ttotal_conversion \u003d 1\n\t\tif (units \u003d\u003d \u0027gkg\u0027):\n\t\t\ttotal_conversion \u003d 1000\n\t\telif (units \u003d\u003d \u0027olbs\u0027):\n\t\t\tunit_conversion \u003d 28.3495006561279\n\t\t\ttotal_conversion \u003d 453.592010498047\n\t\telse:\t\n\t\t\tfor option in self.parent.parent.getChild(\"Selections\").getChild(\"selection_units\").props.options:\n\t\t\t\tif (option[\u0027value\u0027] \u003d\u003d units):\n\t\t\t\t\tunit_conversion \u003d float(option[\u0027unit_conversion\u0027])\n\t\t\t\t\ttotal_conversion \u003d float(option[\u0027unit_conversion\u0027])\n\t\t\t\t\t\t\t\n\t\t\n\t\t# Build the query. \n\t\t# Note - had to build the query in code, because SQLServer/ignition doesn\u0027t seem to allow the passing of the timezone as a parameter\n\t\t# This is generally a \u0027Bad Idea\u0027, due to SQl injection attacks. In this case, I\u0027m only directly substituting in a timezone string that \n\t\t# comes from a database entry that is manually controlled by us (so should be safe). The other params are run through Prep as normal. \n\t\tif (report_type\t\u003d\u003d \u0027all\u0027):\n\t\t\t \n\t\t\t# FORMAT(a.time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027) as \u0027date\u0027,\n\t\t\t\n\t\t\tquery \u003d \"\"\"\n\t\t\t\n\t\t\tSELECT\n\t\t\t    a.material,\n\t\t\t    a.po_number,\n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027) as \u0027date\u0027,\n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027MMM dd, yyyy\u0027) as \u0027display_date\u0027,\n\t\t\t    SUM([count]) AS \u0027count\u0027,\n\t\t\t    ((SUM(a.weight_sum) / SUM([count]))/:unit_conversion) AS \u0027weight_avg\u0027,\n\t\t\t    SUM(a.weight_diff) /:total_conversion AS \u0027weight_diff\u0027,\n\t\t\t    SUM(a.weight_sum) /:total_conversion AS \u0027weight_sum\u0027,\n\t\t\t    (SUM( (a.pct_weight_under/100) * count)/ SUM([count]))*100 as \u0027pct_weight_under\u0027,\n\t\t\t    (SUM( (a.pct_weight_over/100) * count)/ SUM([count]))*100 as \u0027pct_weight_over\u0027,\n\t\t\t    (\n\t\t\t            SELECT material_description\n\t\t\t            FROM system.dbo.materials m\n\t\t\t            WHERE m.material_number \u003d TRY_CAST(a.material AS INT)\n\t\t\t        ) AS material_description,\n\t\t\t\tsum(r.metal_count) as \u0027metal_rejects\u0027, \n\t\t\t\tsum(r.weight_count) as \u0027weight_rejects\u0027 \n\t\t\t\n\t\t\tFROM weight.dbo.aggregated a\n\t\t\t\tjoin weight.dbo.scale s on a.scale_id \u003d s.scale_id\n\t\t\t\tjoin weight.dbo.filler f on s.filler_id \u003d f.filler_id\n\t\t\t\tLEFT JOIN weight.dbo.rejects r on (r.line_id \u003d f.line_id and r.time_start \u003d a.time_start and r.material \u003d a.material and ?\u003d0) \n\t\t\tWHERE a.material !\u003d \u0027All\u0027\n\t\t\tAND (0 \u003d ? or a.scale_id \u003d ?)\n\t\t\tAND a.time_start \u003e\u003d ?\n\t\t\tAND a.time_start \u003c ?\n\t\t\tGROUP BY\n\t\t\t    a.material,\n\t\t\t    a.po_number,\n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027), \n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027MMM dd, yyyy\u0027)  \n\t\t\tORDER BY FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027), a.material, a.po_number\n\t\t\t\"\"\"\n\t\t\n\t\telif (report_type\t\u003d\u003d \u0027day\u0027):\n\t\t\tquery \u003d \"\"\"\n\t\t\t\n\t\t\tSELECT\n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027) as \u0027date\u0027,\n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027MMM dd, yyyy\u0027) as \u0027display_date\u0027,\n\t\t\t    SUM([count]) AS \u0027count\u0027,\n\t\t\t    ((SUM(a.weight_sum) / SUM([count]))/:unit_conversion) AS \u0027weight_avg\u0027,\n\t\t\t    SUM(a.weight_diff) /:total_conversion AS \u0027weight_diff\u0027,\n\t\t\t    SUM(a.weight_sum) /:total_conversion AS \u0027weight_sum\u0027,\n\t\t\t    (SUM( (a.pct_weight_under/100) * count)/ SUM([count]))*100 as \u0027pct_weight_under\u0027,\n\t\t\t    (SUM( (a.pct_weight_over/100) * count)/ SUM([count]))*100 as \u0027pct_weight_over\u0027,\n\t\t\t\tsum(r.metal_count) as \u0027metal_rejects\u0027, \n\t\t\t\tsum(r.weight_count) as \u0027weight_rejects\u0027 \n\t\t\t\n\t\t\tFROM weight.dbo.aggregated a\n\t\t\t\tjoin weight.dbo.scale s on a.scale_id \u003d s.scale_id\n\t\t\t\tjoin weight.dbo.filler f on s.filler_id \u003d f.filler_id\n\t\t\t\tLEFT JOIN weight.dbo.rejects r on (r.line_id \u003d f.line_id and r.time_start \u003d a.time_start and r.material \u003d a.material and ?\u003d0) \n\t\t\tWHERE a.material \u003d \u0027All\u0027\n\t\t\tAND (0 \u003d ? or a.scale_id \u003d ?)\n\t\t\tAND a.time_start \u003e\u003d ?\n\t\t\tAND a.time_start \u003c ?\n\t\t\tGROUP BY\n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027), \n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027MMM dd, yyyy\u0027)  \n\t\t\tORDER BY FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027)\n\t\t\t\n\t\t\t\"\"\"\t\t\n\t\t\t\n\t\telif (report_type\t\u003d\u003d \u0027material\u0027):\n\t\t\tquery \u003d \"\"\"\n\t\t\t\n\t\t\t\n\t\t\tSELECT\n\t\t\t    a.material,\n\t\t\t    SUM([count]) AS \u0027count\u0027,\n\t\t\t    ((SUM(a.weight_sum) / SUM([count]))/:unit_conversion) AS \u0027weight_avg\u0027,\n\t\t\t    SUM(a.weight_diff) /:total_conversion AS \u0027weight_diff\u0027,\n\t\t\t    SUM(a.weight_sum) /:total_conversion AS \u0027weight_sum\u0027,\n\t\t\t    (SUM( (a.pct_weight_under/100) * count)/ SUM([count]))*100 as \u0027pct_weight_under\u0027,\n\t\t\t    (SUM( (a.pct_weight_over/100) * count)/ SUM([count]))*100 as \u0027pct_weight_over\u0027,\n\t\t\t    (\n\t\t\t            SELECT material_description\n\t\t\t            FROM system.dbo.materials m\n\t\t\t            WHERE m.material_number \u003d TRY_CAST(a.material AS INT)\n\t\t\t        ) AS material_description,\n\t\t\t\tsum(r.metal_count) as \u0027metal_rejects\u0027, \n\t\t\t\tsum(r.weight_count) as \u0027weight_rejects\u0027 \n\t\t\t\n\t\t\tFROM weight.dbo.aggregated a\n\t\t\t\tjoin weight.dbo.scale s on a.scale_id \u003d s.scale_id\n\t\t\t\tjoin weight.dbo.filler f on s.filler_id \u003d f.filler_id\n\t\t\t\tLEFT JOIN weight.dbo.rejects r on (r.line_id \u003d f.line_id and r.time_start \u003d a.time_start and r.material \u003d a.material and ?\u003d0) \n\t\t\tWHERE a.material !\u003d \u0027All\u0027\n\t\t\tAND (0 \u003d ? or a.scale_id \u003d ?)\n\t\t\tAND a.time_start \u003e\u003d ?\n\t\t\tAND a.time_start \u003c ?\n\t\t\tGROUP BY\n\t\t\t    a.material\n\t\t\tORDER BY a.material\n\n\t\t\t\"\"\"\n\t\t\t\n\t\telif (report_type\t\u003d\u003d \u0027po\u0027):\n\t\t\tquery \u003d \"\"\"\n\t\t\t\n\t\t\tSELECT\n\t\t\t    a.material,\n\t\t\t    a.po_number,\n\t\t\t    SUM([count]) AS \u0027count\u0027,\n\t\t\t    ((SUM(a.weight_sum) / SUM([count]))/:unit_conversion) AS \u0027weight_avg\u0027,\n\t\t\t    SUM(a.weight_diff) /:total_conversion AS \u0027weight_diff\u0027,\n\t\t\t    SUM(a.weight_sum) /:total_conversion AS \u0027weight_sum\u0027,\n\t\t\t    (SUM( (a.pct_weight_under/100) * count)/ SUM([count]))*100 as \u0027pct_weight_under\u0027,\n\t\t\t    (SUM( (a.pct_weight_over/100) * count)/ SUM([count]))*100 as \u0027pct_weight_over\u0027,\n\t\t\t    (\n\t\t\t            SELECT material_description\n\t\t\t            FROM system.dbo.materials m\n\t\t\t            WHERE m.material_number \u003d TRY_CAST(a.material AS INT)\n\t\t\t        ) AS material_description,\n\t\t\t\tsum(r.metal_count) as \u0027metal_rejects\u0027, \n\t\t\t\tsum(r.weight_count) as \u0027weight_rejects\u0027 \n\t\t\t\n\t\t\tFROM weight.dbo.aggregated a\n\t\t\t\tjoin weight.dbo.scale s on a.scale_id \u003d s.scale_id\n\t\t\t\tjoin weight.dbo.filler f on s.filler_id \u003d f.filler_id\n\t\t\t\tLEFT JOIN weight.dbo.rejects r on (r.line_id \u003d f.line_id and r.time_start \u003d a.time_start and r.material \u003d a.material and ?\u003d0) \n\t\t\tWHERE a.material !\u003d \u0027All\u0027\n\t\t\tAND (0 \u003d ? or a.scale_id \u003d ?)\n\t\t\tAND a.time_start \u003e\u003d ?\n\t\t\tAND a.time_start \u003c ?\n\t\t\tGROUP BY\n\t\t\t    a.po_number, \n\t\t\t    a.material\n\t\t\tORDER BY a.po_number, a.material\n\t\t\t\n\t\t\t\"\"\"\n\t\t\n\t\t#AND time_start \u003e\u003d DATEADD(month, ?, DATEADD(month, DATEDIFF(month, 0, ?), 0)) \n\t\t#AND time_start \u003c DATEADD(day, 1, EOMONTH(?))            \n\t\t\t\t\t\t\n\t\t# Substitute in the timezone and unit conversion\t\t\n\t\tquery \u003d query.replace(\u0027:timezone\u0027,sqlserver_tz)\n\t\tquery \u003d query.replace(\u0027:unit_conversion\u0027,str(unit_conversion))\n\t\tquery \u003d query.replace(\u0027:total_conversion\u0027,str(total_conversion))\n\t\t\t\t\t\t\n\t\t# Note: You need to repeat parameters if they are used multiple times.\n\t\t# IMPORTANT: The order of \u0027?\u0027 must match the order of arguments passed.\n\t\targs \u003d [\n\t\t    int(scale_id),  \n\t\t    int(scale_id),\n\t\t    int(scale_id),\t\t    \n\t\t    value[\u0027start_dt\u0027],    \n\t\t    value[\u0027end_dt\u0027] \n\t\t]\n\t\t\n\t\tresults \u003d CORE_P.Utils.datasetToDicts(system.db.runPrepQuery(query, args, \u0027system\u0027))\n\t\t\n\t\t\n\t\t#CORE_P.Utils.errorPopup(\u0027Dates:\u0027 + str(value[\u0027start_dt\u0027]) + \u0027 - \u0027  + str(value[\u0027end_dt\u0027]))\n\t\treturn results\n\texcept:\n\t    # Handle error\n\t #   CORE_P.Utils.errorPopup(\u0027Error getting weights data:\u0027)\n\t    return []\n\t",
                       "type": "script"
                     }
                   ],
@@ -1318,13 +1390,13 @@
                   },
                   "header": {
                     "align": "center",
-                    "justify": "left",
+                    "justify": "right",
                     "style": {
                       "classes": ""
                     },
                     "title": "Units"
                   },
-                  "justify": "left",
+                  "justify": "right",
                   "nullFormat": {
                     "includeNullStrings": false,
                     "nullFormatValue": "",
@@ -1410,20 +1482,19 @@
                   },
                   "header": {
                     "align": "center",
-                    "justify": "left",
+                    "justify": "right",
                     "style": {
                       "classes": ""
-                    },
-                    "title": "Weight Average [g]"
+                    }
                   },
-                  "justify": "left",
+                  "justify": "right",
                   "nullFormat": {
                     "includeNullStrings": false,
                     "nullFormatValue": "",
                     "strict": false
                   },
                   "number": "value",
-                  "numberFormat": "0,0",
+                  "numberFormat": "0,0.00",
                   "progressBar": {
                     "bar": {
                       "color": "",
@@ -1472,7 +1543,7 @@
                   "boolean": "checkbox",
                   "dateFormat": "MM/DD/YYYY",
                   "editable": false,
-                  "field": "weight_sum_kg",
+                  "field": "weight_sum",
                   "filter": {
                     "boolean": {
                       "condition": ""
@@ -1502,20 +1573,19 @@
                   },
                   "header": {
                     "align": "center",
-                    "justify": "left",
+                    "justify": "right",
                     "style": {
                       "classes": ""
-                    },
-                    "title": "Total Production [kg]"
+                    }
                   },
-                  "justify": "left",
+                  "justify": "right",
                   "nullFormat": {
                     "includeNullStrings": false,
                     "nullFormatValue": "",
                     "strict": false
                   },
                   "number": "value",
-                  "numberFormat": "0,0",
+                  "numberFormat": "0,0.00",
                   "progressBar": {
                     "bar": {
                       "color": "",
@@ -1564,7 +1634,7 @@
                   "boolean": "checkbox",
                   "dateFormat": "MM/DD/YYYY",
                   "editable": false,
-                  "field": "weight_diff_kg",
+                  "field": "weight_diff",
                   "filter": {
                     "boolean": {
                       "condition": ""
@@ -1594,20 +1664,19 @@
                   },
                   "header": {
                     "align": "center",
-                    "justify": "left",
+                    "justify": "right",
                     "style": {
                       "classes": ""
-                    },
-                    "title": "Overage [kg]"
+                    }
                   },
-                  "justify": "left",
+                  "justify": "right",
                   "nullFormat": {
                     "includeNullStrings": false,
                     "nullFormatValue": "",
                     "strict": false
                   },
                   "number": "value",
-                  "numberFormat": "0,0",
+                  "numberFormat": "0,0.00",
                   "progressBar": {
                     "bar": {
                       "color": "",
@@ -1686,13 +1755,13 @@
                   },
                   "header": {
                     "align": "center",
-                    "justify": "left",
+                    "justify": "right",
                     "style": {
                       "classes": ""
                     },
                     "title": "% Underweight"
                   },
-                  "justify": "left",
+                  "justify": "right",
                   "nullFormat": {
                     "includeNullStrings": false,
                     "nullFormatValue": "",
@@ -1778,13 +1847,13 @@
                   },
                   "header": {
                     "align": "center",
-                    "justify": "left",
+                    "justify": "right",
                     "style": {
                       "classes": ""
                     },
                     "title": "% Overweight"
                   },
-                  "justify": "left",
+                  "justify": "right",
                   "nullFormat": {
                     "includeNullStrings": false,
                     "nullFormatValue": "",
@@ -1870,13 +1939,13 @@
                   },
                   "header": {
                     "align": "center",
-                    "justify": "left",
+                    "justify": "right",
                     "style": {
                       "classes": ""
                     },
                     "title": "Metal Rejects"
                   },
-                  "justify": "left",
+                  "justify": "right",
                   "nullFormat": {
                     "includeNullStrings": false,
                     "nullFormatValue": "",
@@ -1961,13 +2030,13 @@
                   },
                   "header": {
                     "align": "center",
-                    "justify": "left",
+                    "justify": "right",
                     "style": {
                       "classes": ""
                     },
                     "title": "Weight Rejects"
                   },
-                  "justify": "left",
+                  "justify": "right",
                   "nullFormat": {
                     "includeNullStrings": false,
                     "nullFormatValue": "",
