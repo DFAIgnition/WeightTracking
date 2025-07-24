@@ -5,7 +5,7 @@
       "$": [
         "ts",
         192,
-        1753237017273
+        1753257651615
       ],
       "$ts": 1753272000000
     },
@@ -85,9 +85,9 @@
     },
     "key": "value",
     "line": {
-      "Description": "Bag Line 1 ",
+      "Description": "",
       "MaxWeight": 30000,
-      "MinWeight": 0
+      "MinWeight": 20000
     },
     "scale": {
       "conversion_factor": 1,
@@ -102,18 +102,18 @@
       "index_year": "",
       "timestamp": ""
     },
-    "sqlserver_timezone": "UTC",
+    "sqlserver_timezone": "New Zealand Standard Time",
     "start_dt": {
       "$": [
         "ts",
         192,
-        1753237017273
+        1753257651735
       ],
       "$ts": 1753099200000
     }
   },
   "params": {
-    "timeZoneID": ""
+    "timeZoneID": "Pacific/Auckland"
   },
   "propConfig": {
     "custom.end_dt": {
@@ -517,7 +517,7 @@
                 "marginRight": 10,
                 "marginTop": 4
               },
-              "value": 1
+              "value": 0
             },
             "type": "ia.input.dropdown"
           },
@@ -941,7 +941,7 @@
                   },
                   "transforms": [
                     {
-                      "code": "\tif value\u003d\u003d\u0027gkg\u0027:\n\t\treturn \u0027Weight Average [kg]\u0027\n\telif value\u003d\u003d\u0027olbs\u0027:\n\t\treturn \u0027Weight Average [lbs]\u0027\n\t\t\t\t\n\treturn \u0027Total Production [\u0027 + str(value) + \u0027]\u0027\t",
+                      "code": "\tif value\u003d\u003d\u0027gkg\u0027:\n\t\treturn \u0027Total Production [kg]\u0027\n\telif value\u003d\u003d\u0027olbs\u0027:\n\t\treturn \u0027Total Production [lbs]\u0027\n\t\t\t\t\n\treturn \u0027Total Production [\u0027 + str(value) + \u0027]\u0027\t",
                       "type": "script"
                     }
                   ],

@@ -149,8 +149,8 @@
   },
   "props": {
     "defaultSize": {
-      "height": 564,
-      "width": 788
+      "height": 677,
+      "width": 827
     }
   },
   "root": {
@@ -192,7 +192,7 @@
         "position": {
           "height": 36,
           "width": 256,
-          "x": 65,
+          "x": 79,
           "y": 13
         },
         "propConfig": {
@@ -253,7 +253,7 @@
         "position": {
           "height": 36,
           "width": 256,
-          "x": 65,
+          "x": 79,
           "y": 53
         },
         "propConfig": {
@@ -293,7 +293,7 @@
         "position": {
           "height": 36,
           "width": 256,
-          "x": 65,
+          "x": 79,
           "y": 93
         },
         "propConfig": {
@@ -336,8 +336,8 @@
         "position": {
           "height": 39,
           "width": 721,
-          "x": 62,
-          "y": 217.5
+          "x": 76,
+          "y": 257.5
         },
         "propConfig": {
           "props.params.initial_tag": {
@@ -370,8 +370,8 @@
         "position": {
           "height": 36,
           "width": 100,
-          "x": 65,
-          "y": 391
+          "x": 79,
+          "y": 431
         },
         "propConfig": {
           "props.text": {
@@ -399,7 +399,7 @@
           "height": 32,
           "width": 50,
           "x": 6,
-          "y": 221
+          "y": 261
         },
         "props": {
           "text": "Low:"
@@ -414,7 +414,7 @@
           "height": 32,
           "width": 62,
           "x": 6,
-          "y": 263
+          "y": 303
         },
         "props": {
           "text": "Target:"
@@ -432,8 +432,8 @@
         "position": {
           "height": 36,
           "width": 100,
-          "x": 65,
-          "y": 433
+          "x": 79,
+          "y": 473
         },
         "propConfig": {
           "props.text": {
@@ -460,8 +460,8 @@
         "position": {
           "height": 39,
           "width": 721,
-          "x": 62,
-          "y": 259.5
+          "x": 76,
+          "y": 299.5
         },
         "propConfig": {
           "props.params.initial_tag": {
@@ -491,7 +491,7 @@
           "height": 32,
           "width": 69,
           "x": 6,
-          "y": 304
+          "y": 344
         },
         "props": {
           "text": "High:"
@@ -509,8 +509,8 @@
         "position": {
           "height": 36,
           "width": 100,
-          "x": 65,
-          "y": 474
+          "x": 79,
+          "y": 514
         },
         "propConfig": {
           "props.text": {
@@ -537,8 +537,8 @@
         "position": {
           "height": 39,
           "width": 721,
-          "x": 62,
-          "y": 300.5
+          "x": 76,
+          "y": 340.5
         },
         "propConfig": {
           "props.params.initial_tag": {
@@ -581,8 +581,8 @@
         "position": {
           "height": 34,
           "width": 250,
-          "x": 14.75,
-          "y": 521
+          "x": 28.75,
+          "y": 561
         },
         "props": {
           "text": "Save Filler"
@@ -608,7 +608,7 @@
           "height": 34,
           "width": 127,
           "x": 641.25,
-          "y": 521
+          "y": 561
         },
         "propConfig": {
           "meta.visible": {
@@ -684,8 +684,8 @@
         "position": {
           "height": 34,
           "width": 250,
-          "x": 271.25,
-          "y": 521
+          "x": 285.25,
+          "y": 561
         },
         "props": {
           "primary": false,
@@ -701,7 +701,7 @@
           "height": 32,
           "width": 50,
           "x": 6,
-          "y": 133
+          "y": 173
         },
         "props": {
           "text": "Scale:"
@@ -714,14 +714,13 @@
           "tooltip": {
             "enabled": true,
             "text": "Design in units selected"
-          },
-          "visible": false
+          }
         },
         "position": {
           "height": 36,
           "width": 100,
-          "x": 321,
-          "y": 89
+          "x": 79,
+          "y": 133
         },
         "propConfig": {
           "props.text": {
@@ -736,7 +735,7 @@
         "props": {
           "placeholder": "Design",
           "style": {
-            "textAlign": "center"
+            "textAlign": "left"
           }
         },
         "type": "ia.input.text-field"
@@ -748,8 +747,8 @@
         "position": {
           "height": 39,
           "width": 716,
-          "x": 62,
-          "y": 129.5
+          "x": 76,
+          "y": 169.5
         },
         "propConfig": {
           "props.params.initial_tag": {
@@ -814,8 +813,8 @@
         "position": {
           "height": 32,
           "width": 776,
-          "x": 7,
-          "y": 185.5
+          "x": 8,
+          "y": 225.5
         },
         "props": {
           "text": "Set Point Tags (optional - will use Tag value if given, or Material defaults otherwise)"
@@ -829,8 +828,8 @@
         "position": {
           "height": 32,
           "width": 776,
-          "x": 7,
-          "y": 360.5
+          "x": 10,
+          "y": 400.5
         },
         "props": {
           "text": "Set Point Defaults (fallback if we can\u0027t find values from Tags or Materials)"
@@ -845,7 +844,7 @@
           "height": 32,
           "width": 50,
           "x": 10,
-          "y": 391
+          "y": 431
         },
         "props": {
           "text": "Low:"
@@ -860,7 +859,7 @@
           "height": 32,
           "width": 62,
           "x": 10,
-          "y": 433
+          "y": 473
         },
         "props": {
           "text": "Target:"
@@ -875,10 +874,43 @@
           "height": 32,
           "width": 69,
           "x": 10,
-          "y": 474
+          "y": 514
         },
         "props": {
           "text": "High:"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Unit_Label_0"
+        },
+        "position": {
+          "height": 32,
+          "width": 73,
+          "x": 6,
+          "y": 135
+        },
+        "props": {
+          "text": "Design:"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Unit_Label_1"
+        },
+        "position": {
+          "height": 32,
+          "width": 602,
+          "x": 182,
+          "y": 135
+        },
+        "props": {
+          "style": {
+            "fontSize": 12
+          },
+          "text": "How accurate the filler is designed to be, in the same units as the filler (eg, enter 50 for + or - 50g)"
         },
         "type": "ia.display.label"
       }
