@@ -819,7 +819,6 @@ def ProcessRejects(start_dt, end_dt, line):
 	except:
 		system.db.rollbackTransaction(txId)	
 		system.db.closeTransaction(txId)	
-		print CORE_P.Utils.getError()
 	
 	end = time.time()	
 
