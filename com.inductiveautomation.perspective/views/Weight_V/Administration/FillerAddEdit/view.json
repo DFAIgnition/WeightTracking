@@ -118,6 +118,10 @@
       "paramDirection": "input",
       "persistent": true
     },
+    "params.is_line_total": {
+      "paramDirection": "input",
+      "persistent": false
+    },
     "params.line_id": {
       "paramDirection": "input",
       "persistent": true
@@ -337,7 +341,7 @@
           "height": 39,
           "width": 721,
           "x": 76,
-          "y": 257.5
+          "y": 300.5
         },
         "propConfig": {
           "props.params.initial_tag": {
@@ -371,7 +375,7 @@
           "height": 36,
           "width": 100,
           "x": 79,
-          "y": 431
+          "y": 474
         },
         "propConfig": {
           "props.text": {
@@ -399,7 +403,7 @@
           "height": 32,
           "width": 50,
           "x": 6,
-          "y": 261
+          "y": 304
         },
         "props": {
           "text": "Low:"
@@ -414,7 +418,7 @@
           "height": 32,
           "width": 62,
           "x": 6,
-          "y": 303
+          "y": 346
         },
         "props": {
           "text": "Target:"
@@ -433,7 +437,7 @@
           "height": 36,
           "width": 100,
           "x": 79,
-          "y": 473
+          "y": 516
         },
         "propConfig": {
           "props.text": {
@@ -461,7 +465,7 @@
           "height": 39,
           "width": 721,
           "x": 76,
-          "y": 299.5
+          "y": 342.5
         },
         "propConfig": {
           "props.params.initial_tag": {
@@ -491,7 +495,7 @@
           "height": 32,
           "width": 69,
           "x": 6,
-          "y": 344
+          "y": 387
         },
         "props": {
           "text": "High:"
@@ -510,7 +514,7 @@
           "height": 36,
           "width": 100,
           "x": 79,
-          "y": 514
+          "y": 557
         },
         "propConfig": {
           "props.text": {
@@ -538,7 +542,7 @@
           "height": 39,
           "width": 721,
           "x": 76,
-          "y": 340.5
+          "y": 383.5
         },
         "propConfig": {
           "props.params.initial_tag": {
@@ -568,7 +572,7 @@
           "dom": {
             "onClick": {
               "config": {
-                "script": "\t\n\t# Get all the parameters we need to save\n\tsite_id \t\t\t\t\t\u003d self.view.params.site_id\n\tfiller_id\t\t\t\t\t\u003d self.view.params.filler_id\n\tline_id \t\t\t\t\t\u003d self.getSibling(\"Line_Dropdown\").props.value\n\tunit_id \t\t\t\t\t\u003d self.getSibling(\"Unit_Dropdown\").props.value\n\tfiller_name \t\t\t\t\u003d self.getSibling(\"Filler_Entry\").props.text\n\tfiller_design\t\t\t\t\u003d self.getSibling(\"Setpoint_Design\").props.text\n\tfiller_sp_low\t\t\t\t\u003d self.getSibling(\"Setpoint_Low_Entry\").props.text\n\tfiller_sp\t\t\t\t\t\u003d self.getSibling(\"Setpoint_Entry\").props.text\n\tfiller_sp_high\t\t\t\t\u003d self.getSibling(\"Setpoint_High_Entry\").props.text\n\tfiller_sp_low_tag \t\t\t\u003d self.getSibling(\"Setpoint_Low_Tag\").props.params.selectedTag\n\tfiller_sp_tag \t\t\t\t\u003d self.getSibling(\"Setpoint_Tag\").props.params.selectedTag\n\tfiller_sp_high_tag \t\t\t\u003d self.getSibling(\"Setpoint_High_Tag\").props.params.selectedTag\n\tfiller_reject\t\t\t\t\u003d None\n\tfiller_reject_cond\t\t\t\u003d None\n\tfiller_metal\t\t\t\t\u003d None\n\tfiller_metal_cond\t\t\t\u003d None\n\tfiller_reason_over\t\t\t\u003d None\n\tfiller_reason_over_cond\t\u003d None\n\tfiller_reason_under\t\t\t\u003d None\n\tfiller_reason_under_cond\t\u003d None\n\tfiller_reason_metal\t\t\t\u003d None\n\tfiller_reason_metal_cond\t\u003d None\n\tscale_id\t\t\t\t\t\u003d self.view.params.scale_id\n\tscale_name\t\t\t\t\t\u003d filler_name\n\tscale_weight\t\t\t\t\u003d self.getSibling(\"Weigh_Tag\").props.params.selectedTag\n\tedit\t\t\t\t\t\t\u003d self.view.params.edit\n\t\n\t# Do some validation...make sure everything has been entered correctly\n\t\n\ttxId \u003d system.db.beginTransaction(timeout\u003d5000)\n\n\ttry:\n\t\n\t\tif edit \u003d\u003d False:\n\t\t\n\t\t\tnamedQuery \u003d \"Weight_Q/DB_Insert/Insert_Filler\"\n\t\t\tparameters \u003d {\n\t\t\t\t\u0027line_id\u0027:\t\t\t\t\t\t\t\tline_id, \n\t\t\t\t\u0027unit_id\u0027:\t\t\t\t\t\t\t\tunit_id, \n\t\t\t\t\u0027filler_name\u0027:\t\t\t\t\t\t\tfiller_name, \n\t\t\t\t\u0027filler_design\u0027:\t\t\t\t\t\tfiller_design, \n\t\t\t\t\u0027filler_sp_low\u0027:\t\t\t\t\t\tfiller_sp_low, \n\t\t\t\t\u0027filler_sp\u0027:\t\t\t\t\t\t\tfiller_sp, \n\t\t\t\t\u0027filler_sp_high\u0027:\t\t\t\t\t\tfiller_sp_high, \n\t\t\t\t\u0027filler_sp_low_tag\u0027:\t\t\t\t\tfiller_sp_low_tag, \n\t\t\t\t\u0027filler_sp_tag\u0027:\t\t\t\t\t\tfiller_sp_tag, \n\t\t\t\t\u0027filler_sp_high_tag\u0027:\t\t\t\t\tfiller_sp_high_tag,\n\t\t\t\t\u0027filler_reject\u0027:\t\t\t\t\t\tfiller_reject,\n\t\t\t\t\u0027filler_reject_cond\u0027:\t\t\t\t\tfiller_reject_cond,\n\t\t\t\t\u0027filler_metal\u0027:\t\t\t\t\t\t\tfiller_metal,\n\t\t\t\t\u0027filler_metal_cond\u0027:\t\t\t\t\tfiller_metal_cond,\n\t\t\t\t\u0027filler_reason_over\u0027:\t\t\t\t\tfiller_reason_over,\n\t\t\t\t\u0027filler_reason_over_cond\u0027:\t\t\t\tfiller_reason_over_cond,\n\t\t\t\t\u0027filler_reason_under\u0027:\t\t\t\t\tfiller_reason_under,\n\t\t\t\t\u0027filler_reason_under_cond\u0027:\t\t\tfiller_reason_under_cond,\n\t\t\t\t\u0027filler_reason_metal\u0027:\t\t\t\t\tfiller_reason_metal,\n\t\t\t\t\u0027filler_reason_metal_cond\u0027:\t\t\tfiller_reason_metal_cond\n\t\t\t}\n\t\t\t\n\t\t\t\n\t\telse:\n\t\t\n\t\t\tnamedQuery \u003d \"Weight_Q/DB_Update/Update_Filler\"\n\t\t\tparameters \u003d {\n\t\t\t\t\u0027line_id\u0027:\t\t\t\t\t\t\t\tline_id, \n\t\t\t\t\u0027unit_id\u0027:\t\t\t\t\t\t\t\tunit_id, \n\t\t\t\t\u0027filler_name\u0027:\t\t\t\t\t\t\tfiller_name, \n\t\t\t\t\u0027filler_design\u0027:\t\t\t\t\t\tfiller_design, \n\t\t\t\t\u0027filler_sp_low\u0027:\t\t\t\t\t\tfiller_sp_low, \n\t\t\t\t\u0027filler_sp\u0027:\t\t\t\t\t\t\tfiller_sp, \n\t\t\t\t\u0027filler_sp_high\u0027:\t\t\t\t\t\tfiller_sp_high, \n\t\t\t\t\u0027filler_sp_low_tag\u0027:\t\t\t\t\tfiller_sp_low_tag, \n\t\t\t\t\u0027filler_sp_tag\u0027:\t\t\t\t\t\tfiller_sp_tag, \n\t\t\t\t\u0027filler_sp_high_tag\u0027:\t\t\t\t\tfiller_sp_high_tag,\n\t\t\t\t\u0027filler_reject\u0027:\t\t\t\t\t\tfiller_reject,\n\t\t\t\t\u0027filler_reject_cond\u0027:\t\t\t\t\tfiller_reject_cond,\n\t\t\t\t\u0027filler_metal\u0027:\t\t\t\t\t\t\tfiller_metal,\n\t\t\t\t\u0027filler_metal_cond\u0027:\t\t\t\t\tfiller_metal_cond,\n\t\t\t\t\u0027filler_reason_over\u0027:\t\t\t\t\tfiller_reason_over,\n\t\t\t\t\u0027filler_reason_over_cond\u0027:\t\t\t\tfiller_reason_over_cond,\n\t\t\t\t\u0027filler_reason_under\u0027:\t\t\t\t\tfiller_reason_under,\n\t\t\t\t\u0027filler_reason_under_cond\u0027:\t\t\tfiller_reason_under_cond,\n\t\t\t\t\u0027filler_reason_metal\u0027:\t\t\t\t\tfiller_reason_metal,\n\t\t\t\t\u0027filler_reason_metal_cond\u0027:\t\t\tfiller_reason_metal_cond,\n\t\t\t\t\u0027filler_id\u0027:\t\t\t\t\t\t\tfiller_id\n\t\t\t}\n\t\t\n\t\taffected_rows \u003d system.db.runNamedQuery(system.project.getProjectName(), namedQuery, parameters,tx\u003dtxId)\n\t\t\n\t\t# Add scale\n\t\t\n\t\tif edit \u003d\u003d False:\n\t\t\n\t\t\t# Get filler id from filler we just created\n\t\t\t\n\t\t\tnamedQuery \u003d \"Weight_Q/DB_Scalar/Get_Filler_ID\"\n\t\t\tparameters \u003d {\n\t\t\t\t\u0027line_id\u0027:\t\t\t\t\t\t\tline_id,\n\t\t\t\t\u0027unit_id\u0027:\t\t\t\t\t\t\tunit_id, \n\t\t\t\t\u0027filler_name\u0027:\t\t\t\t\t\tfiller_name\n\t\t\t}\n\t\t\t\n\t\t\tfiller_id \u003d system.db.runNamedQuery(system.project.getProjectName(), namedQuery, parameters,tx\u003dtxId)\n\t\t\t\n\t\t\n\t\t\tnamedQuery \u003d \"Weight_Q/DB_Insert/Insert_Scale\"\n\t\t\tparameters \u003d {\n\t\t\t\t\u0027scale_name\u0027:\t\t\t\t\t\t\tfiller_name,\n\t\t\t\t\u0027scale_weight\u0027:\t\t\t\t\t\t\tscale_weight, \n\t\t\t\t\u0027filler_id\u0027:\t\t\t\t\t\t\tfiller_id\n\t\t\t}\n\t\t\n\t\telse:\n\t\t\n\t\t\tnamedQuery \u003d \"Weight_Q/DB_Update/Update_Scale\"\n\t\t\tparameters \u003d {\n\t\t\t\t\u0027scale_name\u0027:\t\t\t\t\t\t\tfiller_name,\n\t\t\t\t\u0027scale_weight\u0027:\t\t\t\t\t\t\tscale_weight, \n\t\t\t\t\u0027filler_id\u0027:\t\t\t\t\t\t\tfiller_id,\n\t\t\t\t\u0027scale_id\u0027:\t\t\t\t\t\t\t\tscale_id\n\t\t\t}\n\t\t\t\n\t\taffected_rows \u003d system.db.runNamedQuery(system.project.getProjectName(), namedQuery, parameters,tx\u003dtxId)\n\t\t\n\t\t\n\t\tmessage \u003d  \u0027Added/Edited new filler:\u0027 + str(parameters)\n\t\t\n\t\t# Audit log\n\t\tCORE_P.Utils.logChanges(self, \n                     \u0027AddEditFiller\u0027,\n                     message, \n                     txId\u003dtxId,\n                     site_id\u003dsite_id,\n                    )\n\t\tsystem.db.commitTransaction(txId)\n\t\t                        \t\t\t\n\t\t# Update the table with lines \n\t\tsystem.perspective.sendMessage(\"update_bindings\", payload \u003d {}, scope \u003d \"page\")\n\n\t\tCORE_P.Utils.showSuccess(self, \"Saved!\") \n\t\t\n\t\tsystem.perspective.closePopup(\u0027\u0027)\n\n\texcept:\n\t\tsystem.db.rollbackTransaction(txId)\n\t\tCORE_P.Utils.errorPopup(\u0027Error adding/editing Filler:\u0027) #  + str(sys.exc_info())\n"
+                "script": "\t\n\t# Get all the parameters we need to save\n\tsite_id \t\t\t\t\t\u003d self.view.params.site_id\n\tfiller_id\t\t\t\t\t\u003d self.view.params.filler_id\n\tline_id \t\t\t\t\t\u003d self.getSibling(\"Line_Dropdown\").props.value\n\tunit_id \t\t\t\t\t\u003d self.getSibling(\"Unit_Dropdown\").props.value\n\tfiller_name \t\t\t\t\u003d self.getSibling(\"Filler_Entry\").props.text\n\tfiller_design\t\t\t\t\u003d self.getSibling(\"Setpoint_Design\").props.text\n\tfiller_sp_low\t\t\t\t\u003d self.getSibling(\"Setpoint_Low_Entry\").props.text\n\tfiller_sp\t\t\t\t\t\u003d self.getSibling(\"Setpoint_Entry\").props.text\n\tfiller_sp_high\t\t\t\t\u003d self.getSibling(\"Setpoint_High_Entry\").props.text\n\tfiller_sp_low_tag \t\t\t\u003d self.getSibling(\"Setpoint_Low_Tag\").props.params.selectedTag\n\tfiller_sp_tag \t\t\t\t\u003d self.getSibling(\"Setpoint_Tag\").props.params.selectedTag\n\tfiller_sp_high_tag \t\t\t\u003d self.getSibling(\"Setpoint_High_Tag\").props.params.selectedTag\n\tfiller_reject\t\t\t\t\u003d None\n\tfiller_reject_cond\t\t\t\u003d None\n\tfiller_metal\t\t\t\t\u003d None\n\tfiller_metal_cond\t\t\t\u003d None\n\tfiller_reason_over\t\t\t\u003d None\n\tfiller_reason_over_cond\t\u003d None\n\tfiller_reason_under\t\t\t\u003d None\n\tfiller_reason_under_cond\t\u003d None\n\tfiller_reason_metal\t\t\t\u003d None\n\tfiller_reason_metal_cond\t\u003d None\n\tscale_id\t\t\t\t\t\u003d self.view.params.scale_id\n\tscale_name\t\t\t\t\t\u003d filler_name\n\tscale_weight\t\t\t\t\u003d self.getSibling(\"Weigh_Tag\").props.params.selectedTag\n\tedit\t\t\t\t\t\t\u003d self.view.params.edit\n\tis_line_total\t\t\t\t\u003d self.getSibling(\"Is_Line_Total\").props.selected\n\t\n\t# Do some validation...make sure everything has been entered correctly\n\t\n\ttxId \u003d system.db.beginTransaction(timeout\u003d5000)\n\n\ttry:\n\t\n\t\tif edit \u003d\u003d False:\n\t\t\n\t\t\tnamedQuery \u003d \"Weight_Q/DB_Insert/Insert_Filler\"\n\t\t\tparameters \u003d {\n\t\t\t\t\u0027line_id\u0027:\t\t\t\t\t\t\t\tline_id, \n\t\t\t\t\u0027unit_id\u0027:\t\t\t\t\t\t\t\tunit_id, \n\t\t\t\t\u0027filler_name\u0027:\t\t\t\t\t\t\tfiller_name, \n\t\t\t\t\u0027filler_design\u0027:\t\t\t\t\t\tfiller_design, \n\t\t\t\t\u0027filler_sp_low\u0027:\t\t\t\t\t\tfiller_sp_low, \n\t\t\t\t\u0027filler_sp\u0027:\t\t\t\t\t\t\tfiller_sp, \n\t\t\t\t\u0027filler_sp_high\u0027:\t\t\t\t\t\tfiller_sp_high, \n\t\t\t\t\u0027filler_sp_low_tag\u0027:\t\t\t\t\tfiller_sp_low_tag, \n\t\t\t\t\u0027filler_sp_tag\u0027:\t\t\t\t\t\tfiller_sp_tag, \n\t\t\t\t\u0027filler_sp_high_tag\u0027:\t\t\t\t\tfiller_sp_high_tag,\n\t\t\t\t\u0027filler_reject\u0027:\t\t\t\t\t\tfiller_reject,\n\t\t\t\t\u0027filler_reject_cond\u0027:\t\t\t\t\tfiller_reject_cond,\n\t\t\t\t\u0027filler_metal\u0027:\t\t\t\t\t\t\tfiller_metal,\n\t\t\t\t\u0027filler_metal_cond\u0027:\t\t\t\t\tfiller_metal_cond,\n\t\t\t\t\u0027filler_reason_over\u0027:\t\t\t\t\tfiller_reason_over,\n\t\t\t\t\u0027filler_reason_over_cond\u0027:\t\t\t\tfiller_reason_over_cond,\n\t\t\t\t\u0027filler_reason_under\u0027:\t\t\t\t\tfiller_reason_under,\n\t\t\t\t\u0027filler_reason_under_cond\u0027:\t\t\t\tfiller_reason_under_cond,\n\t\t\t\t\u0027filler_reason_metal\u0027:\t\t\t\t\tfiller_reason_metal,\n\t\t\t\t\u0027filler_reason_metal_cond\u0027:\t\t\t\tfiller_reason_metal_cond,\n\t\t\t\t\u0027is_line_total\u0027:\t\t\t\t\t\tis_line_total\n\t\t\t}\n\t\t\t\n\t\t\t\n\t\telse:\n\t\t\n\t\t\tnamedQuery \u003d \"Weight_Q/DB_Update/Update_Filler\"\n\t\t\tparameters \u003d {\n\t\t\t\t\u0027line_id\u0027:\t\t\t\t\t\t\t\tline_id, \n\t\t\t\t\u0027unit_id\u0027:\t\t\t\t\t\t\t\tunit_id, \n\t\t\t\t\u0027filler_name\u0027:\t\t\t\t\t\t\tfiller_name, \n\t\t\t\t\u0027filler_design\u0027:\t\t\t\t\t\tfiller_design, \n\t\t\t\t\u0027filler_sp_low\u0027:\t\t\t\t\t\tfiller_sp_low, \n\t\t\t\t\u0027filler_sp\u0027:\t\t\t\t\t\t\tfiller_sp, \n\t\t\t\t\u0027filler_sp_high\u0027:\t\t\t\t\t\tfiller_sp_high, \n\t\t\t\t\u0027filler_sp_low_tag\u0027:\t\t\t\t\tfiller_sp_low_tag, \n\t\t\t\t\u0027filler_sp_tag\u0027:\t\t\t\t\t\tfiller_sp_tag, \n\t\t\t\t\u0027filler_sp_high_tag\u0027:\t\t\t\t\tfiller_sp_high_tag,\n\t\t\t\t\u0027filler_reject\u0027:\t\t\t\t\t\tfiller_reject,\n\t\t\t\t\u0027filler_reject_cond\u0027:\t\t\t\t\tfiller_reject_cond,\n\t\t\t\t\u0027filler_metal\u0027:\t\t\t\t\t\t\tfiller_metal,\n\t\t\t\t\u0027filler_metal_cond\u0027:\t\t\t\t\tfiller_metal_cond,\n\t\t\t\t\u0027filler_reason_over\u0027:\t\t\t\t\tfiller_reason_over,\n\t\t\t\t\u0027filler_reason_over_cond\u0027:\t\t\t\tfiller_reason_over_cond,\n\t\t\t\t\u0027filler_reason_under\u0027:\t\t\t\t\tfiller_reason_under,\n\t\t\t\t\u0027filler_reason_under_cond\u0027:\t\t\t\tfiller_reason_under_cond,\n\t\t\t\t\u0027filler_reason_metal\u0027:\t\t\t\t\tfiller_reason_metal,\n\t\t\t\t\u0027filler_reason_metal_cond\u0027:\t\t\t\tfiller_reason_metal_cond,\n\t\t\t\t\u0027filler_id\u0027:\t\t\t\t\t\t\tfiller_id,\n\t\t\t\t\u0027is_line_total\u0027:\t\t\t\t\t\tis_line_total\n\t\t\t}\n\t\t\n\t\taffected_rows \u003d system.db.runNamedQuery(system.project.getProjectName(), namedQuery, parameters,tx\u003dtxId)\n\t\t\n\t\t# Add scale\n\t\t\n\t\tif edit \u003d\u003d False:\n\t\t\n\t\t\t# Get filler id from filler we just created\n\t\t\t\n\t\t\tnamedQuery \u003d \"Weight_Q/DB_Scalar/Get_Filler_ID\"\n\t\t\tparameters \u003d {\n\t\t\t\t\u0027line_id\u0027:\t\t\t\t\t\t\tline_id,\n\t\t\t\t\u0027unit_id\u0027:\t\t\t\t\t\t\tunit_id, \n\t\t\t\t\u0027filler_name\u0027:\t\t\t\t\t\tfiller_name\n\t\t\t}\n\t\t\t\n\t\t\tfiller_id \u003d system.db.runNamedQuery(system.project.getProjectName(), namedQuery, parameters,tx\u003dtxId)\n\t\t\t\n\t\t\n\t\t\tnamedQuery \u003d \"Weight_Q/DB_Insert/Insert_Scale\"\n\t\t\tparameters \u003d {\n\t\t\t\t\u0027scale_name\u0027:\t\t\t\t\t\t\tfiller_name,\n\t\t\t\t\u0027scale_weight\u0027:\t\t\t\t\t\t\tscale_weight, \n\t\t\t\t\u0027filler_id\u0027:\t\t\t\t\t\t\tfiller_id\n\t\t\t}\n\t\t\n\t\telse:\n\t\t\n\t\t\tnamedQuery \u003d \"Weight_Q/DB_Update/Update_Scale\"\n\t\t\tparameters \u003d {\n\t\t\t\t\u0027scale_name\u0027:\t\t\t\t\t\t\tfiller_name,\n\t\t\t\t\u0027scale_weight\u0027:\t\t\t\t\t\t\tscale_weight, \n\t\t\t\t\u0027filler_id\u0027:\t\t\t\t\t\t\tfiller_id,\n\t\t\t\t\u0027scale_id\u0027:\t\t\t\t\t\t\t\tscale_id\n\t\t\t}\n\t\t\t\n\t\taffected_rows \u003d system.db.runNamedQuery(system.project.getProjectName(), namedQuery, parameters,tx\u003dtxId)\n\t\t\n\t\t\n\t\tmessage \u003d  \u0027Added/Edited new filler:\u0027 + str(parameters)\n\t\t\n\t\t# Audit log\n\t\tCORE_P.Utils.logChanges(self, \n                     \u0027AddEditFiller\u0027,\n                     message, \n                     txId\u003dtxId,\n                     site_id\u003dsite_id,\n                    )\n\t\tsystem.db.commitTransaction(txId)\n\t\t                        \t\t\t\n\t\t# Update the table with lines \n\t\tsystem.perspective.sendMessage(\"update_bindings\", payload \u003d {}, scope \u003d \"page\")\n\n\t\tCORE_P.Utils.showSuccess(self, \"Saved!\") \n\t\t\n\t\tsystem.perspective.closePopup(\u0027\u0027)\n\n\texcept:\n\t\tsystem.db.rollbackTransaction(txId)\n\t\tCORE_P.Utils.errorPopup(\u0027Error adding/editing Filler:\u0027) #  + str(sys.exc_info())\n"
               },
               "scope": "G",
               "type": "script"
@@ -582,7 +586,7 @@
           "height": 34,
           "width": 250,
           "x": 28.75,
-          "y": 561
+          "y": 604
         },
         "props": {
           "text": "Save Filler"
@@ -608,7 +612,7 @@
           "height": 34,
           "width": 127,
           "x": 641.25,
-          "y": 561
+          "y": 604
         },
         "propConfig": {
           "meta.visible": {
@@ -685,7 +689,7 @@
           "height": 34,
           "width": 250,
           "x": 285.25,
-          "y": 561
+          "y": 604
         },
         "props": {
           "primary": false,
@@ -814,7 +818,7 @@
           "height": 32,
           "width": 776,
           "x": 8,
-          "y": 225.5
+          "y": 268.5
         },
         "props": {
           "text": "Set Point Tags (optional - will use Tag value if given, or Material defaults otherwise)"
@@ -829,7 +833,7 @@
           "height": 32,
           "width": 776,
           "x": 10,
-          "y": 400.5
+          "y": 443.5
         },
         "props": {
           "text": "Set Point Defaults (fallback if we can\u0027t find values from Tags or Materials)"
@@ -844,7 +848,7 @@
           "height": 32,
           "width": 50,
           "x": 10,
-          "y": 431
+          "y": 474
         },
         "props": {
           "text": "Low:"
@@ -859,7 +863,7 @@
           "height": 32,
           "width": 62,
           "x": 10,
-          "y": 473
+          "y": 516
         },
         "props": {
           "text": "Target:"
@@ -874,7 +878,7 @@
           "height": 32,
           "width": 69,
           "x": 10,
-          "y": 514
+          "y": 557
         },
         "props": {
           "text": "High:"
@@ -911,6 +915,64 @@
             "fontSize": 12
           },
           "text": "How accurate the filler is designed to be, in the same units as the filler (eg, enter 50 for + or - 50g)"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Setpoint_High_Label_2"
+        },
+        "position": {
+          "height": 32,
+          "width": 102,
+          "x": 6,
+          "y": 215
+        },
+        "props": {
+          "text": "Line Total:"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Is_Line_Total"
+        },
+        "position": {
+          "height": 28,
+          "width": 24,
+          "x": 90,
+          "y": 217
+        },
+        "propConfig": {
+          "props.selected": {
+            "binding": {
+              "config": {
+                "path": "view.params.is_line_total"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "text": ""
+        },
+        "type": "ia.input.checkbox"
+      },
+      {
+        "meta": {
+          "name": "Unit_Label_2"
+        },
+        "position": {
+          "height": 32,
+          "width": 490,
+          "x": 119,
+          "y": 215
+        },
+        "props": {
+          "style": {
+            "fontSize": 12
+          },
+          "text": "A \u0027Line Total\u0027 scale would be something like a CheckWeigher, which weighs everything from all the fillers on the line, and won\u0027t be included in the \u0027All Fillers\u0027 summary"
         },
         "type": "ia.display.label"
       }

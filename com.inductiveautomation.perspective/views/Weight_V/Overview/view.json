@@ -80,7 +80,7 @@
     "key": "value",
     "line": {},
     "scale": {
-      "total_design": 0.22046243691593984
+      "total_design": 0.11023121845796992
     },
     "selection": {},
     "units": {
@@ -224,7 +224,7 @@
         },
         "transforms": [
           {
-            "code": "\n    import datetime\n    SeriesIndex\u003d-1\n    \n    end_dt \u003d self.custom.end_dt\n\t\n    # Get the current month and year\n    #current_month \u003d datetime.datetime.now().month\n    #current_year \u003d datetime.datetime.now().year\n    current_month \u003d end_dt.getMonth()+1\n    current_year \u003d end_dt.getYear()+ 1900\n\n    # Custom sorting function to correctly order months with respect to the current month and year\n    def sort_key(entry):\n        month_name \u003d entry[\"name\"]\n        month_number \u003d month_to_number.get(month_name, -1)\n        entry_year \u003d entry.get(\"year\", current_year)\n\n        # Calculate how far back in time each entry is from the current month and year\n        year_diff \u003d current_year - entry_year\n        month_diff \u003d current_month - month_number\n\n        # For entries from the previous year, adjust month_diff to reflect their actual distance from the current month\n        if year_diff \u003e 0:\n            month_diff +\u003d 12\n\n        return (year_diff, month_diff)\n\n    month_to_number \u003d {\n        \"January\": 1, \"February\": 2, \"March\": 3, \"April\": 4,\n        \"May\": 5, \"June\": 6, \"July\": 7, \"August\": 8,\n        \"September\": 9, \"October\": 10, \"November\": 11, \"December\": 12\n    }\n\n    monthlyData \u003d value[\u0027aggregator\u0027]\n\n    transformedData \u003d []\n\n    for month in monthlyData:\n        monthName \u003d month[\"summary\"][\"x\"]\n        dayData \u003d month[\"days\"]\n\n        monthDataArray \u003d []\n        allDaysAreZero \u003d False # Set to true if empty months should not be shown\n        for day in dayData:\n            dayNumber \u003d day[\"x\"]\n            weight_diff \u003d day[\"weight_diff\"]\n            weight_avg \u003d day[\"weight_avg\"]\n            count \u003d day[\"count\"]\n            metal_rejects \u003d day[\"metal_rejects\"]\n            \n            if count\u003e0:\n            \tavg_diff \u003d weight_diff/count*1000/self.custom.scale.conversion_factor\n            else:\n            \tavg_diff\u003d0\n\n            if weight_diff !\u003d 0 or weight_avg !\u003d 0 or count !\u003d 0:\n                allDaysAreZero \u003d False\n\n            monthDataArray.append({\n                \"x\": dayNumber,\n                #\"y\": avg_diff,\n                \"y\": metal_rejects,\n                \"y2\": metal_rejects, #weight_avg,      # weight_diff as y\n                \"y3\": metal_rejects, #weight_avg,      # weight_diff as y\n                #\"y3\": weight_diff,      # weight_avg as y2\n                \"y4\": count            # count as y3\n            })\n\n        if not allDaysAreZero:\n            month_number \u003d month_to_number.get(monthName, -1)\n            if month_number \u003e current_month:\n                inferred_year \u003d current_year - 1\n            else:\n                inferred_year \u003d current_year\n\n            transformedData.append({\n                \"data\": monthDataArray,\n                \"name\": monthName,\n                \"year\": inferred_year,\n                \"zIndex\": month_number\n            })\n\n    # Sort the transformed data using the custom sort key\n    transformedData.sort(key\u003dsort_key)\n\n    return transformedData",
+            "code": "\n    import datetime\n    SeriesIndex\u003d-1\n    \n    end_dt \u003d self.custom.end_dt\n\t\n    # Get the current month and year\n    #current_month \u003d datetime.datetime.now().month\n    #current_year \u003d datetime.datetime.now().year\n    current_month \u003d end_dt.getMonth()+1\n    current_year \u003d end_dt.getYear()+ 1900\n\n    # Custom sorting function to correctly order months with respect to the current month and year\n    def sort_key(entry):\n        month_name \u003d entry[\"name\"]\n        month_number \u003d month_to_number.get(month_name, -1)\n        entry_year \u003d entry.get(\"year\", current_year)\n\n        # Calculate how far back in time each entry is from the current month and year\n        year_diff \u003d current_year - entry_year\n        month_diff \u003d current_month - month_number\n\n        # For entries from the previous year, adjust month_diff to reflect their actual distance from the current month\n        if year_diff \u003e 0:\n            month_diff +\u003d 12\n\n        return (year_diff, month_diff)\n\n    month_to_number \u003d {\n        \"January\": 1, \"February\": 2, \"March\": 3, \"April\": 4,\n        \"May\": 5, \"June\": 6, \"July\": 7, \"August\": 8,\n        \"September\": 9, \"October\": 10, \"November\": 11, \"December\": 12\n    }\n\n    monthlyData \u003d value[\u0027aggregator\u0027]\n\n    transformedData \u003d []\n\n    for month in monthlyData:\n        monthName \u003d month[\"summary\"][\"x\"]\n        dayData \u003d month[\"days\"]\n\n        monthDataArray \u003d []\n        allDaysAreZero \u003d False # Set to true if empty months should not be shown\n        for day in dayData:\n            dayNumber \u003d day[\"x\"]\n            weight_diff \u003d day[\"weight_diff\"]\n            weight_avg \u003d day[\"weight_avg\"]\n            count \u003d day[\"count\"]\n            metal_rejects \u003d day[\"metal_rejects\"]\n            \n            if count\u003e0:\n            \tavg_diff \u003d weight_diff/count*1000/self.custom.scale.conversion_factor\n            else:\n            \tavg_diff\u003d0\n\n            if weight_diff !\u003d 0 or weight_avg !\u003d 0 or count !\u003d 0:\n                allDaysAreZero \u003d False\n            \n            metal_rejects_percentage \u003d 0\n            if(count\u003e0):\n\t\t\t\tmetal_rejects_percentage \u003d (float(metal_rejects)/count)*100\n\t\t\t\t\n            monthDataArray.append({\n                \"x\": dayNumber,\n                #\"y\": avg_diff,\n                \"y\": metal_rejects_percentage,\n                \"y2\": metal_rejects_percentage, #weight_avg,      # weight_diff as y\n                \"y3\": metal_rejects, #weight_avg,      # weight_diff as y\n                #\"y3\": weight_diff,      # weight_avg as y2\n                \"y4\": count            # count as y3\n            })\n\n        if not allDaysAreZero:\n            month_number \u003d month_to_number.get(monthName, -1)\n            if month_number \u003e current_month:\n                inferred_year \u003d current_year - 1\n            else:\n                inferred_year \u003d current_year\n\n            transformedData.append({\n                \"data\": monthDataArray,\n                \"name\": monthName,\n                \"year\": inferred_year,\n                \"zIndex\": month_number\n            })\n\n    # Sort the transformed data using the custom sort key\n    transformedData.sort(key\u003dsort_key)\n\n    return transformedData",
             "type": "script"
           }
         ],
@@ -244,7 +244,7 @@
         },
         "transforms": [
           {
-            "code": "\n    import datetime\n    SeriesIndex\u003d-1\n    \n    end_dt \u003d self.custom.end_dt\n\t\n    # Get the current month and year\n    #current_month \u003d datetime.datetime.now().month\n    #current_year \u003d datetime.datetime.now().year\n    current_month \u003d end_dt.getMonth()+1\n    current_year \u003d end_dt.getYear()+ 1900\n\n    # Custom sorting function to correctly order months with respect to the current month and year\n    def sort_key(entry):\n        month_name \u003d entry[\"name\"]\n        month_number \u003d month_to_number.get(month_name, -1)\n        entry_year \u003d entry.get(\"year\", current_year)\n\n        # Calculate how far back in time each entry is from the current month and year\n        year_diff \u003d current_year - entry_year\n        month_diff \u003d current_month - month_number\n\n        # For entries from the previous year, adjust month_diff to reflect their actual distance from the current month\n        if year_diff \u003e 0:\n            month_diff +\u003d 12\n\n        return (year_diff, month_diff)\n\n    month_to_number \u003d {\n        \"January\": 1, \"February\": 2, \"March\": 3, \"April\": 4,\n        \"May\": 5, \"June\": 6, \"July\": 7, \"August\": 8,\n        \"September\": 9, \"October\": 10, \"November\": 11, \"December\": 12\n    }\n\n    monthlyData \u003d value[\u0027aggregator\u0027]\n\n    transformedData \u003d []\n\n    for month in monthlyData:\n        monthName \u003d month[\"summary\"][\"x\"]\n        dayData \u003d month[\"days\"]\n\n        monthDataArray \u003d []\n        allDaysAreZero \u003d False # Set to true if empty months should not be shown\n        for day in dayData:\n            dayNumber \u003d day[\"x\"]\n            weight_diff \u003d day[\"weight_diff\"]\n            weight_avg \u003d day[\"weight_avg\"]\n            count \u003d day[\"count\"]\n            weight_rejects \u003d day[\"weight_rejects\"]\n            \n            if count\u003e0:\n            \tavg_diff \u003d weight_diff/count*1000/self.custom.scale.conversion_factor\n            else:\n            \tavg_diff\u003d0\n\n            if weight_diff !\u003d 0 or weight_avg !\u003d 0 or count !\u003d 0:\n                allDaysAreZero \u003d False\n\n            monthDataArray.append({\n                \"x\": dayNumber,\n                \"y\": weight_rejects,#avg_diff,\n                \"y2\": weight_rejects, #weight_avg,      # weight_diff as y\n                \"y3\": weight_rejects,#weight_diff,      # weight_avg as y2\n                \"y4\": count            # count as y3\n            })\n\n        if not allDaysAreZero:\n            month_number \u003d month_to_number.get(monthName, -1)\n            if month_number \u003e current_month:\n                inferred_year \u003d current_year - 1\n            else:\n                inferred_year \u003d current_year\n\n            transformedData.append({\n                \"data\": monthDataArray,\n                \"name\": monthName,\n                \"year\": inferred_year,\n                \"zIndex\": month_number\n            })\n\n    # Sort the transformed data using the custom sort key\n    transformedData.sort(key\u003dsort_key)\n\n    return transformedData",
+            "code": "\n    import datetime\n    SeriesIndex\u003d-1\n    \n    end_dt \u003d self.custom.end_dt\n\t\n    # Get the current month and year\n    #current_month \u003d datetime.datetime.now().month\n    #current_year \u003d datetime.datetime.now().year\n    current_month \u003d end_dt.getMonth()+1\n    current_year \u003d end_dt.getYear()+ 1900\n\n    # Custom sorting function to correctly order months with respect to the current month and year\n    def sort_key(entry):\n        month_name \u003d entry[\"name\"]\n        month_number \u003d month_to_number.get(month_name, -1)\n        entry_year \u003d entry.get(\"year\", current_year)\n\n        # Calculate how far back in time each entry is from the current month and year\n        year_diff \u003d current_year - entry_year\n        month_diff \u003d current_month - month_number\n\n        # For entries from the previous year, adjust month_diff to reflect their actual distance from the current month\n        if year_diff \u003e 0:\n            month_diff +\u003d 12\n\n        return (year_diff, month_diff)\n\n    month_to_number \u003d {\n        \"January\": 1, \"February\": 2, \"March\": 3, \"April\": 4,\n        \"May\": 5, \"June\": 6, \"July\": 7, \"August\": 8,\n        \"September\": 9, \"October\": 10, \"November\": 11, \"December\": 12\n    }\n\n    monthlyData \u003d value[\u0027aggregator\u0027]\n\n    transformedData \u003d []\n\n    for month in monthlyData:\n        monthName \u003d month[\"summary\"][\"x\"]\n        dayData \u003d month[\"days\"]\n\n        monthDataArray \u003d []\n        allDaysAreZero \u003d False # Set to true if empty months should not be shown\n        for day in dayData:\n            dayNumber \u003d day[\"x\"]\n            weight_diff \u003d day[\"weight_diff\"]\n            weight_avg \u003d day[\"weight_avg\"]\n            count \u003d day[\"count\"]\n            weight_rejects \u003d day[\"weight_rejects\"]\n            \n            if count\u003e0:\n            \tavg_diff \u003d weight_diff/count*1000/self.custom.scale.conversion_factor\n            else:\n            \tavg_diff\u003d0\n\n            if weight_diff !\u003d 0 or weight_avg !\u003d 0 or count !\u003d 0:\n                allDaysAreZero \u003d False\n\n            weight_rejects_percentage \u003d 0\n            if(count\u003e0):\n\t\t\t\tweight_rejects_percentage \u003d (float(weight_rejects)/count)*100\n\n            monthDataArray.append({\n                \"x\": dayNumber,\n                \"y\": weight_rejects_percentage,#avg_diff,\n                \"y2\": weight_rejects_percentage, #weight_avg,      # weight_diff as y\n                \"y3\": weight_rejects,#weight_diff,      # weight_avg as y2\n                \"y4\": count            # count as y3\n            })\n\n        if not allDaysAreZero:\n            month_number \u003d month_to_number.get(monthName, -1)\n            if month_number \u003e current_month:\n                inferred_year \u003d current_year - 1\n            else:\n                inferred_year \u003d current_year\n\n            transformedData.append({\n                \"data\": monthDataArray,\n                \"name\": monthName,\n                \"year\": inferred_year,\n                \"zIndex\": month_number\n            })\n\n    # Sort the transformed data using the custom sort key\n    transformedData.sort(key\u003dsort_key)\n\n    return transformedData",
             "type": "script"
           }
         ],
@@ -693,7 +693,7 @@
                 "marginRight": 10,
                 "marginTop": 2
               },
-              "value": 1
+              "value": 0
             },
             "type": "ia.input.dropdown"
           },
@@ -733,7 +733,7 @@
                   },
                   "transforms": [
                     {
-                      "code": "\t\n\t# Create an empty list to hold our formatted data\n\tformatted_data \u003d []\n\t\n\t# Iterate through each row in the dataset\n\tfor row in range(value.getRowCount()):\n\t\t# Extract line_id and line_name from the current row\n\t\tscale_id \u003d value.getValueAt(row, \"scale_id\")\n\t\tscale_name \u003d value.getValueAt(row, \"scale_name\")\n\t\t\n\t\t# Create a dictionary with the \u0027value\u0027 and \u0027label\u0027 keys\n\t\titem \u003d {\"value\": scale_id, \"label\": scale_name}\n\t\t\n\t\t# Add the dictionary to our list\n\t\tformatted_data.append(item)\n\t\n\t# Check if the formatted data has only one row\n\tif len(formatted_data) \u003d\u003d 1:\n\t\t# Set self.props.value to the scale_id of the single row\n\t\tself.props.value \u003d formatted_data[0][\u0027value\u0027]\n\t\tformatted_data.append({\"value\": 0, \"label\": \u0027All Fillers\u0027})\n\t\t#formatted_data.append({\"value\": 0, \"label\": \u0027All Fillers\u0027})\n\t\tself.props.value \u003d 0\n\t\n\telif len(formatted_data)\u003e1:\n\t\tformatted_data.append({\"value\": 0, \"label\": \u0027All Fillers\u0027})\n\t\tself.props.value \u003d 0\n\t\t#self.props.value \u003d formatted_data[-1][\u0027value\u0027]\n\t\n\t# Return the formatted list\n\treturn formatted_data\n",
+                      "code": "\t\n\t# Create an empty list to hold our formatted data\n\tformatted_data \u003d []\n\t\n\t# Iterate through each row in the dataset\n\tnot_line_total \u003d 0\n\tfor row in range(value.getRowCount()):\n\t\t# Extract line_id and line_name from the current row\n\t\tscale_id \u003d value.getValueAt(row, \"scale_id\")\n\t\tscale_name \u003d value.getValueAt(row, \"scale_name\")\n\t\tis_line_total \u003d value.getValueAt(row, \"is_line_total\") \n\t\tif (not is_line_total):\n\t\t\tnot_line_total \u003d not_line_total + 1\n\t\t\t\n\t\t# Create a dictionary with the \u0027value\u0027 and \u0027label\u0027 keys\n\t\titem \u003d {\"value\": scale_id, \"label\": scale_name, \"is_line_total\": is_line_total}\n\t\t\n\t\t# Add the dictionary to our list\n\t\tformatted_data.append(item)\n\t\n\t\n\t# Check if the formatted data has only one row\n\tif len(formatted_data) \u003d\u003d 1:\n\t\t# Set self.props.value to the scale_id of the single row\n\t\tself.props.value \u003d formatted_data[0][\u0027value\u0027]\n\t#\tformatted_data.append({\"value\": 0, \"label\": \u0027All Fillers\u0027})\n\t\t#formatted_data.append({\"value\": 0, \"label\": \u0027All Fillers\u0027})\n\t\t#self.props.value \u003d 0\n\t\n\telif len(formatted_data)\u003e1:\n\t\tif(not_line_total\u003e\u003d2):\n\t\t\tformatted_data.append({\"value\": 0, \"label\": \u0027All Fillers\u0027, \"is_line_total\": 1})\n\t\t\tself.props.value \u003d 0\n\t\telse:\n\t\t\tself.props.value \u003d formatted_data[-1][\u0027value\u0027]\n\t\n\t# Return the formatted list\n\treturn formatted_data\n",
                       "type": "script"
                     }
                   ],
@@ -1009,6 +1009,7 @@
                   "config": {
                     "expression": "if({.../Selections/selection_scale.props.value}\u003d0,True, False)"
                   },
+                  "enabled": false,
                   "type": "expr"
                 }
               },
@@ -1580,6 +1581,7 @@
                   },
                   "viewParams": {},
                   "viewPath": "",
+                  "visible": true,
                   "width": ""
                 },
                 {
@@ -2089,7 +2091,7 @@
                   },
                   "transforms": [
                     {
-                      "code": "\t#parseFloat(data.y2).toFixed(\u0027\u0027\u0027+digits+\u0027\u0027\u0027);\n\t#Math.round(value,2).toString()\n\tdigits \u003d \u00272\u0027\n\tscript\u003d\u0027\u0027\u0027function({series, seriesIndex, dataPointIndex, w}) {\n\t    let htmlContent \u003d \u0027\u003cdiv class\u003d\"arrow_box\" style\u003d\"\u0027\n\t        + \u0027background-color: #f9f9f9; padding: 10px; border: 1px solid #ddd; \u0027\n\t        + \u0027box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); border-radius: 5px; \u0027\n\t        + \u0027font-family: Arial, sans-serif; font-size: 14px; color: #333; \u0027\n\t        + \u0027line-height: 1; text-align: left;\"\u003e\u0027;\n\t\n\t    const formatValue \u003d value \u003d\u003e parseFloat(value).toFixed(\u0027\u0027\u0027+digits+\u0027\u0027\u0027).toString();\n\t    var data \u003d w.config.series[seriesIndex].data[dataPointIndex];\n\t\n\t\n\t    // Added margin-right to the span for spacing\n\t    htmlContent +\u003d\u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003eMaterial:\u003c/span\u003e\u003cb\u003e\u0027 + data.material + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\n\t    \t\t\t + \u0027\u003cbr\u003e\u0027 // Line break before SP\n\t    \t\t\t  +\u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003eMaximum:\u003c/span\u003e\u003cb\u003e\u0027 + formatValue(w.globals.seriesCandleC[0][dataPointIndex]) + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\n\t                 + \u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003e75%:\u003c/span\u003e\u003cb\u003e\u0027 + formatValue(w.globals.seriesCandleL[0][dataPointIndex]) + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\n\t                 + \u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003eMedian:\u003c/span\u003e\u003cb\u003e\u0027 + formatValue(w.globals.seriesCandleM[0][dataPointIndex]) + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\n\t                 + \u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003e25%:\u003c/span\u003e\u003cb\u003e\u0027 + formatValue(w.globals.seriesCandleH[0][dataPointIndex]) + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\n\t                 + \u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003eMinimum:\u003c/span\u003e\u003cb\u003e\u0027 + formatValue(w.globals.seriesCandleO[0][dataPointIndex]) + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\n\t                 + \u0027\u003cbr\u003e\u0027 // Line break before Count\n\t                 + \u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003eMetal Rejects:\u003c/span\u003e\u003cb\u003e\u0027 + formatValue(series[2][dataPointIndex]) + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\n\t                 + \u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003eWeight Rejects:\u003c/span\u003e\u003cb\u003e\u0027 + formatValue(series[3][dataPointIndex]) + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\n\t                 + \u0027\u003cbr\u003e\u0027 // Line break before Count\n \t                 + \u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003eCount:\u003c/span\u003e\u003cb\u003e\u0027 + formatValue(series[1][dataPointIndex]) + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\n \t                 + \u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003eSP:\u003c/span\u003e\u003cb\u003e\u0027 + formatValue(series[4][dataPointIndex]) + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\t                 \n\t\n\t    return htmlContent;\n\t}\u0027\u0027\u0027\n\t\n\t\n\treturn script",
+                      "code": "\t#parseFloat(data.y2).toFixed(\u0027\u0027\u0027+digits+\u0027\u0027\u0027);\n\t#Math.round(value,2).toString()\n\tdigits \u003d \u00272\u0027\n\tscript\u003d\u0027\u0027\u0027function({series, seriesIndex, dataPointIndex, w}) {\n\t    let htmlContent \u003d \u0027\u003cdiv class\u003d\"arrow_box\" style\u003d\"\u0027\n\t        + \u0027background-color: #f9f9f9; padding: 10px; border: 1px solid #ddd; \u0027\n\t        + \u0027box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); border-radius: 5px; \u0027\n\t        + \u0027font-family: Arial, sans-serif; font-size: 14px; color: #333; \u0027\n\t        + \u0027line-height: 1; text-align: left;\"\u003e\u0027;\n\t\n\t    const formatValue \u003d value \u003d\u003e parseFloat(value).toFixed(\u0027\u0027\u0027+digits+\u0027\u0027\u0027).toString();\n\t    const formatValueInt \u003d value \u003d\u003e parseFloat(value).toFixed(0).toString();\n\t    var data \u003d w.config.series[seriesIndex].data[dataPointIndex];\n\t\n\t\n\t    // Added margin-right to the span for spacing\n\t    htmlContent +\u003d\u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003eMaterial:\u003c/span\u003e\u003cb\u003e\u0027 + data.material + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\n\t    \t\t\t + \u0027\u003cbr\u003e\u0027 // Line break before SP\n\t    \t\t\t  +\u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003eMaximum:\u003c/span\u003e\u003cb\u003e\u0027 + formatValue(w.globals.seriesCandleC[0][dataPointIndex]) + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\n\t                 + \u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003e75%:\u003c/span\u003e\u003cb\u003e\u0027 + formatValue(w.globals.seriesCandleL[0][dataPointIndex]) + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\n\t                 + \u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003eMedian:\u003c/span\u003e\u003cb\u003e\u0027 + formatValue(w.globals.seriesCandleM[0][dataPointIndex]) + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\n\t                 + \u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003e25%:\u003c/span\u003e\u003cb\u003e\u0027 + formatValue(w.globals.seriesCandleH[0][dataPointIndex]) + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\n\t                 + \u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003eMinimum:\u003c/span\u003e\u003cb\u003e\u0027 + formatValue(w.globals.seriesCandleO[0][dataPointIndex]) + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\n\t                 + \u0027\u003cbr\u003e\u0027 // Line break before Count\n\t                 + \u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003eMetal Rejects:\u003c/span\u003e\u003cb\u003e\u0027 + formatValueInt(series[2][dataPointIndex]) + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\n\t                 + \u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003eWeight Rejects:\u003c/span\u003e\u003cb\u003e\u0027 + formatValueInt(series[3][dataPointIndex]) + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\n\t                 + \u0027\u003cbr\u003e\u0027 // Line break before Count\n \t                 + \u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003eCount:\u003c/span\u003e\u003cb\u003e\u0027 + formatValueInt(series[1][dataPointIndex]) + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\n \t                 + \u0027\u003cdiv style\u003d\"display: flex; justify-content: space-between;\"\u003e\u003cspan style\u003d\"margin-right: 10px;\"\u003eSP:\u003c/span\u003e\u003cb\u003e\u0027 + formatValue(series[4][dataPointIndex]) + \u0027\u003c/b\u003e\u003c/div\u003e\u0027\t                 \n\t\n\t    return htmlContent;\n\t}\u0027\u0027\u0027\n\t\n\t\n\treturn script",
                       "type": "script"
                     }
                   ],
@@ -2189,6 +2191,22 @@
                   "type": "property"
                 }
               },
+              "props.options.yaxis[4].max": {
+                "binding": {
+                  "config": {
+                    "path": "this.props.options.yaxis[0].max"
+                  },
+                  "type": "property"
+                }
+              },
+              "props.options.yaxis[4].min": {
+                "binding": {
+                  "config": {
+                    "path": "this.props.options.yaxis[0].min"
+                  },
+                  "type": "property"
+                }
+              },
               "props.series[0].data": {
                 "binding": {
                   "config": {
@@ -2270,7 +2288,7 @@
                   "#55555540",
                   "#FF333340",
                   "#6F27B740",
-                  "#00AAAA50"
+                  "#00AAAA80"
                 ],
                 "dataLabels": {
                   "enabled": false,
@@ -2335,7 +2353,7 @@
                     "#555555",
                     "#FF00FF",
                     "#00FFFF",
-                    "#FF00FF"
+                    "#00AAAA80"
                   ],
                   "curve": [
                     "straight",
@@ -2356,7 +2374,7 @@
                     0,
                     0,
                     0,
-                    0
+                    1
                   ]
                 },
                 "title": {
@@ -2416,8 +2434,7 @@
                     }
                   },
                   {
-                    "forceNiceScale": false,
-                    "min": 0,
+                    "forceNiceScale": true,
                     "opposite": false,
                     "show": false,
                     "title": {
@@ -2598,7 +2615,7 @@
                   },
                   "transforms": [
                     {
-                      "code": "\t\n\tif value[\u0027factor\u0027] \u003d\u003d 1:\n\t    digits \u003d str(0)\n\telif value[\u0027factor\u0027] \u003e 10:\n\t    digits \u003d str(1)\n\telif value[\u0027factor\u0027] \u003e 100:\n\t    digits \u003d str(2)\n\t\n\t    \n\tif value[\u0027stat\u0027] \u003d\u003d \u0027weight_avg\u0027:\n\t    \n\t    return \u0027\u0027\u0027function(val, opts) {\n\t        // Retrieve y2 value from the opts object\n\t        var y2 \u003d opts.w.config.series[opts.seriesIndex].data[opts.dataPointIndex].y2;\n\t        // Format y2 to a fixed number with no decimal places\n\t        var formattedY2 \u003d y2.toFixed(\u0027\u0027\u0027+digits+\u0027\u0027\u0027);\n\t        // Return formatted number as a localized string\n\t        return formattedY2.toLocaleString();\n\t    }\u0027\u0027\u0027\n\t    \n\tif value[\u0027stat\u0027] \u003d\u003d \u0027weight_diff\u0027:\n\t    \n\t    return \u0027\u0027\u0027function(val, opts) {\n\t        // Retrieve y3 value from the opts object\n\t        var y3 \u003d opts.w.config.series[opts.seriesIndex].data[opts.dataPointIndex].y3;\n\t        // Format y3 to a fixed number with no decimal places\n\t        var formattedY3 \u003d y3.toFixed(0);\n\t        // Return formatted number as a localized string\n\t        return formattedY3.toLocaleString();\n\t    }\u0027\u0027\u0027\n\t    \n\tif value[\u0027stat\u0027] \u003d\u003d \u0027count\u0027:\n\t    \n\t    return \u0027\u0027\u0027function(val, opts) {\n\t        // Retrieve y4 value from the opts object\n\t        var y4 \u003d opts.w.config.series[opts.seriesIndex].data[opts.dataPointIndex].y4;\n\t        // Format y4 to a fixed number with no decimal places\n\t        var formattedY4 \u003d y4.toFixed(1);\n\t        // Return formatted number as a localized string\n\t        return formattedY4.toLocaleString();\n\t        }\u0027\u0027\u0027",
+                      "code": "\t\n#\tif value[\u0027factor\u0027] \u003d\u003d 1:\n#\t    digits \u003d str(1)\n#\telif value[\u0027factor\u0027] \u003e 10:\n#\t    digits \u003d str(1)\n#\telif value[\u0027factor\u0027] \u003e 100:\n#\t    digits \u003d str(2)\n\tdigits \u003d str(1)\n\n    \n\treturn \u0027\u0027\u0027function(val, opts) {\n\t    // Retrieve y2 value from the opts object\n\t    var y2 \u003d opts.w.config.series[opts.seriesIndex].data[opts.dataPointIndex].y2;\n\t    // Format y2 to a fixed number with no decimal places\n\t    var formattedY2 \u003d y2.toFixed(\u0027\u0027\u0027+digits+\u0027\u0027\u0027);\n\t    // Return formatted number as a localized string\n\t    return formattedY2.toLocaleString() + \u0027%\u0027;\n\t}\u0027\u0027\u0027\n\t    ",
                       "type": "script"
                     }
                   ],
@@ -2617,7 +2634,7 @@
                   },
                   "transforms": [
                     {
-                      "code": "\tif value[\u0027description\u0027] !\u003d \u0027\u0027:\n\t\treturn  value[\u0027description\u0027] + \u0027 - Metal Detector Rejects\u0027 # + value[\u0027scale\u0027] + \u0027 - Weights are in \u0027 + value[\u0027unit\u0027] + \u0027. Overage is in kg. Filler accuracy σ set to: \u0027 + str(self.view.custom.scale.design) + \u0027 \u0027 + value[\u0027unit\u0027]\n\telse:\n\t\treturn \u0027Metal Detector Rejects\u0027 # \u0027Weights are in \u0027 + value[\u0027unit\u0027] + \u0027. Overage is in kg. Filler accuracy σ set to: \u0027 + str(self.view.custom.scale.design) + \u0027 \u0027 + value[\u0027unit\u0027]",
+                      "code": "\tif value[\u0027description\u0027] !\u003d \u0027\u0027:\n\t\treturn  value[\u0027description\u0027] + \u0027 - Metal Detector Rejects (% of units produced)\u0027 # + value[\u0027scale\u0027] + \u0027 - Weights are in \u0027 + value[\u0027unit\u0027] + \u0027. Overage is in kg. Filler accuracy σ set to: \u0027 + str(self.view.custom.scale.design) + \u0027 \u0027 + value[\u0027unit\u0027]\n\telse:\n\t\treturn \u0027Metal Detector Rejects (% of units produced)\u0027 # \u0027Weights are in \u0027 + value[\u0027unit\u0027] + \u0027. Overage is in kg. Filler accuracy σ set to: \u0027 + str(self.view.custom.scale.design) + \u0027 \u0027 + value[\u0027unit\u0027]",
                       "type": "script"
                     }
                   ],
@@ -2631,7 +2648,7 @@
                   },
                   "transforms": [
                     {
-                      "code": "\n    # Convert the Python variable \u0027value\u0027 to a string and prepare it for JavaScript injection\n    value_str \u003d str(value)\n    \n    \n    # Create the JavaScript function as a string, injecting \u0027value\u0027 correctly\n    return (\u0027\u0027\u0027function(value, { series, seriesIndex, dataPointIndex, w }) {\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    // Accessing the data for y, y2, y3, and y4\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var data \u003d w.config.series[seriesIndex].data[dataPointIndex];\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y \u003d parseFloat(data.y).toFixed(0);  // Main value\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y2 \u003d parseFloat(data.y2).toFixed(0); // Additional value 1\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y3 \u003d parseFloat(data.y3).toFixed(1); // Additional value 2\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y4 \u003d parseFloat(data.y4).toFixed(0); // Additional value 3\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var pc \u003d 0\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    if (parseFloat(data.y4)\u003e0){\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    pc \u003d (parseFloat(data.y)*100/parseFloat(data.y4)).toFixed(0);} // Percentage\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    // Concatenate the values with slashes in between\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    return \u0027Metal Detected in \u0027 + y + \u0027 units out of \u0027 + y4 + \u0027 (\u0027 + pc + \u0027%)\u0027; \u0027\u0027\u0027\n            \u0027\u0027\u0027\\n}\u0027\u0027\u0027)\n            \n            \n            \n            #\u0027\u0027\u0027\\n    return \u0027Avg. Overage: \u0027 + y + \" \u0027\u0027\u0027 + value_str + \u0027\u0027\u0027 \" + \u0027 / Avg. Weight: \u0027 + y2 + \" \u0027\u0027\u0027 + value_str + \u0027\u0027\u0027 \"  + \u0027 / Overage: \u0027 + y3+ \" kg \"   + \u0027 / Units: \u0027 + y4;\u0027\u0027\u0027",
+                      "code": "\n    # Convert the Python variable \u0027value\u0027 to a string and prepare it for JavaScript injection\n    value_str \u003d str(value)\n    \n    \n    # Create the JavaScript function as a string, injecting \u0027value\u0027 correctly\n    return (\u0027\u0027\u0027function(value, { series, seriesIndex, dataPointIndex, w }) {\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    // Accessing the data for y, y2, y3, and y4\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var data \u003d w.config.series[seriesIndex].data[dataPointIndex];\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y \u003d parseFloat(data.y).toFixed(0);  // Main value\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y2 \u003d parseFloat(data.y2).toFixed(0); // Additional value 1\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y3 \u003d parseFloat(data.y3).toFixed(1); // Additional value 2\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y4 \u003d parseFloat(data.y4).toFixed(0); // Additional value 3\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var pc \u003d 0\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    if (parseFloat(data.y4)\u003e0){\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    pc \u003d (parseFloat(data.y3)*100/parseFloat(data.y4)).toFixed(0);} // Percentage\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    // Concatenate the values with slashes in between\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    return \u0027Metal Detected in \u0027 + y3 + \u0027 units out of \u0027 + y4 + \u0027 (\u0027 + pc + \u0027%)\u0027; \u0027\u0027\u0027\n            \u0027\u0027\u0027\\n}\u0027\u0027\u0027)\n            \n            \n            \n            #\u0027\u0027\u0027\\n    return \u0027Avg. Overage: \u0027 + y + \" \u0027\u0027\u0027 + value_str + \u0027\u0027\u0027 \" + \u0027 / Avg. Weight: \u0027 + y2 + \" \u0027\u0027\u0027 + value_str + \u0027\u0027\u0027 \"  + \u0027 / Overage: \u0027 + y3+ \" kg \"   + \u0027 / Units: \u0027 + y4;\u0027\u0027\u0027",
                       "type": "script"
                     }
                   ],
@@ -2705,28 +2722,56 @@
                 "plotOptions": {
                   "heatmap": {
                     "colorScale": {
-                      "inverse": true,
-                      "max": 0,
-                      "min": 2000,
+                      "inverse": false,
+                      "max": 200,
+                      "min": 0,
                       "ranges": [
                         {
                           "color": "#FFFFFF",
                           "foreColor": "#FFFFFF",
                           "from": 0,
-                          "name": " ",
+                          "name": "",
                           "to": 0
                         },
                         {
-                          "color": "#ABCDEF",
+                          "color": "#00800080",
+                          "foreColor": "#FFFFFF",
+                          "from": "0.0000001",
+                          "name": "",
+                          "to": 1
+                        },
+                        {
+                          "color": "#98FB9880",
                           "foreColor": "#000000",
-                          "from": 1,
-                          "name": "Metal Detection events",
-                          "to": 1000
+                          "from": 1.0000001,
+                          "name": "",
+                          "to": 2
+                        },
+                        {
+                          "color": "#FFB7B780",
+                          "foreColor": "#000000",
+                          "from": 2.0000001,
+                          "name": "",
+                          "to": 3
+                        },
+                        {
+                          "color": "#FF555580",
+                          "foreColor": "#000000",
+                          "from": 3.0000001,
+                          "name": "",
+                          "to": 5
+                        },
+                        {
+                          "color": "#FF0000",
+                          "foreColor": "#000000",
+                          "from": 5.0000001,
+                          "name": "",
+                          "to": 200
                         }
                       ]
                     },
-                    "distributed": false,
-                    "enableShades": true,
+                    "distributed": true,
+                    "enableShades": false,
                     "radius": 2,
                     "reverseNegativeShade": false,
                     "shadeIntensity": 0.8,
@@ -2756,9 +2801,7 @@
                     "type": "solid"
                   }
                 },
-                "theme": {
-                  "palette": "palette4"
-                },
+                "theme": {},
                 "title": {
                   "align": "center",
                   "style": {
@@ -2846,6 +2889,7 @@
               "config": {
                 "expression": "if({../Selections/selection_scale.props.value}\u003d0,True, if(len({../Selections/selection_scale.props.options})\u003d1,True,False))"
               },
+              "enabled": false,
               "type": "expr"
             }
           }
@@ -2900,7 +2944,7 @@
                   },
                   "transforms": [
                     {
-                      "code": "\t\n\tif value[\u0027factor\u0027] \u003d\u003d 1:\n\t    digits \u003d str(0)\n\telif value[\u0027factor\u0027] \u003e 10:\n\t    digits \u003d str(1)\n\telif value[\u0027factor\u0027] \u003e 100:\n\t    digits \u003d str(2)\n\t\n\t    \n\tif value[\u0027stat\u0027] \u003d\u003d \u0027weight_avg\u0027:\n\t    \n\t    return \u0027\u0027\u0027function(val, opts) {\n\t        // Retrieve y2 value from the opts object\n\t        var y2 \u003d opts.w.config.series[opts.seriesIndex].data[opts.dataPointIndex].y2;\n\t        // Format y2 to a fixed number with no decimal places\n\t        var formattedY2 \u003d y2.toFixed(\u0027\u0027\u0027+digits+\u0027\u0027\u0027);\n\t        // Return formatted number as a localized string\n\t        return formattedY2.toLocaleString();\n\t    }\u0027\u0027\u0027\n\t    \n\tif value[\u0027stat\u0027] \u003d\u003d \u0027weight_diff\u0027:\n\t    \n\t    return \u0027\u0027\u0027function(val, opts) {\n\t        // Retrieve y3 value from the opts object\n\t        var y3 \u003d opts.w.config.series[opts.seriesIndex].data[opts.dataPointIndex].y3;\n\t        // Format y3 to a fixed number with no decimal places\n\t        var formattedY3 \u003d y3.toFixed(0);\n\t        // Return formatted number as a localized string\n\t        return formattedY3.toLocaleString();\n\t    }\u0027\u0027\u0027\n\t    \n\tif value[\u0027stat\u0027] \u003d\u003d \u0027count\u0027:\n\t    \n\t    return \u0027\u0027\u0027function(val, opts) {\n\t        // Retrieve y4 value from the opts object\n\t        var y4 \u003d opts.w.config.series[opts.seriesIndex].data[opts.dataPointIndex].y4;\n\t        // Format y4 to a fixed number with no decimal places\n\t        var formattedY4 \u003d y4.toFixed(1);\n\t        // Return formatted number as a localized string\n\t        return formattedY4.toLocaleString();\n\t        }\u0027\u0027\u0027",
+                      "code": "\t\n#\tif value[\u0027factor\u0027] \u003d\u003d 1:\n#\t    digits \u003d str(0)\n#\telif value[\u0027factor\u0027] \u003e 10:\n#\t    digits \u003d str(1)\n#\telif value[\u0027factor\u0027] \u003e 100:\n#\t    digits \u003d str(2)\n#\t\n\tdigits \u003d str(1)\n\t\n\t\n\treturn \u0027\u0027\u0027function(val, opts) {\n\t\t        // Retrieve y2 value from the opts object\n\t\t        var y2 \u003d opts.w.config.series[opts.seriesIndex].data[opts.dataPointIndex].y2;\n\t\t        // Format y2 to a fixed number with no decimal places\n\t\t        var formattedY2 \u003d y2.toFixed(\u0027\u0027\u0027+digits+\u0027\u0027\u0027);\n\t\t        // Return formatted number as a localized string\n\t\t        return formattedY2.toLocaleString() + \u0027%\u0027;\n\t\t    }\u0027\u0027\u0027\n    \t    \t    \n#\tif value[\u0027stat\u0027] \u003d\u003d \u0027weight_avg\u0027:\n#\t    \n#\t    return \u0027\u0027\u0027function(val, opts) {\n#\t        // Retrieve y2 value from the opts object\n#\t        var y2 \u003d opts.w.config.series[opts.seriesIndex].data[opts.dataPointIndex].y2;\n#\t        // Format y2 to a fixed number with no decimal places\n#\t        var formattedY2 \u003d y2.toFixed(\u0027\u0027\u0027+digits+\u0027\u0027\u0027);\n#\t        // Return formatted number as a localized string\n#\t        return formattedY2.toLocaleString();\n#\t    }\u0027\u0027\u0027\n#\t    \n#\tif value[\u0027stat\u0027] \u003d\u003d \u0027weight_diff\u0027:\n#\t    \n#\t    return \u0027\u0027\u0027function(val, opts) {\n#\t        // Retrieve y3 value from the opts object\n#\t        var y3 \u003d opts.w.config.series[opts.seriesIndex].data[opts.dataPointIndex].y3;\n#\t        // Format y3 to a fixed number with no decimal places\n#\t        var formattedY3 \u003d y3.toFixed(0);\n#\t        // Return formatted number as a localized string\n#\t        return formattedY3.toLocaleString();\n#\t    }\u0027\u0027\u0027\n#\t    \n#\tif value[\u0027stat\u0027] \u003d\u003d \u0027count\u0027:\n#\t    \n#\t    return \u0027\u0027\u0027function(val, opts) {\n#\t        // Retrieve y4 value from the opts object\n#\t        var y4 \u003d opts.w.config.series[opts.seriesIndex].data[opts.dataPointIndex].y4;\n#\t        // Format y4 to a fixed number with no decimal places\n#\t        var formattedY4 \u003d y4.toFixed(1);\n#\t        // Return formatted number as a localized string\n#\t        return formattedY4.toLocaleString();\n#\t        }\u0027\u0027\u0027",
                       "type": "script"
                     }
                   ],
@@ -2919,7 +2963,7 @@
                   },
                   "transforms": [
                     {
-                      "code": "\tif value[\u0027description\u0027] !\u003d \u0027\u0027:\n\t\treturn  value[\u0027description\u0027] + \u0027 - Weight Rejects\u0027 # + value[\u0027scale\u0027] + \u0027 - Weights are in \u0027 + value[\u0027unit\u0027] + \u0027. Overage is in kg. Filler accuracy σ set to: \u0027 + str(self.view.custom.scale.design) + \u0027 \u0027 + value[\u0027unit\u0027]\n\telse:\n\t\treturn \u0027Weight Rejects\u0027 # \u0027Weights are in \u0027 + value[\u0027unit\u0027] + \u0027. Overage is in kg. Filler accuracy σ set to: \u0027 + str(self.view.custom.scale.design) + \u0027 \u0027 + value[\u0027unit\u0027]",
+                      "code": "\tif value[\u0027description\u0027] !\u003d \u0027\u0027:\n\t\treturn  value[\u0027description\u0027] + \u0027 - Weight Rejects (% of units produced)\u0027 # + value[\u0027scale\u0027] + \u0027 - Weights are in \u0027 + value[\u0027unit\u0027] + \u0027. Overage is in kg. Filler accuracy σ set to: \u0027 + str(self.view.custom.scale.design) + \u0027 \u0027 + value[\u0027unit\u0027]\n\telse:\n\t\treturn \u0027Weight Rejects (% of units produced)\u0027 # \u0027Weights are in \u0027 + value[\u0027unit\u0027] + \u0027. Overage is in kg. Filler accuracy σ set to: \u0027 + str(self.view.custom.scale.design) + \u0027 \u0027 + value[\u0027unit\u0027]",
                       "type": "script"
                     }
                   ],
@@ -2933,7 +2977,7 @@
                   },
                   "transforms": [
                     {
-                      "code": "\n    # Convert the Python variable \u0027value\u0027 to a string and prepare it for JavaScript injection\n    value_str \u003d str(value)\n    \n    \n    # Create the JavaScript function as a string, injecting \u0027value\u0027 correctly\n    return (\u0027\u0027\u0027function(value, { series, seriesIndex, dataPointIndex, w }) {\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    // Accessing the data for y, y2, y3, and y4\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var data \u003d w.config.series[seriesIndex].data[dataPointIndex];\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y \u003d parseFloat(data.y).toFixed(0);  // Main value\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y2 \u003d parseFloat(data.y2).toFixed(0); // Additional value 1\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y3 \u003d parseFloat(data.y3).toFixed(1); // Additional value 2\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y4 \u003d parseFloat(data.y4).toFixed(0); // Additional value 3\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var pc \u003d 0\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    if (parseFloat(data.y4)\u003e0){\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    pc \u003d (parseFloat(data.y)*100/parseFloat(data.y4)).toFixed(0);} // Percentage\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    // Concatenate the values with slashes in between\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    return \u0027Weight Rejects for \u0027 + y + \u0027 units out of \u0027 + y4 + \u0027 (\u0027 + pc + \u0027%)\u0027; \u0027\u0027\u0027\n            \u0027\u0027\u0027\\n}\u0027\u0027\u0027)\n            \n            \n            \n            #\u0027\u0027\u0027\\n    return \u0027Avg. Overage: \u0027 + y + \" \u0027\u0027\u0027 + value_str + \u0027\u0027\u0027 \" + \u0027 / Avg. Weight: \u0027 + y2 + \" \u0027\u0027\u0027 + value_str + \u0027\u0027\u0027 \"  + \u0027 / Overage: \u0027 + y3+ \" kg \"   + \u0027 / Units: \u0027 + y4;\u0027\u0027\u0027",
+                      "code": "\n    # Convert the Python variable \u0027value\u0027 to a string and prepare it for JavaScript injection\n    value_str \u003d str(value)\n    \n    \n#    # Create the JavaScript function as a string, injecting \u0027value\u0027 correctly\n#    return (\u0027\u0027\u0027function(value, { series, seriesIndex, dataPointIndex, w }) {\u0027\u0027\u0027\n#            \u0027\u0027\u0027\\n    // Accessing the data for y, y2, y3, and y4\u0027\u0027\u0027\n#            \u0027\u0027\u0027\\n    var data \u003d w.config.series[seriesIndex].data[dataPointIndex];\u0027\u0027\u0027\n#            \u0027\u0027\u0027\\n    var y \u003d parseFloat(data.y).toFixed(0);  // Main value\u0027\u0027\u0027\n#            \u0027\u0027\u0027\\n    var y2 \u003d parseFloat(data.y2).toFixed(0); // Additional value 1\u0027\u0027\u0027\n#            \u0027\u0027\u0027\\n    var y3 \u003d parseFloat(data.y3).toFixed(1); // Additional value 2\u0027\u0027\u0027\n#            \u0027\u0027\u0027\\n    var y4 \u003d parseFloat(data.y4).toFixed(0); // Additional value 3\u0027\u0027\u0027\n#            \u0027\u0027\u0027\\n    var pc \u003d 0\u0027\u0027\u0027\n#            \u0027\u0027\u0027\\n    if (parseFloat(data.y4)\u003e0){\u0027\u0027\u0027\n#            \u0027\u0027\u0027\\n    pc \u003d (parseFloat(data.y)*100/parseFloat(data.y4)).toFixed(0);} // Percentage\u0027\u0027\u0027\n#            \u0027\u0027\u0027\\n\u0027\u0027\u0027\n#            \u0027\u0027\u0027\\n    // Concatenate the values with slashes in between\u0027\u0027\u0027\n#            \u0027\u0027\u0027\\n    return \u0027Weight Rejects for \u0027 + y + \u0027 units out of \u0027 + y4 + \u0027 (\u0027 + pc + \u0027%)\u0027; \u0027\u0027\u0027\n#            \u0027\u0027\u0027\\n}\u0027\u0027\u0027)\n            \n    return (\u0027\u0027\u0027function(value, { series, seriesIndex, dataPointIndex, w }) {\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    // Accessing the data for y, y2, y3, and y4\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var data \u003d w.config.series[seriesIndex].data[dataPointIndex];\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y \u003d parseFloat(data.y).toFixed(0);  // Main value\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y2 \u003d parseFloat(data.y2).toFixed(0); // Additional value 1\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y3 \u003d parseFloat(data.y3).toFixed(1); // Additional value 2\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var y4 \u003d parseFloat(data.y4).toFixed(0); // Additional value 3\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    var pc \u003d 0\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    if (parseFloat(data.y4)\u003e0){\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    pc \u003d (parseFloat(data.y3)*100/parseFloat(data.y4)).toFixed(0);} // Percentage\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    // Concatenate the values with slashes in between\u0027\u0027\u0027\n            \u0027\u0027\u0027\\n    return \u0027Weight Rejects for \u0027 + y3 + \u0027 units out of \u0027 + y4 + \u0027 (\u0027 + pc + \u0027%)\u0027; \u0027\u0027\u0027\n            \u0027\u0027\u0027\\n}\u0027\u0027\u0027)\n            \n            #\u0027\u0027\u0027\\n    return \u0027Avg. Overage: \u0027 + y + \" \u0027\u0027\u0027 + value_str + \u0027\u0027\u0027 \" + \u0027 / Avg. Weight: \u0027 + y2 + \" \u0027\u0027\u0027 + value_str + \u0027\u0027\u0027 \"  + \u0027 / Overage: \u0027 + y3+ \" kg \"   + \u0027 / Units: \u0027 + y4;\u0027\u0027\u0027",
                       "type": "script"
                     }
                   ],
@@ -3007,28 +3051,56 @@
                 "plotOptions": {
                   "heatmap": {
                     "colorScale": {
-                      "inverse": true,
-                      "max": 0,
-                      "min": 2000,
+                      "inverse": false,
+                      "max": 200,
+                      "min": 0,
                       "ranges": [
                         {
                           "color": "#FFFFFF",
                           "foreColor": "#FFFFFF",
                           "from": 0,
-                          "name": " ",
+                          "name": "",
                           "to": 0
                         },
                         {
-                          "color": "#ABCDEF",
+                          "color": "#00800080",
+                          "foreColor": "#FFFFFF",
+                          "from": "0.0000001",
+                          "name": "",
+                          "to": 1
+                        },
+                        {
+                          "color": "#98FB9880",
                           "foreColor": "#000000",
-                          "from": 1,
-                          "name": "Metal Detection events",
-                          "to": 1000
+                          "from": 1.0000001,
+                          "name": "",
+                          "to": 2
+                        },
+                        {
+                          "color": "#FFB7B780",
+                          "foreColor": "#000000",
+                          "from": 2.0000001,
+                          "name": "",
+                          "to": 3
+                        },
+                        {
+                          "color": "#FF555580",
+                          "foreColor": "#000000",
+                          "from": 3.0000001,
+                          "name": "",
+                          "to": 5
+                        },
+                        {
+                          "color": "#FF0000",
+                          "foreColor": "#000000",
+                          "from": 5.0000001,
+                          "name": "",
+                          "to": 200
                         }
                       ]
                     },
-                    "distributed": false,
-                    "enableShades": true,
+                    "distributed": true,
+                    "enableShades": false,
                     "radius": 2,
                     "reverseNegativeShade": false,
                     "shadeIntensity": 0.8,
@@ -3148,6 +3220,7 @@
               "config": {
                 "expression": "if({../Selections/selection_scale.props.value}\u003d0,True, if(len({../Selections/selection_scale.props.options})\u003d1,True,False))"
               },
+              "enabled": false,
               "type": "expr"
             }
           }

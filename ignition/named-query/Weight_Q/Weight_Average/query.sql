@@ -18,8 +18,8 @@ SELECT	a.time_start,
 FROM weight.dbo.aggregated a 
 	join weight.dbo.scale s on a.scale_id = s.scale_id
 	join weight.dbo.filler f on s.filler_id = f.filler_id
-	LEFT JOIN weight.dbo.rejects r on (r.line_id = f.line_id and r.time_start = a.time_start and r.material = a.material and :scale_id=0) 
-WHERE (:scale_id = 0  or a.scale_id = :scale_id)
+	LEFT JOIN weight.dbo.rejects r on (r.line_id = f.line_id and r.time_start = a.time_start and r.material = a.material) 
+WHERE ((:scale_id = 0 and f.is_line_total = 0)  or a.scale_id = :scale_id)
 AND f.line_id = :line_id
 --AND time_start >= DATEADD(month, -11, DATEADD(month, DATEDIFF(month, 0, GETDATE()), 0))
 AND a.time_start >= DATEADD(month, -11, DATEADD(month, DATEDIFF(month, 0, :end_dt), 0))

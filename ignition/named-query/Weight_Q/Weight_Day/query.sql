@@ -10,7 +10,7 @@ WITH DistinctMaterials AS (
     JOIN weight.dbo.scale s2 ON a2.scale_id = s2.scale_id
     JOIN weight.dbo.filler f2 ON s2.filler_id = f2.filler_id
     WHERE 
-        f2.line_id = 1 -- Filter by the correct line
+        f2.line_id = :line_id -- Filter by the correct line
         AND a2.material != 'All'
         AND a2.time_start >= :start -- Match the main query's time filter
         AND a2.time_start < DATEADD(DAY, 10, :start)
@@ -64,14 +64,14 @@ FROM
     weight.dbo.aggregated a
     JOIN weight.dbo.scale s ON a.scale_id = s.scale_id
     JOIN weight.dbo.filler f ON s.filler_id = f.filler_id
-    LEFT JOIN weight.dbo.rejects r on (r.line_id = f.line_id and r.time_start = a.time_start and r.material = a.material and :scale_id=0) 
+    LEFT JOIN weight.dbo.rejects r on (r.line_id = f.line_id and r.time_start = a.time_start and r.material = a.material) 
     LEFT JOIN MaterialStrings ms ON a.time_start = ms.time_start 
     
 WHERE 
     a.time_start >= :start AND 
     a.time_start < DATEADD(DAY, 10, :start)
  AND
-    (:scale_id = 0 or s.scale_id = :scale_id )AND 
+    ((:scale_id = 0 and f.is_line_total = 0) or s.scale_id = :scale_id )AND 
     f.line_id = :line_id AND 
 	a.material = :material
 GROUP BY 

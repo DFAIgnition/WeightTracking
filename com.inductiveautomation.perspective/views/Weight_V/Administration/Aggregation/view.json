@@ -107,7 +107,7 @@
               }
             },
             "props": {
-              "formattedValue": "May 14, 2025 8:00 AM",
+              "formattedValue": "Jul 1, 2025 7:00 AM",
               "pickerType": "date",
               "style": {
                 "marginRight": 10,
@@ -172,7 +172,7 @@
               }
             },
             "props": {
-              "formattedValue": "Jun 13, 2025 8:00 AM",
+              "formattedValue": "Jul 31, 2025 7:00 AM",
               "pickerType": "date",
               "style": {
                 "marginRight": 10,

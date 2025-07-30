@@ -134,6 +134,11 @@
         "type": "Parameter",
         "identifier": "filler_sp_high_tag",
         "sqlType": 7
+      },
+      {
+        "type": "Parameter",
+        "identifier": "is_line_total",
+        "sqlType": 6
       }
     ]
   }

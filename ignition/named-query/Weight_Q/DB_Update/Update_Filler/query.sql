@@ -19,6 +19,6 @@ SET line_id = :line_id,
     filler_reason_under = :filler_reason_under,
     filler_reason_under_cond = :filler_reason_under_cond,
     filler_reason_metal = :filler_reason_metal,
-    filler_reason_metal_cond = :filler_reason_metal_cond
-    
+    filler_reason_metal_cond = :filler_reason_metal_cond,
+    is_line_total = :is_line_total
 WHERE filler_id = :filler_id;

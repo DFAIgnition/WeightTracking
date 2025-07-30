@@ -60,7 +60,7 @@
               "dom": {
                 "onClick": {
                   "config": {
-                    "script": "\t\t\n\t\n\t# Make sure we have edit permission to do this\n\tif (not CORE_P.User.hasPermission(self, Constants_P.PROJECT[\u0027project_name\u0027], \u0027SITEADMIN\u0027)):\n\t\treturn\n\t\t\t\n\t# Opens a popup view. We are passing in two parameters, called \"myParam\" and \"myParam2\". We also set some additional properties of the popup.\n\tsystem.perspective.openPopup(\"FillerAddEdit\",\n\t\t\t\t\t\t\t\t  \u0027Weight_V/Administration/FillerAddEdit\u0027, \n\t\t\t\t\t\t\t\t  params \u003d {\u0027line_id\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027unit_id\u0027:\u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_name\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_design\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_sp_low\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_sp\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_sp_high\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_sp_low_tag\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_sp_tag\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_sp_high_tag\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_reject\u0027:\u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_reject_cond\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_metal\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_metal_cond\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_reason_over\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_reason_over_cond\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_reason_under\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_reason_under_cond\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_reason_metal\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_reason_metal_cond\u0027:\u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027scale_id\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027scale_name\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027scale_weight\u0027:\u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027site_id\u0027: self.parent.parent.getChild(\"CurrentSite\").props.params.site_id,\n\t\t\t\t\t\t\t\t  \t\t\t\u0027edit\u0027:False,\n\t\t\t\t\t\t\t\t  \t\t\t}, \n\t\t\t\t\t\t\t\t  showCloseIcon \u003d True, \n\t\t\t\t\t\t\t\t  title \u003d \u0027Add Filler\u0027, \n\t\t\t\t\t\t\t\t  modal \u003d True)\t"
+                    "script": "\t\t\n\t\n\t# Make sure we have edit permission to do this\n\tif (not CORE_P.User.hasPermission(self, Constants_P.PROJECT[\u0027project_name\u0027], \u0027SITEADMIN\u0027)):\n\t\treturn\n\t\t\t\n\t# Opens a popup view. We are passing in two parameters, called \"myParam\" and \"myParam2\". We also set some additional properties of the popup.\n\tsystem.perspective.openPopup(\"FillerAddEdit\",\n\t\t\t\t\t\t\t\t  \u0027Weight_V/Administration/FillerAddEdit\u0027, \n\t\t\t\t\t\t\t\t  params \u003d {\u0027line_id\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027unit_id\u0027:\u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_name\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_design\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_sp_low\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_sp\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_sp_high\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_sp_low_tag\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_sp_tag\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_sp_high_tag\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_reject\u0027:\u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_reject_cond\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_metal\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_metal_cond\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_reason_over\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_reason_over_cond\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_reason_under\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_reason_under_cond\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_reason_metal\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_reason_metal_cond\u0027:\u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027is_line_total\u0027:0,\n\t\t\t\t\t\t\t\t\t\t\t\u0027scale_id\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027scale_name\u0027: \u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027scale_weight\u0027:\u0027\u0027,\n\t\t\t\t\t\t\t\t\t\t\t\u0027site_id\u0027: self.parent.parent.getChild(\"CurrentSite\").props.params.site_id,\n\t\t\t\t\t\t\t\t  \t\t\t\u0027edit\u0027:False,\n\t\t\t\t\t\t\t\t  \t\t\t}, \n\t\t\t\t\t\t\t\t  showCloseIcon \u003d True, \n\t\t\t\t\t\t\t\t  title \u003d \u0027Add Filler\u0027, \n\t\t\t\t\t\t\t\t  modal \u003d True)\t"
                   },
                   "scope": "G",
                   "type": "script"
@@ -127,7 +127,7 @@
           "component": {
             "onRowDoubleClick": {
               "config": {
-                "script": "\t\n\t# Make sure we have edit permission to do this\n\tif (not CORE_P.User.hasPermission(self, Constants_P.PROJECT[\u0027project_name\u0027], \u0027SITEADMIN\u0027)):\n\t\treturn\n\t\t\t\n\t# Opens a popup view. We are passing in two parameters, called \"myParam\" and \"myParam2\". We also set some additional properties of the popup.\n\tsystem.perspective.openPopup(\"FillerAddEdit\",\n\t\t\t\t\t\t\t\t  \u0027Weight_V/Administration/FillerAddEdit\u0027, \n\t\t\t\t\t\t\t\t  params \u003d {\u0027filler_id\u0027: event.value[\u0027filler_id\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027line_id\u0027: event.value[\u0027line_id\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027unit_id\u0027: event.value[\u0027unit_id\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_name\u0027: event.value[\u0027filler_name\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_design\u0027: event.value[\u0027filler_design\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_sp_low\u0027: event.value[\u0027filler_sp_low\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_sp\u0027: event.value[\u0027filler_sp\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_sp_high\u0027: event.value[\u0027filler_sp_high\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_sp_low_tag\u0027: event.value[\u0027filler_sp_low_tag\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_sp_tag\u0027: event.value[\u0027filler_sp_tag\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_sp_high_tag\u0027: event.value[\u0027filler_sp_high_tag\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_reject\u0027: event.value[\u0027filler_reject\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_reject_cond\u0027: event.value[\u0027filler_reject_cond\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_metal\u0027: event.value[\u0027filler_metal\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_metal_cond\u0027: event.value[\u0027filler_metal_cond\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_reason_over\u0027: event.value[\u0027filler_reason_over\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_reason_over_cond\u0027: event.value[\u0027filler_reason_over_cond\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_reason_under\u0027: event.value[\u0027filler_reason_under\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_reason_under_cond\u0027: event.value[\u0027filler_reason_under_cond\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_reason_metal\u0027: event.value[\u0027filler_reason_metal\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_reason_metal_cond\u0027: event.value[\u0027filler_reason_metal_cond\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027scale_id\u0027: event.value[\u0027scale_id\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027scale_name\u0027: event.value[\u0027scale_name\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027scale_weight\u0027: event.value[\u0027scale_weight\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027site_id\u0027: event.value[\u0027site_id\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027edit\u0027:True,\n\t\t\t\t\t\t\t\t  \t\t\t}, \n\t\t\t\t\t\t\t\t  showCloseIcon \u003d True, \n\t\t\t\t\t\t\t\t  title \u003d \u0027Edit Filler\u0027, \n\t\t\t\t\t\t\t\t  modal \u003d True)\t"
+                "script": "\t\n\t# Make sure we have edit permission to do this\n\tif (not CORE_P.User.hasPermission(self, Constants_P.PROJECT[\u0027project_name\u0027], \u0027SITEADMIN\u0027)):\n\t\treturn\n\t\t\t\n\t# Opens a popup view. We are passing in two parameters, called \"myParam\" and \"myParam2\". We also set some additional properties of the popup.\n\tsystem.perspective.openPopup(\"FillerAddEdit\",\n\t\t\t\t\t\t\t\t  \u0027Weight_V/Administration/FillerAddEdit\u0027, \n\t\t\t\t\t\t\t\t  params \u003d {\u0027filler_id\u0027: event.value[\u0027filler_id\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027line_id\u0027: event.value[\u0027line_id\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027unit_id\u0027: event.value[\u0027unit_id\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_name\u0027: event.value[\u0027filler_name\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_design\u0027: event.value[\u0027filler_design\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_sp_low\u0027: event.value[\u0027filler_sp_low\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_sp\u0027: event.value[\u0027filler_sp\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_sp_high\u0027: event.value[\u0027filler_sp_high\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_sp_low_tag\u0027: event.value[\u0027filler_sp_low_tag\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_sp_tag\u0027: event.value[\u0027filler_sp_tag\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_sp_high_tag\u0027: event.value[\u0027filler_sp_high_tag\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_reject\u0027: event.value[\u0027filler_reject\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_reject_cond\u0027: event.value[\u0027filler_reject_cond\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_metal\u0027: event.value[\u0027filler_metal\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_metal_cond\u0027: event.value[\u0027filler_metal_cond\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_reason_over\u0027: event.value[\u0027filler_reason_over\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_reason_over_cond\u0027: event.value[\u0027filler_reason_over_cond\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_reason_under\u0027: event.value[\u0027filler_reason_under\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_reason_under_cond\u0027: event.value[\u0027filler_reason_under_cond\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_reason_metal\u0027: event.value[\u0027filler_reason_metal\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027filler_reason_metal_cond\u0027: event.value[\u0027filler_reason_metal_cond\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027is_line_total\u0027: event.value[\u0027is_line_total\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027scale_id\u0027: event.value[\u0027scale_id\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027scale_name\u0027: event.value[\u0027scale_name\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027scale_weight\u0027: event.value[\u0027scale_weight\u0027],\n\t\t\t\t\t\t\t\t\t\t\t\u0027site_id\u0027: event.value[\u0027site_id\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027edit\u0027:True,\n\t\t\t\t\t\t\t\t  \t\t\t}, \n\t\t\t\t\t\t\t\t  showCloseIcon \u003d True, \n\t\t\t\t\t\t\t\t  title \u003d \u0027Edit Filler\u0027, \n\t\t\t\t\t\t\t\t  modal \u003d True)\t"
               },
               "scope": "G",
               "type": "script"
@@ -817,6 +817,98 @@
               "viewParams": {},
               "viewPath": "",
               "visible": true,
+              "width": ""
+            },
+            {
+              "align": "center",
+              "boolean": "checkbox",
+              "dateFormat": "MM/DD/YYYY",
+              "editable": false,
+              "field": "",
+              "filter": {
+                "boolean": {
+                  "condition": ""
+                },
+                "date": {
+                  "condition": "",
+                  "value": ""
+                },
+                "enabled": false,
+                "number": {
+                  "condition": "",
+                  "value": ""
+                },
+                "string": {
+                  "condition": "",
+                  "value": ""
+                },
+                "visible": "on-hover"
+              },
+              "footer": {
+                "align": "center",
+                "justify": "left",
+                "style": {
+                  "classes": ""
+                },
+                "title": ""
+              },
+              "header": {
+                "align": "center",
+                "justify": "left",
+                "style": {
+                  "classes": ""
+                },
+                "title": ""
+              },
+              "justify": "auto",
+              "nullFormat": {
+                "includeNullStrings": false,
+                "nullFormatValue": "",
+                "strict": false
+              },
+              "number": "value",
+              "numberFormat": "0,0.##",
+              "progressBar": {
+                "bar": {
+                  "color": "",
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                "max": 100,
+                "min": 0,
+                "track": {
+                  "color": "",
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                "value": {
+                  "enabled": true,
+                  "format": "0,0.##",
+                  "justify": "center",
+                  "style": {
+                    "classes": ""
+                  }
+                }
+              },
+              "render": "auto",
+              "resizable": true,
+              "sort": "none",
+              "sortable": true,
+              "strictWidth": false,
+              "style": {
+                "classes": ""
+              },
+              "toggleSwitch": {
+                "color": {
+                  "selected": "",
+                  "unselected": ""
+                }
+              },
+              "viewParams": {},
+              "viewPath": "",
+              "visible": false,
               "width": ""
             },
             {
