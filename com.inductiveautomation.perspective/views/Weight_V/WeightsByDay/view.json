@@ -5,9 +5,9 @@
       "$": [
         "ts",
         192,
-        1753904021038
+        1756090371897
       ],
-      "$ts": 1753963200000
+      "$ts": 1756123200000
     },
     "heatmap_format": {
       "colorScale": {
@@ -102,18 +102,18 @@
       "index_year": "",
       "timestamp": ""
     },
-    "sqlserver_timezone": "UTC",
+    "sqlserver_timezone": "New Zealand Standard Time",
     "start_dt": {
       "$": [
         "ts",
         192,
-        1753904021336
+        1756090371898
       ],
-      "$ts": 1753790400000
+      "$ts": 1755950400000
     }
   },
   "params": {
-    "timeZoneID": ""
+    "timeZoneID": "Pacific/Auckland"
   },
   "propConfig": {
     "custom.end_dt": {
@@ -629,6 +629,10 @@
                 {
                   "label": "Group by PO Number",
                   "value": "po"
+                },
+                {
+                  "label": "Group by Day and Item Size",
+                  "value": "item_size"
                 }
               ],
               "placeholder": {
@@ -830,98 +834,13 @@
           },
           {
             "meta": {
-              "name": "Month"
+              "name": "Month_old"
             },
             "position": {
-              "basis": "100%"
+              "basis": "100%",
+              "display": false
             },
             "propConfig": {
-              "props.columns[0].visible": {
-                "binding": {
-                  "config": {
-                    "path": ".../Selections/selection_type.props.value"
-                  },
-                  "transforms": [
-                    {
-                      "code": "\tif (value in [\u0027all\u0027,\u0027day\u0027]):\n\t\treturn True\n\treturn False",
-                      "type": "script"
-                    }
-                  ],
-                  "type": "property"
-                }
-              },
-              "props.columns[10].visible": {
-                "binding": {
-                  "config": {
-                    "path": ".../Selections/selection_scale.props.value"
-                  },
-                  "enabled": false,
-                  "transforms": [
-                    {
-                      "code": "\tif (value \u003d\u003d 0):\n\t\treturn True\n\t\t\n\treturn False",
-                      "type": "script"
-                    }
-                  ],
-                  "type": "property"
-                }
-              },
-              "props.columns[11].visible": {
-                "binding": {
-                  "config": {
-                    "path": ".../Selections/selection_scale.props.value"
-                  },
-                  "enabled": false,
-                  "transforms": [
-                    {
-                      "code": "\tif (value \u003d\u003d 0):\n\t\treturn True\n\t\t\n\treturn False",
-                      "type": "script"
-                    }
-                  ],
-                  "type": "property"
-                }
-              },
-              "props.columns[1].visible": {
-                "binding": {
-                  "config": {
-                    "path": ".../Selections/selection_type.props.value"
-                  },
-                  "transforms": [
-                    {
-                      "code": "\tif (value in [\u0027all\u0027,\u0027material\u0027,\u0027po\u0027]):\n\t\treturn True\n\treturn False",
-                      "type": "script"
-                    }
-                  ],
-                  "type": "property"
-                }
-              },
-              "props.columns[2].visible": {
-                "binding": {
-                  "config": {
-                    "path": ".../Selections/selection_type.props.value"
-                  },
-                  "transforms": [
-                    {
-                      "code": "\tif (value in [\u0027all\u0027,\u0027material\u0027,\u0027po\u0027]):\n\t\treturn True\n\treturn False",
-                      "type": "script"
-                    }
-                  ],
-                  "type": "property"
-                }
-              },
-              "props.columns[3].visible": {
-                "binding": {
-                  "config": {
-                    "path": ".../Selections/selection_type.props.value"
-                  },
-                  "transforms": [
-                    {
-                      "code": "\tif (value in [\u0027all\u0027,\u0027po\u0027]):\n\t\treturn True\n\treturn False",
-                      "type": "script"
-                    }
-                  ],
-                  "type": "property"
-                }
-              },
               "props.columns[5].header.title": {
                 "binding": {
                   "config": {
@@ -978,6 +897,7 @@
                     },
                     "waitOnAll": true
                   },
+                  "enabled": false,
                   "transforms": [
                     {
                       "code": "\tline_id \u003d int(self.parent.parent.getChild(\"Selections\").getChild(\"selection_line\").props.value)\n\ttry:\n\t\tsqlserver_tz \u003d value[\u0027timezone\u0027] # Note, the Ignition timezone has already been converted here into a format that SQLServer understands...\n\t\tscale_id \u003d value[\u0027scale_id\u0027]\n\t\tend_dt \u003d value[\u0027end_dt\u0027]\n\t\treport_type \u003d value[\u0027report_type\u0027]\n\t\tmonths \u003d (int(value[\u0027months\u0027]) - 1) * -1\n\t\t\n\t\t# Get the unit conversion factor\n\t\tunits \u003d value[\u0027units\u0027]\n\t\tunit_conversion \u003d 1\n\t\ttotal_conversion \u003d 1\n\t\tif (units \u003d\u003d \u0027gkg\u0027):\n\t\t\ttotal_conversion \u003d 1000\n\t\telif (units \u003d\u003d \u0027olbs\u0027):\n\t\t\tunit_conversion \u003d 28.3495006561279\n\t\t\ttotal_conversion \u003d 453.592010498047\n\t\telse:\t\n\t\t\tfor option in self.parent.parent.getChild(\"Selections\").getChild(\"selection_units\").props.options:\n\t\t\t\tif (option[\u0027value\u0027] \u003d\u003d units):\n\t\t\t\t\tunit_conversion \u003d float(option[\u0027unit_conversion\u0027])\n\t\t\t\t\ttotal_conversion \u003d float(option[\u0027unit_conversion\u0027])\n\t\t\t\t\t\t\t\n\t\t\n\t\t# Build the query. \n\t\t# Note - had to build the query in code, because SQLServer/ignition doesn\u0027t seem to allow the passing of the timezone as a parameter\n\t\t# This is generally a \u0027Bad Idea\u0027, due to SQl injection attacks. In this case, I\u0027m only directly substituting in a timezone string that \n\t\t# comes from a database entry that is manually controlled by us (so should be safe). The other params are run through Prep as normal. \n\t\tif (report_type\t\u003d\u003d \u0027all\u0027):\n\t\t\t \n\t\t\t# FORMAT(a.time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027) as \u0027date\u0027,\n\t\t\t\n\t\t\tquery \u003d \"\"\"\n\t\t\t\n\t\t\tSELECT\n\t\t\t    a.material,\n\t\t\t    a.po_number,\n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027) as \u0027date\u0027,\n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027MMM dd, yyyy\u0027) as \u0027display_date\u0027,\n\t\t\t    SUM([count]) AS \u0027count\u0027,\n\t\t\t    ((SUM(a.weight_sum) / SUM([count]))/:unit_conversion) AS \u0027weight_avg\u0027,\n\t\t\t    SUM(a.weight_diff) /:total_conversion AS \u0027weight_diff\u0027,\n\t\t\t    SUM(a.weight_sum) /:total_conversion AS \u0027weight_sum\u0027,\n\t\t\t    (SUM( (a.pct_weight_under/100) * count)/ SUM([count]))*100 as \u0027pct_weight_under\u0027,\n\t\t\t    (SUM( (a.pct_weight_over/100) * count)/ SUM([count]))*100 as \u0027pct_weight_over\u0027,\n\t\t\t    (\n\t\t\t            SELECT material_description\n\t\t\t            FROM system.dbo.materials m\n\t\t\t            WHERE m.material_number \u003d TRY_CAST(a.material AS INT)\n\t\t\t        ) AS material_description,\n\t\t\t\tsum(r.metal_count) as \u0027metal_rejects\u0027, \n\t\t\t\tsum(r.weight_count) as \u0027weight_rejects\u0027 \n\t\t\t\n\t\t\tFROM weight.dbo.aggregated a\n\t\t\t\tjoin weight.dbo.scale s on a.scale_id \u003d s.scale_id\n\t\t\t\tjoin weight.dbo.filler f on s.filler_id \u003d f.filler_id\n\t\t\t\tLEFT JOIN weight.dbo.rejects r on (r.line_id \u003d f.line_id and r.time_start \u003d a.time_start and r.material \u003d a.material) \n\t\t\tWHERE a.material !\u003d \u0027All\u0027\n\t\t\tAND ((0 \u003d ? and f.is_line_total \u003d 0) or a.scale_id \u003d ?)\n\t\t\tAND f.line_id \u003d ?\n\t\t\tAND a.time_start \u003e\u003d ?\n\t\t\tAND a.time_start \u003c ?\n\t\t\tGROUP BY\n\t\t\t    a.material,\n\t\t\t    a.po_number,\n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027), \n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027MMM dd, yyyy\u0027)  \n\t\t\tORDER BY FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027), a.material, a.po_number\n\t\t\t\"\"\"\n\t\t\n\t\telif (report_type\t\u003d\u003d \u0027day\u0027):\n\t\t\tquery \u003d \"\"\"\n\t\t\t\n\t\t\tSELECT\n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027) as \u0027date\u0027,\n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027MMM dd, yyyy\u0027) as \u0027display_date\u0027,\n\t\t\t    SUM([count]) AS \u0027count\u0027,\n\t\t\t    ((SUM(a.weight_sum) / SUM([count]))/:unit_conversion) AS \u0027weight_avg\u0027,\n\t\t\t    SUM(a.weight_diff) /:total_conversion AS \u0027weight_diff\u0027,\n\t\t\t    SUM(a.weight_sum) /:total_conversion AS \u0027weight_sum\u0027,\n\t\t\t    (SUM( (a.pct_weight_under/100) * count)/ SUM([count]))*100 as \u0027pct_weight_under\u0027,\n\t\t\t    (SUM( (a.pct_weight_over/100) * count)/ SUM([count]))*100 as \u0027pct_weight_over\u0027,\n\t\t\t\tsum(r.metal_count) as \u0027metal_rejects\u0027, \n\t\t\t\tsum(r.weight_count) as \u0027weight_rejects\u0027 \n\t\t\t\n\t\t\tFROM weight.dbo.aggregated a\n\t\t\t\tjoin weight.dbo.scale s on a.scale_id \u003d s.scale_id\n\t\t\t\tjoin weight.dbo.filler f on s.filler_id \u003d f.filler_id\n\t\t\t\tLEFT JOIN weight.dbo.rejects r on (r.line_id \u003d f.line_id and r.time_start \u003d a.time_start and r.material \u003d a.material) \n\t\t\tWHERE a.material \u003d \u0027All\u0027\n\t\t\tAND ((0 \u003d ? and f.is_line_total \u003d 0) or a.scale_id \u003d ?)\n\t\t\tAND f.line_id \u003d ?\n\t\t\tAND a.time_start \u003e\u003d ?\n\t\t\tAND a.time_start \u003c ?\n\t\t\tGROUP BY\n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027), \n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027MMM dd, yyyy\u0027)  \n\t\t\tORDER BY FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027)\n\t\t\t\n\t\t\t\"\"\"\t\t\n\t\t\t\n\t\telif (report_type\t\u003d\u003d \u0027material\u0027):\n\t\t\tquery \u003d \"\"\"\n\t\t\t\n\t\t\t\n\t\t\tSELECT\n\t\t\t    a.material,\n\t\t\t    SUM([count]) AS \u0027count\u0027,\n\t\t\t    ((SUM(a.weight_sum) / SUM([count]))/:unit_conversion) AS \u0027weight_avg\u0027,\n\t\t\t    SUM(a.weight_diff) /:total_conversion AS \u0027weight_diff\u0027,\n\t\t\t    SUM(a.weight_sum) /:total_conversion AS \u0027weight_sum\u0027,\n\t\t\t    (SUM( (a.pct_weight_under/100) * count)/ SUM([count]))*100 as \u0027pct_weight_under\u0027,\n\t\t\t    (SUM( (a.pct_weight_over/100) * count)/ SUM([count]))*100 as \u0027pct_weight_over\u0027,\n\t\t\t    (\n\t\t\t            SELECT material_description\n\t\t\t            FROM system.dbo.materials m\n\t\t\t            WHERE m.material_number \u003d TRY_CAST(a.material AS INT)\n\t\t\t        ) AS material_description,\n\t\t\t\tsum(r.metal_count) as \u0027metal_rejects\u0027, \n\t\t\t\tsum(r.weight_count) as \u0027weight_rejects\u0027 \n\t\t\t\n\t\t\tFROM weight.dbo.aggregated a\n\t\t\t\tjoin weight.dbo.scale s on a.scale_id \u003d s.scale_id\n\t\t\t\tjoin weight.dbo.filler f on s.filler_id \u003d f.filler_id\n\t\t\t\tLEFT JOIN weight.dbo.rejects r on (r.line_id \u003d f.line_id and r.time_start \u003d a.time_start and r.material \u003d a.material) \n\t\t\tWHERE a.material !\u003d \u0027All\u0027\n\t\t\tAND ((0 \u003d ? and f.is_line_total \u003d 0) or a.scale_id \u003d ?)\n\t\t\tAND f.line_id \u003d ?\n\t\t\tAND a.time_start \u003e\u003d ?\n\t\t\tAND a.time_start \u003c ?\n\t\t\tGROUP BY\n\t\t\t    a.material\n\t\t\tORDER BY a.material\n\n\t\t\t\"\"\"\n\t\t\t\n\t\telif (report_type\t\u003d\u003d \u0027po\u0027):\n\t\t\tquery \u003d \"\"\"\n\t\t\t\n\t\t\tSELECT\n\t\t\t    a.material,\n\t\t\t    a.po_number,\n\t\t\t    SUM([count]) AS \u0027count\u0027,\n\t\t\t    ((SUM(a.weight_sum) / SUM([count]))/:unit_conversion) AS \u0027weight_avg\u0027,\n\t\t\t    SUM(a.weight_diff) /:total_conversion AS \u0027weight_diff\u0027,\n\t\t\t    SUM(a.weight_sum) /:total_conversion AS \u0027weight_sum\u0027,\n\t\t\t    (SUM( (a.pct_weight_under/100) * count)/ SUM([count]))*100 as \u0027pct_weight_under\u0027,\n\t\t\t    (SUM( (a.pct_weight_over/100) * count)/ SUM([count]))*100 as \u0027pct_weight_over\u0027,\n\t\t\t    (\n\t\t\t            SELECT material_description\n\t\t\t            FROM system.dbo.materials m\n\t\t\t            WHERE m.material_number \u003d TRY_CAST(a.material AS INT)\n\t\t\t        ) AS material_description,\n\t\t\t\tsum(r.metal_count) as \u0027metal_rejects\u0027, \n\t\t\t\tsum(r.weight_count) as \u0027weight_rejects\u0027 \n\t\t\t\n\t\t\tFROM weight.dbo.aggregated a\n\t\t\t\tjoin weight.dbo.scale s on a.scale_id \u003d s.scale_id\n\t\t\t\tjoin weight.dbo.filler f on s.filler_id \u003d f.filler_id\n\t\t\t\tLEFT JOIN weight.dbo.rejects r on (r.line_id \u003d f.line_id and r.time_start \u003d a.time_start and r.material \u003d a.material) \n\t\t\tWHERE a.material !\u003d \u0027All\u0027\n\t\t\tAND ((0 \u003d ? and f.is_line_total \u003d 0) or a.scale_id \u003d ?)\n\t\t\tAND f.line_id \u003d ?\n\t\t\tAND a.time_start \u003e\u003d ?\n\t\t\tAND a.time_start \u003c ?\n\t\t\tGROUP BY\n\t\t\t    a.po_number, \n\t\t\t    a.material\n\t\t\tORDER BY a.po_number, a.material\n\t\t\t\n\t\t\t\"\"\"\n\t\t\n\t\t#AND time_start \u003e\u003d DATEADD(month, ?, DATEADD(month, DATEDIFF(month, 0, ?), 0)) \n\t\t#AND time_start \u003c DATEADD(day, 1, EOMONTH(?))            \n\t\t\t\t\t\t\n\t\t# Substitute in the timezone and unit conversion\t\t\n\t\tquery \u003d query.replace(\u0027:timezone\u0027,sqlserver_tz)\n\t\tquery \u003d query.replace(\u0027:unit_conversion\u0027,str(unit_conversion))\n\t\tquery \u003d query.replace(\u0027:total_conversion\u0027,str(total_conversion))\n\t\t\t\t\t\t\n\t\t# Note: You need to repeat parameters if they are used multiple times.\n\t\t# IMPORTANT: The order of \u0027?\u0027 must match the order of arguments passed.\n\t\targs \u003d [\n\t\t    int(scale_id),\n\t\t    int(scale_id),\t\t    \n\t\t    int(line_id),\n\t\t    value[\u0027start_dt\u0027],    \n\t\t    value[\u0027end_dt\u0027] \n\t\t]\n\t\t\n\t\tresults \u003d CORE_P.Utils.datasetToDicts(system.db.runPrepQuery(query, args, \u0027system\u0027))\n\t\t\n\t\t\n\t\t#CORE_P.Utils.errorPopup(\u0027Dates:\u0027 + str(value[\u0027start_dt\u0027]) + \u0027 - \u0027  + str(value[\u0027end_dt\u0027]))\n\t\treturn results\n\texcept:\n\t    # Handle error\n\t #   CORE_P.Utils.errorPopup(\u0027Error getting weights data:\u0027)\n\t    return []\n\t",
@@ -1082,6 +1002,99 @@
                   },
                   "viewParams": {},
                   "viewPath": "",
+                  "visible": true,
+                  "width": ""
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "item_size",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Item Size"
+                  },
+                  "justify": "auto",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
                   "width": ""
                 },
                 {
@@ -1173,6 +1186,7 @@
                   },
                   "viewParams": {},
                   "viewPath": "",
+                  "visible": true,
                   "width": 80
                 },
                 {
@@ -1264,6 +1278,7 @@
                   },
                   "viewParams": {},
                   "viewPath": "",
+                  "visible": true,
                   "width": 240
                 },
                 {
@@ -1355,6 +1370,7 @@
                   },
                   "viewParams": {},
                   "viewPath": "",
+                  "visible": true,
                   "width": ""
                 },
                 {
@@ -1395,8 +1411,7 @@
                     "justify": "right",
                     "style": {
                       "classes": ""
-                    },
-                    "title": "Units"
+                    }
                   },
                   "justify": "right",
                   "nullFormat": {
@@ -1669,7 +1684,8 @@
                     "justify": "right",
                     "style": {
                       "classes": ""
-                    }
+                    },
+                    "title": "Overage [lbs]"
                   },
                   "justify": "right",
                   "nullFormat": {
@@ -2091,6 +2107,38 @@
                   "width": ""
                 }
               ],
+              "data": [
+                {
+                  "count": 283,
+                  "date": "2025-08-25",
+                  "display_date": "Aug 25, 2025",
+                  "material": "100059",
+                  "material_description": null,
+                  "metal_rejects": 138,
+                  "pct_weight_over": 18.0228,
+                  "pct_weight_under": 1.0581,
+                  "po_number": null,
+                  "weight_avg": 0.39957,
+                  "weight_diff": -224.669984,
+                  "weight_rejects": 152,
+                  "weight_sum": 113.078468
+                },
+                {
+                  "count": 696,
+                  "date": "2025-08-25",
+                  "display_date": "Aug 25, 2025",
+                  "material": "None",
+                  "material_description": null,
+                  "metal_rejects": null,
+                  "pct_weight_over": 7.328,
+                  "pct_weight_under": 1.1506,
+                  "po_number": null,
+                  "weight_avg": 0.4034,
+                  "weight_diff": -561.620407,
+                  "weight_rejects": null,
+                  "weight_sum": 280.766563
+                }
+              ],
               "enableHeaderGroups": true,
               "filter": {
                 "enabled": true
@@ -2117,6 +2165,1345 @@
               "style": {
                 "padding": 4
               }
+            },
+            "type": "ia.display.table"
+          },
+          {
+            "meta": {
+              "name": "Month"
+            },
+            "position": {
+              "basis": "400px",
+              "grow": 1
+            },
+            "propConfig": {
+              "props.columns[0].visible": {
+                "binding": {
+                  "config": {
+                    "path": ".../Selections/selection_type.props.value"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tif (value in [\u0027all\u0027,\u0027day\u0027,\u0027item_size\u0027]):\n\t\treturn True\n\treturn False",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.columns[1].visible": {
+                "binding": {
+                  "config": {
+                    "path": ".../Selections/selection_type.props.value"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tif (value in [\u0027item_size\u0027]):\n\t\treturn True\n\treturn False",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.columns[2].visible": {
+                "binding": {
+                  "config": {
+                    "path": ".../Selections/selection_type.props.value"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tif (value in [\u0027all\u0027,\u0027material\u0027,\u0027po\u0027]):\n\t\treturn True\n\treturn False",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.columns[3].visible": {
+                "binding": {
+                  "config": {
+                    "path": ".../Selections/selection_type.props.value"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tif (value in [\u0027all\u0027,\u0027material\u0027,\u0027po\u0027]):\n\t\treturn True\n\treturn False",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.columns[4].visible": {
+                "binding": {
+                  "config": {
+                    "path": ".../Selections/selection_type.props.value"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tif (value in [\u0027all\u0027,\u0027po\u0027]):\n\t\treturn True\n\treturn False",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.columns[6].header.title": {
+                "binding": {
+                  "config": {
+                    "path": ".../Selections/selection_units.props.value"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tif value\u003d\u003d\u0027gkg\u0027:\n\t\treturn \u0027Weight Average [g]\u0027\n\telif value\u003d\u003d\u0027olbs\u0027:\n\t\treturn \u0027Weight Average [oz]\u0027\n\t\t\n\treturn \u0027Weight Average [\u0027 + str(value) + \u0027]\u0027\n",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.columns[7].header.title": {
+                "binding": {
+                  "config": {
+                    "path": ".../Selections/selection_units.props.value"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tif value\u003d\u003d\u0027gkg\u0027:\n\t\treturn \u0027Total Production [kg]\u0027\n\telif value\u003d\u003d\u0027olbs\u0027:\n\t\treturn \u0027Total Production [lbs]\u0027\n\t\t\t\t\n\treturn \u0027Total Production [\u0027 + str(value) + \u0027]\u0027\t",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.columns[8].header.title": {
+                "binding": {
+                  "config": {
+                    "path": ".../Selections/selection_units.props.value"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tif value\u003d\u003d\u0027gkg\u0027:\n\t\treturn \u0027Overage [kg]\u0027\n\telif value\u003d\u003d\u0027olbs\u0027:\n\t\treturn \u0027Overage [lbs]\u0027\n\t\t\t\t\n\treturn \u0027Overage [\u0027 + str(value) + \u0027]\u0027\t",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.data": {
+                "binding": {
+                  "config": {
+                    "struct": {
+                      "end_dt": "{view.custom.end_dt}",
+                      "months": "{.../Selections/selection_months.props.value}",
+                      "report_type": "{.../Selections/selection_type.props.value}",
+                      "scale_id": "{.../Selections/selection_scale.props.value}",
+                      "start_dt": "{view.custom.start_dt}",
+                      "timezone": "{view.custom.sqlserver_timezone}",
+                      "units": "{.../Selections/selection_units.props.value}"
+                    },
+                    "waitOnAll": true
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tline_id \u003d int(self.parent.parent.getChild(\"Selections\").getChild(\"selection_line\").props.value)\n\ttry:\n\t\tsqlserver_tz \u003d value[\u0027timezone\u0027] # Note, the Ignition timezone has already been converted here into a format that SQLServer understands...\n\t\tscale_id \u003d value[\u0027scale_id\u0027]\n\t\tend_dt \u003d value[\u0027end_dt\u0027]\n\t\treport_type \u003d value[\u0027report_type\u0027]\n\t\tmonths \u003d (int(value[\u0027months\u0027]) - 1) * -1\n\t\t\n\t\t# Get the unit conversion factor\n\t\tunits \u003d value[\u0027units\u0027]\n\t\tunit_conversion \u003d 1\n\t\ttotal_conversion \u003d 1\n\t\tif (units \u003d\u003d \u0027gkg\u0027):\n\t\t\ttotal_conversion \u003d 1000\n\t\telif (units \u003d\u003d \u0027olbs\u0027):\n\t\t\tunit_conversion \u003d 28.3495006561279\n\t\t\ttotal_conversion \u003d 453.592010498047\n\t\telse:\t\n\t\t\tfor option in self.parent.parent.getChild(\"Selections\").getChild(\"selection_units\").props.options:\n\t\t\t\tif (option[\u0027value\u0027] \u003d\u003d units):\n\t\t\t\t\tunit_conversion \u003d float(option[\u0027unit_conversion\u0027])\n\t\t\t\t\ttotal_conversion \u003d float(option[\u0027unit_conversion\u0027])\n\t\t\t\t\t\t\t\n\t\t\n\t\t# Build the query. \n\t\t# Note - had to build the query in code, because SQLServer/ignition doesn\u0027t seem to allow the passing of the timezone as a parameter\n\t\t# This is generally a \u0027Bad Idea\u0027, due to SQl injection attacks. In this case, I\u0027m only directly substituting in a timezone string that \n\t\t# comes from a database entry that is manually controlled by us (so should be safe). The other params are run through Prep as normal. \n\t\tif (report_type\t\u003d\u003d \u0027all\u0027):\n\t\t\t \n\t\t\t# FORMAT(a.time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027) as \u0027date\u0027,\n\t\t\t\n\t\t\tquery \u003d \"\"\"\n\t\t\t\n\t\t\tSELECT\n\t\t\t    a.material,\n\t\t\t    a.po_number,\n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027) as \u0027date\u0027,\n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027MMM dd, yyyy\u0027) as \u0027display_date\u0027,\n\t\t\t    SUM([count]) AS \u0027count\u0027,\n\t\t\t    ((SUM(a.weight_sum) / SUM([count]))/:unit_conversion) AS \u0027weight_avg\u0027,\n\t\t\t    SUM(a.weight_diff) /:total_conversion AS \u0027weight_diff\u0027,\n\t\t\t    SUM(a.weight_sum) /:total_conversion AS \u0027weight_sum\u0027,\n\t\t\t    (SUM( (a.pct_weight_under/100) * count)/ SUM([count]))*100 as \u0027pct_weight_under\u0027,\n\t\t\t    (SUM( (a.pct_weight_over/100) * count)/ SUM([count]))*100 as \u0027pct_weight_over\u0027,\n\t\t\t    (\n\t\t\t            SELECT material_description\n\t\t\t            FROM system.dbo.materials m\n\t\t\t            WHERE m.material_number \u003d TRY_CAST(a.material AS INT)\n\t\t\t        ) AS material_description,\n\t\t\t\tsum(r.metal_count) as \u0027metal_rejects\u0027, \n\t\t\t\tsum(r.weight_count) as \u0027weight_rejects\u0027 \n\t\t\t\n\t\t\tFROM weight.dbo.aggregated a\n\t\t\t\tjoin weight.dbo.scale s on a.scale_id \u003d s.scale_id\n\t\t\t\tjoin weight.dbo.filler f on s.filler_id \u003d f.filler_id\n\t\t\t\tLEFT JOIN weight.dbo.rejects r on (r.line_id \u003d f.line_id and r.time_start \u003d a.time_start and r.material \u003d a.material) \n\t\t\tWHERE a.material !\u003d \u0027All\u0027\n\t\t\tAND ((0 \u003d ? and f.is_line_total \u003d 0) or a.scale_id \u003d ?)\n\t\t\tAND f.line_id \u003d ?\n\t\t\tAND a.time_start \u003e\u003d ?\n\t\t\tAND a.time_start \u003c ?\n\t\t\tGROUP BY\n\t\t\t    a.material,\n\t\t\t    a.po_number,\n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027), \n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027MMM dd, yyyy\u0027)  \n\t\t\tORDER BY FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027), a.material, a.po_number\n\t\t\t\"\"\"\n\t\t\n\t\telif (report_type\t\u003d\u003d \u0027day\u0027):\n\t\t\tquery \u003d \"\"\"\n\t\t\t\n\t\t\tSELECT\n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027) as \u0027date\u0027,\n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027MMM dd, yyyy\u0027) as \u0027display_date\u0027,\n\t\t\t    SUM([count]) AS \u0027count\u0027,\n\t\t\t    ((SUM(a.weight_sum) / SUM([count]))/:unit_conversion) AS \u0027weight_avg\u0027,\n\t\t\t    SUM(a.weight_diff) /:total_conversion AS \u0027weight_diff\u0027,\n\t\t\t    SUM(a.weight_sum) /:total_conversion AS \u0027weight_sum\u0027,\n\t\t\t    (SUM( (a.pct_weight_under/100) * count)/ SUM([count]))*100 as \u0027pct_weight_under\u0027,\n\t\t\t    (SUM( (a.pct_weight_over/100) * count)/ SUM([count]))*100 as \u0027pct_weight_over\u0027,\n\t\t\t\tsum(r.metal_count) as \u0027metal_rejects\u0027, \n\t\t\t\tsum(r.weight_count) as \u0027weight_rejects\u0027 \n\t\t\t\n\t\t\tFROM weight.dbo.aggregated a\n\t\t\t\tjoin weight.dbo.scale s on a.scale_id \u003d s.scale_id\n\t\t\t\tjoin weight.dbo.filler f on s.filler_id \u003d f.filler_id\n\t\t\t\tLEFT JOIN weight.dbo.rejects r on (r.line_id \u003d f.line_id and r.time_start \u003d a.time_start and r.material \u003d a.material) \n\t\t\tWHERE a.material \u003d \u0027All\u0027\n\t\t\tAND ((0 \u003d ? and f.is_line_total \u003d 0) or a.scale_id \u003d ?)\n\t\t\tAND f.line_id \u003d ?\n\t\t\tAND a.time_start \u003e\u003d ?\n\t\t\tAND a.time_start \u003c ?\n\t\t\tGROUP BY\n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027), \n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027MMM dd, yyyy\u0027)  \n\t\t\tORDER BY FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027)\n\t\t\t\n\t\t\t\"\"\"\t\t\n\t\telif (report_type\t\u003d\u003d \u0027item_size\u0027):\n\t\t\tquery \u003d \"\"\"\n\t\t\t\n\t\t\tSELECT\n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027) as \u0027date\u0027,\n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027MMM dd, yyyy\u0027) as \u0027display_date\u0027,\n\t\t\t    SUM([count]) AS \u0027count\u0027,\n\t\t\t    ((SUM(a.weight_sum) / SUM([count]))/:unit_conversion) AS \u0027weight_avg\u0027,\n\t\t\t    SUM(a.weight_diff) /:total_conversion AS \u0027weight_diff\u0027,\n\t\t\t    SUM(a.weight_sum) /:total_conversion AS \u0027weight_sum\u0027,\n\t\t\t    (SUM( (a.pct_weight_under/100) * count)/ SUM([count]))*100 as \u0027pct_weight_under\u0027,\n\t\t\t    (SUM( (a.pct_weight_over/100) * count)/ SUM([count]))*100 as \u0027pct_weight_over\u0027,\n\t\t\t\tsum(r.metal_count) as \u0027metal_rejects\u0027, \n\t\t\t\tsum(r.weight_count) as \u0027weight_rejects\u0027, \n\t\t\t\tISNULL(CAST(m.item_size AS VARCHAR), \u0027Unknown:\u0027 + trim(str(m.material_number))) as \u0027item_size\u0027\n\t\t\t\t\n\t\t\tFROM weight.dbo.aggregated a\n\t\t\t\tjoin weight.dbo.scale s on a.scale_id \u003d s.scale_id\n\t\t\t\tjoin weight.dbo.filler f on s.filler_id \u003d f.filler_id\n\t\t\t\tLEFT JOIN weight.dbo.rejects r on (r.line_id \u003d f.line_id and r.time_start \u003d a.time_start and r.material \u003d a.material) \n\t\t\t\tLEFT JOIN system.dbo.materials m on (TRY_CAST(a.material AS INT) \u003d m.material_number)\n\t\t\tWHERE a.material !\u003d \u0027All\u0027\n\t\t\tAND ((0 \u003d ? and f.is_line_total \u003d 0) or a.scale_id \u003d ?)\n\t\t\tAND f.line_id \u003d ?\n\t\t\tAND a.time_start \u003e\u003d ?\n\t\t\tAND a.time_start \u003c ?\n\t\t\tGROUP BY\n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027), \n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027MMM dd, yyyy\u0027) ,\n\t\t    \tISNULL(CAST(m.item_size AS VARCHAR), \u0027Unknown:\u0027 + trim(str(m.material_number)))\n\t\t\tORDER BY FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027)\n\t\t\t\n\t\t\t\"\"\"\t\t\n\t\t\t\n\t\t\t\n\t\telif (report_type\t\u003d\u003d \u0027material\u0027):\n\t\t\tquery \u003d \"\"\"\n\t\t\t\n\t\t\t\n\t\t\tSELECT\n\t\t\t    a.material,\n\t\t\t    SUM([count]) AS \u0027count\u0027,\n\t\t\t    ((SUM(a.weight_sum) / SUM([count]))/:unit_conversion) AS \u0027weight_avg\u0027,\n\t\t\t    SUM(a.weight_diff) /:total_conversion AS \u0027weight_diff\u0027,\n\t\t\t    SUM(a.weight_sum) /:total_conversion AS \u0027weight_sum\u0027,\n\t\t\t    (SUM( (a.pct_weight_under/100) * count)/ SUM([count]))*100 as \u0027pct_weight_under\u0027,\n\t\t\t    (SUM( (a.pct_weight_over/100) * count)/ SUM([count]))*100 as \u0027pct_weight_over\u0027,\n\t\t\t    (\n\t\t\t            SELECT material_description\n\t\t\t            FROM system.dbo.materials m\n\t\t\t            WHERE m.material_number \u003d TRY_CAST(a.material AS INT)\n\t\t\t        ) AS material_description,\n\t\t\t\tsum(r.metal_count) as \u0027metal_rejects\u0027, \n\t\t\t\tsum(r.weight_count) as \u0027weight_rejects\u0027 \n\t\t\t\n\t\t\tFROM weight.dbo.aggregated a\n\t\t\t\tjoin weight.dbo.scale s on a.scale_id \u003d s.scale_id\n\t\t\t\tjoin weight.dbo.filler f on s.filler_id \u003d f.filler_id\n\t\t\t\tLEFT JOIN weight.dbo.rejects r on (r.line_id \u003d f.line_id and r.time_start \u003d a.time_start and r.material \u003d a.material) \n\t\t\tWHERE a.material !\u003d \u0027All\u0027\n\t\t\tAND ((0 \u003d ? and f.is_line_total \u003d 0) or a.scale_id \u003d ?)\n\t\t\tAND f.line_id \u003d ?\n\t\t\tAND a.time_start \u003e\u003d ?\n\t\t\tAND a.time_start \u003c ?\n\t\t\tGROUP BY\n\t\t\t    a.material\n\t\t\tORDER BY a.material\n\n\t\t\t\"\"\"\n\t\t\t\n\t\telif (report_type\t\u003d\u003d \u0027po\u0027):\n\t\t\tquery \u003d \"\"\"\n\t\t\t\n\t\t\tSELECT\n\t\t\t    a.material,\n\t\t\t    a.po_number,\n\t\t\t    SUM([count]) AS \u0027count\u0027,\n\t\t\t    ((SUM(a.weight_sum) / SUM([count]))/:unit_conversion) AS \u0027weight_avg\u0027,\n\t\t\t    SUM(a.weight_diff) /:total_conversion AS \u0027weight_diff\u0027,\n\t\t\t    SUM(a.weight_sum) /:total_conversion AS \u0027weight_sum\u0027,\n\t\t\t    (SUM( (a.pct_weight_under/100) * count)/ SUM([count]))*100 as \u0027pct_weight_under\u0027,\n\t\t\t    (SUM( (a.pct_weight_over/100) * count)/ SUM([count]))*100 as \u0027pct_weight_over\u0027,\n\t\t\t    (\n\t\t\t            SELECT material_description\n\t\t\t            FROM system.dbo.materials m\n\t\t\t            WHERE m.material_number \u003d TRY_CAST(a.material AS INT)\n\t\t\t        ) AS material_description,\n\t\t\t\tsum(r.metal_count) as \u0027metal_rejects\u0027, \n\t\t\t\tsum(r.weight_count) as \u0027weight_rejects\u0027 \n\t\t\t\n\t\t\tFROM weight.dbo.aggregated a\n\t\t\t\tjoin weight.dbo.scale s on a.scale_id \u003d s.scale_id\n\t\t\t\tjoin weight.dbo.filler f on s.filler_id \u003d f.filler_id\n\t\t\t\tLEFT JOIN weight.dbo.rejects r on (r.line_id \u003d f.line_id and r.time_start \u003d a.time_start and r.material \u003d a.material) \n\t\t\tWHERE a.material !\u003d \u0027All\u0027\n\t\t\tAND ((0 \u003d ? and f.is_line_total \u003d 0) or a.scale_id \u003d ?)\n\t\t\tAND f.line_id \u003d ?\n\t\t\tAND a.time_start \u003e\u003d ?\n\t\t\tAND a.time_start \u003c ?\n\t\t\tGROUP BY\n\t\t\t    a.po_number, \n\t\t\t    a.material\n\t\t\tORDER BY a.po_number, a.material\n\t\t\t\n\t\t\t\"\"\"\n\t\t\n\t\t#AND time_start \u003e\u003d DATEADD(month, ?, DATEADD(month, DATEDIFF(month, 0, ?), 0)) \n\t\t#AND time_start \u003c DATEADD(day, 1, EOMONTH(?))            \n\t\t\t\t\t\t\n\t\t# Substitute in the timezone and unit conversion\t\t\n\t\tquery \u003d query.replace(\u0027:timezone\u0027,sqlserver_tz)\n\t\tquery \u003d query.replace(\u0027:unit_conversion\u0027,str(unit_conversion))\n\t\tquery \u003d query.replace(\u0027:total_conversion\u0027,str(total_conversion))\n\t\t\t\t\t\t\n\t\t# Note: You need to repeat parameters if they are used multiple times.\n\t\t# IMPORTANT: The order of \u0027?\u0027 must match the order of arguments passed.\n\t\targs \u003d [\n\t\t    int(scale_id),\n\t\t    int(scale_id),\t\t    \n\t\t    int(line_id),\n\t\t    value[\u0027start_dt\u0027],    \n\t\t    value[\u0027end_dt\u0027] \n\t\t]\n\t\t\n\t\tresults \u003d CORE_P.Utils.datasetToDicts(system.db.runPrepQuery(query, args, \u0027system\u0027))\n\t\t\n\t\t\n\t\t#CORE_P.Utils.errorPopup(\u0027Dates:\u0027 + str(value[\u0027start_dt\u0027]) + \u0027 - \u0027  + str(value[\u0027end_dt\u0027]))\n\t\treturn results\n\texcept:\n\t    # Handle error\n\t #   CORE_P.Utils.errorPopup(\u0027Error getting weights data:\u0027)\n\t    return []\n\t",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "expr-struct"
+                }
+              }
+            },
+            "props": {
+              "columns": [
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "display_date",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Day"
+                  },
+                  "justify": "auto",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "width": ""
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "item_size",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Item Size"
+                  },
+                  "justify": "auto",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "width": ""
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "material",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Material"
+                  },
+                  "justify": "auto",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "width": ""
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "material_description",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Material Description"
+                  },
+                  "justify": "auto",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "width": ""
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "po_number",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "PO Number"
+                  },
+                  "justify": "auto",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "width": ""
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "count",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Units"
+                  },
+                  "justify": "auto",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": ""
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "weight_avg",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    }
+                  },
+                  "justify": "auto",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": ""
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "weight_sum",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    }
+                  },
+                  "justify": "auto",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": ""
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "weight_diff",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    }
+                  },
+                  "justify": "auto",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": ""
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "pct_weight_under",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "% Underweight"
+                  },
+                  "justify": "auto",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": ""
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "pct_weight_over",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "% Overweight"
+                  },
+                  "justify": "auto",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": ""
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "metal_rejects",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Metal Rejects"
+                  },
+                  "justify": "auto",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": ""
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "weight_rejects",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Weight Rejects"
+                  },
+                  "justify": "auto",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": ""
+                }
+              ]
             },
             "type": "ia.display.table"
           },
