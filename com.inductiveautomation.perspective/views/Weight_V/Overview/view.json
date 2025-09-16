@@ -693,7 +693,7 @@
                 "marginRight": 10,
                 "marginTop": 2
               },
-              "value": 0
+              "value": 1
             },
             "type": "ia.input.dropdown"
           },
