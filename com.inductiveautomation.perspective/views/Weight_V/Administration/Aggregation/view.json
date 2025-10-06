@@ -107,7 +107,7 @@
               }
             },
             "props": {
-              "formattedValue": "Jul 1, 2025 7:00 AM",
+              "formattedValue": "Sep 6, 2025 1:00 PM",
               "pickerType": "date",
               "style": {
                 "marginRight": 10,
@@ -172,7 +172,7 @@
               }
             },
             "props": {
-              "formattedValue": "Jul 31, 2025 7:00 AM",
+              "formattedValue": "Oct 6, 2025 2:00 PM",
               "pickerType": "date",
               "style": {
                 "marginRight": 10,
@@ -354,7 +354,7 @@
               "dom": {
                 "onClick": {
                   "config": {
-                    "script": "\t\n\tself.session.custom.aggregator.progress_scale \u003d 0\n\tself.session.custom.aggregator.progress_week \u003d 0\n\t\n\t# Use the function\n\tstart_time \u003d self.parent.parent.getChild(\"StartTime\").getChild(\"Start\").props.value\n\tend_time \u003d self.parent.parent.getChild(\"EndTime\").getChild(\"End\").props.value\n\tsite_id \u003d self.parent.parent.getChild(\"CurrentSite\").props.params.site_id\n\tscale_id \u003d self.parent.parent.getChild(\"ScaleSelection\").getChild(\"Scale\").props.value\n\tsystem.util.invokeAsynchronous(Weight_P.Aggregator.GetBuckets, args\u003d(start_time, end_time,site_id,scale_id))\n\t\n\t\n\t#-----------------------------------------------------------------------\n\t# Call the Update Reject bit too\n\t#-----------------------------------------------------------------------\n\tparameters \u003d {\u0027scale_id\u0027:scale_id, \u0027site_id\u0027:site_id}\n\tlines \u003d CORE_P.Utils.datasetToDicts(system.db.runNamedQuery(\n\t\tproject\u003dsystem.project.getProjectName(), \n\t\tpath\u003d\u0027Weight_Q/DB_Query/Get_Lines_By_Scale_Id\u0027, \n\t\tparameters\u003dparameters))\n\t\n\t#logger.warn(\u0027DEBUG: Found these scales:\u0027 + str(scales))\t\n\tif len(lines)\u003d\u003d0:\n\t\treturn # Nothing to do here\n\t\t\t\n\t# Only need to process each line once (even though it might have multiple fillers/scales\n\tfor line in lines:\n\t\tsystem.util.invokeAsynchronous(Weight_P.Aggregator.ProcessRejects, args\u003d(start_time, end_time,line))\n"
+                    "script": "\t\n\tself.session.custom.aggregator.progress_scale \u003d 0\n\tself.session.custom.aggregator.progress_week \u003d 0\n\t\n\t# Use the function\n\tstart_time \u003d self.parent.parent.getChild(\"StartTime\").getChild(\"Start\").props.value\n\tend_time \u003d self.parent.parent.getChild(\"EndTime\").getChild(\"End\").props.value\n\t\n\t#start_time \u003d CORE_P.Time.LocalToUTC(start_time, self.session.props.timeZoneId)\n\t#end_time \u003d CORE_P.Time.LocalToUTC(end_time, self.session.props.timeZoneId)\n\t\n\tsite_id \u003d self.parent.parent.getChild(\"CurrentSite\").props.params.site_id\n\tscale_id \u003d self.parent.parent.getChild(\"ScaleSelection\").getChild(\"Scale\").props.value\n\t\n\tsystem.util.invokeAsynchronous(Weight_P.Aggregator.ManualAggregation, args\u003d(start_time, end_time,site_id,scale_id))\n\n#\tsystem.util.invokeAsynchronous(Weight_P.Aggregator.GetBuckets, args\u003d(start_time, end_time,site_id,scale_id))\n#\t\n#\t\n#\t#-----------------------------------------------------------------------\n#\t# Call the Update Reject bit too\n#\t#-----------------------------------------------------------------------\n#\tparameters \u003d {\u0027scale_id\u0027:scale_id, \u0027site_id\u0027:site_id}\n#\tlines \u003d CORE_P.Utils.datasetToDicts(system.db.runNamedQuery(\n#\t\tproject\u003dsystem.project.getProjectName(), \n#\t\tpath\u003d\u0027Weight_Q/DB_Query/Get_Lines_By_Scale_Id\u0027, \n#\t\tparameters\u003dparameters))\n#\t\n#\t#logger.warn(\u0027DEBUG: Found these scales:\u0027 + str(scales))\t\n#\tif len(lines)\u003d\u003d0:\n#\t\treturn # Nothing to do here\n#\t\t\t\n#\t# Only need to process each line once (even though it might have multiple fillers/scales\n#\tfor line in lines:\n#\t\tsystem.util.invokeAsynchronous(Weight_P.Aggregator.ProcessRejects, args\u003d(start_time, end_time,line))\n"
                   },
                   "scope": "G",
                   "type": "script"

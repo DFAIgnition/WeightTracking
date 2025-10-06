@@ -1,15 +1,18 @@
 
 SELECT	a.time_start, 
-		(sum(weight_sum) / sum([count])) as 'weight_avg', 
+		--(sum(weight_sum) / sum([count])) as 'weight_avg', 
+		 case when SUM([count]) > 0 then ((SUM(a.weight_sum) / SUM([count]))) else 0 end AS 'weight_avg',
+		 
 		sum(weight_sum) as 'weight_sum', 
 		max(weight_max) as 'weight_max', 
 		min(weight_min) as 'weight_min', 
 		sum([count]) as 'count', 
+		sum([total_count]) as 'total_count', 
 		(max(weight_max) - max(weight_min)) as 'weight_range',
 	
 		sum(weight_diff)  as 'weight_diff',
 
-		(sum(((pct_out_of_range/100) * [count]))/sum([count]))*100 as  pct_out_of_range,
+		(sum(((pct_out_of_range/100) * [total_count]))/sum([total_count]))*100 as  pct_out_of_range,
 		sqrt(sum(power(standard_deviation,2))) as 'standard_deviation', 
 		max(standard_deviation) as 'og_stddev', 
 		sum(r.metal_count) as 'metal_rejects', 

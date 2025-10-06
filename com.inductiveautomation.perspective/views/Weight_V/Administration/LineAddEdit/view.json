@@ -2,6 +2,7 @@
   "custom": {},
   "params": {
     "edit": true,
+    "exclude_out_of_range": "",
     "fill_type": "",
     "line_desc": "",
     "line_id": "",
@@ -29,6 +30,10 @@
   },
   "propConfig": {
     "params.edit": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.exclude_out_of_range": {
       "paramDirection": "input",
       "persistent": true
     },
@@ -426,7 +431,7 @@
         },
         "position": {
           "height": 35,
-          "width": 441,
+          "width": 252,
           "x": 150,
           "y": 486
         },
@@ -470,7 +475,7 @@
           "dom": {
             "onClick": {
               "config": {
-                "script": "\t\n\t# Get all the parameters we need to save\n\tsite_id \t\t\t\u003d self.view.params.site_id\n\ttype_id\t\t\t\t\u003d self.getSibling(\"Type_Dropdown\").props.value\n\tline_id \t\t\t\u003d self.view.params.line_id\n\tline_name\t\t\t\u003d self.getSibling(\"Line_Entry\").props.text\n\tline_material\t\t\u003d self.getSibling(\"Material_Tag\").props.params.selectedTag\n\tline_desc\t\t\t\u003d self.getSibling(\"Description_Entry\").props.text\n\tline_weight_min \t\u003d float(self.getSibling(\"Min_Entry\").props.text)\n\tline_weight_max \t\u003d float(self.getSibling(\"Max_Entry\").props.text)\n\tedit\t\t\t\t\u003d self.view.params.edit\n\tstarr_unit_id \t\t\u003d self.getSibling(\"STARR_Unit\").props.value\n\t\n\tmetal_reject_tag \t\t\u003d self.getSibling(\"MetalRejectTag\").props.params.selectedTag\n\tmetal_reject_tag_type \t\u003d self.getSibling(\"MetalRejectTagType\").props.value\n\tweight_reject_tag \t\t\u003d self.getSibling(\"WeightRejectTag\").props.params.selectedTag\n\tweight_reject_tag_type \t\u003d self.getSibling(\"WeightRejectTagType\").props.value\n\t\t\t\n\t# Do some validation...make sure everything has been entered correctly\n\t\n\tnamedQuery \u003d \"Weight_Q/DB_Scalar/Count_Line\"\n\tparameters \u003d {\n\t\t\u0027type_id\u0027:\t\t\ttype_id, \n\t\t\u0027site_id\u0027:\t\t\tsite_id, \n\t\t\u0027line_name\u0027:\t\tline_name\n\t}\n\t\n\texists \u003d system.db.runNamedQuery(system.project.getProjectName(), namedQuery, parameters)\n\t\n\t\n\tif exists \u003e 0 and edit \u003d\u003d False:\n\t\tCORE_P.Utils.errorPopup(\u0027A line with that name already exists under the selected type and site.\u0027) \n\t\treturn\n\t\t\t\n\t\n\ttxId \u003d system.db.beginTransaction(timeout\u003d5000)\n\n\ttry:\n\t\n\t\tif edit \u003d\u003d False:\n\t\n\t\t\tnamedQuery \u003d \"Weight_Q/DB_Insert/Insert_Line\"\n\t\t\tparameters \u003d {\n\t\t\t\t\u0027type_id\u0027:\t\t\t\ttype_id, \n\t\t\t\t\u0027site_id\u0027:\t\t\t\tsite_id, \n\t\t\t\t\u0027line_name\u0027:\t\t\tline_name, \n\t\t\t\t\u0027line_desc\u0027:\t\t\tline_desc, \n\t\t\t\t\u0027line_weight_min\u0027:\t\tline_weight_min, \n\t\t\t\t\u0027line_weight_max\u0027:\t\tline_weight_max,  \n\t\t\t\t\u0027line_material\u0027:\t\tline_material,\n\t\t\t\t\u0027starr_unit_id\u0027:\t\tstarr_unit_id,\n\t\t\t\t\u0027metal_reject_tag\u0027:\t\tmetal_reject_tag,\n\t\t\t\t\u0027metal_reject_tag_type\u0027:\tmetal_reject_tag_type,\n\t\t\t\t\u0027weight_reject_tag\u0027:\tweight_reject_tag,\n\t\t\t\t\u0027weight_reject_tag_type\u0027:\tweight_reject_tag_type\t\t\t\t\n\t\t\t}\n\t\t\t\n\t\telse:\n\t\t\n\t\t\tnamedQuery \u003d \"Weight_Q/DB_Update/Update_Line\"\n\t\t\tparameters \u003d {\n\t\t\t\t\u0027type_id\u0027:\t\t\t\ttype_id, \n\t\t\t\t\u0027site_id\u0027:\t\t\t\tsite_id, \n\t\t\t\t\u0027line_name\u0027:\t\t\tline_name, \n\t\t\t\t\u0027line_material\u0027:\t\tline_material,\n\t\t\t\t\u0027line_desc\u0027:\t\t\tline_desc, \n\t\t\t\t\u0027line_weight_min\u0027:\t\tline_weight_min, \n\t\t\t\t\u0027line_weight_max\u0027:\t\tline_weight_max, \n\t\t\t\t\u0027line_id\u0027:\t\t\t\tself.view.params.line_id,\n\t\t\t\t\u0027starr_unit_id\u0027:\t\tstarr_unit_id,\n\t\t\t\t\u0027metal_reject_tag\u0027:\t\tmetal_reject_tag,\n\t\t\t\t\u0027metal_reject_tag_type\u0027:\tmetal_reject_tag_type,\n\t\t\t\t\u0027weight_reject_tag\u0027:\tweight_reject_tag,\n\t\t\t\t\u0027weight_reject_tag_type\u0027:\tweight_reject_tag_type\t\t\t\n\t\t\t}\n\t\t\t\n\t\taffected_rows \u003d system.db.runNamedQuery(system.project.getProjectName(), namedQuery, parameters,tx\u003dtxId)\n\t\t\n\t\tmessage \u003d  \u0027Added/Edited new packaging line:\u0027 + str(parameters)\n\t\t\n\t\t# Audit log\n\t\tCORE_P.Utils.logChanges(self, \n                     \u0027AddEditPackagingLine\u0027,\n                     message, \n                     txId\u003dtxId,\n                     site_id\u003dsite_id,\n                    )\n\t\tsystem.db.commitTransaction(txId)\n                        \t\t\t\n\t\t# Update the table with lines \n\t\tsystem.perspective.sendMessage(\"update_bindings\", payload \u003d {}, scope \u003d \"page\")\n\n\t\tCORE_P.Utils.showSuccess(self, \"Saved!\") \n\t\t\n\t\tsystem.perspective.closePopup(\u0027\u0027)\n\n\texcept:\n\t\tsystem.db.rollbackTransaction(txId)\n\t\tCORE_P.Utils.errorPopup(\u0027Error adding/editing Packaging Line:\u0027 + str(namedQuery)) #  + str(sys.exc_info())\n"
+                "script": "\t\n\t# Get all the parameters we need to save\n\tsite_id \t\t\t\u003d self.view.params.site_id\n\ttype_id\t\t\t\t\u003d self.getSibling(\"Type_Dropdown\").props.value\n\tline_id \t\t\t\u003d self.view.params.line_id\n\tline_name\t\t\t\u003d self.getSibling(\"Line_Entry\").props.text\n\tline_material\t\t\u003d self.getSibling(\"Material_Tag\").props.params.selectedTag\n\tline_desc\t\t\t\u003d self.getSibling(\"Description_Entry\").props.text\n\tline_weight_min \t\u003d float(self.getSibling(\"Min_Entry\").props.text)\n\tline_weight_max \t\u003d float(self.getSibling(\"Max_Entry\").props.text)\n\tedit\t\t\t\t\u003d self.view.params.edit\n\tstarr_unit_id \t\t\u003d self.getSibling(\"STARR_Unit\").props.value\n\t\n\tmetal_reject_tag \t\t\u003d self.getSibling(\"MetalRejectTag\").props.params.selectedTag\n\tmetal_reject_tag_type \t\u003d self.getSibling(\"MetalRejectTagType\").props.value\n\tweight_reject_tag \t\t\u003d self.getSibling(\"WeightRejectTag\").props.params.selectedTag\n\tweight_reject_tag_type \t\u003d self.getSibling(\"WeightRejectTagType\").props.value\n\texclude_out_of_range\t\u003d self.getSibling(\"ExcludeOutOfRange\").props.selected\n\t\n\t# Do some validation...make sure everything has been entered correctly\n\t\n\tnamedQuery \u003d \"Weight_Q/DB_Scalar/Count_Line\"\n\tparameters \u003d {\n\t\t\u0027type_id\u0027:\t\t\ttype_id, \n\t\t\u0027site_id\u0027:\t\t\tsite_id, \n\t\t\u0027line_name\u0027:\t\tline_name\n\t}\n\t\n\texists \u003d system.db.runNamedQuery(system.project.getProjectName(), namedQuery, parameters)\n\t\n\t\n\tif exists \u003e 0 and edit \u003d\u003d False:\n\t\tCORE_P.Utils.errorPopup(\u0027A line with that name already exists under the selected type and site.\u0027) \n\t\treturn\n\t\t\t\n\t\n\ttxId \u003d system.db.beginTransaction(timeout\u003d5000)\n\n\ttry:\n\t\n\t\tif edit \u003d\u003d False:\n\t\n\t\t\tnamedQuery \u003d \"Weight_Q/DB_Insert/Insert_Line\"\n\t\t\tparameters \u003d {\n\t\t\t\t\u0027type_id\u0027:\t\t\t\ttype_id, \n\t\t\t\t\u0027site_id\u0027:\t\t\t\tsite_id, \n\t\t\t\t\u0027line_name\u0027:\t\t\tline_name, \n\t\t\t\t\u0027line_desc\u0027:\t\t\tline_desc, \n\t\t\t\t\u0027line_weight_min\u0027:\t\tline_weight_min, \n\t\t\t\t\u0027line_weight_max\u0027:\t\tline_weight_max,  \n\t\t\t\t\u0027line_material\u0027:\t\tline_material,\n\t\t\t\t\u0027starr_unit_id\u0027:\t\tstarr_unit_id,\n\t\t\t\t\u0027metal_reject_tag\u0027:\t\tmetal_reject_tag,\n\t\t\t\t\u0027metal_reject_tag_type\u0027:\tmetal_reject_tag_type,\n\t\t\t\t\u0027weight_reject_tag\u0027:\tweight_reject_tag,\n\t\t\t\t\u0027weight_reject_tag_type\u0027:\tweight_reject_tag_type,\n\t\t\t\t\u0027exclude_out_of_range\u0027:\texclude_out_of_range\t\t\t\t\n\t\t\t}\n\t\t\t\n\t\telse:\n\t\t\n\t\t\tnamedQuery \u003d \"Weight_Q/DB_Update/Update_Line\"\n\t\t\tparameters \u003d {\n\t\t\t\t\u0027type_id\u0027:\t\t\t\ttype_id, \n\t\t\t\t\u0027site_id\u0027:\t\t\t\tsite_id, \n\t\t\t\t\u0027line_name\u0027:\t\t\tline_name, \n\t\t\t\t\u0027line_material\u0027:\t\tline_material,\n\t\t\t\t\u0027line_desc\u0027:\t\t\tline_desc, \n\t\t\t\t\u0027line_weight_min\u0027:\t\tline_weight_min, \n\t\t\t\t\u0027line_weight_max\u0027:\t\tline_weight_max, \n\t\t\t\t\u0027line_id\u0027:\t\t\t\tself.view.params.line_id,\n\t\t\t\t\u0027starr_unit_id\u0027:\t\tstarr_unit_id,\n\t\t\t\t\u0027metal_reject_tag\u0027:\t\tmetal_reject_tag,\n\t\t\t\t\u0027metal_reject_tag_type\u0027:\tmetal_reject_tag_type,\n\t\t\t\t\u0027weight_reject_tag\u0027:\tweight_reject_tag,\n\t\t\t\t\u0027weight_reject_tag_type\u0027:\tweight_reject_tag_type,\n\t\t\t\t\u0027exclude_out_of_range\u0027:\texclude_out_of_range\t\t\t\n\t\t\t}\n\t\t\t\n\t\taffected_rows \u003d system.db.runNamedQuery(system.project.getProjectName(), namedQuery, parameters,tx\u003dtxId)\n\t\t\n\t\tmessage \u003d  \u0027Added/Edited new packaging line:\u0027 + str(parameters)\n\t\t\n\t\t# Audit log\n\t\tCORE_P.Utils.logChanges(self, \n                     \u0027AddEditPackagingLine\u0027,\n                     message, \n                     txId\u003dtxId,\n                     site_id\u003dsite_id,\n                    )\n\t\tsystem.db.commitTransaction(txId)\n                        \t\t\t\n\t\t# Update the table with lines \n\t\tsystem.perspective.sendMessage(\"update_bindings\", payload \u003d {}, scope \u003d \"page\")\n\n\t\tCORE_P.Utils.showSuccess(self, \"Saved!\") \n\t\t\n\t\tsystem.perspective.closePopup(\u0027\u0027)\n\n\texcept:\n\t\tsystem.db.rollbackTransaction(txId)\n\t\tCORE_P.Utils.errorPopup(\u0027Error adding/editing Packaging Line:\u0027 + str(namedQuery)) #  + str(sys.exc_info())\n"
               },
               "scope": "G",
               "type": "script"
@@ -882,6 +887,53 @@
           "text": "Weight Tag Type:"
         },
         "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "Material_Label_10"
+        },
+        "position": {
+          "height": 32,
+          "width": 295,
+          "x": 11.5,
+          "y": 524
+        },
+        "props": {
+          "text": "Exclude out-of-range units from stats:"
+        },
+        "type": "ia.display.label"
+      },
+      {
+        "meta": {
+          "name": "ExcludeOutOfRange"
+        },
+        "position": {
+          "height": 26,
+          "width": 28,
+          "x": 302.5,
+          "y": 529
+        },
+        "propConfig": {
+          "props.selected": {
+            "binding": {
+              "config": {
+                "expression": "{view.params.exclude_out_of_range}"
+              },
+              "overlayOptOut": true,
+              "transforms": [
+                {
+                  "code": "\ttry:\n\t\t\n\t\tif(\u0027exclude_out_of_range\u0027 in self.view.params):\n\t\t\treturn self.view.params.exclude_out_of_range\n\t\telse:\n\t\t\treturn False\n\texcept:\n\t\tCORE_P.Utils.errorPopup(\u0027Error setting exclude_out_of_range\u0027)\n\t\treturn False",
+                  "type": "script"
+                }
+              ],
+              "type": "expr"
+            }
+          }
+        },
+        "props": {
+          "text": ""
+        },
+        "type": "ia.input.checkbox"
       }
     ],
     "meta": {

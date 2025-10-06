@@ -89,6 +89,11 @@
         "type": "Parameter",
         "identifier": "weight_reject_tag",
         "sqlType": 7
+      },
+      {
+        "type": "Parameter",
+        "identifier": "exclude_out_of_range",
+        "sqlType": 6
       }
     ]
   }

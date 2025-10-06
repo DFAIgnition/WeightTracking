@@ -1,7 +1,7 @@
 import system
 import time
 from java.text import SimpleDateFormat
-from java.util import Date, Calendar
+from java.util import Date, Calendar, TimeZone, Locale, GregorianCalendar
 from org.apache.commons.math3.stat.descriptive import DescriptiveStatistics
 import json 
 
@@ -40,7 +40,6 @@ def createWeekCalendar(baseCal, weeksToAdd):
 # Main function - ProcessWeek
 ###############################################################
 def ProcessWeek(Start, End, site_id, scale_id):
-	
 	
 	LoggerActive = False
 	
@@ -100,12 +99,14 @@ def ProcessWeek(Start, End, site_id, scale_id):
 			    startDate=Start,
 			    endDate=End,
 			    returnSize=-1,
-			    includeBoundingValues=True,
-			    noInterpolation=False,
+			    includeBoundingValues=False,
+			    noInterpolation=True,
 			    ignoreBadQuality=True,
 			    columnNames=all_tags,  
 			    returnFormat='Tall'
 			)
+			#history_data = CORE_P.Tags.fixBounding(history_data, Start, End)
+			
 			
 			# Prepare data structures for processing.
 			all_data = {key: [] for key in tag_path_mapping.keys()}
@@ -117,8 +118,14 @@ def ProcessWeek(Start, End, site_id, scale_id):
 			sdf_hour = SimpleDateFormat("HH")
 			sdf_day_hour = SimpleDateFormat("yyyy-MM-dd HH:00:00")
 			
+			
+			
 			# Process historical data to structure it by day and hour.
-			for item in CORE_P.Utils.datasetToDicts(history_data):
+			history_data_dicts = CORE_P.Utils.datasetToDicts(history_data)
+			if (history_data_dicts[-1]['timestamp']>End):
+				history_data_dicts.pop()
+			
+			for item in history_data_dicts:
 			    for key, converted_tag_name in tag_path_mapping.items():
 			        if converted_tag_name == item['path']:
 						all_data[key].append(item)
@@ -143,10 +150,10 @@ def ProcessWeek(Start, End, site_id, scale_id):
 	
 				# Otherwise...materials are None
 				else:
-				#	SystemLogger(True, "JAY", 'DEBUG: Using default materials!' +str(entry['starr_unit_id']))		
+				
 					materials = [{"value": 'None', "timestamp":Start},{"value": 'None', "timestamp":End}]
 			except:
-				SystemLogger(LoggerActive, "JAY", CORE_P.Utils.getError())			
+				SystemLogger(LoggerActive, "WeightTracking", CORE_P.Utils.getError())			
 			
 			# If we're using limits from the Materials database, we'll need to convert from lbs to the units for this line
 #			conversion = 1
@@ -249,10 +256,11 @@ def ProcessWeek(Start, End, site_id, scale_id):
 			try:
 				for tagname, items in all_data.items():
 					material_index = 0		
-					#SystemLogger(True, "JAY", str(key))
+				
 					for item in items:
 	
 						timestamp = Date.from(item['timestamp'].toInstant())
+
 						calendar_instance = Calendar.getInstance()
 						calendar_instance.setTime(timestamp)
 						calendar_instance.set(Calendar.MINUTE, 0)
@@ -260,9 +268,10 @@ def ProcessWeek(Start, End, site_id, scale_id):
 						calendar_instance.set(Calendar.MILLISECOND, 0)
 						
 						day_key = sdf_day.format(timestamp)
+						
 						hour_of_day = calendar_instance.get(Calendar.HOUR_OF_DAY)
 						time_start = sdf_day_hour.format(calendar_instance.getTime())
-	
+						
 						
 						# Work out which material to use
 						while ( (material_index < (len(materials)-1))  and (timestamp >= materials[material_index + 1]['timestamp']) ):
@@ -282,10 +291,10 @@ def ProcessWeek(Start, End, site_id, scale_id):
 						    daily_data[day_key] = {hour: {} for hour in range(24)}
 						
 						if materials_key not in daily_data[day_key][hour_of_day]:
-							daily_data[day_key][hour_of_day][materials_key] = {'time_start': time_start, 'scale_weight_values': [], 'material':material, 'po_number':po_number, 'setpoint':[], 'setpoint_high':[], 'setpoint_low':[], 'over_threshold':[], 'under_threshold':[], 'out_of_threshold':[]}
+							daily_data[day_key][hour_of_day][materials_key] = {'time_start': time_start, 'scale_weight_values': [], 'material':material, 'po_number':po_number, 'setpoint':[], 'setpoint_high':[], 'setpoint_low':[], 'over_threshold':[], 'under_threshold':[], 'out_of_threshold':[], 'out_of_threshold_count':0, 'total_count':0, 'good_count':0}
 							
 						if all_materials_key not in daily_data[day_key][hour_of_day]:
-							daily_data[day_key][hour_of_day][all_materials_key] = {'time_start': time_start, 'scale_weight_values': [], 'material':all_materials_key, 'po_number':None, 'setpoint':[], 'setpoint_high':[], 'setpoint_low':[], 'over_threshold':[], 'under_threshold':[], 'out_of_threshold':[]}
+							daily_data[day_key][hour_of_day][all_materials_key] = {'time_start': time_start, 'scale_weight_values': [], 'material':all_materials_key, 'po_number':None, 'setpoint':[], 'setpoint_high':[], 'setpoint_low':[], 'over_threshold':[], 'under_threshold':[], 'out_of_threshold':[], 'out_of_threshold_count':0, 'total_count':0, 'good_count':0}
 							
 						if tagname not in daily_data[day_key][hour_of_day][materials_key]:
 						    daily_data[day_key][hour_of_day][materials_key][tagname] = []
@@ -300,11 +309,39 @@ def ProcessWeek(Start, End, site_id, scale_id):
 						
 						# Keep track of the scale weights. This is the key bit...
 						if tagname == 'scale_weight':
-						    daily_data[day_key][hour_of_day][materials_key]['scale_weight_values'].append(converted_value)
-						    daily_data[day_key][hour_of_day][all_materials_key]['scale_weight_values'].append(converted_value)
+							
+							daily_data[day_key][hour_of_day][materials_key]['total_count']+=1
+							daily_data[day_key][hour_of_day][all_materials_key]['total_count']+=1
+
+							if converted_value >= setpoint_low and converted_value <= setpoint_high:	
+								
+								daily_data[day_key][hour_of_day][materials_key]['scale_weight_values'].append(converted_value)
+								daily_data[day_key][hour_of_day][all_materials_key]['scale_weight_values'].append(converted_value)
+							
+								daily_data[day_key][hour_of_day][materials_key]['good_count']+=1
+								daily_data[day_key][hour_of_day][all_materials_key]['good_count']+=1								
+							else:
+								
+								daily_data[day_key][hour_of_day][materials_key]['out_of_threshold_count']+=1
+								daily_data[day_key][hour_of_day][all_materials_key]['out_of_threshold_count']+=1
+								
+								# Keep track of the converted values, unless we need to exclude them because they are out of range						    
+								if (entry['exclude_out_of_range']):
+									pass
+								else:
+									daily_data[day_key][hour_of_day][materials_key]['good_count']+=1 # Still add to the 'good' count unless 'exclude_out_of_range' is configured
+									daily_data[day_key][hour_of_day][all_materials_key]['good_count']+=1 # Still add to the 'good' count unless 'exclude_out_of_range' is configured
+									
+									daily_data[day_key][hour_of_day][materials_key]['scale_weight_values'].append(converted_value)
+									daily_data[day_key][hour_of_day][all_materials_key]['scale_weight_values'].append(converted_value)		
+							
+							
+												    					    	
+#							daily_data[day_key][hour_of_day][materials_key]['scale_weight_values'].append(converted_value)
+#							daily_data[day_key][hour_of_day][all_materials_key]['scale_weight_values'].append(converted_value)
 						    
-						    # Keep track of the setpoints and targets, and what was out of range
-						    for a in [all_materials_key, materials_key]:
+							# Keep track of the setpoints and targets, and what was out of range
+							for a in [all_materials_key, materials_key]:
 								daily_data[day_key][hour_of_day][a]['setpoint'].append(setpoint)
 								daily_data[day_key][hour_of_day][a]['setpoint_high'].append(setpoint_high)
 								daily_data[day_key][hour_of_day][a]['setpoint_low'].append(setpoint_low)
@@ -313,8 +350,10 @@ def ProcessWeek(Start, End, site_id, scale_id):
 									daily_data[day_key][hour_of_day][a]['over_threshold'].append(converted_value)
 								if converted_value < setpoint_low:
 									daily_data[day_key][hour_of_day][a]['under_threshold'].append(converted_value)
+							
 								if converted_value < setpoint_low or converted_value > setpoint_high :
 									daily_data[day_key][hour_of_day][a]['out_of_threshold'].append(converted_value)
+								
 								#	count_out_of_threshold += 1
 	
 						    
@@ -341,9 +380,9 @@ def ProcessWeek(Start, End, site_id, scale_id):
 							stats = DescriptiveStatistics()
 							stats.clear()
 							
-							count_over_threshold = 0
-							count_under_threshold = 0
-							count_out_of_threshold = 0
+#							count_over_threshold = 0
+#							count_under_threshold = 0
+#							count_out_of_threshold = 0
 							
 								
 							for value in tags['scale_weight_values']:
@@ -398,15 +437,16 @@ def ProcessWeek(Start, End, site_id, scale_id):
 								else:
 									tags['setpoint_high'] = 0
 							
-							#SystemLogger(True, "JAY", 'Count: ' + str(tags['count']) + ', Set Point ' + str(tags['sp']) + ', ' + str(materials_key) + ', Setpoint: ' + str(tags['setpoint']))			
-									
 							tags['weight_target'] = tags['count']*tags['sp']
 							tags['weight_diff'] = tags['weight_sum']- tags['weight_target']
 							
-							tags['pct_weight_over'] = (len(tags['over_threshold']) / float(tags['count'])) * 100 if tags['count'] > 0 else 0
-							tags['pct_weight_under'] = (len(tags['under_threshold']) / float(tags['count'])) * 100 if tags['count'] > 0 else 0
-							tags['pct_out_of_range'] = (len(tags['out_of_threshold']) / float(tags['count'])) * 100 if tags['count'] > 0 else 0
-													
+							
+						# Out of threshold values are no longer in the list of tags, so need to divide by count of tag values plus count of out_of_threshold,
+						# to get percentage of total bags/units initially packed
+						tags['pct_weight_over'] = (len(tags['over_threshold']) / float(tags['total_count'])) * 100 if tags['total_count'] > 0 else 0
+						tags['pct_weight_under'] = (len(tags['under_threshold']) / float(tags['total_count'])) * 100 if tags['total_count']> 0 else 0
+						tags['pct_out_of_range'] = (len(tags['out_of_threshold']) / float(tags['total_count'])) * 100 if tags['total_count'] > 0 else 0
+		
 						
 						# Clean up to save memory.
 						del tags['scale_weight_values']
@@ -433,14 +473,19 @@ def ProcessWeek(Start, End, site_id, scale_id):
 						for tag in ['filler_sp_tag', 'filler_sp_high_tag', 'filler_sp_low_tag','line_material']:
 						    if tag in tags and tags[tag]:
 						        last_known_values[tag] = tags[tag]    
-						        	                    
+
 			# Remove keys that have no hourly data or less than 2 bags per hour
 			for day_key in list(daily_data.keys()):  # Iterate over each day
 			    for hour_key in list(daily_data[day_key].keys()):  # Iterate over each hour
 			    	for material_key in list(daily_data[day_key][hour_key].keys()):  # Iterate over each material
 				        hour_data = daily_data[day_key][hour_key][material_key]
 				        # Check if 'count' key exists and if its value is less than 1
-				        if 'count' not in hour_data or hour_data['count'] <= 1:
+				        total_count = 0
+				        if 'count' in hour_data:
+				        	total_count += hour_data['count']
+				        if 	'out_of_threshold' in hour_data:
+				        	total_count += len(hour_data['out_of_threshold'])
+				        if total_count <= 1:
 				            del daily_data[day_key][hour_key][material_key]  # Delete the hour bucket
 			            
 			    # After processing hours, check if the day has any hours left
@@ -462,29 +507,30 @@ def ProcessWeek(Start, End, site_id, scale_id):
 # insertOrUpdateBucketData
 ###############################################################
 def insertOrUpdateBucketData(scale_data, start_dt, end_dt):
-
+	
 	LoggerActive = True
-	try:
-		for scale_id, days_data in scale_data.items():
-		#	SystemLogger(True, "JAY", "insertOrUpdateBucketData:" + str(scale_id) )
-			
+		
+	updateParams = {}
+	error_checking = {}
+	
+	for scale_id, days_data in scale_data.items():
+		
+		try:
 			# Delete the old versions of the rowsrows
 			txId = system.db.beginTransaction(timeout=5000)
 			parameters = {'scale_id':scale_id, 'start_dt':start_dt, 'end_dt':end_dt}
-			system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/DB_Delete/Delete_Aggregate_Rows', parameters=parameters, tx=txId)
-			
+			delete_count = system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/DB_Delete/Delete_Aggregate_Rows', parameters=parameters, tx=txId)
 			# Then add in all the new ones
 			for day, hours_data in days_data.items():
-				#SystemLogger(True, "JAY", "day:" + str(day))	
+
 				for hour, material_data in hours_data.items():
-			#		SystemLogger(True, "JAY", "hour:" + str(hour))					
 					for material, bucket in material_data.items():
-						#SystemLogger(True, "JAY", "sp_low:" + str(bucket.get('sp_low')))						
-																		
+						error_checking = bucket												
 						updateParams = {
-										    'scale_id': bucket['scale_id'],
+										    'scale_id': scale_id, #bucket['scale_id'],
 										    'time_start': bucket['time_start'],
 										    'count': bucket.get('count', 0),
+										    'total_count': bucket.get('total_count', 0),
 										    'weight_avg': round(bucket.get('weight_avg', 0.0),2),
 										    'weight_sum': round(bucket.get('weight_sum', 0.0),2),
 										    'weight_diff': round(bucket.get('weight_diff', 0.0),2),
@@ -512,29 +558,44 @@ def insertOrUpdateBucketData(scale_data, start_dt, end_dt):
 										    'sp_low_plc': 0, #round(bucket.get('filler_sp_low_tag', 0.0),2),
 										    'design': round(bucket.get('design', 50.0),2)
 										}
-										
-#						# Updated SQL query with string formatting
-#						checkSql = "SELECT COUNT(*) FROM weight.dbo.aggregated WHERE scale_id = %d AND time_start = '%s' and material = '%s' " % (scale_id, bucket['time_start'], material)
-#						
-#						# Running the query
-#						existingCount = system.db.runScalarQuery(checkSql)
-#						
-#						if existingCount > 0:
-#							system.db.runNamedQuery("Weight_Q/DB_Update/Update_Aggregate_Hourly", updateParams)
-#						else:
-#					#		SystemLogger(True, "JAY", "Inserting" + str(updateParams))
-#							system.db.runNamedQuery("Weight_Q/DB_Insert/Insert_Aggregate_Hourly", updateParams)	
-						#system.db.runNamedQuery("Weight_Q/DB_Insert/Insert_Aggregate_Hourly", updateParams)
+
 						system.db.runNamedQuery(project=system.project.getProjectName(), path="Weight_Q/DB_Insert/Insert_Aggregate_Hourly", parameters=updateParams, tx=txId)
 							
 			system.db.commitTransaction(txId)
 			system.db.closeTransaction(txId)					
-							
-	except:
-		SystemLogger(True, "Weight Tracking", CORE_P.Utils.getError())		
-		system.db.rollbackTransaction(txId)	
-		system.db.closeTransaction(txId)	
+	
+		except:
+			SystemLogger(True, "Weight Tracking", CORE_P.Utils.getError() + str(updateParams) + ' --- ' + str(bucket))		
+			system.db.rollbackTransaction(txId)	
+			system.db.closeTransaction(txId)	
+	
+	
 #	SystemLogger(True, "JAY", "Finished processing")		
+
+
+###############################################################
+# ManualAggregation
+###############################################################
+def ManualAggregation(Start, End, site_id=0, scale_id=0):
+	
+	Weight_P.Aggregator.GetBuckets(Start, End, site_id, scale_id)
+	
+	#-----------------------------------------------------------------------
+	# Call the Update Reject bit too
+	#-----------------------------------------------------------------------
+	parameters = {'scale_id':scale_id, 'site_id':site_id}
+	lines = CORE_P.Utils.datasetToDicts(system.db.runNamedQuery(
+		project=system.project.getProjectName(), 
+		path='Weight_Q/DB_Query/Get_Lines_By_Scale_Id', 
+		parameters=parameters))
+	
+	if len(lines)==0:
+		return # Nothing to do here
+			
+	# Only need to process each line once (even though it might have multiple fillers/scales
+	for line in lines:
+		ProcessRejects(Start, End, line)
+		
 
 ###############################################################
 # GetBuckets
@@ -560,7 +621,6 @@ def GetBuckets(Start, End, site_id=0, scale_id=0):
 		weekStart.set(Calendar.MINUTE, 0)
 		weekStart.set(Calendar.SECOND, 0)
 		weekStart.set(Calendar.MILLISECOND, 0)	
-				
 		
 		weekEnd = createWeekCalendar(startCal, i + 1)
 		
@@ -581,10 +641,10 @@ def GetBuckets(Start, End, site_id=0, scale_id=0):
 		scale_data = ProcessWeek(weekStart.getTime(),weekEnd.getTime(), site_id, scale_id)
 		insertOrUpdateBucketData(scale_data, weekStart.getTime(),weekEnd.getTime())
 		
-		progress = float(i) / float(weeksBetween) * 100
+		progress = float(i) / float(weeksBetween) * 50
 		system.util.sendMessage(project="WeightTracking", messageHandler="AggregatorUpdateBarWeek", scope='S', payload={"progress": progress})
 		
-	progress = 100
+	progress = 50
 	system.util.sendMessage(project="WeightTracking", messageHandler="AggregatorUpdateBarWeek", scope='S', payload={"progress": progress})
 		
 ###############################################################
@@ -653,15 +713,25 @@ def UpdateRejects():
 			)
 		)  
 	
+	if len(lines)<1:
+		system.util.sendMessage(project="WeightTracking", messageHandler="AggregatorUpdateBarWeek", scope='S', payload={"progress": 100})
+		return
+		
+	progress = 50
+	line_progress_step = 50.0/len(lines)
+	#system.util.sendMessage(project="WeightTracking", messageHandler="AggregatorUpdateBarWeek", scope='S', payload={"progress": progress})
+	
 	for line in lines:
-		ProcessRejects(start_dt, end_dt, line)
+		ProcessRejects(start_dt, end_dt, line, base_progress=progress, max_progress=(progress+line_progress_step))
+		progress += line_progress_step
 
+	system.util.sendMessage(project="WeightTracking", messageHandler="AggregatorUpdateBarWeek", scope='S', payload={"progress": 100})
 	return
 
 ###############################################################
 # ProcessRejects
 ###############################################################
-def ProcessRejects(start_dt, end_dt, line):
+def ProcessRejects(start_dt, end_dt, line, base_progress=50, max_progress=100):
 	
 	hour_start = start_dt
 	# Don't process times in the future (or where the current hour isn't yet finished
@@ -682,18 +752,27 @@ def ProcessRejects(start_dt, end_dt, line):
 		po_number = materials[0]['po_number']
 	materials_index = 0
 	
-	# First, we need to clear out old rows (can't just update existing, now that we're recording materials as well, 
-	# because a material might be changed so that old row needs deleting)
-	txId = system.db.beginTransaction(timeout=60000)
-	parameters = {'line_id':line['line_id'], 'start_dt':start_dt, 'end_dt':end_dt}
-	system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/DB_Delete/Delete_Reject_Rows', parameters=parameters, tx=txId)
+	SystemLogger(True, "WeightTracking", 'Starting ProcessRejects')	
 	
+
 	hours = []
 	# Go through the time range in one hour blocks, creating an entry for each hour
 	# with a list of materials, 'All', and any materials that occurred during that time. 
-	try:
-		while (hour_start < end_dt):
 	
+	# Faff about with the progress bar
+	hour_count = int((CORE_P.Time.seconds_between(start_dt, end_dt))/3600)
+	current_hour = 0
+	progress_range = max_progress - base_progress
+	if progress_range <1:
+		progress_range = 1
+		
+	while (hour_start < end_dt):
+		current_hour +=1
+		progress = 	base_progress + (float(current_hour)/hour_count) *  progress_range
+		
+		system.util.sendMessage(project="WeightTracking", messageHandler="AggregatorUpdateBarWeek", scope='S', payload={"progress": progress})
+		
+		try:
 			hour_end = CORE_P.Time.adjustTimestamp(hour_start, offset_hours=1)
 			
 			# -------------------------------------------------------
@@ -716,6 +795,14 @@ def ProcessRejects(start_dt, end_dt, line):
 				elif (line['weight_reject_tag_type'] == 'b'):
 					hour['weight_count'] = CORE_P.Tags.countHigh(line['weight_reject_tag'], hour_start, hour_end)
 
+			# First, we need to clear out old rows (can't just update existing, now that we're recording materials as well, 
+			# because a material might be changed so that old row needs deleting)
+			txId = system.db.beginTransaction(timeout=60000)
+		#	parameters = {'line_id':line['line_id'], 'start_dt':start_dt, 'end_dt':end_dt}
+			parameters = {'line_id':line['line_id'], 'start_dt':hour_start, 'end_dt':hour_end}
+			system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/DB_Delete/Delete_Reject_Rows', parameters=parameters, tx=txId)
+			
+
 			# Save hour to database
 			parameters = {
 			    'line_id':		line['line_id'],
@@ -734,6 +821,8 @@ def ProcessRejects(start_dt, end_dt, line):
 				end = materials[materials_index+1]['timestamp']
 				if (end > hour_end):
 					end = hour_end
+			else:
+				end = hour_end
 			
 			if(len(materials)>0):
 				material = materials[materials_index]['value']
@@ -809,17 +898,18 @@ def ProcessRejects(start_dt, end_dt, line):
 								}
 						system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/Rejects_Q/UpsertReject', parameters=parameters, tx=txId)
 			
-
-			
 			# Move on to the next hour
 			hour_start = hour_end
 		
-		system.db.commitTransaction(txId)
-		system.db.closeTransaction(txId)			
-	except:
-		system.db.rollbackTransaction(txId)	
-		system.db.closeTransaction(txId)	
+			system.db.commitTransaction(txId)
+			system.db.closeTransaction(txId)			
+		except:
+			SystemLogger(True, "WeightTracking", 'Error in ProcessRejects: ' + CORE_P.Utils.getError())
+			system.db.rollbackTransaction(txId)	
+			system.db.closeTransaction(txId)	
+			
 	
 	end = time.time()	
-
+	SystemLogger(True, "WeightTracking", 'Finished ProcessRejects')	
+	return
 		

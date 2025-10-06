@@ -33,7 +33,7 @@
       {
         "type": "Parameter",
         "identifier": "scale_id",
-        "sqlType": 2
+        "sqlType": 3
       },
       {
         "type": "Parameter",
@@ -43,7 +43,7 @@
       {
         "type": "Parameter",
         "identifier": "count",
-        "sqlType": 2
+        "sqlType": 3
       },
       {
         "type": "Parameter",
@@ -118,17 +118,17 @@
       {
         "type": "Parameter",
         "identifier": "reject_metal",
-        "sqlType": 2
+        "sqlType": 3
       },
       {
         "type": "Parameter",
         "identifier": "reject_over",
-        "sqlType": 2
+        "sqlType": 3
       },
       {
         "type": "Parameter",
         "identifier": "reject_under",
-        "sqlType": 2
+        "sqlType": 3
       },
       {
         "type": "Parameter",
@@ -173,7 +173,12 @@
       {
         "type": "Parameter",
         "identifier": "po_number",
-        "sqlType": 2
+        "sqlType": 3
+      },
+      {
+        "type": "Parameter",
+        "identifier": "total_count",
+        "sqlType": 3
       }
     ]
   }
