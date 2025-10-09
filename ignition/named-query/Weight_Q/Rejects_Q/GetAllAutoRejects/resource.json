@@ -12,7 +12,7 @@
     "fallbackValue": "",
     "maxReturnSize": 100,
     "cacheUnit": "SEC",
-    "type": "Query",
+    "type": "ScalarQuery",
     "enabled": true,
     "cacheAmount": 1,
     "cacheEnabled": false,
@@ -32,8 +32,13 @@
     "parameters": [
       {
         "type": "Parameter",
-        "identifier": "site_id",
+        "identifier": "line_id",
         "sqlType": 2
+      },
+      {
+        "type": "Parameter",
+        "identifier": "time_start",
+        "sqlType": 8
       }
     ]
   }

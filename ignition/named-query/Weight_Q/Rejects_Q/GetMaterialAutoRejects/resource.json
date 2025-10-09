@@ -32,8 +32,13 @@
     "parameters": [
       {
         "type": "Parameter",
-        "identifier": "site_id",
+        "identifier": "line_id",
         "sqlType": 2
+      },
+      {
+        "type": "Parameter",
+        "identifier": "time_start",
+        "sqlType": 8
       }
     ]
   }

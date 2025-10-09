@@ -12,7 +12,8 @@ SELECT 			l.site_id,
 				l.metal_reject_tag_type,
 				l.weight_reject_tag,
 				l.weight_reject_tag_type,
-				l.exclude_out_of_range
+				l.exclude_out_of_range,
+				l.assume_weight_rejects
 				
 FROM 			weight.dbo.line as l
 

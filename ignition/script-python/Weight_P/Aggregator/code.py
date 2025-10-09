@@ -679,7 +679,7 @@ def GetBucketsGlobal(Start, End, site_id=0, scale_id=0):
 		weekEnd.set(Calendar.MINUTE, 0)
 		weekEnd.set(Calendar.SECOND, 0)
 		weekEnd.set(Calendar.MILLISECOND, 0)
-		
+	
 		weekEnd = weekEnd if weekEnd.before(endCal) else endCal
 		weekEnd.set(Calendar.MINUTE, 0)
 		weekEnd.set(Calendar.SECOND, 0)
@@ -789,7 +789,10 @@ def ProcessRejects(start_dt, end_dt, line, base_progress=50, max_progress=100):
 					hour['metal_count'] = CORE_P.Tags.countHigh(line['metal_reject_tag'], hour_start, hour_end)
 
 			# Get the weight reject count
-			if (line['weight_reject_tag']):
+			if (line['assume_weight_rejects']):
+				parameters = {'line_id':line['line_id'], 'time_start':hour_start}
+				hour['weight_count'] = system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/Rejects_Q/GetAllAutoRejects', parameters=parameters)
+			elif (line['weight_reject_tag']):
 				if (line['weight_reject_tag_type'] == 'c'):
 					hour['weight_count'] = CORE_P.Tags.getTotalizerUsage(line['weight_reject_tag'], hour_start, hour_end)
 				elif (line['weight_reject_tag_type'] == 'b'):
@@ -857,11 +860,12 @@ def ProcessRejects(start_dt, end_dt, line, base_progress=50, max_progress=100):
 								elif (line['metal_reject_tag_type'] == 'b'):
 									vals[key]['metal_count'] = vals[key]['metal_count'] +  CORE_P.Tags.countHigh(line['metal_reject_tag'],start, end)
 							
-							if (line['weight_reject_tag']):
-								if (line['weight_reject_tag_type'] == 'c'):
-									vals[key]['weight_count'] = vals[key]['weight_count'] +  CORE_P.Tags.getTotalizerUsage(line['weight_reject_tag'], start, end)
-								elif (line['weight_reject_tag_type'] == 'b'):
-									vals[key]['weight_count'] = vals[key]['weight_count'] + CORE_P.Tags.countHigh(line['weight_reject_tag'], start, end)
+							if (not line['assume_weight_rejects']): # Only do this bit if we're not using assumed weight rejects
+								if (line['weight_reject_tag']):
+									if (line['weight_reject_tag_type'] == 'c'):
+										vals[key]['weight_count'] = vals[key]['weight_count'] +  CORE_P.Tags.getTotalizerUsage(line['weight_reject_tag'], start, end)
+									elif (line['weight_reject_tag_type'] == 'b'):
+										vals[key]['weight_count'] = vals[key]['weight_count'] + CORE_P.Tags.countHigh(line['weight_reject_tag'], start, end)
 						
 						# If we've hit the end, stop working on this hour
 						if (end == hour_end):
@@ -886,6 +890,15 @@ def ProcessRejects(start_dt, end_dt, line, base_progress=50, max_progress=100):
 						else:
 							end = hour_end
 							
+					# If we're doing assumed weight rejects instead of an actual checkweigher, get them here
+					if (line['assume_weight_rejects']):
+						parameters = {'line_id':line['line_id'], 'time_start':hour_start}
+						weight_rejects_list = CORE_P.Utils.datasetToDicts(system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/Rejects_Q/GetMaterialAutoRejects', parameters=parameters))
+						for row in weight_rejects_list:
+							row_key = str(row['material']) + '_' + str(row['po_number'])		# Key is used to collate data points into material/po_number groupings
+							vals[row_key]['weight_count'] = row['reject_count']
+						
+					
 					# Go through each material found for this hour, and save it to the database 
 					for val in vals:
 						parameters = {
