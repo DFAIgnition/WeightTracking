@@ -59,6 +59,16 @@
         "type": "Parameter",
         "identifier": "po_number",
         "sqlType": 2
+      },
+      {
+        "type": "Parameter",
+        "identifier": "metal_test_count",
+        "sqlType": 2
+      },
+      {
+        "type": "Parameter",
+        "identifier": "metal_actual_count",
+        "sqlType": 2
       }
     ]
   }

@@ -1,0 +1,57 @@
+{
+  "custom": {},
+  "params": {
+    "rowData": {}
+  },
+  "propConfig": {
+    "params.rowData": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 20,
+      "width": 100
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "events": {
+          "component": {
+            "onActionPerformed": {
+              "config": {
+                "script": "\t\n\tsystem.perspective.openPopup(\n\t\t    id\u003d\"giveawayCostPopup\",\n\t\t    view\u003d\"Weight_V/Configuration/Embedded/Giveaway_Cost/Giveaway_Cost_Popup\",\n\t\t    params\u003d{\n\t\t        \"rowData\": self.view.params.rowData\n\t\t    },\n\t\t    title\u003d\"Cost Adjustment\",\n\t\t    modal\u003dTrue,\n\t\t    draggable\u003dTrue\n\t\t)"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "Button"
+        },
+        "position": {
+          "basis": "20px",
+          "shrink": 0
+        },
+        "props": {
+          "style": {
+            "marginLeft": 5,
+            "marginRight": 5
+          },
+          "text": "Modify"
+        },
+        "type": "ia.input.button"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column"
+    },
+    "type": "ia.container.flex"
+  }
+}

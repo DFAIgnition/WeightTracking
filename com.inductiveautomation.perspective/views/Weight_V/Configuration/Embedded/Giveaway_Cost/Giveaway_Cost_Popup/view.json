@@ -1,0 +1,220 @@
+{
+  "custom": {
+    "formData": {}
+  },
+  "events": {
+    "system": {
+      "onStartup": {
+        "config": {
+          "script": "\n\trow \u003d dict(self.params.rowData)\n\tself.custom.formData \u003d row"
+        },
+        "scope": "G",
+        "type": "script"
+      }
+    }
+  },
+  "params": {
+    "rowData": []
+  },
+  "propConfig": {
+    "custom.formData": {
+      "persistent": true
+    },
+    "params.rowData": {
+      "paramDirection": "input",
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 240,
+      "width": 316
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "meta": {
+          "name": "SKU"
+        },
+        "position": {
+          "height": 36,
+          "width": 290,
+          "x": 10,
+          "y": 11
+        },
+        "propConfig": {
+          "props.options": {
+            "binding": {
+              "config": {
+                "path": "view.custom.formData.sku_code"
+              },
+              "transforms": [
+                {
+                  "code": "\treturn [\n\t    {\n\t        \"label\": value,\n\t        \"value\": value\n\t    }\n\t]",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          },
+          "props.value": {
+            "binding": {
+              "config": {
+                "path": "view.custom.formData.sku_code"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "enabled": false,
+          "textAlign": "center"
+        },
+        "type": "ia.input.dropdown"
+      },
+      {
+        "meta": {
+          "name": "CostPerPound"
+        },
+        "position": {
+          "height": 32,
+          "width": 290,
+          "x": 10,
+          "y": 139
+        },
+        "propConfig": {
+          "props.value": {
+            "binding": {
+              "config": {
+                "bidirectional": true,
+                "path": "view.custom.formData.cost_per_lb"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "align": "center",
+          "format": "$0,0.00"
+        },
+        "type": "ia.input.numeric-entry-field"
+      },
+      {
+        "meta": {
+          "name": "Date"
+        },
+        "position": {
+          "height": 32,
+          "width": 290,
+          "x": 10,
+          "y": 98
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "path": "view.custom.formData.effective_start_dt"
+              },
+              "transforms": [
+                {
+                  "code": "\t\n\traw_date \u003d value\n\t\n\t# 🔥 Convert string → Date safely\n\tif isinstance(raw_date, basestring):\n\t\tcleaned \u003d raw_date.split(\" (\")[0]\n\t\tinput_date \u003d system.date.parse(cleaned, \"EEE MMM dd yyyy HH:mm:ss \u0027GMT\u0027Z\")\n\telse:\n\t\tinput_date \u003d raw_date\n\t\n\t# 🔥 Now safe to format\n\tmonth_start \u003d system.date.format(input_date, \"yyyy-MM-01\")\n\t\n\treturn month_start",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "enabled": false,
+          "style": {
+            "textAlign": "center"
+          }
+        },
+        "type": "ia.input.text-field"
+      },
+      {
+        "meta": {
+          "name": "TextField"
+        },
+        "position": {
+          "height": 32,
+          "width": 290,
+          "x": 10,
+          "y": 55
+        },
+        "propConfig": {
+          "props.text": {
+            "binding": {
+              "config": {
+                "path": "view.custom.formData.sku_description"
+              },
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "enabled": false,
+          "style": {
+            "textAlign": "center"
+          }
+        },
+        "type": "ia.input.text-field"
+      },
+      {
+        "custom": {
+          "key": "value"
+        },
+        "events": {
+          "component": {
+            "onActionPerformed": {
+              "config": {
+                "script": "\t\n\tdata \u003d self.view.custom.formData\n\n\t# 🔥 Explicit handling (more robust)\n\tif data.get(\"is_all\"):\n\t\tsku_cost_ids \u003d data.get(\"all_sku_cost_ids\") or []\n\telse:\n\t\tsku_cost_ids \u003d [data.get(\"sku_cost_id\")]\n\n\t# Safety check\n\tif not sku_cost_ids:\n\t\tsystem.perspective.print(\"No valid IDs to update\")\n\t\treturn\n\n\t# Convert list → string\n\tsku_cost_ids_str \u003d \",\".join([str(x) for x in sku_cost_ids if x])\n\n\tparams \u003d {\n\t\t\"sku_cost_ids\": sku_cost_ids_str,\n\t\t\"cost_per_lb\": data.get(\"cost_per_lb\"),\n\t\t\"comment\": data.get(\"comment\")\n\t}\n\n\ttry:\n\t\trows \u003d system.db.runNamedQuery(\n\t\t\t\"Weight_Q/Giveaway/UpdateSKUCost\",\n\t\t\tparams\n\t\t)\n\n\n\t\tsystem.perspective.closePopup(\"giveawayCostPopup\")\n\n\t\tsystem.perspective.sendMessage(\n\t\t\t\"refreshGiveawayCost\",\n\t\t\t{},\n\t\t\tscope\u003d\"page\"\n\t\t)\n\n\texcept Exception as e:\n\t\tsystem.perspective.print(\"Save failed: \" + str(e))"
+              },
+              "scope": "G",
+              "type": "script"
+            }
+          }
+        },
+        "meta": {
+          "name": "Save"
+        },
+        "position": {
+          "height": 34,
+          "width": 80,
+          "x": 112,
+          "y": 193
+        },
+        "propConfig": {
+          "props.enabled": {
+            "binding": {
+              "config": {
+                "struct": {
+                  "data": "{view.params.rowData}",
+                  "form": "{view.custom.formData}"
+                },
+                "waitOnAll": true
+              },
+              "transforms": [
+                {
+                  "code": "\t\n\tdef normalize_date(val):\n\t\tif val is None:\n\t\t\treturn None\n\n\t\t# Already a Date\n\t\tif hasattr(val, \"getTime\"):\n\t\t\treturn val\n\n\t\t# Clean JS-style date string\n\t\ttry:\n\t\t\t# Remove timezone text in parentheses\n\t\t\tcleaned \u003d val.split(\" (\")[0]\n\n\t\t\t# Example becomes:\n\t\t\t# Sat Jan 31 2026 14:00:00 GMT-0500\n\n\t\t\treturn system.date.parse(cleaned, \"EEE MMM dd yyyy HH:mm:ss \u0027GMT\u0027Z\")\n\t\texcept:\n\t\t\t\treturn None\n\t\n\tif value[\u0027form\u0027][\u0027cost_per_lb\u0027] !\u003d value[\u0027data\u0027][\u0027cost_per_lb\u0027]:\n\t\treturn True\n\tif value[\u0027form\u0027][\u0027effective_start_dt\u0027] !\u003d normalize_date(value[\u0027data\u0027][\u0027effective_start_dt\u0027]):\n\t\treturn True\n\treturn False",
+                  "type": "script"
+                }
+              ],
+              "type": "expr-struct"
+            }
+          }
+        },
+        "props": {
+          "text": "Save"
+        },
+        "type": "ia.input.button"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "type": "ia.container.coord"
+  }
+}

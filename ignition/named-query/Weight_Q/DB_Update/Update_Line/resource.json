@@ -104,6 +104,16 @@
         "type": "Parameter",
         "identifier": "assume_weight_rejects",
         "sqlType": 6
+      },
+      {
+        "type": "Parameter",
+        "identifier": "metal_test_tag",
+        "sqlType": 7
+      },
+      {
+        "type": "Parameter",
+        "identifier": "metal_test_tag_type",
+        "sqlType": 7
       }
     ]
   }

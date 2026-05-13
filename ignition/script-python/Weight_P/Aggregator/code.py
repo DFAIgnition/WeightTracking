@@ -731,7 +731,7 @@ def UpdateRejects():
 ###############################################################
 # ProcessRejects
 ###############################################################
-def ProcessRejects(start_dt, end_dt, line, base_progress=50, max_progress=100):
+def ProcessRejects_old(start_dt, end_dt, line, base_progress=50, max_progress=100):
 	
 	hour_start = start_dt
 	# Don't process times in the future (or where the current hour isn't yet finished
@@ -925,4 +925,313 @@ def ProcessRejects(start_dt, end_dt, line, base_progress=50, max_progress=100):
 	end = time.time()	
 	SystemLogger(True, "WeightTracking", 'Finished ProcessRejects')	
 	return
+	
+###############################################################
+# ProcessRejects
+###############################################################
+def ProcessRejects(start_dt, end_dt, line, base_progress=50, max_progress=100):
+
+	from java.util import Date
+	
+	# Set True to derive metal_count from tag change events (guarantees test+actual=total).
+	# Set False to keep original countHigh/totalizer source (preserves historical behaviour).
+	USE_TIMESTAMP_SOURCE_FOR_METAL_COUNT = False
+
+	hour_start = start_dt
+	if (end_dt > CORE_P.Time.adjustTimestamp(rounding='hourdown')):
+		end_dt = CORE_P.Time.adjustTimestamp(rounding='hourdown')
+	
+	materials = []
+	if (line['line_material']):	
+		materials = CORE_P.Tags.getTagChanges(line['line_material'], start_dt, end_dt)
+		if (len(materials) > 0 and materials[0]['timestamp'] > hour_start):
+			materials.insert(0, {"value": 'None', "timestamp": hour_start})
+	elif(line['starr_unit_id']):	
+		materials = Weight_P.STARR.getMaterialsFromSTARR(line['starr_unit_id'], start_dt, end_dt)
+	
+	if (len(materials) > 0):
+		material  = materials[0]['value']
+		po_number = materials[0]['po_number']
+	materials_index = 0
+	
+	SystemLogger(True, "WeightTracking", 'Starting ProcessRejects')	
+
+	hour_count     = int((CORE_P.Time.seconds_between(start_dt, end_dt)) / 3600)
+	current_hour   = 0
+	progress_range = max_progress - base_progress
+	if progress_range < 1:
+		progress_range = 1
+
+	FIVE_MIN_MS = 5 * 60 * 1000
+
+	def getTestWindows(tag, tag_type, win_start, win_end):
+		test_windows = []
+		if not tag:
+			return test_windows
+		try:
+			changes = CORE_P.Tags.getTagChanges(tag, win_start, win_end)
+
+			if tag_type == 'b':
+				latch_active = False
+				latch_start  = None
+				prev_val     = None
+				for ch in changes:
+					val = ch['value']
+					ts  = ch['timestamp']
+					if prev_val is not None:
+						if val and not prev_val:        # rising edge
+							latch_active = True
+							latch_start  = ts
+						elif not val and prev_val:      # falling edge
+							if latch_active:
+								test_windows.append((latch_start, ts))
+							latch_active = False
+							latch_start  = None
+					prev_val = val
+				if latch_active and latch_start is not None:
+					test_windows.append((latch_start, win_end))
+
+			elif tag_type == 'c':
+				prev_val = None
+				for ch in changes:
+					if prev_val is not None and ch['value'] > prev_val:
+						test_start = ch['timestamp']
+						test_end   = Date(test_start.getTime() + FIVE_MIN_MS)
+						if test_end > win_end:
+							test_end = win_end
+						test_windows.append((test_start, test_end))
+					prev_val = ch['value']
+		except:
+			SystemLogger(True, "WeightTracking", 'Error in getTestWindows: ' + CORE_P.Utils.getError())
+		return test_windows
+
+	def classifyMetalHits(hit_timestamps, test_windows):
+		test_count   = 0
+		actual_count = 0
+		for hit_ts in hit_timestamps:
+			is_test = False
+			for (tw_start, tw_end) in test_windows:
+				if tw_start <= hit_ts <= tw_end:
+					is_test = True
+					break
+			if is_test:
+				test_count   += 1
+			else:
+				actual_count += 1
+		return test_count, actual_count
+
+	def getMetalHitTimestamps(tag, tag_type, win_start, win_end):
+		hits = []
+		if not tag:
+			return hits
+		try:
+			changes = CORE_P.Tags.getTagChanges(tag, win_start, win_end)
+			if tag_type == 'b':
+				prev_val = None
+				for ch in changes:
+					if prev_val is not None and ch['value'] and not prev_val:
+						hits.append(ch['timestamp'])
+					prev_val = ch['value']
+			elif tag_type == 'c':
+				prev_val = None
+				for ch in changes:
+					if prev_val is not None and ch['value'] > prev_val:
+						delta = int(ch['value'] - prev_val)
+						for _ in range(delta):
+							hits.append(ch['timestamp'])
+					prev_val = ch['value']
+		except:
+			SystemLogger(True, "WeightTracking", 'Error in getMetalHitTimestamps: ' + CORE_P.Utils.getError())
+		return hits
+
+
+	while (hour_start < end_dt):
+		current_hour += 1
+		progress = base_progress + (float(current_hour) / hour_count) * progress_range
+		system.util.sendMessage(project="WeightTracking", messageHandler="AggregatorUpdateBarWeek", scope='S', payload={"progress": progress})
 		
+		try:
+			hour_end = CORE_P.Time.adjustTimestamp(hour_start, offset_hours=1)
+			
+			# -------------------------------------------------------
+			# Full hour 'All' row
+			# -------------------------------------------------------
+			hour = {
+				'time_start':         hour_start,   # FIX 1: was start_dt
+				'material':           'All',
+				'metal_count':        0,
+				'weight_count':       0,
+				'metal_test_count':   0,
+				'metal_actual_count': 0
+			}
+
+			# Pre-fetch test windows once for the whole hour
+			test_windows_hour = []
+			if (line['metal_test_tag']):
+				test_windows_hour = getTestWindows(
+					line['metal_test_tag'], line['metal_test_tag_type'], hour_start, hour_end)
+
+			if (line['metal_reject_tag']):
+				# Always get hit timestamps when we have a test tag,
+				# or when USE_TIMESTAMP_SOURCE is on
+				if (line['metal_test_tag'] or USE_TIMESTAMP_SOURCE_FOR_METAL_COUNT):
+					hit_timestamps = getMetalHitTimestamps(
+						line['metal_reject_tag'], line['metal_reject_tag_type'], hour_start, hour_end)
+				
+				if USE_TIMESTAMP_SOURCE_FOR_METAL_COUNT:
+					# FIX 2 (optional): derive count from same source as classification
+					hour['metal_count'] = len(hit_timestamps)
+				else:
+					# Original behaviour preserved
+					if (line['metal_reject_tag_type'] == 'c'):
+						hour['metal_count'] = CORE_P.Tags.getTotalizerUsage(line['metal_reject_tag'], hour_start, hour_end)
+					elif (line['metal_reject_tag_type'] == 'b'):
+						hour['metal_count'] = CORE_P.Tags.countHigh(line['metal_reject_tag'], hour_start, hour_end)
+
+				if (line['metal_test_tag']):
+					hour['metal_test_count'], hour['metal_actual_count'] = classifyMetalHits(hit_timestamps, test_windows_hour)
+				else:
+					hour['metal_actual_count'] = hour['metal_count']
+
+			if (line['assume_weight_rejects']):
+				parameters = {'line_id': line['line_id'], 'time_start': hour_start}
+				hour['weight_count'] = system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/Rejects_Q/GetAllAutoRejects', parameters=parameters)
+			elif (line['weight_reject_tag']):
+				if (line['weight_reject_tag_type'] == 'c'):
+					hour['weight_count'] = CORE_P.Tags.getTotalizerUsage(line['weight_reject_tag'], hour_start, hour_end)
+				elif (line['weight_reject_tag_type'] == 'b'):
+					hour['weight_count'] = CORE_P.Tags.countHigh(line['weight_reject_tag'], hour_start, hour_end)
+
+			txId = system.db.beginTransaction(timeout=60000)
+			parameters = {'line_id': line['line_id'], 'start_dt': hour_start, 'end_dt': hour_end}
+			system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/DB_Delete/Delete_Reject_Rows', parameters=parameters, tx=txId)
+
+			parameters = {
+				'line_id':            line['line_id'],
+				'time_start':         hour['time_start'],
+				'metal_count':        hour['metal_count'],
+				'weight_count':       hour['weight_count'],
+				'material':           hour['material'],
+				'metal_test_count':   hour['metal_test_count'],
+				'metal_actual_count': hour['metal_actual_count']
+			}
+			system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/Rejects_Q/UpsertReject', parameters=parameters, tx=txId)
+			
+			# -------------------------------------------------------
+			# Materials split
+			# -------------------------------------------------------
+			start = hour_start
+			if (materials_index + 1) < len(materials):
+				end = materials[materials_index + 1]['timestamp']
+				if (end > hour_end):
+					end = hour_end
+			else:
+				end = hour_end
+			
+			if (len(materials) > 0):
+				material  = materials[materials_index]['value']
+				po_number = materials[materials_index]['po_number']
+				key       = str(material) + '_' + str(po_number)
+					 
+				if ((start == hour_start) and (end == hour_end)):
+					if (materials[materials_index]['value'] != 'None'):
+						parameters['material']           = materials[materials_index]['value']
+						parameters['po_number']          = materials[materials_index]['po_number']
+						system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/Rejects_Q/UpsertReject', parameters=parameters, tx=txId)
+				
+				else:
+					vals = {}
+					
+					while end <= hour_end:
+						if (material != 'None'):
+							if key not in vals:
+								vals[key] = {
+									'metal_count':        0,
+									'weight_count':       0,
+									'po_number':          po_number,
+									'material':           material,
+									'metal_test_count':   0,
+									'metal_actual_count': 0
+								}
+							
+							if (line['metal_reject_tag']):
+								if (line['metal_test_tag'] or USE_TIMESTAMP_SOURCE_FOR_METAL_COUNT):
+									seg_hits = getMetalHitTimestamps(
+										line['metal_reject_tag'], line['metal_reject_tag_type'], start, end)
+
+								if USE_TIMESTAMP_SOURCE_FOR_METAL_COUNT:
+									seg_metal = len(seg_hits)
+								else:
+									if (line['metal_reject_tag_type'] == 'c'):
+										seg_metal = CORE_P.Tags.getTotalizerUsage(line['metal_reject_tag'], start, end)
+									elif (line['metal_reject_tag_type'] == 'b'):
+										seg_metal = CORE_P.Tags.countHigh(line['metal_reject_tag'], start, end)
+									else:
+										seg_metal = 0
+
+								vals[key]['metal_count'] += seg_metal
+
+								if (line['metal_test_tag']):
+									seg_test, seg_actual = classifyMetalHits(seg_hits, test_windows_hour)
+									vals[key]['metal_test_count']   += seg_test
+									vals[key]['metal_actual_count']  += seg_actual
+								else:
+									vals[key]['metal_actual_count'] += seg_metal
+							
+							if (not line['assume_weight_rejects']):
+								if (line['weight_reject_tag']):
+									if (line['weight_reject_tag_type'] == 'c'):
+										vals[key]['weight_count'] += CORE_P.Tags.getTotalizerUsage(line['weight_reject_tag'], start, end)
+									elif (line['weight_reject_tag_type'] == 'b'):
+										vals[key]['weight_count'] += CORE_P.Tags.countHigh(line['weight_reject_tag'], start, end)
+						
+						if (end == hour_end):
+							break
+						
+						start = end
+						if (materials_index + 1) < len(materials):
+							materials_index += 1
+							if (materials_index + 1) < len(materials):
+								end = materials[materials_index + 1]['timestamp']
+							else:
+								end = hour_end
+							if (end > hour_end):
+								end = hour_end
+							material  = materials[materials_index]['value']
+							po_number = materials[materials_index]['po_number']
+							key       = str(material) + '_' + str(po_number)
+						else:
+							end = hour_end
+
+					if (line['assume_weight_rejects']):
+						parameters = {'line_id': line['line_id'], 'time_start': hour_start}
+						weight_rejects_list = CORE_P.Utils.datasetToDicts(system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/Rejects_Q/GetMaterialAutoRejects', parameters=parameters))
+						for row in weight_rejects_list:
+							row_key = str(row['material']) + '_' + str(row['po_number'])
+							if row_key in vals:
+								vals[row_key]['weight_count'] = row['reject_count']
+					
+					for val in vals:
+						parameters = {
+							'line_id':            line['line_id'],
+							'time_start':         hour_start,
+							'metal_count':        vals[val]['metal_count'],
+							'weight_count':       vals[val]['weight_count'],
+							'material':           vals[val]['material'],
+							'po_number':          vals[val]['po_number'],
+							'metal_test_count':   vals[val]['metal_test_count'],
+							'metal_actual_count': vals[val]['metal_actual_count']
+						}
+						system.db.runNamedQuery(project=system.project.getProjectName(), path='Weight_Q/Rejects_Q/UpsertReject', parameters=parameters, tx=txId)
+			
+			hour_start = hour_end
+		
+			system.db.commitTransaction(txId)
+			system.db.closeTransaction(txId)			
+		except:
+			SystemLogger(True, "WeightTracking", 'Error in ProcessRejects: ' + CORE_P.Utils.getError())
+			system.db.rollbackTransaction(txId)	
+			system.db.closeTransaction(txId)	
+	
+	SystemLogger(True, "WeightTracking", 'Finished ProcessRejects')	
+	return

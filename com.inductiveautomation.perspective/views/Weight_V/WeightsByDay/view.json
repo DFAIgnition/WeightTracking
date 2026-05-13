@@ -5,9 +5,9 @@
       "$": [
         "ts",
         192,
-        1759713164469
+        1774878043353
       ],
-      "$ts": 1759748400000
+      "$ts": 1774911600000
     },
     "heatmap_format": {
       "colorScale": {
@@ -85,9 +85,9 @@
     },
     "key": "value",
     "line": {
-      "Description": "Bag Line 1 ",
+      "Description": "25 kg Bag Filler",
       "MaxWeight": 30000,
-      "MinWeight": 0
+      "MinWeight": 21000
     },
     "scale": {
       "conversion_factor": 1,
@@ -102,18 +102,18 @@
       "index_year": "",
       "timestamp": ""
     },
-    "sqlserver_timezone": "New Zealand Standard Time",
+    "sqlserver_timezone": "UTC",
     "start_dt": {
       "$": [
         "ts",
         192,
-        1759713164470
+        1774878043353
       ],
-      "$ts": 1759575600000
+      "$ts": 1774742400000
     }
   },
   "params": {
-    "timeZoneID": "Pacific/Auckland"
+    "timeZoneID": ""
   },
   "propConfig": {
     "custom.end_dt": {
@@ -500,12 +500,44 @@
             "props": {
               "options": [
                 {
-                  "label": "Bag Line 1",
+                  "label": "Bag 1",
                   "value": 1
                 },
                 {
-                  "label": "Bottle Line 1",
+                  "label": "Bulk 1",
                   "value": 2
+                },
+                {
+                  "label": "Bulk 2",
+                  "value": 3
+                },
+                {
+                  "label": "Bag Filler 1",
+                  "value": 5
+                },
+                {
+                  "label": "Tote Filler 1",
+                  "value": 6
+                },
+                {
+                  "label": "FlexBulk",
+                  "value": 7
+                },
+                {
+                  "label": "PO1",
+                  "value": 8
+                },
+                {
+                  "label": "PO2",
+                  "value": 9
+                },
+                {
+                  "label": "Block Filler 1",
+                  "value": 10
+                },
+                {
+                  "label": "Retail",
+                  "value": 11
                 }
               ],
               "placeholder": {

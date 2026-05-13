@@ -9,7 +9,7 @@ PROJECT={
     },
     'db_dependencies':{
         'system':1.26,
-        'weight':1.06
+        'weight':1.09
     }
 }    
  

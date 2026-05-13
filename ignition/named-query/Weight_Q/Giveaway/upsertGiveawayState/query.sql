@@ -1,0 +1,24 @@
+INSERT INTO weight.dbo.giveaway
+(
+    event_dt,
+    site_id,
+    line_id,
+    filler_id,
+    sku_id,
+    campaign_id,
+    delta_target_grams,
+    delta_actual_grams,
+    quality_flag
+)
+VALUES
+(
+    :event_dt,
+    :site_id,
+    :line_id,
+    :filler_id,
+    :sku_id,
+    :campaign_id,
+    :delta_target_grams,
+    :delta_actual_grams,
+    :quality_flag
+);

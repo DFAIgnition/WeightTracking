@@ -11,6 +11,8 @@ SET type_id = :type_id,
     
     metal_reject_tag = :metal_reject_tag, 
     metal_reject_tag_type = :metal_reject_tag_type,
+    metal_test_tag = :metal_test_tag, 
+    metal_test_tag_type = :metal_test_tag_type,
 	weight_reject_tag = :weight_reject_tag, 
     weight_reject_tag_type = :weight_reject_tag_type,
     exclude_out_of_range = :exclude_out_of_range,

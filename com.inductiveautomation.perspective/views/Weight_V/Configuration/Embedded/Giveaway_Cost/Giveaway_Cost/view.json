@@ -1,0 +1,861 @@
+{
+  "custom": {
+    "Settings": {
+      "mode": true
+    },
+    "Site": {
+      "TestSite": 6
+    },
+    "Timestamps": {},
+    "sku_cost": []
+  },
+  "params": {},
+  "propConfig": {
+    "custom.Settings": {
+      "persistent": true
+    },
+    "custom.Site": {
+      "persistent": true
+    },
+    "custom.Site.CurrentSite": {
+      "binding": {
+        "config": {
+          "struct": {
+            "CurrentSite": "{/root/CurrentSite.props.params.site}",
+            "TestSite": "{this.custom.Site.TestSite}"
+          },
+          "waitOnAll": true
+        },
+        "transforms": [
+          {
+            "code": "\n\t\n\tLoggerName \u003d \u0027Emissions_EntryOverview_CurrentSite\u0027\n\t\n\ttry:\n\t    # Check if the quality is Bad_NotFound\n\t    if value[\u0027CurrentSite\u0027] is None:\n\t        \n\t        # Perform safe DB query\n\t        query \u003d \"SELECT * FROM system.dbo.sites WHERE site_id \u003d ?\"\n\t        siteId \u003d value[\u0027TestSite\u0027]  # Hardcoded for dummy site; could be dynamic\n\t        results \u003d system.db.runPrepQuery(query, [siteId])\n\t        \n\t        if results and len(results) \u003e 0:\n\t            # Convert dataset row to dictionary\n\t            row \u003d results[0]\n\t            siteInfo \u003d {\n\t                \"country\": row[\"country\"],\n\t                \"is_active\": row[\"is_active\"],\n\t                \"city\": row[\"city\"],\n\t                \"address1\": row[\"address1\"],\n\t                \"timezone\": row[\"timezone\"],\n\t                \"latitude\": row[\"latitude\"],\n\t                \"it_code\": row[\"it_code\"],\n\t                \"zip_code\": row[\"zip_code\"],\n\t                \"site_name\": row[\"site_name\"],\n\t                \"it_name\": row[\"it_name\"],\n\t                \"site_id\": row[\"site_id\"],\n\t                \"region\": row[\"region\"],\n\t                \"state_code\": row[\"state_code\"],\n\t                \"longitude\": row[\"longitude\"]\n\t            }\n\t            return siteInfo\n\t        else:\n\t            return {}\n\t    \n\t    else:\n\t        return value[\u0027CurrentSite\u0027]\n\t\n\t\n\texcept Exception as e:\n\t    CORE_P.Utils.logger(name\u003dLoggerName, level\u003d\u0027Error\u0027, text\u003d\"Error in transform: {{}}\".format(e))\n\t    return {}",
+            "type": "script"
+          }
+        ],
+        "type": "expr-struct"
+      }
+    },
+    "custom.Timestamps": {
+      "persistent": true
+    },
+    "custom.Timestamps.offset": {
+      "binding": {
+        "config": {
+          "expression": "replace({this.custom.Site.CurrentSite.timezone},\" \",\"\")"
+        },
+        "transforms": [
+          {
+            "code": "\tfrom java.util import TimeZone, Date\n\t\n\t# Get your site timezone\n\ttz \u003d TimeZone.getTimeZone(value)\n\t\n\t# Get offset in milliseconds for current time\n\toffset_ms \u003d tz.getOffset(Date().getTime())\n\t\n\t# Convert to hours\n\toffset_hours \u003d offset_ms / (1000 * 60 * 60)\n\t\n\treturn offset_hours",
+            "type": "script"
+          }
+        ],
+        "type": "expr"
+      }
+    },
+    "custom.sku_cost": {
+      "binding": {
+        "config": {
+          "enableValueCache": false,
+          "parameters": {
+            "mode": "{view.custom.Settings.mode}",
+            "site_id": "{view.custom.Site.CurrentSite.site_id}"
+          },
+          "queryPath": "Weight_Q/Giveaway/GetCostForSKU",
+          "returnFormat": "json"
+        },
+        "type": "query"
+      },
+      "persistent": true
+    }
+  },
+  "props": {
+    "defaultSize": {
+      "height": 600,
+      "width": 1024
+    }
+  },
+  "root": {
+    "children": [
+      {
+        "children": [
+          {
+            "meta": {
+              "name": "EmbeddedView"
+            },
+            "position": {
+              "basis": "320px",
+              "grow": 1
+            },
+            "props": {
+              "params": {
+                "help_text": "",
+                "help_title": "Help",
+                "icon": "edit",
+                "text": "Adjust Cost Per Pound Cost"
+              },
+              "path": "CORE_V/Headers/SubHeader"
+            },
+            "type": "ia.display.view"
+          },
+          {
+            "meta": {
+              "name": "Checkbox"
+            },
+            "position": {
+              "basis": "250px"
+            },
+            "propConfig": {
+              "props.selected": {
+                "binding": {
+                  "config": {
+                    "bidirectional": true,
+                    "path": "view.custom.Settings.mode"
+                  },
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "style": {
+                "backgroundColor": "#555555",
+                "color": "#FFFFFF",
+                "marginBottom": 1,
+                "marginLeft": 1,
+                "marginRight": 1,
+                "marginTop": 1,
+                "paddingBottom": 2,
+                "paddingLeft": 5,
+                "paddingRight": 2,
+                "paddingTop": 2
+              },
+              "text": "Use Same Cost For all SKUs"
+            },
+            "type": "ia.input.checkbox"
+          }
+        ],
+        "meta": {
+          "name": "Header"
+        },
+        "position": {
+          "basis": "35px",
+          "shrink": 0
+        },
+        "type": "ia.container.flex"
+      },
+      {
+        "meta": {
+          "name": "Table"
+        },
+        "position": {
+          "basis": "400px",
+          "grow": 1
+        },
+        "propConfig": {
+          "props.data": {
+            "binding": {
+              "config": {
+                "path": "view.custom.sku_cost"
+              },
+              "transforms": [
+                {
+                  "code": "\n    import system\n\n    offset \u003d self.view.custom.Timestamps.offset or 0\n\n    rows \u003d []\n\n    for row in value:\n\n        new_row \u003d dict(row)\n\n        start_dt \u003d new_row.get(\"effective_start_dt\")\n        end_dt   \u003d new_row.get(\"effective_end_dt\")\n\n        # 🔥 Convert timestamps\n        if start_dt is not None:\n            dt \u003d system.date.fromMillis(start_dt)\n            dt \u003d system.date.addHours(dt, offset)\n            new_row[\"effective_start_dt\"] \u003d dt\n\n        if end_dt is not None:\n            dt \u003d system.date.fromMillis(end_dt)\n            dt \u003d system.date.addHours(dt, offset)\n            new_row[\"effective_end_dt\"] \u003d dt\n\n        # 🔥 Handle aggregated IDs (from SQL)\n        ids_str \u003d new_row.get(\"all_sku_cost_ids\")\n\n        if ids_str:\n            id_list \u003d [int(x) for x in str(ids_str).split(\",\") if x]\n        else:\n            # fallback (single row case)\n            id_list \u003d [new_row.get(\"sku_cost_id\")]\n\n        new_row[\"all_sku_cost_ids\"] \u003d id_list\n        new_row[\"all_sku_cost_ids_str\"] \u003d \",\".join([str(x) for x in id_list])\n\n        # 🔥 Detect ALL vs single\n        new_row[\"is_all\"] \u003d len(id_list) \u003e 1\n\n        # Optional UI helper\n        if new_row[\"is_all\"]:\n            new_row[\"sku_display\"] \u003d \"ALL\"\n        else:\n            new_row[\"sku_display\"] \u003d str(new_row.get(\"sku_code\"))\n\n        new_row[\"edit\"] \u003d 1\n\n        rows.append(new_row)\n\n    return rows",
+                  "type": "script"
+                }
+              ],
+              "type": "property"
+            }
+          }
+        },
+        "props": {
+          "columns": [
+            {
+              "align": "center",
+              "boolean": "checkbox",
+              "dateFormat": "MM/DD/YYYY",
+              "editable": false,
+              "field": "effective_start_dt",
+              "filter": {
+                "boolean": {
+                  "condition": ""
+                },
+                "date": {
+                  "condition": "",
+                  "value": ""
+                },
+                "enabled": false,
+                "number": {
+                  "condition": "",
+                  "value": ""
+                },
+                "string": {
+                  "condition": "",
+                  "value": ""
+                },
+                "visible": "on-hover"
+              },
+              "footer": {
+                "align": "center",
+                "justify": "left",
+                "style": {
+                  "classes": ""
+                },
+                "title": ""
+              },
+              "header": {
+                "align": "center",
+                "justify": "center",
+                "style": {
+                  "classes": ""
+                },
+                "title": "Date Start"
+              },
+              "justify": "center",
+              "nullFormat": {
+                "includeNullStrings": false,
+                "nullFormatValue": "",
+                "strict": false
+              },
+              "number": "value",
+              "numberFormat": "0,0.##",
+              "progressBar": {
+                "bar": {
+                  "color": "",
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                "max": 100,
+                "min": 0,
+                "track": {
+                  "color": "",
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                "value": {
+                  "enabled": true,
+                  "format": "0,0.##",
+                  "justify": "center",
+                  "style": {
+                    "classes": ""
+                  }
+                }
+              },
+              "render": "date",
+              "resizable": true,
+              "sort": "none",
+              "sortable": true,
+              "strictWidth": true,
+              "style": {
+                "classes": ""
+              },
+              "toggleSwitch": {
+                "color": {
+                  "selected": "",
+                  "unselected": ""
+                }
+              },
+              "viewParams": {},
+              "viewPath": "",
+              "visible": true,
+              "width": 120
+            },
+            {
+              "align": "center",
+              "boolean": "checkbox",
+              "dateFormat": "MM/DD/YYYY",
+              "editable": false,
+              "field": "effective_end_dt",
+              "filter": {
+                "boolean": {
+                  "condition": ""
+                },
+                "date": {
+                  "condition": "",
+                  "value": ""
+                },
+                "enabled": false,
+                "number": {
+                  "condition": "",
+                  "value": ""
+                },
+                "string": {
+                  "condition": "",
+                  "value": ""
+                },
+                "visible": "on-hover"
+              },
+              "footer": {
+                "align": "center",
+                "justify": "left",
+                "style": {
+                  "classes": ""
+                },
+                "title": ""
+              },
+              "header": {
+                "align": "center",
+                "justify": "center",
+                "style": {
+                  "classes": ""
+                },
+                "title": "Date End"
+              },
+              "justify": "center",
+              "nullFormat": {
+                "includeNullStrings": false,
+                "nullFormatValue": "",
+                "strict": false
+              },
+              "number": "value",
+              "numberFormat": "0,0.##",
+              "progressBar": {
+                "bar": {
+                  "color": "",
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                "max": 100,
+                "min": 0,
+                "track": {
+                  "color": "",
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                "value": {
+                  "enabled": true,
+                  "format": "0,0.##",
+                  "justify": "center",
+                  "style": {
+                    "classes": ""
+                  }
+                }
+              },
+              "render": "date",
+              "resizable": true,
+              "sort": "descending",
+              "sortable": true,
+              "strictWidth": true,
+              "style": {
+                "classes": ""
+              },
+              "toggleSwitch": {
+                "color": {
+                  "selected": "",
+                  "unselected": ""
+                }
+              },
+              "viewParams": {},
+              "viewPath": "",
+              "visible": true,
+              "width": 120
+            },
+            {
+              "align": "center",
+              "boolean": "checkbox",
+              "dateFormat": "MM/DD/YYYY",
+              "editable": true,
+              "field": "cost_per_lb",
+              "filter": {
+                "boolean": {
+                  "condition": ""
+                },
+                "date": {
+                  "condition": "",
+                  "value": ""
+                },
+                "enabled": false,
+                "number": {
+                  "condition": "",
+                  "value": ""
+                },
+                "string": {
+                  "condition": "",
+                  "value": ""
+                },
+                "visible": "on-hover"
+              },
+              "footer": {
+                "align": "center",
+                "justify": "left",
+                "style": {
+                  "classes": ""
+                },
+                "title": ""
+              },
+              "header": {
+                "align": "center",
+                "justify": "center",
+                "style": {
+                  "classes": ""
+                },
+                "title": "Cost Per Pound"
+              },
+              "justify": "center",
+              "nullFormat": {
+                "includeNullStrings": false,
+                "nullFormatValue": "",
+                "strict": false
+              },
+              "number": "value",
+              "numberFormat": "0,0.##",
+              "progressBar": {
+                "bar": {
+                  "color": "",
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                "max": 100,
+                "min": 0,
+                "track": {
+                  "color": "",
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                "value": {
+                  "enabled": true,
+                  "format": "0,0.##",
+                  "justify": "center",
+                  "style": {
+                    "classes": ""
+                  }
+                }
+              },
+              "render": "auto",
+              "resizable": true,
+              "sort": "none",
+              "sortable": true,
+              "strictWidth": true,
+              "style": {
+                "classes": ""
+              },
+              "toggleSwitch": {
+                "color": {
+                  "selected": "",
+                  "unselected": ""
+                }
+              },
+              "viewParams": {},
+              "viewPath": "",
+              "visible": true,
+              "width": 150
+            },
+            {
+              "align": "center",
+              "boolean": "checkbox",
+              "dateFormat": "MM/DD/YYYY",
+              "editable": false,
+              "field": "sku_id",
+              "filter": {
+                "boolean": {
+                  "condition": ""
+                },
+                "date": {
+                  "condition": "",
+                  "value": ""
+                },
+                "enabled": false,
+                "number": {
+                  "condition": "",
+                  "value": ""
+                },
+                "string": {
+                  "condition": "",
+                  "value": ""
+                },
+                "visible": "on-hover"
+              },
+              "footer": {
+                "align": "center",
+                "justify": "left",
+                "style": {
+                  "classes": ""
+                },
+                "title": ""
+              },
+              "header": {
+                "align": "center",
+                "justify": "center",
+                "style": {
+                  "classes": ""
+                },
+                "title": "SKU_id"
+              },
+              "justify": "center",
+              "nullFormat": {
+                "includeNullStrings": false,
+                "nullFormatValue": "",
+                "strict": false
+              },
+              "number": "value",
+              "numberFormat": "0,0.##",
+              "progressBar": {
+                "bar": {
+                  "color": "",
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                "max": 100,
+                "min": 0,
+                "track": {
+                  "color": "",
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                "value": {
+                  "enabled": true,
+                  "format": "0,0.##",
+                  "justify": "center",
+                  "style": {
+                    "classes": ""
+                  }
+                }
+              },
+              "render": "auto",
+              "resizable": true,
+              "sort": "none",
+              "sortable": true,
+              "strictWidth": true,
+              "style": {
+                "classes": ""
+              },
+              "toggleSwitch": {
+                "color": {
+                  "selected": "",
+                  "unselected": ""
+                }
+              },
+              "viewParams": {},
+              "viewPath": "",
+              "visible": false,
+              "width": 150
+            },
+            {
+              "align": "center",
+              "boolean": "checkbox",
+              "dateFormat": "MM/DD/YYYY",
+              "editable": false,
+              "field": "sku_code",
+              "filter": {
+                "boolean": {
+                  "condition": ""
+                },
+                "date": {
+                  "condition": "",
+                  "value": ""
+                },
+                "enabled": false,
+                "number": {
+                  "condition": "",
+                  "value": ""
+                },
+                "string": {
+                  "condition": "",
+                  "value": ""
+                },
+                "visible": "on-hover"
+              },
+              "footer": {
+                "align": "center",
+                "justify": "left",
+                "style": {
+                  "classes": ""
+                },
+                "title": ""
+              },
+              "header": {
+                "align": "center",
+                "justify": "center",
+                "style": {
+                  "classes": ""
+                },
+                "title": "SKU"
+              },
+              "justify": "center",
+              "nullFormat": {
+                "includeNullStrings": false,
+                "nullFormatValue": "",
+                "strict": false
+              },
+              "number": "value",
+              "numberFormat": "0,0.##",
+              "progressBar": {
+                "bar": {
+                  "color": "",
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                "max": 100,
+                "min": 0,
+                "track": {
+                  "color": "",
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                "value": {
+                  "enabled": true,
+                  "format": "0,0.##",
+                  "justify": "center",
+                  "style": {
+                    "classes": ""
+                  }
+                }
+              },
+              "render": "auto",
+              "resizable": true,
+              "sort": "none",
+              "sortable": true,
+              "strictWidth": true,
+              "style": {
+                "classes": ""
+              },
+              "toggleSwitch": {
+                "color": {
+                  "selected": "",
+                  "unselected": ""
+                }
+              },
+              "viewParams": {},
+              "viewPath": "",
+              "visible": true,
+              "width": 150
+            },
+            {
+              "align": "center",
+              "boolean": "checkbox",
+              "dateFormat": "MM/DD/YYYY",
+              "editable": false,
+              "field": "sku_description",
+              "filter": {
+                "boolean": {
+                  "condition": ""
+                },
+                "date": {
+                  "condition": "",
+                  "value": ""
+                },
+                "enabled": false,
+                "number": {
+                  "condition": "",
+                  "value": ""
+                },
+                "string": {
+                  "condition": "",
+                  "value": ""
+                },
+                "visible": "on-hover"
+              },
+              "footer": {
+                "align": "center",
+                "justify": "left",
+                "style": {
+                  "classes": ""
+                },
+                "title": ""
+              },
+              "header": {
+                "align": "center",
+                "justify": "center",
+                "style": {
+                  "classes": ""
+                },
+                "title": "Description"
+              },
+              "justify": "center",
+              "nullFormat": {
+                "includeNullStrings": false,
+                "nullFormatValue": "",
+                "strict": false
+              },
+              "number": "value",
+              "numberFormat": "0,0.##",
+              "progressBar": {
+                "bar": {
+                  "color": "",
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                "max": 100,
+                "min": 0,
+                "track": {
+                  "color": "",
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                "value": {
+                  "enabled": true,
+                  "format": "0,0.##",
+                  "justify": "center",
+                  "style": {
+                    "classes": ""
+                  }
+                }
+              },
+              "render": "auto",
+              "resizable": true,
+              "sort": "none",
+              "sortable": true,
+              "strictWidth": false,
+              "style": {
+                "classes": ""
+              },
+              "toggleSwitch": {
+                "color": {
+                  "selected": "",
+                  "unselected": ""
+                }
+              },
+              "viewParams": {},
+              "viewPath": "",
+              "visible": true,
+              "width": 150
+            },
+            {
+              "align": "center",
+              "boolean": "checkbox",
+              "dateFormat": "MM/DD/YYYY",
+              "editable": false,
+              "field": "edit",
+              "filter": {
+                "boolean": {
+                  "condition": ""
+                },
+                "date": {
+                  "condition": "",
+                  "value": ""
+                },
+                "enabled": false,
+                "number": {
+                  "condition": "",
+                  "value": ""
+                },
+                "string": {
+                  "condition": "",
+                  "value": ""
+                },
+                "visible": "on-hover"
+              },
+              "footer": {
+                "align": "center",
+                "justify": "left",
+                "style": {
+                  "classes": ""
+                },
+                "title": ""
+              },
+              "header": {
+                "align": "center",
+                "justify": "center",
+                "style": {
+                  "classes": ""
+                },
+                "title": "Edit"
+              },
+              "justify": "center",
+              "nullFormat": {
+                "includeNullStrings": false,
+                "nullFormatValue": "",
+                "strict": false
+              },
+              "number": "value",
+              "numberFormat": "0,0.##",
+              "progressBar": {
+                "bar": {
+                  "color": "",
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                "max": 100,
+                "min": 0,
+                "track": {
+                  "color": "",
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                "value": {
+                  "enabled": true,
+                  "format": "0,0.##",
+                  "justify": "center",
+                  "style": {
+                    "classes": ""
+                  }
+                }
+              },
+              "render": "auto",
+              "resizable": true,
+              "sort": "none",
+              "sortable": true,
+              "strictWidth": true,
+              "style": {
+                "classes": ""
+              },
+              "toggleSwitch": {
+                "color": {
+                  "selected": "",
+                  "unselected": ""
+                }
+              },
+              "viewParams": {},
+              "viewPath": "Weight_V/Configuration/Embedded/Giveaway_Cost/Giveaway_Cost_Edit_Button",
+              "visible": true,
+              "width": 75
+            }
+          ],
+          "filter": {
+            "enabled": true
+          }
+        },
+        "type": "ia.display.table"
+      },
+      {
+        "meta": {
+          "name": "CurrentSite"
+        },
+        "position": {
+          "basis": "0px",
+          "shrink": 0
+        },
+        "props": {
+          "params": {
+            "site": null,
+            "site_id": null
+          },
+          "path": "CORE_V/Utils/CurrentSite"
+        },
+        "type": "ia.display.view"
+      }
+    ],
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column"
+    },
+    "scripts": {
+      "customMethods": [],
+      "extensionFunctions": null,
+      "messageHandlers": [
+        {
+          "messageType": "refreshGiveawayCost",
+          "pageScope": true,
+          "script": "\tself.view.refreshBinding(\"custom.sku_cost\")\n\tself.getChild(\"Table\").refreshBinding(\"props.data\")",
+          "sessionScope": false,
+          "viewScope": false
+        }
+      ]
+    },
+    "type": "ia.container.flex"
+  }
+}
