@@ -179,6 +179,16 @@
         "type": "Parameter",
         "identifier": "total_count",
         "sqlType": 3
+      },
+      {
+        "type": "Parameter",
+        "identifier": "shift_number",
+        "sqlType": 2
+      },
+      {
+        "type": "Parameter",
+        "identifier": "shift_date",
+        "sqlType": 7
       }
     ]
   }

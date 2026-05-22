@@ -5,7 +5,8 @@ INSERT INTO weight.dbo.aggregated
     		pct_out_of_range, standard_deviation, variance, weight_range,
     		weight_max, weight_min, percentile25, percentile50, percentile75,
     		reject_metal,reject_over,reject_under,material,
-    		sp_high,sp,sp_low,sp_high_plc,sp_plc,sp_low_plc,design, po_number)
+    		sp_high,sp,sp_low,sp_high_plc,sp_plc,sp_low_plc,design, po_number, 
+    		shift_number, shift_date)
     		
 VALUES 
 			(:scale_id, :time_start, :count, :total_count, :weight_avg ,
@@ -13,4 +14,5 @@ VALUES
 		 	:pct_out_of_range, :standard_deviation,  :variance ,  :weight_range,
 		 	:weight_max , :weight_min , :percentile25 , :percentile50 , :percentile75 ,
 		 	:reject_metal , :reject_over , :reject_under , :material , 
-		 	:sp_high , :sp , :sp_low, :sp_high_plc , :sp_plc , :sp_low_plc, :design, :po_number )
+		 	:sp_high , :sp , :sp_low, :sp_high_plc , :sp_plc , :sp_low_plc, :design, :po_number, 
+		 	:shift_number, :shift_date )

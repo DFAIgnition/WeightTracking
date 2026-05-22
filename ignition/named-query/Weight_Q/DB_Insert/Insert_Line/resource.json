@@ -109,6 +109,21 @@
         "type": "Parameter",
         "identifier": "metal_test_tag_type",
         "sqlType": 7
+      },
+      {
+        "type": "Parameter",
+        "identifier": "shifts_per_day",
+        "sqlType": 2
+      },
+      {
+        "type": "Parameter",
+        "identifier": "shift_length",
+        "sqlType": 2
+      },
+      {
+        "type": "Parameter",
+        "identifier": "shift_start",
+        "sqlType": 2
       }
     ]
   }

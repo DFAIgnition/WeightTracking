@@ -93,7 +93,7 @@
     }
   },
   "params": {
-    "timeZoneID": ""
+    "timeZoneID": "Pacific/Auckland"
   },
   "propConfig": {
     "custom.aggregator": {
@@ -686,56 +686,12 @@
             "props": {
               "options": [
                 {
-                  "label": "Bag 1",
+                  "label": "Bag Line 1",
                   "value": 1
                 },
                 {
-                  "label": "Bulk 1",
+                  "label": "Bottle Line 1",
                   "value": 2
-                },
-                {
-                  "label": "Bulk 2",
-                  "value": 3
-                },
-                {
-                  "label": "Bag Filler 1",
-                  "value": 5
-                },
-                {
-                  "label": "Tote Filler 1",
-                  "value": 6
-                },
-                {
-                  "label": "FlexBulk",
-                  "value": 7
-                },
-                {
-                  "label": "PO1",
-                  "value": 8
-                },
-                {
-                  "label": "PO2",
-                  "value": 9
-                },
-                {
-                  "label": "Block Filler 1",
-                  "value": 10
-                },
-                {
-                  "label": "Retail",
-                  "value": 11
-                },
-                {
-                  "label": "Technopak",
-                  "value": 12
-                },
-                {
-                  "label": "Bulk",
-                  "value": 13
-                },
-                {
-                  "label": "Packaging",
-                  "value": 14
                 }
               ],
               "placeholder": {
@@ -800,33 +756,6 @@
               }
             },
             "props": {
-              "options": [
-                {
-                  "is_line_total": false,
-                  "label": "Filler 1",
-                  "value": 1
-                },
-                {
-                  "is_line_total": false,
-                  "label": "Filler 2",
-                  "value": 2
-                },
-                {
-                  "is_line_total": false,
-                  "label": "Filler 3",
-                  "value": 3
-                },
-                {
-                  "is_line_total": true,
-                  "label": "Checkweigher",
-                  "value": 4
-                },
-                {
-                  "is_line_total": 1,
-                  "label": "All Fillers",
-                  "value": 0
-                }
-              ],
               "placeholder": {
                 "text": "Select Scale..."
               },

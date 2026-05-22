@@ -1,15 +1,5 @@
 {
-  "custom": {
-    "aggregator": {
-      "progress_scale": 0,
-      "progress_week": 0
-    },
-    "core_page_data": {
-      "Weight_V/Overview": {
-        "site_id": null
-      }
-    }
-  },
+  "custom": {},
   "propConfig": {
     "props.auth": {
       "access": "PRIVATE",
@@ -60,14 +50,5 @@
       "persistent": false
     }
   },
-  "props": {
-    "address": "10.232.114.4",
-    "appBar": {
-      "togglePosition": "hidden"
-    },
-    "device": {},
-    "geolocation": {},
-    "locale": "en-US",
-    "securityLevels": []
-  }
+  "props": {}
 }

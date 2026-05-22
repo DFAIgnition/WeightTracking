@@ -15,7 +15,11 @@ SELECT 			l.site_id,
 				l.weight_reject_tag,
 				l.weight_reject_tag_type,
 				l.exclude_out_of_range,
-				l.assume_weight_rejects
+				l.assume_weight_rejects,
+				
+				l.shifts_per_day, 
+				l.shift_length, 
+				l.shift_start
 				
 FROM 			weight.dbo.line as l
 

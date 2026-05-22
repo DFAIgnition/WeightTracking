@@ -26,6 +26,7 @@
           "name": "TabContainer"
         },
         "props": {
+          "currentTabIndex": 2,
           "menuType": "modern",
           "tabs": [
             "Type",

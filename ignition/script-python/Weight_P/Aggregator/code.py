@@ -48,7 +48,9 @@ def ProcessWeek(Start, End, site_id, scale_id):
 	
 	# This seems to be the list of Fillers/scales (either the specified one, or all of the scales/fillers on the given site
 	entries = system.db.runNamedQuery("Weight_Q/DB_Query/Get_All", {'site_id': site_id, 'scale_id': scale_id})
-		
+	
+	#print CORE_P.Utils.datasetToDicts(entries)
+	
 	all_tags = []
 	tag_path_mapping = {}
 	entry_sp_values = {}
@@ -271,7 +273,7 @@ def ProcessWeek(Start, End, site_id, scale_id):
 						
 						hour_of_day = calendar_instance.get(Calendar.HOUR_OF_DAY)
 						time_start = sdf_day_hour.format(calendar_instance.getTime())
-						
+						time_start_raw = calendar_instance.getTime()
 						
 						# Work out which material to use
 						while ( (material_index < (len(materials)-1))  and (timestamp >= materials[material_index + 1]['timestamp']) ):
@@ -291,10 +293,10 @@ def ProcessWeek(Start, End, site_id, scale_id):
 						    daily_data[day_key] = {hour: {} for hour in range(24)}
 						
 						if materials_key not in daily_data[day_key][hour_of_day]:
-							daily_data[day_key][hour_of_day][materials_key] = {'time_start': time_start, 'scale_weight_values': [], 'material':material, 'po_number':po_number, 'setpoint':[], 'setpoint_high':[], 'setpoint_low':[], 'over_threshold':[], 'under_threshold':[], 'out_of_threshold':[], 'out_of_threshold_count':0, 'total_count':0, 'good_count':0}
+							daily_data[day_key][hour_of_day][materials_key] = {'time_start': time_start, 'time_start_raw': time_start_raw, 'scale_weight_values': [], 'material':material, 'po_number':po_number, 'setpoint':[], 'setpoint_high':[], 'setpoint_low':[], 'over_threshold':[], 'under_threshold':[], 'out_of_threshold':[], 'out_of_threshold_count':0, 'total_count':0, 'good_count':0, 'shift_start': entry['shift_start'], 'shifts_per_day': entry['shifts_per_day'], 'shift_length': entry['shift_length'], 'timezone': entry['timezone']}
 							
 						if all_materials_key not in daily_data[day_key][hour_of_day]:
-							daily_data[day_key][hour_of_day][all_materials_key] = {'time_start': time_start, 'scale_weight_values': [], 'material':all_materials_key, 'po_number':None, 'setpoint':[], 'setpoint_high':[], 'setpoint_low':[], 'over_threshold':[], 'under_threshold':[], 'out_of_threshold':[], 'out_of_threshold_count':0, 'total_count':0, 'good_count':0}
+							daily_data[day_key][hour_of_day][all_materials_key] = {'time_start': time_start, 'time_start_raw': time_start_raw, 'scale_weight_values': [], 'material':all_materials_key, 'po_number':None, 'setpoint':[], 'setpoint_high':[], 'setpoint_low':[], 'over_threshold':[], 'under_threshold':[], 'out_of_threshold':[], 'out_of_threshold_count':0, 'total_count':0, 'good_count':0, 'shift_start': entry['shift_start'], 'shifts_per_day': entry['shifts_per_day'], 'shift_length': entry['shift_length'], 'timezone': entry['timezone']}
 							
 						if tagname not in daily_data[day_key][hour_of_day][materials_key]:
 						    daily_data[day_key][hour_of_day][materials_key][tagname] = []
@@ -506,10 +508,13 @@ def ProcessWeek(Start, End, site_id, scale_id):
 ###############################################################
 # insertOrUpdateBucketData
 ###############################################################
-def insertOrUpdateBucketData(scale_data, start_dt, end_dt):
+def insertOrUpdateBucketData(scale_data, start_dt, end_dt, site_id):
 	
 	LoggerActive = True
-		
+	
+	site = CORE_P.Utils.datasetToDicts(system.db.runNamedQuery(project=system.project.getProjectName(), path='CORE_Q/Sites/getSiteDetailsBySiteID', parameters={'site_id': site_id}))
+	tz_local = TimeZone.getTimeZone(site[0]['timezone']) #eg: 'Pacific/Auckland'
+				
 	updateParams = {}
 	error_checking = {}
 	
@@ -524,13 +529,19 @@ def insertOrUpdateBucketData(scale_data, start_dt, end_dt):
 			for day, hours_data in days_data.items():
 
 				for hour, material_data in hours_data.items():
+					
 					for material, bucket in material_data.items():
+
+						shift_number, shift_date = CORE_P.Time.getShift(bucket['time_start_raw'], bucket.get('shift_start', None), bucket.get('shifts_per_day', None), bucket.get('shift_length', None), bucket.get('timezone', None))	
+
 						error_checking = bucket												
 						updateParams = {
 										    'scale_id': scale_id, #bucket['scale_id'],
 										    'time_start': bucket['time_start'],
 										    'count': bucket.get('count', 0),
-										    'total_count': bucket.get('total_count', 0),
+											'shift_number': shift_number,
+											'shift_date': shift_date,
+											'total_count': bucket.get('total_count', 0),
 										    'weight_avg': round(bucket.get('weight_avg', 0.0),2),
 										    'weight_sum': round(bucket.get('weight_sum', 0.0),2),
 										    'weight_diff': round(bucket.get('weight_diff', 0.0),2),
@@ -556,7 +567,7 @@ def insertOrUpdateBucketData(scale_data, start_dt, end_dt):
 										    'sp_high_plc': 0, #round(bucket.get('filler_sp_high_tag', 0.0),2),
 										    'sp_plc': 0, #round(bucket.get('filler_sp_tag', 0.0),2),
 										    'sp_low_plc': 0, #round(bucket.get('filler_sp_low_tag', 0.0),2),
-										    'design': round(bucket.get('design', 50.0),2)
+										    'design': round(bucket.get('design', 50.0),2)										    
 										}
 
 						system.db.runNamedQuery(project=system.project.getProjectName(), path="Weight_Q/DB_Insert/Insert_Aggregate_Hourly", parameters=updateParams, tx=txId)
@@ -639,7 +650,7 @@ def GetBuckets(Start, End, site_id=0, scale_id=0):
 		SystemLogger(LoggerActive, "Weight Tracking", "{}, {}, {}, {}".format(weekStart.getTime(), weekEnd.getTime(), site_id, scale_id))
 		
 		scale_data = ProcessWeek(weekStart.getTime(),weekEnd.getTime(), site_id, scale_id)
-		insertOrUpdateBucketData(scale_data, weekStart.getTime(),weekEnd.getTime())
+		insertOrUpdateBucketData(scale_data, weekStart.getTime(),weekEnd.getTime(),site_id)
 		
 		progress = float(i) / float(weeksBetween) * 50
 		system.util.sendMessage(project="WeightTracking", messageHandler="AggregatorUpdateBarWeek", scope='S', payload={"progress": progress})
@@ -688,12 +699,12 @@ def GetBucketsGlobal(Start, End, site_id=0, scale_id=0):
 		SystemLogger(LoggerActive, "Weight Tracking", "{}, {}, {}, {}".format(weekStart.getTime(), weekEnd.getTime(), site_id, scale_id))
 		
 		scale_data = ProcessWeek(weekStart.getTime(),weekEnd.getTime(), site_id, scale_id)
-		insertOrUpdateBucketData(scale_data,weekStart.getTime(), weekEnd.getTime())
+		insertOrUpdateBucketData(scale_data,weekStart.getTime(), weekEnd.getTime(),site_id)
 		
 		
 def RecalcAggregates(Start, End, site_id=0, scale_id=0):
 	scale_data = ProcessWeek(Start,End, site_id, scale_id)
-	insertOrUpdateBucketData(scale_data,Start,End)
+	insertOrUpdateBucketData(scale_data,Start,End, site_id)
 
 ###############################################################
 # UpdateRejects

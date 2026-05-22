@@ -127,7 +127,7 @@
           "component": {
             "onRowDoubleClick": {
               "config": {
-                "script": "\t\n\t# Make sure we have edit permission to do this\n\tif (not CORE_P.User.hasPermission(self, Constants_P.PROJECT[\u0027project_name\u0027], \u0027SITEADMIN\u0027)):\n\t\treturn\n\t\t\t\n\t# Opens a popup view. We are passing in two parameters, called \"myParam\" and \"myParam2\". We also set some additional properties of the popup.\n\tsystem.perspective.openPopup(\"LineAddEdit\",\n\t\t\t\t\t\t\t\t  \u0027Weight_V/Administration/LineAddEdit\u0027, \n\t\t\t\t\t\t\t\t  params \u003d {\u0027line_id\u0027:event.value[\u0027line_id\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027site_id\u0027:event.value[\u0027site_id\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027type_id\u0027:event.value[\u0027type_id\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027type_name\u0027:event.value[\u0027type_name\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027line_name\u0027:event.value[\u0027line_name\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027line_material\u0027:event.value[\u0027line_material\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027line_desc\u0027:event.value[\u0027line_desc\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027line_weight_min\u0027:event.value[\u0027line_weight_min\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027line_weight_max\u0027:event.value[\u0027line_weight_max\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027starr_unit_id\u0027:event.value[\u0027starr_unit_id\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027metal_reject_tag\u0027:event.value[\u0027metal_reject_tag\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027metal_reject_tag_type\u0027:event.value[\u0027metal_reject_tag_type\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027metal_test_tag\u0027:event.value[\u0027metal_test_tag\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027metal_test_tag_type\u0027:event.value[\u0027metal_test_tag_type\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027weight_reject_tag\u0027:event.value[\u0027weight_reject_tag\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027weight_reject_tag_type\u0027:event.value[\u0027weight_reject_tag_type\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027exclude_out_of_range\u0027:event.value[\u0027exclude_out_of_range\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027assume_weight_rejects\u0027:event.value[\u0027assume_weight_rejects\u0027],\n\t\t\t\t\t\t\t\t  \t\t\t\u0027edit\u0027:True,\n\t\t\t\t\t\t\t\t  \t\t\t}, \n\t\t\t\t\t\t\t\t  showCloseIcon \u003d True, \n\t\t\t\t\t\t\t\t  title \u003d \u0027Edit Packaging Lines\u0027, \n\t\t\t\t\t\t\t\t  modal \u003d True)\t"
+                "script": "\t\n\t# Make sure we have edit permission to do this\n\tif (not CORE_P.User.hasPermission(self, Constants_P.PROJECT[\u0027project_name\u0027], \u0027SITEADMIN\u0027)):\n\t\treturn\n\ttry:\t\t\n\t\t# Opens a popup view. We are passing in two parameters, called \"myParam\" and \"myParam2\". We also set some additional properties of the popup.\n\t\tsystem.perspective.openPopup(\"LineAddEdit\",\n\t\t\t\t\t\t\t\t\t  \u0027Weight_V/Administration/LineAddEdit\u0027, \n\t\t\t\t\t\t\t\t\t  params \u003d {\u0027line_id\u0027:event.value[\u0027line_id\u0027],\n\t\t\t\t\t\t\t\t\t  \t\t\t\u0027site_id\u0027:event.value[\u0027site_id\u0027],\n\t\t\t\t\t\t\t\t\t  \t\t\t\u0027type_id\u0027:event.value[\u0027type_id\u0027],\n\t\t\t\t\t\t\t\t\t  \t\t\t\u0027type_name\u0027:event.value[\u0027type_name\u0027],\n\t\t\t\t\t\t\t\t\t  \t\t\t\u0027line_name\u0027:event.value[\u0027line_name\u0027],\n\t\t\t\t\t\t\t\t\t  \t\t\t\u0027line_material\u0027:event.value[\u0027line_material\u0027],\n\t\t\t\t\t\t\t\t\t  \t\t\t\u0027line_desc\u0027:event.value[\u0027line_desc\u0027],\n\t\t\t\t\t\t\t\t\t  \t\t\t\u0027line_weight_min\u0027:event.value[\u0027line_weight_min\u0027],\n\t\t\t\t\t\t\t\t\t  \t\t\t\u0027line_weight_max\u0027:event.value[\u0027line_weight_max\u0027],\n\t\t\t\t\t\t\t\t\t  \t\t\t\u0027starr_unit_id\u0027:event.value[\u0027starr_unit_id\u0027],\n\t\t\t\t\t\t\t\t\t  \t\t\t\u0027metal_reject_tag\u0027:event.value[\u0027metal_reject_tag\u0027],\n\t\t\t\t\t\t\t\t\t  \t\t\t\u0027metal_reject_tag_type\u0027:event.value[\u0027metal_reject_tag_type\u0027],\n\t\t\t\t\t\t\t\t\t  \t\t\t\u0027metal_test_tag\u0027:event.value[\u0027metal_test_tag\u0027],\n\t\t\t\t\t\t\t\t\t  \t\t\t\u0027metal_test_tag_type\u0027:event.value[\u0027metal_test_tag_type\u0027],\n\t\t\t\t\t\t\t\t\t  \t\t\t\u0027weight_reject_tag\u0027:event.value[\u0027weight_reject_tag\u0027],\n\t\t\t\t\t\t\t\t\t  \t\t\t\u0027weight_reject_tag_type\u0027:event.value[\u0027weight_reject_tag_type\u0027],\n\t\t\t\t\t\t\t\t\t  \t\t\t\u0027exclude_out_of_range\u0027:event.value[\u0027exclude_out_of_range\u0027],\n\t\t\t\t\t\t\t\t\t  \t\t\t\u0027assume_weight_rejects\u0027:event.value[\u0027assume_weight_rejects\u0027],\n\t\t\t\t\t\t\t\t\t  \t\t\t\n\t\t\t\t\t\t\t\t\t  \t\t\t\u0027shifts_per_day\u0027:event.value[\u0027shifts_per_day\u0027],\n\t\t\t\t\t\t\t\t\t  \t\t\t\u0027shift_length\u0027:event.value[\u0027shift_length\u0027],\n\t\t\t\t\t\t\t\t\t  \t\t\t\u0027shift_start\u0027:event.value[\u0027shift_start\u0027],\n\t\t\t\t\t\t\t\t\t  \t\t\t\n\t\t\t\t\t\t\t\t\t  \t\t\t\u0027edit\u0027:True,\n\t\t\t\t\t\t\t\t\t  \t\t\t}, \n\t\t\t\t\t\t\t\t\t  showCloseIcon \u003d True, \n\t\t\t\t\t\t\t\t\t  title \u003d \u0027Edit Packaging Lines\u0027, \n\t\t\t\t\t\t\t\t\t  modal \u003d True)\t\n\texcept:\n\t\tCORE_P.Utils.errorPopup(\u0027Error opening Line popup\u0027)"
               },
               "scope": "G",
               "type": "script"
@@ -162,6 +162,7 @@
           "props.data": {
             "binding": {
               "config": {
+                "enableValueCache": false,
                 "parameters": {
                   "site_id": "{../CurrentSite.props.params.site_id}"
                 },
@@ -1829,6 +1830,282 @@
               "viewPath": "",
               "visible": false,
               "width": ""
+            },
+            {
+              "align": "center",
+              "boolean": "checkbox",
+              "dateFormat": "MM/DD/YYYY",
+              "editable": false,
+              "field": "",
+              "filter": {
+                "boolean": {
+                  "condition": ""
+                },
+                "date": {
+                  "condition": "",
+                  "value": ""
+                },
+                "enabled": false,
+                "number": {
+                  "condition": "",
+                  "value": ""
+                },
+                "string": {
+                  "condition": "",
+                  "value": ""
+                },
+                "visible": "on-hover"
+              },
+              "footer": {
+                "align": "center",
+                "justify": "left",
+                "style": {
+                  "classes": ""
+                },
+                "title": ""
+              },
+              "header": {
+                "align": "center",
+                "justify": "left",
+                "style": {
+                  "classes": ""
+                },
+                "title": ""
+              },
+              "justify": "auto",
+              "nullFormat": {
+                "includeNullStrings": false,
+                "nullFormatValue": "",
+                "strict": false
+              },
+              "number": "value",
+              "numberFormat": "0,0.##",
+              "progressBar": {
+                "bar": {
+                  "color": "",
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                "max": 100,
+                "min": 0,
+                "track": {
+                  "color": "",
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                "value": {
+                  "enabled": true,
+                  "format": "0,0.##",
+                  "justify": "center",
+                  "style": {
+                    "classes": ""
+                  }
+                }
+              },
+              "render": "auto",
+              "resizable": true,
+              "sort": "none",
+              "sortable": true,
+              "strictWidth": false,
+              "style": {
+                "classes": ""
+              },
+              "toggleSwitch": {
+                "color": {
+                  "selected": "",
+                  "unselected": ""
+                }
+              },
+              "viewParams": {},
+              "viewPath": "",
+              "visible": false,
+              "width": ""
+            },
+            {
+              "align": "center",
+              "boolean": "checkbox",
+              "dateFormat": "MM/DD/YYYY",
+              "editable": false,
+              "field": "",
+              "filter": {
+                "boolean": {
+                  "condition": ""
+                },
+                "date": {
+                  "condition": "",
+                  "value": ""
+                },
+                "enabled": false,
+                "number": {
+                  "condition": "",
+                  "value": ""
+                },
+                "string": {
+                  "condition": "",
+                  "value": ""
+                },
+                "visible": "on-hover"
+              },
+              "footer": {
+                "align": "center",
+                "justify": "left",
+                "style": {
+                  "classes": ""
+                },
+                "title": ""
+              },
+              "header": {
+                "align": "center",
+                "justify": "left",
+                "style": {
+                  "classes": ""
+                },
+                "title": ""
+              },
+              "justify": "auto",
+              "nullFormat": {
+                "includeNullStrings": false,
+                "nullFormatValue": "",
+                "strict": false
+              },
+              "number": "value",
+              "numberFormat": "0,0.##",
+              "progressBar": {
+                "bar": {
+                  "color": "",
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                "max": 100,
+                "min": 0,
+                "track": {
+                  "color": "",
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                "value": {
+                  "enabled": true,
+                  "format": "0,0.##",
+                  "justify": "center",
+                  "style": {
+                    "classes": ""
+                  }
+                }
+              },
+              "render": "auto",
+              "resizable": true,
+              "sort": "none",
+              "sortable": true,
+              "strictWidth": false,
+              "style": {
+                "classes": ""
+              },
+              "toggleSwitch": {
+                "color": {
+                  "selected": "",
+                  "unselected": ""
+                }
+              },
+              "viewParams": {},
+              "viewPath": "",
+              "visible": false,
+              "width": ""
+            },
+            {
+              "align": "center",
+              "boolean": "checkbox",
+              "dateFormat": "MM/DD/YYYY",
+              "editable": false,
+              "field": "",
+              "filter": {
+                "boolean": {
+                  "condition": ""
+                },
+                "date": {
+                  "condition": "",
+                  "value": ""
+                },
+                "enabled": false,
+                "number": {
+                  "condition": "",
+                  "value": ""
+                },
+                "string": {
+                  "condition": "",
+                  "value": ""
+                },
+                "visible": "on-hover"
+              },
+              "footer": {
+                "align": "center",
+                "justify": "left",
+                "style": {
+                  "classes": ""
+                },
+                "title": ""
+              },
+              "header": {
+                "align": "center",
+                "justify": "left",
+                "style": {
+                  "classes": ""
+                },
+                "title": ""
+              },
+              "justify": "auto",
+              "nullFormat": {
+                "includeNullStrings": false,
+                "nullFormatValue": "",
+                "strict": false
+              },
+              "number": "value",
+              "numberFormat": "0,0.##",
+              "progressBar": {
+                "bar": {
+                  "color": "",
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                "max": 100,
+                "min": 0,
+                "track": {
+                  "color": "",
+                  "style": {
+                    "classes": ""
+                  }
+                },
+                "value": {
+                  "enabled": true,
+                  "format": "0,0.##",
+                  "justify": "center",
+                  "style": {
+                    "classes": ""
+                  }
+                }
+              },
+              "render": "auto",
+              "resizable": true,
+              "sort": "none",
+              "sortable": true,
+              "strictWidth": false,
+              "style": {
+                "classes": ""
+              },
+              "toggleSwitch": {
+                "color": {
+                  "selected": "",
+                  "unselected": ""
+                }
+              },
+              "viewParams": {},
+              "viewPath": "",
+              "visible": false,
+              "width": ""
             }
           ],
           "dragOrderable": false,
@@ -1839,32 +2116,6 @@
           },
           "filter": {
             "enabled": true
-          },
-          "selection": {
-            "data": [
-              {
-                "assume_weight_rejects": false,
-                "exclude_out_of_range": false,
-                "line_desc": "25 kg Bag Filler",
-                "line_id": 1,
-                "line_material": "[US_KS_GAR01]Milk_Powder/Packaging/Bag/25kg/Material/PRD_FLE_Identifier/Value",
-                "line_name": "Bag 1",
-                "line_weight_max": 30000,
-                "line_weight_min": 21000,
-                "metal_reject_tag": null,
-                "metal_reject_tag_type": null,
-                "metal_test_tag": null,
-                "metal_test_tag_type": null,
-                "site_id": 10,
-                "starr_unit_id": null,
-                "type_id": 1,
-                "type_name": "Bag",
-                "weight_reject_tag": null,
-                "weight_reject_tag_type": null
-              }
-            ],
-            "selectedColumn": "line_desc",
-            "selectedRow": 0
           },
           "style": {
             "marginLeft": 4,
