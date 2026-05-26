@@ -1,5 +1,10 @@
 {
-  "custom": {},
+  "custom": {
+    "aggregator": {
+      "progress_scale": 0,
+      "progress_week": 0
+    }
+  },
   "propConfig": {
     "props.auth": {
       "access": "PRIVATE",
@@ -50,5 +55,11 @@
       "persistent": false
     }
   },
-  "props": {}
+  "props": {
+    "address": "[0:0:0:0:0:0:0:1]",
+    "device": {},
+    "geolocation": {},
+    "locale": "en-US",
+    "timeZoneId": "Pacific/Auckland"
+  }
 }

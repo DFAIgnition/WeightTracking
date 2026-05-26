@@ -107,7 +107,7 @@
               }
             },
             "props": {
-              "formattedValue": "Sep 6, 2025 1:00 PM",
+              "formattedValue": "Apr 26, 2026 10:00 AM",
               "pickerType": "date",
               "style": {
                 "marginRight": 10,
@@ -172,7 +172,7 @@
               }
             },
             "props": {
-              "formattedValue": "Oct 6, 2025 2:00 PM",
+              "formattedValue": "May 26, 2026 10:00 AM",
               "pickerType": "date",
               "style": {
                 "marginRight": 10,

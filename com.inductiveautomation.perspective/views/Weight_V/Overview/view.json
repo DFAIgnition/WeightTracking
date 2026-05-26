@@ -82,14 +82,14 @@
     "line": {},
     "metal_metric": "total",
     "scale": {
-      "total_design": 50
+      "total_design": 0.11023121845796995
     },
     "selection": {},
     "units": {
       "individual_units": "lbs",
-      "total_conversion": 1,
+      "total_conversion": 453.5920104980469,
       "total_units": "lbs",
-      "unit_conversion": 1
+      "unit_conversion": 453.5920104980469
     }
   },
   "params": {
@@ -2317,6 +2317,58 @@
                 "textAlign": "center"
               },
               "text": "Giveway"
+            },
+            "type": "ia.display.label"
+          },
+          {
+            "events": {
+              "dom": {
+                "onClick": {
+                  "config": {
+                    "draggable": true,
+                    "id": "Manual_Giveaways",
+                    "modal": true,
+                    "overlayDismiss": true,
+                    "resizable": true,
+                    "showCloseIcon": true,
+                    "title": "Manual Giveaways",
+                    "type": "open",
+                    "viewParams": {
+                      "line_id": "{/root/Selections/selection_line.props.value}",
+                      "site": "{/root/CurrentSite.props.params.site}",
+                      "units": "{/root/Selections/selection_units.props.value}"
+                    },
+                    "viewPath": "Weight_V/Configuration/Embedded/Manual_Giveaway/Manual_Giveaway_Popup",
+                    "viewportBound": false
+                  },
+                  "scope": "C",
+                  "type": "popup"
+                }
+              }
+            },
+            "meta": {
+              "name": "Enter_Manual_Giveaway"
+            },
+            "position": {
+              "basis": "160px"
+            },
+            "props": {
+              "style": {
+                "backgroundColor": "#EDF0FF",
+                "borderStyle": "solid",
+                "borderWidth": 1,
+                "cursor": "pointer",
+                "fontFamily": "Helvetica",
+                "fontSize": 12,
+                "fontStyle": "italic",
+                "fontWeight": "bold",
+                "marginBottom": 2,
+                "marginLeft": 2,
+                "marginRight": 2,
+                "marginTop": 2,
+                "textAlign": "center"
+              },
+              "text": "Enter Manual Giveaway"
             },
             "type": "ia.display.label"
           },
