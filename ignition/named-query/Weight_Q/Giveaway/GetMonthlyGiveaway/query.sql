@@ -81,4 +81,6 @@ GROUP BY
     s.sku_code,
     s.sku_description,
     s.nominal_net_grams,
-    u.unit_name, u.unit_id;
+    u.unit_name, u.unit_id
+order by production_month desc
+

@@ -54,6 +54,11 @@
         "type": "Parameter",
         "identifier": "months",
         "sqlType": 2
+      },
+      {
+        "type": "Parameter",
+        "identifier": "start_dt",
+        "sqlType": 8
       }
     ]
   }

@@ -10,6 +10,8 @@ from
 	where f.line_id=:line_id
 	and material='All'
 	and time_start >= dateadd(day,-:days, current_timestamp)
+	and time_start < dateadd(hour,-4, current_timestamp) -- Don't show shifts that have only just started
+	
 	) as s
 LEFT JOIN [weight].dbo.manual_losses m on (s.shift_date = m.shift_date and s.shift_number = m.shift_number)
 JOIN  [weight].dbo.line l on s.line_id = l.line_id

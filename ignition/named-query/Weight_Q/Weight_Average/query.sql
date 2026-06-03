@@ -17,8 +17,10 @@ WITH BaseAgg AS (
     WHERE
         ((:scale_id = 0 AND f.is_line_total = 0) OR a.scale_id = :scale_id)
         AND f.line_id = :line_id
-        AND a.time_start >= DATEADD(month, -:months, DATEADD(month, DATEDIFF(month, 0, :end_dt), 0))
-        AND a.time_start <  DATEADD(day, 1, EOMONTH(:end_dt))
+
+        AND a.time_start >= :start_dt
+        AND a.time_start <  :end_dt
+        
         AND a.material != 'All'                            -- never use pre-aggregated All row
         AND (:material = 'All' OR a.material = :material)
     GROUP BY a.time_start
