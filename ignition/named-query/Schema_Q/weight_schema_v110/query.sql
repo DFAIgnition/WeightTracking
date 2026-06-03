@@ -23,5 +23,13 @@ create table manual_losses(
 	edited_by	varchar(32)
 );
 
+-- Create date entry permission
+IF NOT EXISTS(SELECT * FROM system.dbo.project_permissions WHERE project_id = (select project_id from system.dbo.projects where project_name = 'WeightTracking') and permission_code = 'SITEDATA') 
+BEGIN
+	insert into system.dbo.project_permissions (project_id, permission_code, permission_display_name, area_type)
+	values ((select project_id from system.dbo.projects where project_name = 'WeightTracking'), 'SITEDATA', 'Site Data Entry', 'site')
+END
+GO 
+
 
 INSERT INTO weight.dbo.versions (version_number) VALUES (1.10);

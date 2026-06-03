@@ -1190,7 +1190,7 @@
                 },
                 "position": {
                   "height": 36,
-                  "width": 147,
+                  "width": 211,
                   "x": 154,
                   "y": 12
                 },
@@ -1245,7 +1245,7 @@
                 },
                 "position": {
                   "height": 36,
-                  "width": 147,
+                  "width": 211,
                   "x": 154,
                   "y": 51
                 },
@@ -1300,7 +1300,7 @@
                 },
                 "position": {
                   "height": 36,
-                  "width": 147,
+                  "width": 211,
                   "x": 154,
                   "y": 91
                 },
@@ -1322,6 +1322,30 @@
                 },
                 "props": {
                   "options": [
+                    {
+                      "label": "6pm the day before",
+                      "value": -6
+                    },
+                    {
+                      "label": "7pm the day before",
+                      "value": -5
+                    },
+                    {
+                      "label": "8pm the day before",
+                      "value": -4
+                    },
+                    {
+                      "label": "9pm the day before",
+                      "value": -3
+                    },
+                    {
+                      "label": "10pm the day before",
+                      "value": -2
+                    },
+                    {
+                      "label": "11pm the day before",
+                      "value": -1
+                    },
                     {
                       "label": "Midnight",
                       "value": 0

@@ -31,7 +31,7 @@ END
 )
 
 select  
-    DATEFROMPARTS(YEAR(a.time_start), MONTH(a.time_start), 1) AS production_month, a.unit_name, a.unit_id, 
+    DATEFROMPARTS(YEAR(a.time_start), MONTH(a.time_start), DAY(a.time_start)) AS production_day, a.unit_name, a.unit_id, 
     sum(ml.loss_per_hour) as giveaway_grams, 
     (sum(ml.loss_per_hour/a.unit_conversion)) as giveaway_weight,
     (sum(ml.cost_per_hour)) as giveaway_cost,
@@ -40,5 +40,4 @@ select
 from local_times as a
 LEFT JOIN [weight].dbo.manual_losses ml on (ml.line_id=a.line_id and ml.shift_date = a.shift_date and ml.shift_number=a.shift_number)
 
-group by DATEFROMPARTS(YEAR(a.time_start), MONTH(a.time_start), 1),a.unit_name, a.unit_id
-
+group by DATEFROMPARTS(YEAR(a.time_start), MONTH(a.time_start), DAY(a.time_start)),a.unit_name, a.unit_id

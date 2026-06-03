@@ -1,10 +1,15 @@
 {
   "custom": {},
   "params": {
-    "rowData": {}
+    "rowData": {},
+    "site_id": ""
   },
   "propConfig": {
     "params.rowData": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.site_id": {
       "paramDirection": "input",
       "persistent": true
     }
@@ -22,7 +27,7 @@
           "component": {
             "onActionPerformed": {
               "config": {
-                "script": "\t\n\tsystem.perspective.openPopup(\n\t\t    id\u003d\"giveawayCostPopup\",\n\t\t    view\u003d\"Weight_V/Configuration/Embedded/Giveaway_Cost/Giveaway_Cost_Popup\",\n\t\t    params\u003d{\n\t\t        \"rowData\": self.view.params.rowData\n\t\t    },\n\t\t    title\u003d\"Cost Adjustment\",\n\t\t    modal\u003dTrue,\n\t\t    draggable\u003dTrue\n\t\t)"
+                "script": "\t\n\tsystem.perspective.openPopup(\n\t\t    id\u003d\"giveawayCostPopup\",\n\t\t    view\u003d\"Weight_V/Configuration/Embedded/Giveaway_Cost/Giveaway_Cost_Popup\",\n\t\t    params\u003d{\n\t\t        \"rowData\": self.view.params.rowData,\n\t\t        \u0027site_id\u0027:self.view.params.site_id\n\t\t    },\n\t\t    title\u003d\"Cost Adjustment\",\n\t\t    modal\u003dTrue,\n\t\t    draggable\u003dTrue\n\t\t)"
               },
               "scope": "G",
               "type": "script"

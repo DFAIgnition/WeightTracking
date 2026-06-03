@@ -151,6 +151,14 @@
           "grow": 1
         },
         "propConfig": {
+          "props.columns[6].viewParams.site_id": {
+            "binding": {
+              "config": {
+                "path": "view.custom.Site.CurrentSite.site_id"
+              },
+              "type": "property"
+            }
+          },
           "props.data": {
             "binding": {
               "config": {

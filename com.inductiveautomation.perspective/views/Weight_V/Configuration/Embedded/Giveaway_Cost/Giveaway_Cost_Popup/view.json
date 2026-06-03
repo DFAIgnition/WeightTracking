@@ -14,13 +14,18 @@
     }
   },
   "params": {
-    "rowData": []
+    "rowData": [],
+    "site_id": ""
   },
   "propConfig": {
     "custom.formData": {
       "persistent": true
     },
     "params.rowData": {
+      "paramDirection": "input",
+      "persistent": true
+    },
+    "params.site_id": {
       "paramDirection": "input",
       "persistent": true
     }
@@ -170,7 +175,7 @@
           "component": {
             "onActionPerformed": {
               "config": {
-                "script": "\t\n\tdata \u003d self.view.custom.formData\n\n\t# 🔥 Explicit handling (more robust)\n\tif data.get(\"is_all\"):\n\t\tsku_cost_ids \u003d data.get(\"all_sku_cost_ids\") or []\n\telse:\n\t\tsku_cost_ids \u003d [data.get(\"sku_cost_id\")]\n\n\t# Safety check\n\tif not sku_cost_ids:\n\t\tsystem.perspective.print(\"No valid IDs to update\")\n\t\treturn\n\n\t# Convert list → string\n\tsku_cost_ids_str \u003d \",\".join([str(x) for x in sku_cost_ids if x])\n\n\tparams \u003d {\n\t\t\"sku_cost_ids\": sku_cost_ids_str,\n\t\t\"cost_per_lb\": data.get(\"cost_per_lb\"),\n\t\t\"comment\": data.get(\"comment\")\n\t}\n\n\ttry:\n\t\trows \u003d system.db.runNamedQuery(\n\t\t\t\"Weight_Q/Giveaway/UpdateSKUCost\",\n\t\t\tparams\n\t\t)\n\n\n\t\tsystem.perspective.closePopup(\"giveawayCostPopup\")\n\n\t\tsystem.perspective.sendMessage(\n\t\t\t\"refreshGiveawayCost\",\n\t\t\t{},\n\t\t\tscope\u003d\"page\"\n\t\t)\n\n\texcept Exception as e:\n\t\tsystem.perspective.print(\"Save failed: \" + str(e))"
+                "script": "\t\n\t# Check permissions\n\tif (not CORE_P.User.hasPermission(self, Constants_P.PROJECT[\u0027project_name\u0027], \u0027SITEADMIN\u0027, site_id\u003dself.view.params.site_id)):\n\t    CORE_P.Utils.warningPopup(\u0027You require Site Admin privileges at this site to perform this action\u0027)\n\t    return False\n\t    \n\tdata \u003d self.view.custom.formData\n\n\t# 🔥 Explicit handling (more robust)\n\tif data.get(\"is_all\"):\n\t\tsku_cost_ids \u003d data.get(\"all_sku_cost_ids\") or []\n\telse:\n\t\tsku_cost_ids \u003d [data.get(\"sku_cost_id\")]\n\n\t# Safety check\n\tif not sku_cost_ids:\n\t\tsystem.perspective.print(\"No valid IDs to update\")\n\t\treturn\n\n\t# Convert list → string\n\tsku_cost_ids_str \u003d \",\".join([str(x) for x in sku_cost_ids if x])\n\n\tparams \u003d {\n\t\t\"sku_cost_ids\": sku_cost_ids_str,\n\t\t\"cost_per_lb\": data.get(\"cost_per_lb\"),\n\t\t\"comment\": data.get(\"comment\")\n\t}\n\n\ttry:\n\t\trows \u003d system.db.runNamedQuery(\n\t\t\t\"Weight_Q/Giveaway/UpdateSKUCost\",\n\t\t\tparams\n\t\t)\n\n\t\tsystem.perspective.sendMessage(\"refreshGiveawayCost\", payload \u003d {}, scope \u003d \"page\")\n\t\t\n\t\tsystem.perspective.closePopup(\"giveawayCostPopup\")\n\n\texcept Exception as e:\n\t\tsystem.perspective.print(\"Save failed: \" + str(e))"
               },
               "scope": "G",
               "type": "script"

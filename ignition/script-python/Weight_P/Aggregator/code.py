@@ -255,6 +255,29 @@ def ProcessWeek(Start, End, site_id, scale_id):
 			# all_data = the set of tag data relating to all the tags configured for this filler/scale
 			#----------------------------------------------------------------------------		
 			all_materials_key = 'All' # This is what will end up in the material column of the database table for the sum of all weights for the hour (not split out by material)
+			
+			# Build up blank rows for every hour in the time range, so we don't miss rows when there is no tag data
+			current_time=CORE_P.Time.round_down(Start, 60)
+			while current_time < End:
+				
+				day_key = sdf_day.format(current_time)
+				hour_key = int(sdf_hour.format(current_time))
+				day_hour = sdf_day_hour.format(current_time)
+								
+				if day_key not in daily_data:
+				    #daily_data[day_key] = {hour: {} for hour in range(24)}
+				    daily_data[day_key] = {}
+
+				if hour_key not in daily_data[day_key]:
+				    daily_data[day_key][hour_key] = {}
+
+				if all_materials_key not in daily_data[day_key][hour_key]:
+					daily_data[day_key][hour_key][all_materials_key] = {'time_start': day_hour, 'time_start_raw': current_time, 'scale_weight_values': [], 'material':all_materials_key, 'po_number':None, 'setpoint':[], 'setpoint_high':[], 'setpoint_low':[], 'over_threshold':[], 'under_threshold':[], 'out_of_threshold':[], 'out_of_threshold_count':0, 'total_count':0, 'good_count':0, 'shift_start': entry['shift_start'], 'shifts_per_day': entry['shifts_per_day'], 'shift_length': entry['shift_length'], 'timezone': entry['timezone']}
+				
+				current_time = CORE_P.Time.adjustTimestamp(current_time, offset_hours=1)
+				
+			#SystemLogger(True, "WeightTracking", str(daily_data))		
+				
 			try:
 				for tagname, items in all_data.items():
 					material_index = 0		
@@ -288,9 +311,9 @@ def ProcessWeek(Start, End, site_id, scale_id):
 						setpoint_high 	= materials[material_index]['setpoint_high']
 						setpoint_low 	= materials[material_index]['setpoint_low']
 						
-						if day_key not in daily_data:
-						   # daily_data[day_key] = {hour: {'time_start': '', 'scale_weight_values': []} for hour in range(24)}
-						    daily_data[day_key] = {hour: {} for hour in range(24)}
+#						if day_key not in daily_data:
+#						   # daily_data[day_key] = {hour: {'time_start': '', 'scale_weight_values': []} for hour in range(24)}
+#						    daily_data[day_key] = {hour: {} for hour in range(24)}
 						
 						if materials_key not in daily_data[day_key][hour_of_day]:
 							daily_data[day_key][hour_of_day][materials_key] = {'time_start': time_start, 'time_start_raw': time_start_raw, 'scale_weight_values': [], 'material':material, 'po_number':po_number, 'setpoint':[], 'setpoint_high':[], 'setpoint_low':[], 'over_threshold':[], 'under_threshold':[], 'out_of_threshold':[], 'out_of_threshold_count':0, 'total_count':0, 'good_count':0, 'shift_start': entry['shift_start'], 'shifts_per_day': entry['shifts_per_day'], 'shift_length': entry['shift_length'], 'timezone': entry['timezone']}
@@ -476,23 +499,23 @@ def ProcessWeek(Start, End, site_id, scale_id):
 						    if tag in tags and tags[tag]:
 						        last_known_values[tag] = tags[tag]    
 
-			# Remove keys that have no hourly data or less than 2 bags per hour
-			for day_key in list(daily_data.keys()):  # Iterate over each day
-			    for hour_key in list(daily_data[day_key].keys()):  # Iterate over each hour
-			    	for material_key in list(daily_data[day_key][hour_key].keys()):  # Iterate over each material
-				        hour_data = daily_data[day_key][hour_key][material_key]
-				        # Check if 'count' key exists and if its value is less than 1
-				        total_count = 0
-				        if 'count' in hour_data:
-				        	total_count += hour_data['count']
-				        if 	'out_of_threshold' in hour_data:
-				        	total_count += len(hour_data['out_of_threshold'])
-				        if total_count <= 1:
-				            del daily_data[day_key][hour_key][material_key]  # Delete the hour bucket
-			            
-			    # After processing hours, check if the day has any hours left
-				if not daily_data[day_key]:  # Check if the day is empty
-				    del daily_data[day_key]  # Delete the day if it has no hours
+#			# Remove keys that have no hourly data or less than 2 bags per hour
+#			for day_key in list(daily_data.keys()):  # Iterate over each day
+#			    for hour_key in list(daily_data[day_key].keys()):  # Iterate over each hour
+#			    	for material_key in list(daily_data[day_key][hour_key].keys()):  # Iterate over each material
+#				        hour_data = daily_data[day_key][hour_key][material_key]
+#				        # Check if 'count' key exists and if its value is less than 1
+#				        total_count = 0
+#				        if 'count' in hour_data:
+#				        	total_count += hour_data['count']
+#				        if 	'out_of_threshold' in hour_data:
+#				        	total_count += len(hour_data['out_of_threshold'])
+#				        if total_count <= 1:
+#				            del daily_data[day_key][hour_key][material_key]  # Delete the hour bucket
+#			            
+#			    # After processing hours, check if the day has any hours left
+#				if not daily_data[day_key]:  # Check if the day is empty
+#				    del daily_data[day_key]  # Delete the day if it has no hours
 			
 			# After processing, add daily_data to scale_data under the current scale_id
 			if entry['scale_id'] not in scale_data:
@@ -512,10 +535,14 @@ def insertOrUpdateBucketData(scale_data, start_dt, end_dt, site_id):
 	
 	LoggerActive = True
 	
-	site = CORE_P.Utils.datasetToDicts(system.db.runNamedQuery(project=system.project.getProjectName(), path='CORE_Q/Sites/getSiteDetailsBySiteID', parameters={'site_id': site_id}))
-	tz_local = TimeZone.getTimeZone(site[0]['timezone']) #eg: 'Pacific/Auckland'
-				
+	#site = CORE_P.Utils.datasetToDicts(system.db.runNamedQuery(project=system.project.getProjectName(), path='CORE_Q/Sites/getSiteDetailsBySiteID', parameters={'site_id': site_id}))
+#	SystemLogger(True, "JAY", "Site: " + str(site) + ' - ' + str(site_id)) 	
+#	tz_local = TimeZone.getTimeZone(site[0]['timezone']) #eg: 'Pacific/Auckland'
+	
+	#system.util.getLogger('WeightTracking').info('insertOrUpdateBucketData:' + str(scale_data))			
+	
 	updateParams = {}
+	hours_data ={}
 	error_checking = {}
 	
 	for scale_id, days_data in scale_data.items():
@@ -534,7 +561,15 @@ def insertOrUpdateBucketData(scale_data, start_dt, end_dt, site_id):
 
 						shift_number, shift_date = CORE_P.Time.getShift(bucket['time_start_raw'], bucket.get('shift_start', None), bucket.get('shifts_per_day', None), bucket.get('shift_length', None), bucket.get('timezone', None))	
 
-						error_checking = bucket												
+						error_checking = bucket			
+						
+						# Catch a data type overflow issue, so things can still progress
+						weight_diff = bucket.get('weight_diff', 0.0)
+						if weight_diff > 9999999:
+							weight_diff = 9999999
+						elif weight_diff < -9999999:
+							weight_diff = -9999999
+							
 						updateParams = {
 										    'scale_id': scale_id, #bucket['scale_id'],
 										    'time_start': bucket['time_start'],
@@ -544,7 +579,7 @@ def insertOrUpdateBucketData(scale_data, start_dt, end_dt, site_id):
 											'total_count': bucket.get('total_count', 0),
 										    'weight_avg': round(bucket.get('weight_avg', 0.0),2),
 										    'weight_sum': round(bucket.get('weight_sum', 0.0),2),
-										    'weight_diff': round(bucket.get('weight_diff', 0.0),2),
+										    'weight_diff': round(weight_diff,2),
 										    'pct_weight_over': round(bucket.get('pct_weight_over', 0.0),2),
 										    'pct_weight_under': round(bucket.get('pct_weight_under', 0.0),2),
 										    'pct_out_of_range': round(bucket.get('pct_out_of_range', 0.0),2),
@@ -576,7 +611,7 @@ def insertOrUpdateBucketData(scale_data, start_dt, end_dt, site_id):
 			system.db.closeTransaction(txId)					
 	
 		except:
-			SystemLogger(True, "Weight Tracking", CORE_P.Utils.getError() + str(updateParams) + ' --- ' + str(bucket))		
+			SystemLogger(True, "Weight Tracking", CORE_P.Utils.getError() + str(hours_data.keys()))		
 			system.db.rollbackTransaction(txId)	
 			system.db.closeTransaction(txId)	
 	
@@ -663,44 +698,46 @@ def GetBuckets(Start, End, site_id=0, scale_id=0):
 ###############################################################
 def GetBucketsGlobal(Start, End, site_id=0, scale_id=0):
 
-
-	LoggerActive = False
-
-	startCal = Calendar.getInstance()
-	startCal.setTimeInMillis(system.date.toMillis(Start))
-	endCal = Calendar.getInstance()
-	endCal.setTimeInMillis(system.date.toMillis(End))
+	try:
+		LoggerActive = False
 	
-	weeksBetween = getWeeksBetween(startCal, endCal)
-	
-	for i in range(weeksBetween):
-	
-		weekStart = createWeekCalendar(startCal, i)
-		weekStart.add(Calendar.DATE, 1)
-		weekStart.set(Calendar.HOUR_OF_DAY, 0)
-		weekStart.set(Calendar.MINUTE, 0)
-		weekStart.set(Calendar.SECOND, 0)
-		weekStart.set(Calendar.MILLISECOND, 0)		
+		startCal = Calendar.getInstance()
+		startCal.setTimeInMillis(system.date.toMillis(Start))
+		endCal = Calendar.getInstance()
+		endCal.setTimeInMillis(system.date.toMillis(End))
 		
-		weekEnd = createWeekCalendar(startCal, i + 1)
+		weeksBetween = getWeeksBetween(startCal, endCal)
 		
-		 # Adjust weekEnd to include up to midnight
-		weekEnd.add(Calendar.DATE, 1)
-		weekEnd.set(Calendar.HOUR_OF_DAY, 0)
-		weekEnd.set(Calendar.MINUTE, 0)
-		weekEnd.set(Calendar.SECOND, 0)
-		weekEnd.set(Calendar.MILLISECOND, 0)
-	
-		weekEnd = weekEnd if weekEnd.before(endCal) else endCal
-		weekEnd.set(Calendar.MINUTE, 0)
-		weekEnd.set(Calendar.SECOND, 0)
-		weekEnd.set(Calendar.MILLISECOND, 0)
+		for i in range(weeksBetween):
 		
-		SystemLogger(LoggerActive, "Weight Tracking", "{}, {}, {}, {}".format(weekStart.getTime(), weekEnd.getTime(), site_id, scale_id))
+			weekStart = createWeekCalendar(startCal, i)
+			weekStart.add(Calendar.DATE, 1)
+			weekStart.set(Calendar.HOUR_OF_DAY, 0)
+			weekStart.set(Calendar.MINUTE, 0)
+			weekStart.set(Calendar.SECOND, 0)
+			weekStart.set(Calendar.MILLISECOND, 0)		
+			
+			weekEnd = createWeekCalendar(startCal, i + 1)
+			
+			 # Adjust weekEnd to include up to midnight
+			weekEnd.add(Calendar.DATE, 1)
+			weekEnd.set(Calendar.HOUR_OF_DAY, 0)
+			weekEnd.set(Calendar.MINUTE, 0)
+			weekEnd.set(Calendar.SECOND, 0)
+			weekEnd.set(Calendar.MILLISECOND, 0)
 		
-		scale_data = ProcessWeek(weekStart.getTime(),weekEnd.getTime(), site_id, scale_id)
-		insertOrUpdateBucketData(scale_data,weekStart.getTime(), weekEnd.getTime(),site_id)
-		
+			weekEnd = weekEnd if weekEnd.before(endCal) else endCal
+			weekEnd.set(Calendar.MINUTE, 0)
+			weekEnd.set(Calendar.SECOND, 0)
+			weekEnd.set(Calendar.MILLISECOND, 0)
+			
+			SystemLogger(LoggerActive, "Weight Tracking", "{}, {}, {}, {}".format(weekStart.getTime(), weekEnd.getTime(), site_id, scale_id))
+			
+			scale_data = ProcessWeek(weekStart.getTime(),weekEnd.getTime(), site_id, scale_id)
+			insertOrUpdateBucketData(scale_data,weekStart.getTime(), weekEnd.getTime(),site_id)
+	except:
+		system.util.getLogger('WeightTracking').warn('Error Calculating weights:' + CORE_P.Utils.getError())		
+			
 		
 def RecalcAggregates(Start, End, site_id=0, scale_id=0):
 	scale_data = ProcessWeek(Start,End, site_id, scale_id)
