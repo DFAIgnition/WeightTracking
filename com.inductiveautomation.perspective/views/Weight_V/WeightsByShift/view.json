@@ -5,9 +5,9 @@
       "$": [
         "ts",
         192,
-        1780605348270
+        1780611430952
       ],
-      "$ts": 1782820800000
+      "$ts": 1780660800000
     },
     "heatmap_format": {
       "colorScale": {
@@ -107,9 +107,9 @@
       "$": [
         "ts",
         192,
-        1780605348343
+        1780622875158
       ],
-      "$ts": 1777550400000
+      "$ts": 1780056000000
     }
   },
   "params": {
@@ -123,7 +123,7 @@
         },
         "transforms": [
           {
-            "code": "\tfrom java.util import Date\n\tfrom system.date import now, addMonths\n\t\n\t# Start with the end of the current day\n\t#return CORE_P.Time.adjustTimestamp(rounding\u003d\u0027dayup\u0027)\n\treturn addMonths(CORE_P.Time.month_start(self.session.props.timeZoneId), 1)\n\t \n\t ",
+            "code": "\tfrom java.util import Date\n\tfrom system.date import now, addMonths\n\t\n\t# Start with the end of the current day\n\treturn CORE_P.Time.adjustTimestamp(rounding\u003d\u0027dayup\u0027)\n\t#return addMonths(CORE_P.Time.month_start(self.session.props.timeZoneId), 1)\n\t \n\t ",
             "type": "script"
           }
         ],
@@ -344,6 +344,26 @@
         "type": "property"
       }
     },
+    "custom.shift_date_start": {
+      "binding": {
+        "config": {
+          "struct": {
+            "days": "{/root/Selections/selection_days.props.value}",
+            "line_id": "{/root/Selections/selection_line.props.value}",
+            "site": "{/root/CurrentSite.props.params.site}"
+          },
+          "waitOnAll": true
+        },
+        "transforms": [
+          {
+            "code": "\t\n\tstart_dt \u003d CORE_P.Time.adjustTimestamp(offset_days\u003d-value[\u0027days\u0027]) # N days back from now\n\t\n\t# Look up the shift config for this line\n\tline \u003d CORE_P.Utils.datasetToDicts(system.db.runNamedQuery(\n\t\t\t\tproject\u003dsystem.project.getProjectName(), \n\t\t\t\tpath\u003d\u0027Weight_Q/DB_Query/Get_Line_Info\u0027, \n\t\t\t\tparameters\u003d{\u0027line_id\u0027:value[\u0027line_id\u0027]}\n\t\t\t))[0]\n\t\t\t\n\t# Work out what shift we need to start from (will go to the start of full day cycle)\n\t# Note, this shift date is in local time, as that is how shifts happen\n\tshift_number, shift_date \u003d CORE_P.Time.getShift(start_dt, line[\u0027shift_start\u0027], line[\u0027shifts_per_day\u0027], line[\u0027shift_length\u0027], value[\u0027site\u0027][\u0027timezone\u0027])\t\n\t#CORE_P.Utils.errorPopup(\u0027shift_number, shift_date \u003d\u0027 + str(shift_number) + \u0027 - \u0027 + str(shift_date) )\n\treturn shift_date",
+            "type": "script"
+          }
+        ],
+        "type": "expr-struct"
+      },
+      "persistent": false
+    },
     "custom.sqlserver_timezone": {
       "binding": {
         "config": {
@@ -370,7 +390,7 @@
         },
         "transforms": [
           {
-            "code": "\tfrom java.util import Date\n\tfrom system.date import now, addMonths, addDays\n\t\n\t# Start exactly one month before the end_dt...\n\t#return addDays(value[\u0027end_dt\u0027], -value[\u0027months\u0027])\n\treturn addMonths(value[\u0027end_dt\u0027], -value[\u0027months\u0027])\n\t",
+            "code": "\tfrom java.util import Date\n\tfrom system.date import now, addMonths, addDays\n\t\n\t# Start exactly one month before the end_dt...\n\treturn addDays(value[\u0027end_dt\u0027], -value[\u0027months\u0027])\n\t#return addMonths(value[\u0027end_dt\u0027], -value[\u0027months\u0027])\n\t",
             "type": "script"
           }
         ],
@@ -410,10 +430,10 @@
         },
         "props": {
           "params": {
-            "help_text": "This report shows the Weights stats broken down by Day and Material",
-            "help_title": "Weights By Day",
-            "icon": "material/calendar_today",
-            "text": "Weights By Month"
+            "help_text": "This report shows the Weights stats broken down by Shift",
+            "help_title": "Weights By Shift",
+            "icon": "material/event_note",
+            "text": "Weights By Shift"
           },
           "path": "CORE_V/Headers/SubHeader"
         },
@@ -490,10 +510,6 @@
                 "persistent": true
               },
               "props.value": {
-                "onChange": {
-                  "enabled": null,
-                  "script": "\tself.getSibling(\"selection_scale\").props.value\u003d0\n\t"
-                },
                 "persistent": true
               }
             },
@@ -601,7 +617,7 @@
               }
             },
             "position": {
-              "basis": "260px",
+              "basis": "320px",
               "shrink": 0
             },
             "propConfig": {
@@ -615,20 +631,16 @@
             "props": {
               "options": [
                 {
-                  "label": "Group by Month, Material, and PO",
-                  "value": "all"
+                  "label": "Group by Shift Date and Number",
+                  "value": "shift"
                 },
                 {
-                  "label": "Group by Month",
-                  "value": "month"
+                  "label": "Group by Shift Date",
+                  "value": "shiftdate"
                 },
                 {
-                  "label": "Group by Material",
-                  "value": "material"
-                },
-                {
-                  "label": "Group by PO Number",
-                  "value": "po"
+                  "label": "Group by Shift Number",
+                  "value": "shiftnumber"
                 }
               ],
               "placeholder": {
@@ -639,7 +651,7 @@
                 "marginRight": 10,
                 "marginTop": 2
               },
-              "value": "all"
+              "value": "shift"
             },
             "type": "ia.input.dropdown"
           },
@@ -656,13 +668,13 @@
               }
             },
             "meta": {
-              "name": "selection_months",
+              "name": "selection_days",
               "tooltip": {
                 "text": "Select Scale"
               }
             },
             "position": {
-              "basis": "160px",
+              "basis": "200px",
               "shrink": 0
             },
             "propConfig": {
@@ -676,24 +688,28 @@
             "props": {
               "options": [
                 {
-                  "label": "One Month",
+                  "label": "One Day",
                   "value": 1
                 },
                 {
-                  "label": "Two Months",
+                  "label": "Two Days",
                   "value": 2
                 },
                 {
-                  "label": "3 Months",
-                  "value": 3
+                  "label": "7 Days",
+                  "value": 7
                 },
                 {
-                  "label": "6 Months",
-                  "value": 6
+                  "label": "30 Days",
+                  "value": 30
                 },
                 {
-                  "label": "12 Months",
-                  "value": 12
+                  "label": "90 Days",
+                  "value": 90
+                },
+                {
+                  "label": "One Year",
+                  "value": 365
                 }
               ],
               "placeholder": {
@@ -704,7 +720,7 @@
                 "marginRight": 10,
                 "marginTop": 2
               },
-              "value": 2
+              "value": 7
             },
             "type": "ia.input.dropdown"
           },
@@ -752,7 +768,7 @@
               "dom": {
                 "onClick": {
                   "config": {
-                    "script": "\timport re\n\t\t\t\t\n\t# Get the set of results currently showing in the table \n\tif (len(self.parent.parent.getChild(\"Data\").getChild(\"Month\").props.filter.results.data)\u003e0):\n\t\tdata \u003d  CORE_P.Utils.pythonify(self.parent.parent.getChild(\"Data\").getChild(\"Month\").props.filter.results.data)\n\telse:\n\t\tdata \u003d  CORE_P.Utils.pythonify(self.parent.parent.getChild(\"Data\").getChild(\"Month\").props.data)\n\t\n\t# Work out which units we\u0027re using for header columns\n\tunits \u003d str(self.getSibling(\"selection_units\").props.value)\n\ttotal_units \u003d units\n\tif units\u003d\u003d\u0027gkg\u0027:\n\t\tunits \u003d \u0027g\u0027\n\t\ttotal_units \u003d \u0027kg\u0027\n\telif units\u003d\u003d\u0027olbs\u0027:\n\t\tunits \u003d \u0027oz\u0027\n\t\ttotal_units \u003d \u0027lbs\u0027\t\n\t\n\treport_type \u003d self.getSibling(\"selection_type\").props.value\n\tscale_id \u003d self.getSibling(\"selection_scale\").props.value\n\t\n#\tCORE_P.Utils.errorPopup(str(data))\n#\treturn\t\n\t\t\n\tresults \u003d []\n\ttest_headers \u003d {}\n\ttry: \n\t\tif (report_type \u003d\u003d \u0027all\u0027):\n\t\t\theaders \u003d [\t\u0027Packing Line\u0027,\n\t\t\t\t\t\t\u0027Filler\u0027, \n\t\t\t\t\t\t\u0027Day\u0027, \n\t\t\t\t\t\t\u0027Material Number\u0027, \n\t\t\t\t\t\t\u0027Material Description\u0027, \n\t\t\t\t\t\t\u0027PO Number\u0027,\n\t\t\t\t\t\t\u0027Units Produced\u0027, \n\t\t\t\t\t\t\u0027Weight Average (\u0027 + units + \u0027)\u0027, \n\t\t\t\t\t\t\u0027Total Production (\u0027 + total_units + \u0027)\u0027, \n\t\t\t\t\t\t\u0027Overage (\u0027 + total_units + \u0027)\u0027, \n\t\t\t\t\t\t\u0027% Underweight\u0027,\n\t\t\t\t\t\t\u0027% Overweight\u0027,\n\t\t\t\t\t\t]\n\t\telif (report_type \u003d\u003d \u0027month\u0027):\n\t\t\theaders \u003d [\t\u0027Packing Line\u0027,\n\t\t\t\t\t\t\u0027Filler\u0027, \n\t\t\t\t\t\t\u0027Day\u0027, \n\t\t\t\t\t\t\u0027Units Produced\u0027, \n\t\t\t\t\t\t\u0027Weight Average (\u0027 + units + \u0027)\u0027, \n\t\t\t\t\t\t\u0027Total Production (\u0027 + total_units + \u0027)\u0027, \n\t\t\t\t\t\t\u0027Overage  (\u0027 + total_units + \u0027)\u0027, \n\t\t\t\t\t\t\u0027% Underweight\u0027,\n\t\t\t\t\t\t\u0027% Overweight\u0027,\n\t\t\t\t\t\t]\t\t\n\t\telif (report_type \u003d\u003d \u0027material\u0027):\n\t\t\theaders \u003d [\t\u0027Packing Line\u0027,\n\t\t\t\t\t\t\u0027Filler\u0027, \n\t\t\t\t\t\t\u0027Material Number\u0027, \n\t\t\t\t\t\t\u0027Material Description\u0027, \n\t\t\t\t\t\t\u0027Units Produced\u0027, \n\t\t\t\t\t\t\u0027Weight Average (\u0027 + units + \u0027)\u0027, \n\t\t\t\t\t\t\u0027Total Production (\u0027 + total_units + \u0027)\u0027, \n\t\t\t\t\t\t\u0027Overage (\u0027 + total_units + \u0027)\u0027, \n\t\t\t\t\t\t\u0027% Underweight\u0027,\n\t\t\t\t\t\t\u0027% Overweight\u0027,\n\t\t\t\t\t\t]\t\n\t\telif (report_type \u003d\u003d \u0027po\u0027):\n\t\t\theaders \u003d [\t\u0027Packing Line\u0027,\n\t\t\t\t\t\t\u0027Filler\u0027, \n\t\t\t\t\t\t\u0027Material Number\u0027, \n\t\t\t\t\t\t\u0027Material Description\u0027,\n\t\t\t\t\t\t\u0027PO Number\u0027, \n\t\t\t\t\t\t\u0027Units Produced\u0027, \n\t\t\t\t\t\t\u0027Weight Average (\u0027 + units + \u0027)\u0027, \n\t\t\t\t\t\t\u0027Total Production (\u0027 + total_units + \u0027)\u0027, \n\t\t\t\t\t\t\u0027Overage (\u0027 + total_units + \u0027)\u0027, \n\t\t\t\t\t\t\u0027% Underweight\u0027,\n\t\t\t\t\t\t\u0027% Overweight\u0027,\n\t\t\t\t\t\t]\t\n\t\t\n\t\tif(scale_id \u003d\u003d 0):\n\t\t\theaders.append(\u0027Metal Rejects\u0027)\n\t\t\theaders.append(\u0027Weight Rejects\u0027)\n\t\t\n\t\tpacking_line \u003d CORE_P.Utils.get_dropdown_label(self.getSibling(\"selection_line\"))\n\t\tfiller \u003d CORE_P.Utils.get_dropdown_label(self.getSibling(\"selection_scale\"))\n   \t\t# Build the dataset\n\t\tfor row in data:\n\t\t\n\t\t\tif (report_type \u003d\u003d \u0027all\u0027):\n\t\t\t\tnew_row \u003d {\n\t\t\t\t\t\u0027Packing Line\u0027: \t\tpacking_line,\n\t\t\t\t\t\u0027Filler\u0027: \t\t\t\tfiller,\n\t\t\t\t\t\u0027Day\u0027: \t\t\t\t\trow[\u0027display_date\u0027], \n\t\t\t\t\t\u0027Material Number\u0027:\t\trow[\u0027material\u0027], \n\t\t\t\t\t\u0027Material Description\u0027:\trow[\u0027material_description\u0027], \n\t\t\t\t\t\u0027PO Number\u0027:\t\t\trow[\u0027po_number\u0027], \n\t\t\t\t\t\u0027Units Produced\u0027: \t\trow[\u0027count\u0027], \n\t\t\t\t\t\u0027Weight Average (\u0027 + units + \u0027)\u0027: \trow[\u0027weight_avg\u0027], \n\t\t\t\t\t\u0027Total Production (\u0027 + total_units + \u0027)\u0027:row[\u0027weight_sum\u0027], \n\t\t\t\t\t\u0027Overage (\u0027 + total_units + \u0027)\u0027: \t\trow[\u0027weight_diff\u0027],\n\t\t\t\t\t\u0027% Underweight\u0027: \t\trow[\u0027pct_weight_under\u0027],\n\t\t\t\t\t\u0027% Overweight\u0027: \t\trow[\u0027pct_weight_over\u0027],\n\t\t\t\t}\n\t\t\telif (report_type \u003d\u003d \u0027day\u0027):\n\t\t\t\tnew_row \u003d {\n\t\t\t\t\t\u0027Packing Line\u0027: \t\tpacking_line,\n\t\t\t\t\t\u0027Filler\u0027: \t\t\t\tfiller,\n\t\t\t\t\t\u0027Day\u0027: \t\t\t\t\trow[\u0027display_date\u0027], \n\t\t\t\t\t\u0027Units Produced\u0027: \t\trow[\u0027count\u0027], \n\t\t\t\t\t\u0027Weight Average (\u0027 + units + \u0027)\u0027: \trow[\u0027weight_avg\u0027], \n\t\t\t\t\t\u0027Total Production (\u0027 + total_units + \u0027)\u0027:row[\u0027weight_sum\u0027], \n\t\t\t\t\t\u0027Overage (\u0027 + total_units + \u0027)\u0027: \t\trow[\u0027weight_diff\u0027],\n\t\t\t\t\t\u0027% Underweight\u0027: \t\trow[\u0027pct_weight_under\u0027],\n\t\t\t\t\t\u0027% Overweight\u0027: \t\trow[\u0027pct_weight_over\u0027],\n\t\t\t\t}\n\t\t\telif (report_type \u003d\u003d \u0027material\u0027):\n\t\t\t\tnew_row \u003d {\n\t\t\t\t\t\u0027Packing Line\u0027: \t\tpacking_line,\n\t\t\t\t\t\u0027Filler\u0027: \t\t\t\tfiller,\n\t\t\t\t\t\u0027Material Number\u0027:\t\trow[\u0027material\u0027], \n\t\t\t\t\t\u0027Material Description\u0027:\trow[\u0027material_description\u0027], \n\t\t\t\t\t\u0027Units Produced\u0027: \t\trow[\u0027count\u0027], \n\t\t\t\t\t\u0027Weight Average (\u0027 + units + \u0027)\u0027: \trow[\u0027weight_avg\u0027], \n\t\t\t\t\t\u0027Total Production (\u0027 + total_units + \u0027)\u0027:row[\u0027weight_sum\u0027], \n\t\t\t\t\t\u0027Overage (\u0027 + total_units + \u0027)\u0027: \t\trow[\u0027weight_diff\u0027],\n\t\t\t\t\t\u0027% Underweight\u0027: \t\trow[\u0027pct_weight_under\u0027],\n\t\t\t\t\t\u0027% Overweight\u0027: \t\trow[\u0027pct_weight_over\u0027],\n\t\t\t\t}\n\t\t\telif (report_type \u003d\u003d \u0027po\u0027):\t\t\t\t\n\t\t\t\tnew_row \u003d {\n\t\t\t\t\t\u0027Packing Line\u0027: \t\tpacking_line,\n\t\t\t\t\t\u0027Filler\u0027: \t\t\t\tfiller,\n\t\t\t\t\t\u0027Material Number\u0027:\t\trow[\u0027material\u0027], \n\t\t\t\t\t\u0027Material Description\u0027:\trow[\u0027material_description\u0027], \n\t\t\t\t\t\u0027PO Number\u0027:\t\t\trow[\u0027po_number\u0027], \n\t\t\t\t\t\u0027Units Produced\u0027: \t\trow[\u0027count\u0027], \n\t\t\t\t\t\u0027Weight Average (\u0027 + units + \u0027)\u0027: \trow[\u0027weight_avg\u0027], \n\t\t\t\t\t\u0027Total Production (\u0027 + total_units + \u0027)\u0027:row[\u0027weight_sum\u0027], \n\t\t\t\t\t\u0027Overage (\u0027 + total_units + \u0027)\u0027: \t\trow[\u0027weight_diff\u0027],\n\t\t\t\t\t\u0027% Underweight\u0027: \t\trow[\u0027pct_weight_under\u0027],\n\t\t\t\t\t\u0027% Overweight\u0027: \t\trow[\u0027pct_weight_over\u0027],\n\t\t\t\t}\n\t\t\t\n\t\t\tif(scale_id \u003d\u003d 0):\n\t\t\t\tnew_row[\u0027Metal Rejects\u0027] \u003d row[\u0027metal_rejects\u0027]\n\t\t\t\tnew_row[\u0027Weight Rejects\u0027] \u003d row[\u0027weight_rejects\u0027]\n\t\t\t\t\t\n\t\t\tresults.append(new_row)\n\t\t\t\t\n\t#\tzone \u003d self.session.props.timeZoneId.replace(\u0027/\u0027,\u0027-\u0027)\n\t\t\t\t\n\t\tspreadsheet \u003d system.dataset.toExcel(True, [CORE_P.Utils.dictToDataset(results, headers)])\n\t\tfilePath \u003d \u0027Weight Tracking - Materials\u0027 + str(CORE_P.Time.display_local_dt(CORE_P.Time.currentTimestamp(), self\u003dself, format\u003d\u0027yyyy-MM-dd\u0027)) + \u0027.xlsx\u0027\n\t\t\n\t\t#system.file.writeFile(filePath, spreadsheet)\n\t\tsystem.perspective.download(filePath, spreadsheet)\n\t\tCORE_P.Utils.showSuccess(self, \u0027Downloading...\u0027)\n\texcept:\n\t\tCORE_P.Utils.errorPopup(\"Error exporting material weights to Excel:\" )\n   \t\treturn\t   \n\t\t\t\t\t   \t\t\t\t"
+                    "script": "\timport re\n\t\t\t\t\n\t# Get the set of results currently showing in the table \n\tif (len(self.parent.parent.getChild(\"Data\").getChild(\"Month\").props.filter.results.data)\u003e0):\n\t\tdata \u003d  CORE_P.Utils.pythonify(self.parent.parent.getChild(\"Data\").getChild(\"Month\").props.filter.results.data)\n\telse:\n\t\tdata \u003d  CORE_P.Utils.pythonify(self.parent.parent.getChild(\"Data\").getChild(\"Month\").props.data)\n\n\t# Work out which units we\u0027re using for header columns\n\tunits \u003d str(self.getSibling(\"selection_units\").props.value)\n\ttotal_units \u003d units\n\tif units\u003d\u003d\u0027gkg\u0027:\n\t\tunits \u003d \u0027g\u0027\n\t\ttotal_units \u003d \u0027kg\u0027\n\telif units\u003d\u003d\u0027olbs\u0027:\n\t\tunits \u003d \u0027oz\u0027\n\t\ttotal_units \u003d \u0027lbs\u0027\t\n\t\t\n\t\t\n\treport_type \u003d self.getSibling(\"selection_type\").props.value\n\tscale_id \u003d self.getSibling(\"selection_scale\").props.value\n\t\n#\tCORE_P.Utils.errorPopup(str(data))\n#\treturn\t\n\t\t\n\tresults \u003d []\n\ttest_headers \u003d {}\n\ttry: \n\t\tif (report_type \u003d\u003d \u0027shift\u0027):\n\t\t\theaders \u003d [\t\u0027Packing Line\u0027,\n\t\t\t\t\t\t\u0027Filler\u0027, \n\t\t\t\t\t\t\u0027Shift Date\u0027, \n\t\t\t\t\t\t\u0027Shift Number\u0027,\n\t\t\t\t\t\t\u0027Units Produced\u0027, \n\t\t\t\t\t\t\u0027Weight Average (\u0027 + units + \u0027)\u0027, \n\t\t\t\t\t\t\u0027Total Production (\u0027 + total_units + \u0027)\u0027, \n\t\t\t\t\t\t\u0027Overage (\u0027 + total_units + \u0027)\u0027, \n\t\t\t\t\t\t\u0027% Underweight\u0027,\n\t\t\t\t\t\t\u0027% Overweight\u0027,\n\t\t\t\t\t\t]\n\t\telif (report_type \u003d\u003d \u0027shiftdate\u0027):\n\t\t\theaders \u003d [\t\u0027Packing Line\u0027,\n\t\t\t\t\t\t\u0027Filler\u0027, \n\t\t\t\t\t\t\u0027Shift Date\u0027, \n\t\t\t\t\t\t\u0027Units Produced\u0027, \n\t\t\t\t\t\t\u0027Weight Average (\u0027 + units + \u0027)\u0027, \n\t\t\t\t\t\t\u0027Total Production (\u0027 + total_units + \u0027)\u0027, \n\t\t\t\t\t\t\u0027Overage (\u0027 + total_units + \u0027)\u0027, \n\t\t\t\t\t\t\u0027% Underweight\u0027,\n\t\t\t\t\t\t\u0027% Overweight\u0027,\n\t\t\t\t\t\t]\t\t\n\t\telif (report_type \u003d\u003d \u0027shiftnumber\u0027):\n\t\t\theaders \u003d [\t\u0027Packing Line\u0027,\n\t\t\t\t\t\t\u0027Filler\u0027, \n\t\t\t\t\t\t\u0027Shift Number\u0027, \n\t\t\t\t\t\t\u0027Units Produced\u0027, \n\t\t\t\t\t\t\u0027Weight Average (\u0027 + units + \u0027)\u0027, \n\t\t\t\t\t\t\u0027Total Production (\u0027 + total_units + \u0027)\u0027, \n\t\t\t\t\t\t\u0027Overage (\u0027 + total_units + \u0027)\u0027, \n\t\t\t\t\t\t\u0027% Underweight\u0027,\n\t\t\t\t\t\t\u0027% Overweight\u0027,\n\t\t\t\t\t\t]\t\n\t\t\n\t\t\t\t\t\t\n\t\tif(scale_id \u003d\u003d 0):\n\t\t\theaders.append(\u0027Metal Rejects\u0027)\n\t\t\theaders.append(\u0027Weight Rejects\u0027)\n\t\t\t\n\t\tpacking_line \u003d CORE_P.Utils.get_dropdown_label(self.getSibling(\"selection_line\"))\n\t\tfiller \u003d CORE_P.Utils.get_dropdown_label(self.getSibling(\"selection_scale\"))\n   \t\t# Build the dataset\n\t\tfor row in data:\n\t\t\n\t\t\tif (report_type \u003d\u003d \u0027shift\u0027):\n\t\t\t\tnew_row \u003d {\n\t\t\t\t\t\u0027Packing Line\u0027: \t\tpacking_line,\n\t\t\t\t\t\u0027Filler\u0027: \t\t\t\tfiller,\n\t\t\t\t\t\u0027Shift Date\u0027: \t\t\trow[\u0027shift_date_display\u0027], \n\t\t\t\t\t\u0027Shift Number\u0027: \t\trow[\u0027shift_number\u0027], \t\t\t\t\t\n\t\t\t\t\t\u0027Units Produced\u0027: \t\trow[\u0027count\u0027], \n\t\t\t\t\t\u0027Weight Average (\u0027 + units + \u0027)\u0027 : \trow[\u0027weight_avg\u0027], \n\t\t\t\t\t\u0027Total Production (\u0027 + total_units + \u0027)\u0027:row[\u0027weight_sum\u0027], \n\t\t\t\t\t\u0027Overage (\u0027 + total_units + \u0027)\u0027: \t\trow[\u0027weight_diff\u0027],\n\t\t\t\t\t\u0027% Underweight\u0027: \t\trow[\u0027pct_weight_under\u0027],\n\t\t\t\t\t\u0027% Overweight\u0027: \t\trow[\u0027pct_weight_over\u0027],\n\t\t\t\t}\n\t\t\telif (report_type \u003d\u003d \u0027shiftdate\u0027):\n\t\t\t\tnew_row \u003d {\n\t\t\t\t\t\u0027Packing Line\u0027: \t\tpacking_line,\n\t\t\t\t\t\u0027Filler\u0027: \t\t\t\tfiller,\n\t\t\t\t\t\u0027Shift Date\u0027: \t\t\trow[\u0027shift_date_display\u0027], \n\t\t\t\t\t\u0027Units Produced\u0027: \t\trow[\u0027count\u0027], \n\t\t\t\t\t\u0027Weight Average (\u0027 + units + \u0027)\u0027: \trow[\u0027weight_avg\u0027], \n\t\t\t\t\t\u0027Total Production (\u0027 + total_units + \u0027)\u0027:row[\u0027weight_sum\u0027], \n\t\t\t\t\t\u0027Overage (\u0027 + total_units + \u0027)\u0027: \t\trow[\u0027weight_diff\u0027],\n\t\t\t\t\t\u0027% Underweight\u0027: \t\trow[\u0027pct_weight_under\u0027],\n\t\t\t\t\t\u0027% Overweight\u0027: \t\trow[\u0027pct_weight_over\u0027],\n\t\t\t\t}\n\t\t\telif (report_type \u003d\u003d \u0027shiftnumber\u0027):\n\t\t\t\tnew_row \u003d {\n\t\t\t\t\t\u0027Packing Line\u0027: \t\tpacking_line,\n\t\t\t\t\t\u0027Filler\u0027: \t\t\t\tfiller,\n\t\t\t\t\t\u0027Shift Number\u0027: \t\trow[\u0027shift_number\u0027], \t\n\t\t\t\t\t\u0027Units Produced\u0027: \t\trow[\u0027count\u0027], \n\t\t\t\t\t\u0027Weight Average (\u0027 + units + \u0027)\u0027: \trow[\u0027weight_avg\u0027], \n\t\t\t\t\t\u0027Total Production (\u0027 + total_units + \u0027)\u0027:row[\u0027weight_sum\u0027], \n\t\t\t\t\t\u0027Overage (\u0027 + total_units + \u0027)\u0027: \t\trow[\u0027weight_diff\u0027],\n\t\t\t\t\t\u0027% Underweight\u0027: \t\trow[\u0027pct_weight_under\u0027],\n\t\t\t\t\t\u0027% Overweight\u0027: \t\trow[\u0027pct_weight_over\u0027],\n\t\t\t\t}\t\t\t\t\n\t\t\n\t\t\t\n\t\t\tif(scale_id \u003d\u003d 0):\n\t\t\t\tnew_row[\u0027Metal Rejects\u0027] \u003d row[\u0027metal_rejects\u0027]\n\t\t\t\tnew_row[\u0027Weight Rejects\u0027] \u003d row[\u0027weight_rejects\u0027]\n\t\t\t\t\n\t\t\tresults.append(new_row)\n\t\t\t\t\n\t#\tzone \u003d self.session.props.timeZoneId.replace(\u0027/\u0027,\u0027-\u0027)\n\t\t\t\t\n\t\tspreadsheet \u003d system.dataset.toExcel(True, [CORE_P.Utils.dictToDataset(results, headers)])\n\t\tfilePath \u003d \u0027Weight Tracking - Shifts\u0027 + str(CORE_P.Time.display_local_dt(CORE_P.Time.currentTimestamp(), self\u003dself, format\u003d\u0027yyyy-MM-dd\u0027)) + \u0027.xlsx\u0027\n\t\t\n\t\t#system.file.writeFile(filePath, spreadsheet)\n\t\tsystem.perspective.download(filePath, spreadsheet)\n\t\tCORE_P.Utils.showSuccess(self, \u0027Downloading...\u0027)\n\texcept:\n\t\tCORE_P.Utils.errorPopup(\"Error exporting material weights to Excel:\" +str(report_type))\n   \t\treturn\t   \n\t\t\t\t\t   \t\t\t\t"
                   },
                   "scope": "G",
                   "type": "script"
@@ -802,7 +818,7 @@
               "dom": {
                 "onClick": {
                   "config": {
-                    "script": "\tfrom java.util import Date\n\tfrom system.date import now, addMonths, addDays\n\t\n\tself.view.custom.end_dt \u003d addMonths(self.view.custom.end_dt, -self.parent.parent.getChild(\"Selections\").getChild(\"selection_months\").props.value)\n\t"
+                    "script": "\tfrom java.util import Date\n\tfrom system.date import now, addMonths, addDays\n\t\n\tself.view.custom.end_dt \u003d addDays(self.view.custom.end_dt, -self.parent.parent.getChild(\"Selections\").getChild(\"selection_months\").props.value)\n\t"
                   },
                   "scope": "G",
                   "type": "script"
@@ -829,7 +845,8 @@
               "name": "Month"
             },
             "position": {
-              "basis": "100%"
+              "basis": "400px",
+              "grow": 1
             },
             "propConfig": {
               "props.columns[0].visible": {
@@ -839,37 +856,7 @@
                   },
                   "transforms": [
                     {
-                      "code": "\tif (value in [\u0027all\u0027,\u0027month\u0027]):\n\t\treturn True\n\treturn False",
-                      "type": "script"
-                    }
-                  ],
-                  "type": "property"
-                }
-              },
-              "props.columns[10].visible": {
-                "binding": {
-                  "config": {
-                    "path": ".../Selections/selection_scale.props.value"
-                  },
-                  "enabled": false,
-                  "transforms": [
-                    {
-                      "code": "\tif (value \u003d\u003d 0):\n\t\treturn True\n\t\t\n\treturn False",
-                      "type": "script"
-                    }
-                  ],
-                  "type": "property"
-                }
-              },
-              "props.columns[11].visible": {
-                "binding": {
-                  "config": {
-                    "path": ".../Selections/selection_scale.props.value"
-                  },
-                  "enabled": false,
-                  "transforms": [
-                    {
-                      "code": "\tif (value \u003d\u003d 0):\n\t\treturn True\n\t\t\n\treturn False",
+                      "code": "\tif (value in [\u0027shift\u0027,\u0027shiftdate\u0027]):\n\t\treturn True\n\treturn False",
                       "type": "script"
                     }
                   ],
@@ -883,7 +870,7 @@
                   },
                   "transforms": [
                     {
-                      "code": "\tif (value in [\u0027all\u0027,\u0027material\u0027,\u0027po\u0027]):\n\t\treturn True\n\treturn False",
+                      "code": "\tif (value in [\u0027shift\u0027,\u0027shiftnumber\u0027]):\n\t\treturn True\n\treturn False",
                       "type": "script"
                     }
                   ],
@@ -911,21 +898,21 @@
                   },
                   "transforms": [
                     {
-                      "code": "\tif (value in [\u0027all\u0027,\u0027po\u0027]):\n\t\treturn True\n\treturn False",
+                      "code": "\tif (value in [\u0027all\u0027,\u0027material\u0027,\u0027po\u0027]):\n\t\treturn True\n\treturn False",
                       "type": "script"
                     }
                   ],
                   "type": "property"
                 }
               },
-              "props.columns[5].header.title": {
+              "props.columns[4].visible": {
                 "binding": {
                   "config": {
-                    "path": ".../Selections/selection_units.props.value"
+                    "path": ".../Selections/selection_type.props.value"
                   },
                   "transforms": [
                     {
-                      "code": "\tif value\u003d\u003d\u0027gkg\u0027:\n\t\treturn \u0027Weight Average [g]\u0027\n\telif value\u003d\u003d\u0027olbs\u0027:\n\t\treturn \u0027Weight Average [oz]\u0027\n\t\t\n\treturn \u0027Weight Average [\u0027 + str(value) + \u0027]\u0027",
+                      "code": "\tif (value in [\u0027all\u0027,\u0027po\u0027]):\n\t\treturn True\n\treturn False",
                       "type": "script"
                     }
                   ],
@@ -939,7 +926,7 @@
                   },
                   "transforms": [
                     {
-                      "code": "\tif value\u003d\u003d\u0027gkg\u0027:\n\t\treturn \u0027Total Production [kg]\u0027\n\telif value\u003d\u003d\u0027olbs\u0027:\n\t\treturn \u0027Total Production [lbs]\u0027\n\t\t\t\t\n\treturn \u0027Total Production [\u0027 + str(value) + \u0027]\u0027\t",
+                      "code": "\tif value\u003d\u003d\u0027gkg\u0027:\n\t\treturn \u0027Weight Average [g]\u0027\n\telif value\u003d\u003d\u0027olbs\u0027:\n\t\treturn \u0027Weight Average [oz]\u0027\n\t\t\n\treturn \u0027Weight Average [\u0027 + str(value) + \u0027]\u0027\n",
                       "type": "script"
                     }
                   ],
@@ -953,7 +940,21 @@
                   },
                   "transforms": [
                     {
-                      "code": "\tif value\u003d\u003d\u0027gkg\u0027:\n\t\treturn \u0027Overage [kg]\u0027\n\telif value\u003d\u003d\u0027olbs\u0027:\n\t\treturn \u0027Overage [lbs]\u0027\n\t\t\t\n\treturn \u0027Overage [\u0027 + str(value) + \u0027]\u0027\t",
+                      "code": "\tif value\u003d\u003d\u0027gkg\u0027:\n\t\treturn \u0027Total Production [kg]\u0027\n\telif value\u003d\u003d\u0027olbs\u0027:\n\t\treturn \u0027Total Production [lbs]\u0027\n\t\t\t\t\n\treturn \u0027Total Production [\u0027 + str(value) + \u0027]\u0027\t",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              },
+              "props.columns[8].header.title": {
+                "binding": {
+                  "config": {
+                    "path": ".../Selections/selection_units.props.value"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\tif value\u003d\u003d\u0027gkg\u0027:\n\t\treturn \u0027Overage [kg]\u0027\n\telif value\u003d\u003d\u0027olbs\u0027:\n\t\treturn \u0027Overage [lbs]\u0027\n\t\t\t\t\n\treturn \u0027Overage [\u0027 + str(value) + \u0027]\u0027\t",
                       "type": "script"
                     }
                   ],
@@ -964,11 +965,9 @@
                 "binding": {
                   "config": {
                     "struct": {
-                      "end_dt": "{view.custom.end_dt}",
-                      "months": "{.../Selections/selection_months.props.value}",
                       "report_type": "{.../Selections/selection_type.props.value}",
                       "scale_id": "{.../Selections/selection_scale.props.value}",
-                      "start_dt": "{view.custom.start_dt}",
+                      "shift_date_start": "{view.custom.shift_date_start}",
                       "timezone": "{view.custom.sqlserver_timezone}",
                       "units": "{.../Selections/selection_units.props.value}"
                     },
@@ -976,7 +975,7 @@
                   },
                   "transforms": [
                     {
-                      "code": "\t\t\n\tline_id \u003d int(self.parent.parent.getChild(\"Selections\").getChild(\"selection_line\").props.value)\n\ttry:\n\t\tsqlserver_tz \u003d value[\u0027timezone\u0027] # Note, the Ignition timezone has already been converted here into a format that SQLServer understands...\n\t\tscale_id \u003d value[\u0027scale_id\u0027]\n\t\tend_dt \u003d value[\u0027end_dt\u0027]\n\t\treport_type \u003d value[\u0027report_type\u0027]\n\t\tmonths \u003d (int(value[\u0027months\u0027]) - 1) * -1\n\t\t\t\t\t\t\n\t\t# Get the unit conversion factor\n\t\tunits \u003d value[\u0027units\u0027]\n\t\tunit_conversion \u003d 1\n\t\ttotal_conversion \u003d 1\n\t\tif (units \u003d\u003d \u0027gkg\u0027):\n\t\t\ttotal_conversion \u003d 1000\n\t\telif (units \u003d\u003d \u0027olbs\u0027):\n\t\t\tunit_conversion \u003d 28.3495006561279\n\t\t\ttotal_conversion \u003d 453.592010498047\n\t\telse:\t\n\t\t\tfor option in self.parent.parent.getChild(\"Selections\").getChild(\"selection_units\").props.options:\n\t\t\t\tif (option[\u0027value\u0027] \u003d\u003d units):\n\t\t\t\t\tunit_conversion \u003d float(option[\u0027unit_conversion\u0027])\n\t\t\t\t\ttotal_conversion \u003d float(option[\u0027unit_conversion\u0027])\n\t\t\t\t\n\t\t\n\t\t# Build the query. \n\t\t# Note - had to build the query in code, because SQLServer/ignition doesn\u0027t seem to allow the passing of the timezone as a parameter\n\t\t# This is generally a \u0027Bad Idea\u0027, due to SQl injection attacks. In this case, I\u0027m only directly substituting in a timezone string that \n\t\t# comes from a database entry that is manually controlled by us (so should be safe). The other params are run through Prep as normal. \n\t\tif (report_type\t\u003d\u003d \u0027all\u0027):\n\t\t\t \n\t\t\t# FORMAT(a.time_start AT TIME ZONE \u0027UTC\u0027 AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM-dd\u0027) as \u0027date\u0027,\n\t\t\t\n\t\t\tquery \u003d \"\"\"\n\t\t\t\n\t\t\tSELECT\n\t\t\t    a.material,\n\t\t\t    a.po_number,\n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM\u0027) as \u0027date\u0027,\n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027MMM yyyy\u0027) as \u0027display_date\u0027,\n\t\t\t    SUM([count]) AS \u0027count\u0027,\n\t\t\t    case when SUM([count]) \u003e 0 then ((SUM(a.weight_sum) / SUM([count]))/:unit_conversion) else 0 end AS \u0027weight_avg\u0027,\n\t\t\t    SUM(a.weight_diff) /:total_conversion AS \u0027weight_diff\u0027,\n\t\t\t    SUM(a.weight_sum) /:total_conversion AS \u0027weight_sum\u0027,\n\t\t\t    (SUM( (a.pct_weight_under/100) * total_count)/ SUM([total_count]))*100 as \u0027pct_weight_under\u0027,\n\t\t\t    (SUM( (a.pct_weight_over/100) * total_count)/ SUM([total_count]))*100 as \u0027pct_weight_over\u0027,\n\t\t\t    (\n\t\t\t            SELECT material_description\n\t\t\t            FROM system.dbo.materials m\n\t\t\t            WHERE m.material_number \u003d TRY_CAST(a.material AS INT)\n\t\t\t        ) AS material_description,\n\t\t\t\tsum(r.metal_count) as \u0027metal_rejects\u0027, \n\t\t\t\tsum(r.weight_count) as \u0027weight_rejects\u0027 \n\t\t\t\n\t\t\tFROM weight.dbo.aggregated a\n\t\t\t\tjoin weight.dbo.scale s on a.scale_id \u003d s.scale_id\n\t\t\t\tjoin weight.dbo.filler f on s.filler_id \u003d f.filler_id\n\t\t\t\tLEFT JOIN weight.dbo.rejects r on (r.line_id \u003d f.line_id and r.time_start \u003d a.time_start and r.material \u003d a.material) \n\t\t\tWHERE a.material !\u003d \u0027All\u0027\n\t\t\tAND ((0 \u003d ? and f.is_line_total \u003d 0) or a.scale_id \u003d ?)\n\t\t\tAND f.line_id \u003d ?\n\t\t\tAND a.time_start \u003e\u003d ?\n\t\t\tAND a.time_start \u003c ?\n\t\t\tGROUP BY\n\t\t\t    a.material,\n\t\t\t    a.po_number,\n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM\u0027), \n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027MMM yyyy\u0027)  \n\t\t\tORDER BY FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM\u0027), a.material, a.po_number\n\t\t\t\"\"\"\n\t\t\n\t\telif (report_type\t\u003d\u003d \u0027month\u0027):\n\t\t\tquery \u003d \"\"\"\n\t\t\t\n\t\t\tSELECT\n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM\u0027) as \u0027date\u0027,\n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027MMM yyyy\u0027) as \u0027display_date\u0027,\n\t\t\t    SUM([count]) AS \u0027count\u0027,\n\t\t\t    case when SUM([count]) \u003e 0 then ((SUM(a.weight_sum) / SUM([count]))/:unit_conversion) else 0 end AS \u0027weight_avg\u0027,\n\t\t\t    SUM(a.weight_diff) /:total_conversion AS \u0027weight_diff\u0027,\n\t\t\t    SUM(a.weight_sum) /:total_conversion AS \u0027weight_sum\u0027,\n\t\t\t    (SUM( (a.pct_weight_under/100) * total_count)/ SUM([total_count]))*100 as \u0027pct_weight_under\u0027,\n\t\t\t    (SUM( (a.pct_weight_over/100) * total_count)/ SUM([total_count]))*100 as \u0027pct_weight_over\u0027,\n\t\t\t\tsum(r.metal_count) as \u0027metal_rejects\u0027, \n\t\t\t\tsum(r.weight_count) as \u0027weight_rejects\u0027 \n\t\t\t\n\t\t\tFROM weight.dbo.aggregated a\n\t\t\t\tjoin weight.dbo.scale s on a.scale_id \u003d s.scale_id\n\t\t\t\tjoin weight.dbo.filler f on s.filler_id \u003d f.filler_id\n\t\t\t\tLEFT JOIN weight.dbo.rejects r on (r.line_id \u003d f.line_id and r.time_start \u003d a.time_start and r.material \u003d a.material) \n\t\t\tWHERE a.material \u003d \u0027All\u0027\n\t\t\tAND ((0 \u003d ? and f.is_line_total \u003d 0) or a.scale_id \u003d ?)\n\t\t\tAND f.line_id \u003d ?\n\t\t\tAND a.time_start \u003e\u003d ?\n\t\t\tAND a.time_start \u003c ?\n\t\t\tGROUP BY\n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM\u0027), \n\t\t\t    FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027MMM yyyy\u0027)  \n\t\t\tORDER BY FORMAT(a.time_start AT TIME ZONE \u0027:timezone\u0027, \u0027yyyy-MM\u0027)\n\t\t\t\n\t\t\t\"\"\"\t\t\n\t\t\t\n\t\telif (report_type\t\u003d\u003d \u0027material\u0027):\n\t\t\tquery \u003d \"\"\"\n\t\t\t\n\t\t\t\n\t\t\tSELECT\n\t\t\t    a.material,\n\t\t\t    SUM([count]) AS \u0027count\u0027,\n\t\t\t    case when SUM([count]) \u003e 0 then ((SUM(a.weight_sum) / SUM([count]))/:unit_conversion) else 0 end AS \u0027weight_avg\u0027,\n\t\t\t    SUM(a.weight_diff) /:total_conversion AS \u0027weight_diff\u0027,\n\t\t\t    SUM(a.weight_sum) /:total_conversion AS \u0027weight_sum\u0027,\n\t\t\t    (SUM( (a.pct_weight_under/100) * total_count)/ SUM([total_count]))*100 as \u0027pct_weight_under\u0027,\n\t\t\t    (SUM( (a.pct_weight_over/100) * total_count)/ SUM([total_count]))*100 as \u0027pct_weight_over\u0027,\n\t\t\t    (\n\t\t\t            SELECT material_description\n\t\t\t            FROM system.dbo.materials m\n\t\t\t            WHERE m.material_number \u003d TRY_CAST(a.material AS INT)\n\t\t\t        ) AS material_description,\n\t\t\t\tsum(r.metal_count) as \u0027metal_rejects\u0027, \n\t\t\t\tsum(r.weight_count) as \u0027weight_rejects\u0027 \n\t\t\t\n\t\t\tFROM weight.dbo.aggregated a\n\t\t\t\tjoin weight.dbo.scale s on a.scale_id \u003d s.scale_id\n\t\t\t\tjoin weight.dbo.filler f on s.filler_id \u003d f.filler_id\n\t\t\t\tLEFT JOIN weight.dbo.rejects r on (r.line_id \u003d f.line_id and r.time_start \u003d a.time_start and r.material \u003d a.material) \n\t\t\tWHERE a.material !\u003d \u0027All\u0027\n\t\t\tAND ((0 \u003d ? and f.is_line_total \u003d 0) or a.scale_id \u003d ?)\n\t\t\tAND f.line_id \u003d ?\n\t\t\tAND a.time_start \u003e\u003d ?\n\t\t\tAND a.time_start \u003c ?\n\t\t\tGROUP BY\n\t\t\t    a.material\n\t\t\tORDER BY a.material\n\n\t\t\t\"\"\"\n\t\t\t\n\t\telif (report_type\t\u003d\u003d \u0027po\u0027):\n\t\t\tquery \u003d \"\"\"\n\t\t\t\n\t\t\tSELECT\n\t\t\t    a.material,\n\t\t\t    a.po_number,\n\t\t\t    SUM([count]) AS \u0027count\u0027,\n\t\t\t    case when SUM([count]) \u003e 0 then ((SUM(a.weight_sum) / SUM([count]))/:unit_conversion) else 0 end AS \u0027weight_avg\u0027,\n\t\t\t    SUM(a.weight_diff) /:total_conversion AS \u0027weight_diff\u0027,\n\t\t\t    SUM(a.weight_sum) /:total_conversion AS \u0027weight_sum\u0027,\n\t\t\t    (SUM( (a.pct_weight_under/100) * total_count)/ SUM([total_count]))*100 as \u0027pct_weight_under\u0027,\n\t\t\t    (SUM( (a.pct_weight_over/100) * total_count)/ SUM([total_count]))*100 as \u0027pct_weight_over\u0027,\n\t\t\t    (\n\t\t\t            SELECT material_description\n\t\t\t            FROM system.dbo.materials m\n\t\t\t            WHERE m.material_number \u003d TRY_CAST(a.material AS INT)\n\t\t\t        ) AS material_description,\n\t\t\t\tsum(r.metal_count) as \u0027metal_rejects\u0027, \n\t\t\t\tsum(r.weight_count) as \u0027weight_rejects\u0027 \n\t\t\t\n\t\t\tFROM weight.dbo.aggregated a\n\t\t\t\tjoin weight.dbo.scale s on a.scale_id \u003d s.scale_id\n\t\t\t\tjoin weight.dbo.filler f on s.filler_id \u003d f.filler_id\n\t\t\t\tLEFT JOIN weight.dbo.rejects r on (r.line_id \u003d f.line_id and r.time_start \u003d a.time_start and r.material \u003d a.material) \n\t\t\tWHERE a.material !\u003d \u0027All\u0027\n\t\t\tAND ((0 \u003d ? and f.is_line_total \u003d 0) or a.scale_id \u003d ?)\n\t\t\tAND f.line_id \u003d ?\n\t\t\tAND a.time_start \u003e\u003d ?\n\t\t\tAND a.time_start \u003c ?\n\t\t\tGROUP BY\n\t\t\t    a.po_number, \n\t\t\t    a.material\n\t\t\tORDER BY a.po_number, a.material\n\t\t\t\n\t\t\t\"\"\"\n\t\t\n\t\t#AND time_start \u003e\u003d DATEADD(month, ?, DATEADD(month, DATEDIFF(month, 0, ?), 0)) \n\t\t#AND time_start \u003c DATEADD(day, 1, EOMONTH(?))            \n\t\t\t\t\t\t\n\t\t# Substitute in the timezone and unit conversion\n\t\tquery \u003d query.replace(\u0027:timezone\u0027,sqlserver_tz)\n\t\tquery \u003d query.replace(\u0027:unit_conversion\u0027,str(unit_conversion))\n\t\tquery \u003d query.replace(\u0027:total_conversion\u0027,str(total_conversion))\n\t\t\t\t\n\t\t# Note: You need to repeat parameters if they are used multiple times.\n\t\t# IMPORTANT: The order of \u0027?\u0027 must match the order of arguments passed.\n\t\targs \u003d [\n\n\t\t    int(scale_id),\n\t\t    int(scale_id),\t\t\n\t\t    int(line_id),\t    \n\t\t    value[\u0027start_dt\u0027],    \n\t\t    value[\u0027end_dt\u0027] \n\t\t]\n\t\t\n\t\tresults \u003d CORE_P.Utils.datasetToDicts(system.db.runPrepQuery(query, args, \u0027system\u0027))\n\t\t\n\t\t\n\t\t#CORE_P.Utils.errorPopup(\u0027Dates:\u0027 + str(value[\u0027start_dt\u0027]) + \u0027 - \u0027  + str(value[\u0027end_dt\u0027]))\n\t\treturn results\n\texcept:\n\t    # Handle error\n\t#    CORE_P.Utils.errorPopup(\u0027Error getting weights data:\u0027)\n\t    return []\n\t",
+                      "code": "\tline_id \u003d int(self.parent.parent.getChild(\"Selections\").getChild(\"selection_line\").props.value)\n\ttry:\n\t\tsqlserver_tz \u003d value[\u0027timezone\u0027] # Note, the Ignition timezone has already been converted here into a format that SQLServer understands...\n\t\tscale_id \u003d value[\u0027scale_id\u0027]\n\t\treport_type \u003d value[\u0027report_type\u0027]\n\t\t\n\t\t# Get the unit conversion factor\n\t\tunits \u003d value[\u0027units\u0027]\n\t\tunit_conversion \u003d 1\n\t\ttotal_conversion \u003d 1\n\t\tif (units \u003d\u003d \u0027gkg\u0027):\n\t\t\ttotal_conversion \u003d 1000\n\t\telif (units \u003d\u003d \u0027olbs\u0027):\n\t\t\tunit_conversion \u003d 28.3495006561279\n\t\t\ttotal_conversion \u003d 453.592010498047\n\t\telse:\t\n\t\t\tfor option in self.parent.parent.getChild(\"Selections\").getChild(\"selection_units\").props.options:\n\t\t\t\tif (option[\u0027value\u0027] \u003d\u003d units):\n\t\t\t\t\tunit_conversion \u003d float(option[\u0027unit_conversion\u0027])\n\t\t\t\t\ttotal_conversion \u003d float(option[\u0027unit_conversion\u0027])\n\t\t\t\t\t\t\t\n\t\tquerypath \u003d \u0027\u0027\n\t\t# Build the query. \n\t\tif (report_type\t\u003d\u003d \u0027shift\u0027):\n\t\t\tquerypath \u003d \u0027Weight_Q/WeightsByShift_Q/GroupByShift\u0027\n\t\t\n\t\telif (report_type\t\u003d\u003d \u0027shiftdate\u0027):\n\t\t\tquerypath \u003d \u0027Weight_Q/WeightsByShift_Q/GroupByShiftDate\u0027\n\t\t\t\t\n\t\telif (report_type\t\u003d\u003d \u0027shiftnumber\u0027):\n\t\t\tquerypath \u003d \u0027Weight_Q/WeightsByShift_Q/GroupByShiftNumber\u0027\n\t\t\n\t\tparams\u003d{\n\t\t\t\u0027line_id\u0027:line_id,\n\t\t\t\u0027scale_id\u0027:scale_id,\n\t\t\t\u0027shift_date_start\u0027:value[\u0027shift_date_start\u0027],\n\t\t\t\u0027timezone\u0027:sqlserver_tz,\n\t\t\t\u0027unit_conversion\u0027:unit_conversion,\n\t\t\t\u0027total_conversion\u0027:total_conversion\n\t\t}\n\t\n\t\tresults \u003d CORE_P.Utils.datasetToDicts(system.db.runNamedQuery(\n\t\t\t\t\tproject\u003dsystem.project.getProjectName(), \n\t\t\t\t\tpath\u003dquerypath, \n\t\t\t\t\tparameters\u003dparams\n\t\t\t\t))\n\t\t\n\t\tif (report_type in [\u0027shiftdate\u0027,\u0027shift\u0027]):\n\t\t\tfor row in results:\n\t\t\t\trow[\u0027shift_date_display\u0027] \u003d Weight_P.Utils.display_shift_date(row[\u0027shift_date\u0027])\n\t\t\n\t\t#CORE_P.Utils.errorPopup(\u0027Dates:\u0027 + str(value[\u0027start_dt\u0027]) + \u0027 - \u0027  + str(value[\u0027end_dt\u0027]))\n\t\treturn results\n\texcept:\n\t    # Handle error\n\t   # CORE_P.Utils.errorPopup(\u0027Error getting weights data:\u0027)\n\t    return []\n\t",
                       "type": "script"
                     }
                   ],
@@ -985,16 +984,13 @@
               }
             },
             "props": {
-              "bodyStyle": {
-                "classes": "Weight_S/Framework/Card/Label"
-              },
               "columns": [
                 {
                   "align": "center",
                   "boolean": "checkbox",
                   "dateFormat": "MM/DD/YYYY",
                   "editable": false,
-                  "field": "display_date",
+                  "field": "shift_date_display",
                   "filter": {
                     "boolean": {
                       "condition": ""
@@ -1028,16 +1024,16 @@
                     "style": {
                       "classes": ""
                     },
-                    "title": "Month"
+                    "title": "Shift Date"
                   },
-                  "justify": "left",
+                  "justify": "auto",
                   "nullFormat": {
                     "includeNullStrings": false,
                     "nullFormatValue": "",
                     "strict": false
                   },
                   "number": "value",
-                  "numberFormat": "none",
+                  "numberFormat": "0,0.##",
                   "progressBar": {
                     "bar": {
                       "color": "",
@@ -1063,8 +1059,190 @@
                     }
                   },
                   "render": "auto",
-                  "resizable": false,
-                  "sort": "ascending",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "width": ""
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "shift_number",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Shift Number"
+                  },
+                  "justify": "auto",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "width": ""
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "item_size",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Item Size"
+                  },
+                  "justify": "auto",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
                   "sortable": true,
                   "strictWidth": false,
                   "style": {
@@ -1121,7 +1299,7 @@
                     },
                     "title": "Material"
                   },
-                  "justify": "left",
+                  "justify": "auto",
                   "nullFormat": {
                     "includeNullStrings": false,
                     "nullFormatValue": "",
@@ -1154,10 +1332,10 @@
                     }
                   },
                   "render": "auto",
-                  "resizable": false,
+                  "resizable": true,
                   "sort": "none",
                   "sortable": true,
-                  "strictWidth": true,
+                  "strictWidth": false,
                   "style": {
                     "classes": ""
                   },
@@ -1169,7 +1347,7 @@
                   },
                   "viewParams": {},
                   "viewPath": "",
-                  "width": 80
+                  "width": ""
                 },
                 {
                   "align": "center",
@@ -1212,7 +1390,7 @@
                     },
                     "title": "Material Description"
                   },
-                  "justify": "left",
+                  "justify": "auto",
                   "nullFormat": {
                     "includeNullStrings": false,
                     "nullFormatValue": "",
@@ -1245,7 +1423,7 @@
                     }
                   },
                   "render": "auto",
-                  "resizable": false,
+                  "resizable": true,
                   "sort": "none",
                   "sortable": true,
                   "strictWidth": false,
@@ -1260,7 +1438,7 @@
                   },
                   "viewParams": {},
                   "viewPath": "",
-                  "width": 240
+                  "width": ""
                 },
                 {
                   "align": "center",
@@ -1303,9 +1481,9 @@
                     },
                     "title": "PO Number"
                   },
-                  "justify": "left",
+                  "justify": "auto",
                   "nullFormat": {
-                    "includeNullStrings": true,
+                    "includeNullStrings": false,
                     "nullFormatValue": "",
                     "strict": false
                   },
@@ -1335,8 +1513,8 @@
                       }
                     }
                   },
-                  "render": "string",
-                  "resizable": false,
+                  "render": "auto",
+                  "resizable": true,
                   "sort": "none",
                   "sortable": true,
                   "strictWidth": false,
@@ -1351,6 +1529,7 @@
                   },
                   "viewParams": {},
                   "viewPath": "",
+                  "visible": false,
                   "width": ""
                 },
                 {
@@ -1388,20 +1567,19 @@
                   },
                   "header": {
                     "align": "center",
-                    "justify": "right",
+                    "justify": "left",
                     "style": {
                       "classes": ""
-                    },
-                    "title": "Units"
+                    }
                   },
-                  "justify": "right",
+                  "justify": "auto",
                   "nullFormat": {
                     "includeNullStrings": false,
                     "nullFormatValue": "",
                     "strict": false
                   },
                   "number": "value",
-                  "numberFormat": "0,0",
+                  "numberFormat": "0,0.##",
                   "progressBar": {
                     "bar": {
                       "color": "",
@@ -1480,19 +1658,19 @@
                   },
                   "header": {
                     "align": "center",
-                    "justify": "right",
+                    "justify": "left",
                     "style": {
                       "classes": ""
                     }
                   },
-                  "justify": "right",
+                  "justify": "auto",
                   "nullFormat": {
                     "includeNullStrings": false,
                     "nullFormatValue": "",
                     "strict": false
                   },
                   "number": "value",
-                  "numberFormat": "0,0.00",
+                  "numberFormat": "0,0.##",
                   "progressBar": {
                     "bar": {
                       "color": "",
@@ -1571,19 +1749,19 @@
                   },
                   "header": {
                     "align": "center",
-                    "justify": "right",
+                    "justify": "left",
                     "style": {
                       "classes": ""
                     }
                   },
-                  "justify": "right",
+                  "justify": "auto",
                   "nullFormat": {
                     "includeNullStrings": false,
                     "nullFormatValue": "",
                     "strict": false
                   },
                   "number": "value",
-                  "numberFormat": "0,0.00",
+                  "numberFormat": "0,0.##",
                   "progressBar": {
                     "bar": {
                       "color": "",
@@ -1662,19 +1840,20 @@
                   },
                   "header": {
                     "align": "center",
-                    "justify": "right",
+                    "justify": "left",
                     "style": {
                       "classes": ""
-                    }
+                    },
+                    "title": "Overage [lbs]"
                   },
-                  "justify": "right",
+                  "justify": "auto",
                   "nullFormat": {
                     "includeNullStrings": false,
                     "nullFormatValue": "",
                     "strict": false
                   },
                   "number": "value",
-                  "numberFormat": "0,0.00",
+                  "numberFormat": "0,0.##",
                   "progressBar": {
                     "bar": {
                       "color": "",
@@ -1753,13 +1932,13 @@
                   },
                   "header": {
                     "align": "center",
-                    "justify": "right",
+                    "justify": "left",
                     "style": {
                       "classes": ""
                     },
                     "title": "% Underweight"
                   },
-                  "justify": "right",
+                  "justify": "auto",
                   "nullFormat": {
                     "includeNullStrings": false,
                     "nullFormatValue": "",
@@ -1791,7 +1970,7 @@
                       }
                     }
                   },
-                  "render": "number",
+                  "render": "auto",
                   "resizable": true,
                   "sort": "none",
                   "sortable": true,
@@ -1845,13 +2024,13 @@
                   },
                   "header": {
                     "align": "center",
-                    "justify": "right",
+                    "justify": "left",
                     "style": {
                       "classes": ""
                     },
                     "title": "% Overweight"
                   },
-                  "justify": "right",
+                  "justify": "auto",
                   "nullFormat": {
                     "includeNullStrings": false,
                     "nullFormatValue": "",
@@ -1883,7 +2062,7 @@
                       }
                     }
                   },
-                  "render": "number",
+                  "render": "auto",
                   "resizable": true,
                   "sort": "none",
                   "sortable": true,
@@ -1937,13 +2116,13 @@
                   },
                   "header": {
                     "align": "center",
-                    "justify": "right",
+                    "justify": "left",
                     "style": {
                       "classes": ""
                     },
                     "title": "Metal Rejects"
                   },
-                  "justify": "right",
+                  "justify": "auto",
                   "nullFormat": {
                     "includeNullStrings": false,
                     "nullFormatValue": "",
@@ -1975,7 +2154,7 @@
                       }
                     }
                   },
-                  "render": "number",
+                  "render": "auto",
                   "resizable": true,
                   "sort": "none",
                   "sortable": true,
@@ -2029,13 +2208,13 @@
                   },
                   "header": {
                     "align": "center",
-                    "justify": "right",
+                    "justify": "left",
                     "style": {
                       "classes": ""
                     },
                     "title": "Weight Rejects"
                   },
-                  "justify": "right",
+                  "justify": "auto",
                   "nullFormat": {
                     "includeNullStrings": false,
                     "nullFormatValue": "",
@@ -2067,7 +2246,7 @@
                       }
                     }
                   },
-                  "render": "number",
+                  "render": "auto",
                   "resizable": true,
                   "sort": "none",
                   "sortable": true,
@@ -2086,33 +2265,7 @@
                   "visible": true,
                   "width": ""
                 }
-              ],
-              "enableHeaderGroups": true,
-              "filter": {
-                "enabled": true
-              },
-              "headerGroupStyle": {
-                "classes": "Weight_S/Framework/Card/Value"
-              },
-              "headerStyle": {
-                "classes": "Weight_S/Framework/Card/Value"
-              },
-              "pager": {
-                "initialOption": 200,
-                "options": [
-                  50,
-                  100,
-                  200,
-                  500,
-                  100
-                ]
-              },
-              "rows": {
-                "height": "20px"
-              },
-              "style": {
-                "padding": 4
-              }
+              ]
             },
             "type": "ia.display.table"
           },
@@ -2121,7 +2274,7 @@
               "dom": {
                 "onClick": {
                   "config": {
-                    "script": "\tfrom java.util import Date\n\tfrom system.date import now, addMonths, addDays\n\t\n\tt \u003d  addMonths(self.view.custom.end_dt, self.parent.parent.getChild(\"Selections\").getChild(\"selection_months\").props.value)\n\t\t\n\tif (t\u003eCORE_P.Time.currentTimestamp()):\t\n\t\t#t \u003d CORE_P.Time.adjustTimestamp(rounding\u003d\u0027dayup\u0027)\n\t\tt \u003d addMonths(CORE_P.Time.month_start(self.session.props.timeZoneId), 1)\n\t\t\t \t\t\t\t\n\t\t#t \u003d CORE_P.Time.month_start(self.session.props.timeZoneId) \n\t\t\n\tself.view.custom.end_dt \u003d t\n\t"
+                    "script": "\tfrom java.util import Date\n\tfrom system.date import now, addMonths, addDays\n\t\n\tt \u003d  addDays(self.view.custom.end_dt, self.parent.parent.getChild(\"Selections\").getChild(\"selection_months\").props.value)\n\t\t\n\tif (t\u003eCORE_P.Time.currentTimestamp()):\t\n\t\tt \u003d CORE_P.Time.adjustTimestamp(rounding\u003d\u0027dayup\u0027)\n\t\t#t \u003d CORE_P.Time.month_start(self.session.props.timeZoneId) \n\t\t\n\tself.view.custom.end_dt \u003d t\n\t"
                   },
                   "scope": "G",
                   "type": "script"

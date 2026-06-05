@@ -89,13 +89,13 @@
       "$": [
         "ts",
         192,
-        1780523662723
+        1780605354307
       ],
-      "$ts": 1751328000000
+      "$ts": 1751284800000
     },
     "timezone": {
-      "ignition": "",
-      "sqlserver": "UTC"
+      "ignition": "Pacific/Auckland",
+      "sqlserver": "New Zealand Standard Time"
     },
     "units": {
       "individual_units": "lbs",
@@ -105,7 +105,7 @@
     }
   },
   "params": {
-    "timeZoneID": ""
+    "timeZoneID": "Pacific/Auckland"
   },
   "propConfig": {
     "custom.aggregator": {
@@ -126,7 +126,7 @@
         "overlayOptOut": true,
         "transforms": [
           {
-            "code": "\n    import system\n    from java.util import Calendar, TimeZone, Locale\n\n    # ----------------------------------\n    # CONFIG\n    # ----------------------------------\n    timeZoneId \u003d self.params.timeZoneID\n    tz \u003d TimeZone.getTimeZone(timeZoneId)\n\n    unit_conversion \u003d float(self.custom.units[\u0027unit_conversion\u0027])\n    total_conversion \u003d float(self.custom.units[\u0027total_conversion\u0027])\n\n    # ----------------------------------\n    # HELPERS\n    # ----------------------------------\n    def new_data():\n        return {\n            \u0027weight_avg\u0027: 0,\n            \u0027count\u0027: 0,\n            \u0027total_count\u0027: 0,\n            \u0027weight_diff\u0027: 0,\n\n            # legacy\n            \u0027metal_rejects\u0027: 0,\n\n            # new\n            \u0027metal_count\u0027: 0,\n            \u0027metal_test_count\u0027: 0,\n            \u0027metal_actual_count\u0027: 0,\n\n            \u0027weight_rejects\u0027: 0,\n            \u0027total_weight\u0027: 0,\n            \u0027over_pct\u0027: 0\n        }\n\n    def update(data, record):\n\n        # ----------------------------------\n        # BASIC METRICS\n        # ----------------------------------\n        data[\u0027weight_avg\u0027] +\u003d float(record.get(\u0027weight_sum\u0027) or 0)\n        data[\u0027count\u0027] +\u003d int(record.get(\u0027count\u0027) or 0)\n        data[\u0027total_count\u0027] +\u003d int(record.get(\u0027total_count\u0027) or 0)\n        data[\u0027weight_diff\u0027] +\u003d float(record.get(\u0027weight_diff\u0027) or 0)\n\n        # ----------------------------------\n        # METAL (ROBUST HANDLING)\n        # ----------------------------------\n        metal_total \u003d (\n            record.get(\u0027metal_count\u0027) or \n            record.get(\u0027METAL_COUNT\u0027) or \n            record.get(\u0027metal_rejects\u0027) or \n            record.get(\u0027METAL_REJECTS\u0027) or \n            0\n        )\n\n        metal_test \u003d (\n            record.get(\u0027metal_test_count\u0027) or \n            record.get(\u0027METAL_TEST_COUNT\u0027) or \n            0\n        )\n\n        metal_actual \u003d (\n            record.get(\u0027metal_actual_count\u0027) or \n            record.get(\u0027METAL_ACTUAL_COUNT\u0027)\n        )\n\n        # derive actual if missing\n        if metal_actual is None:\n            metal_actual \u003d metal_total - metal_test\n\n        # safety\n        if metal_actual \u003c 0:\n            metal_actual \u003d 0\n\n        # accumulate\n        data[\u0027metal_count\u0027] +\u003d int(metal_total)\n        data[\u0027metal_test_count\u0027] +\u003d int(metal_test)\n        data[\u0027metal_actual_count\u0027] +\u003d int(metal_actual)\n\n        # keep legacy\n        data[\u0027metal_rejects\u0027] +\u003d int(metal_total)\n\n        # ----------------------------------\n        # WEIGHT REJECTS\n        # ----------------------------------\n        data[\u0027weight_rejects\u0027] +\u003d int(record.get(\u0027weight_rejects\u0027) or 0)\n\n    def finalize(data):\n\n        if data[\u0027count\u0027] \u003e 0:\n\n            # avg weight\n            data[\u0027weight_avg\u0027] \u003d (float(data[\u0027weight_avg\u0027]) / float(data[\u0027count\u0027])) / unit_conversion\n\n            # total produced weight\n            data[\u0027total_weight\u0027] \u003d float(data[\u0027weight_avg\u0027] * data[\u0027count\u0027])\n\n            # giveaway weight\n            data[\u0027weight_diff\u0027] \u003d float(data[\u0027weight_diff\u0027]) / total_conversion\n\n            # % overage\n            if data[\u0027total_weight\u0027] \u003e 0:\n                data[\u0027over_pct\u0027] \u003d (data[\u0027weight_diff\u0027] / data[\u0027total_weight\u0027]) * 100\n            else:\n                data[\u0027over_pct\u0027] \u003d 0\n\n        # ----------------------------------\n        # FINAL SAFETY CHECK\n        # ----------------------------------\n        if data[\u0027metal_count\u0027] \u003c (data[\u0027metal_test_count\u0027] + data[\u0027metal_actual_count\u0027]):\n            data[\u0027metal_actual_count\u0027] \u003d data[\u0027metal_count\u0027] - data[\u0027metal_test_count\u0027]\n\n    # ----------------------------------\n    # BUILD STRUCTURE\n    # ----------------------------------\n    def build_year():\n\n        result \u003d []\n\n        for m in range(12):\n\n            cal \u003d Calendar.getInstance(tz)\n            cal.set(Calendar.MONTH, m)\n\n            month_name \u003d cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())\n\n            days \u003d []\n            max_day \u003d cal.getActualMaximum(Calendar.DAY_OF_MONTH)\n\n            for d in range(1, max_day + 1):\n\n                cal.set(Calendar.DAY_OF_MONTH, d)\n                cal.set(Calendar.HOUR_OF_DAY, 0)\n                cal.set(Calendar.MINUTE, 0)\n                cal.set(Calendar.SECOND, 0)\n                cal.set(Calendar.MILLISECOND, 0)\n\n                day_data \u003d new_data()\n                day_data[\u0027x\u0027] \u003d system.date.toMillis(cal.getTime())\n\n                days.append(day_data)\n\n            summary_data \u003d new_data()\n            summary_data[\u0027x\u0027] \u003d month_name\n\n            result.append({\n                \u0027days\u0027: days,\n                \u0027summary\u0027: summary_data\n            })\n\n        return result\n\n    # ----------------------------------\n    # AGGREGATE\n    # ----------------------------------\n    yearly \u003d build_year()\n\n    for record in value:\n\n        ts \u003d system.date.fromMillis(record[\u0027time_start\u0027])\n\n        cal \u003d Calendar.getInstance(tz)\n        cal.setTime(ts)\n\n        m \u003d cal.get(Calendar.MONTH)\n        d \u003d cal.get(Calendar.DAY_OF_MONTH) - 1\n\n        update(yearly[m][\u0027days\u0027][d], record)\n        update(yearly[m][\u0027summary\u0027], record)\n\n    # ----------------------------------\n    # FINALIZE\n    # ----------------------------------\n    for month in yearly:\n        for day in month[\u0027days\u0027]:\n            finalize(day)\n        finalize(month[\u0027summary\u0027])\n\n    return yearly",
+            "code": "\n    import system\n    from java.util import Calendar, TimeZone, Locale\n    \n    all_days\u003d[]\n\t\n    # ----------------------------------\n    # CONFIG\n    # ----------------------------------\n    timeZoneId \u003d self.params.timeZoneID\n    tz \u003d TimeZone.getTimeZone(timeZoneId)\n\n    unit_conversion \u003d float(self.custom.units[\u0027unit_conversion\u0027])\n    total_conversion \u003d float(self.custom.units[\u0027total_conversion\u0027])\n\n    # ----------------------------------\n    # HELPERS\n    # ----------------------------------\n    def new_data():\n        return {\n        \t\u0027date\u0027: \u0027\u0027,\n        \t\u0027units\u0027: \u0027\u0027,\n            \u0027weight_avg\u0027: 0,\n            \u0027count\u0027: 0,\n            \u0027total_count\u0027: 0,\n            \u0027weight_diff\u0027: 0,\n\n            # legacy\n            \u0027metal_rejects\u0027: 0,\n\n            # new\n            \u0027metal_count\u0027: 0,\n            \u0027metal_test_count\u0027: 0,\n            \u0027metal_actual_count\u0027: 0,\n\n            \u0027weight_rejects\u0027: 0,\n            \u0027total_weight\u0027: 0,\n            \u0027over_pct\u0027: 0\n        }\n\n    def update(data, record):\n\t\n        # ----------------------------------\n        # BASIC METRICS\n        # ----------------------------------\n        data[\u0027date\u0027] \u003d CORE_P.Time.display_local_dt(record.get(\u0027time_start\u0027), self, format\u003d\u0027yyyy-MM-dd\u0027)\n        data[\u0027units\u0027] \u003d self.getChild(\"root\").getChild(\"Selections\").getChild(\"selection_units\").props.value\n        data[\u0027weight_avg\u0027] +\u003d float(record.get(\u0027weight_sum\u0027) or 0)\n        data[\u0027count\u0027] +\u003d int(record.get(\u0027count\u0027) or 0)\n        data[\u0027total_count\u0027] +\u003d int(record.get(\u0027total_count\u0027) or 0)\n        data[\u0027weight_diff\u0027] +\u003d float(record.get(\u0027weight_diff\u0027) or 0)\n\n        # ----------------------------------\n        # METAL (ROBUST HANDLING)\n        # ----------------------------------\n        metal_total \u003d (\n            record.get(\u0027metal_count\u0027) or \n            record.get(\u0027METAL_COUNT\u0027) or \n            record.get(\u0027metal_rejects\u0027) or \n            record.get(\u0027METAL_REJECTS\u0027) or \n            0\n        )\n\n        metal_test \u003d (\n            record.get(\u0027metal_test_count\u0027) or \n            record.get(\u0027METAL_TEST_COUNT\u0027) or \n            0\n        )\n\n        metal_actual \u003d (\n            record.get(\u0027metal_actual_count\u0027) or \n            record.get(\u0027METAL_ACTUAL_COUNT\u0027)\n        )\n\n        # derive actual if missing\n        if metal_actual is None:\n            metal_actual \u003d metal_total - metal_test\n\n        # safety\n        if metal_actual \u003c 0:\n            metal_actual \u003d 0\n\n        # accumulate\n        data[\u0027metal_count\u0027] +\u003d int(metal_total)\n        data[\u0027metal_test_count\u0027] +\u003d int(metal_test)\n        data[\u0027metal_actual_count\u0027] +\u003d int(metal_actual)\n\n        # keep legacy\n        data[\u0027metal_rejects\u0027] +\u003d int(metal_total)\n\n        # ----------------------------------\n        # WEIGHT REJECTS\n        # ----------------------------------\n        data[\u0027weight_rejects\u0027] +\u003d int(record.get(\u0027weight_rejects\u0027) or 0)\n\n    def finalize(data):\n\n        if data[\u0027count\u0027] \u003e 0:\n\n            # avg weight\n            data[\u0027weight_avg\u0027] \u003d (float(data[\u0027weight_avg\u0027]) / float(data[\u0027count\u0027])) / unit_conversion\n\n            # total produced weight\n            data[\u0027total_weight\u0027] \u003d float(data[\u0027weight_avg\u0027] * data[\u0027count\u0027])\n\n            # giveaway weight\n            data[\u0027weight_diff\u0027] \u003d float(data[\u0027weight_diff\u0027]) / total_conversion\n\n            # % overage\n            if data[\u0027total_weight\u0027] \u003e 0:\n                data[\u0027over_pct\u0027] \u003d (data[\u0027weight_diff\u0027] / data[\u0027total_weight\u0027]) * 100\n            else:\n                data[\u0027over_pct\u0027] \u003d 0\n\n        # ----------------------------------\n        # FINAL SAFETY CHECK\n        # ----------------------------------\n        if data[\u0027metal_count\u0027] \u003c (data[\u0027metal_test_count\u0027] + data[\u0027metal_actual_count\u0027]):\n            data[\u0027metal_actual_count\u0027] \u003d data[\u0027metal_count\u0027] - data[\u0027metal_test_count\u0027]\n\n    # ----------------------------------\n    # BUILD STRUCTURE\n    # ----------------------------------\n    def build_year():\n\n        result \u003d []\n\n        for m in range(12):\n\n            cal \u003d Calendar.getInstance(tz)\n            cal.set(Calendar.MONTH, m)\n\n\t\n            month_name \u003d cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())\n\n            days \u003d []\n            max_day \u003d cal.getActualMaximum(Calendar.DAY_OF_MONTH)\n\n            for d in range(1, max_day + 1):\n\n                cal.set(Calendar.DAY_OF_MONTH, d)\n                cal.set(Calendar.HOUR_OF_DAY, 0)\n                cal.set(Calendar.MINUTE, 0)\n                cal.set(Calendar.SECOND, 0)\n                cal.set(Calendar.MILLISECOND, 0)\n\n                day_data \u003d new_data()\n                day_data[\u0027x\u0027] \u003d system.date.toMillis(cal.getTime())\n                \n                days.append(day_data)\n\n            summary_data \u003d new_data()\n            summary_data[\u0027x\u0027] \u003d month_name\n\n            result.append({\n                \u0027days\u0027: days,\n                \u0027summary\u0027: summary_data\n            })\n\n        return result\n\n    # ----------------------------------\n    # AGGREGATE\n    # ----------------------------------\n    try:\n\t    yearly \u003d build_year()\n\t\n\t    for record in value:\n\t\n\t        ts \u003d system.date.fromMillis(record[\u0027time_start\u0027])\n\t\n\t        cal \u003d Calendar.getInstance(tz)\n\t        cal.setTime(ts)\n\t\n\t        m \u003d cal.get(Calendar.MONTH)\n\t        d \u003d cal.get(Calendar.DAY_OF_MONTH) - 1\n\t\n\t        update(yearly[m][\u0027days\u0027][d], record)\n\t        update(yearly[m][\u0027summary\u0027], record)\n\n\t    # ----------------------------------\n\t    # FINALIZE\n\t    # ----------------------------------\n\t    for month in yearly:\n\t        for day in month[\u0027days\u0027]:\n\t            finalize(day)\n\t            if (day[\u0027date\u0027]):\n\t            \tall_days.append(day)            \n\t        finalize(month[\u0027summary\u0027])\n\t    \n\t\t\n\t\tself.custom.all_days \u003d sorted(all_days, key\u003dlambda x: x[\u0027date\u0027], reverse\u003dTrue)\n    except:\n\t\tCORE_P.Utils.errorPopup(\u0027Error generating weight tracking aggregator!\u0027)\n    return yearly",
             "type": "script"
           }
         ],
@@ -268,6 +268,9 @@
         ],
         "type": "expr-struct"
       },
+      "persistent": false
+    },
+    "custom.all_days": {
       "persistent": false
     },
     "custom.day_data": {
@@ -1102,7 +1105,7 @@
               "dom": {
                 "onClick": {
                   "config": {
-                    "script": "\n    import system\n    from java.io import ByteArrayOutputStream\n    from org.apache.poi.xssf.usermodel import XSSFWorkbook, XSSFColor\n    from org.apache.poi.ss.usermodel import FillPatternType, BorderStyle, HorizontalAlignment\n    from java.awt import Color\n\n    self.parent.custom.Exporting \u003d True\n    wb \u003d XSSFWorkbook()\n\n    # ---------------- COLORS ----------------\n    def rgb(r,g,b): return XSSFColor(Color(r,g,b), None)\n\n    def blend(r1,g1,b1, r2,g2,b2, t):\n        return rgb(\n            int(r1 + (r2-r1)*t),\n            int(g1 + (g2-g1)*t),\n            int(b1 + (b2-b1)*t)\n        )\n\n    M_R,M_G,M_B    \u003d 31,  78, 121\n    D_R,D_G,D_B    \u003d 68, 114, 196\n    SH_R,SH_G,SH_B \u003d 70, 130,  80\n    H_R,H_G,H_B    \u003d 173, 216, 230\n    RED_R,RED_G,RED_B \u003d 255, 80, 80\n\n    monthBg   \u003d blend(M_R,M_G,M_B,    255,255,255, 0.30)\n    dayBg     \u003d blend(D_R,D_G,D_B,    255,255,255, 0.35)\n    shiftBg   \u003d blend(SH_R,SH_G,SH_B, 255,255,255, 0.40)\n    hourBg    \u003d blend(H_R,H_G,H_B,    255,255,255, 0.55)\n    hourAltBg \u003d blend(H_R,H_G,H_B,    255,255,255, 0.70)\n\n    monthRed  \u003d blend(RED_R,RED_G,RED_B, M_R,M_G,M_B,    0.35)\n    dayRed    \u003d blend(RED_R,RED_G,RED_B, D_R,D_G,D_B,    0.35)\n    shiftRed  \u003d blend(RED_R,RED_G,RED_B, SH_R,SH_G,SH_B, 0.35)\n    hourRed   \u003d blend(RED_R,RED_G,RED_B, H_R,H_G,H_B,    0.35)\n\n    headerColor \u003d rgb(90,150,210)\n\n    # ---------------- STYLES ----------------\n    def makeStyle(fill\u003dNone, fmt\u003dNone, bold\u003dFalse, fontColor\u003dNone):\n        s \u003d wb.createCellStyle()\n        if fill:\n            s.setFillForegroundColor(fill)\n            s.setFillPattern(FillPatternType.SOLID_FOREGROUND)\n        if fmt:\n            s.setDataFormat(fmt)\n        s.setAlignment(HorizontalAlignment.CENTER)\n        for b in [BorderStyle.THIN]*4:\n            s.setBorderBottom(b); s.setBorderTop(b)\n            s.setBorderLeft(b);   s.setBorderRight(b)\n        f \u003d wb.createFont()\n        if bold:      f.setBold(True)\n        if fontColor: f.setColor(fontColor)\n        if bold or fontColor: s.setFont(f)\n        return s\n\n    df  \u003d wb.createDataFormat()\n    wht \u003d XSSFColor(Color(255,255,255), None)\n\n    headerStyle  \u003d makeStyle(headerColor, bold\u003dTrue, fontColor\u003dwht)\n\n    monthStyle   \u003d makeStyle(monthBg,  bold\u003dTrue)\n    monthInt     \u003d makeStyle(monthBg,  df.getFormat(\"#,##0\"),    bold\u003dTrue)\n    monthPct_s   \u003d makeStyle(monthBg,  df.getFormat(\"0.00\"),     bold\u003dTrue)\n    monthCurr    \u003d makeStyle(monthBg,  df.getFormat(\"$#,##0\"),   bold\u003dTrue)\n    monthRedS    \u003d makeStyle(monthRed, df.getFormat(\"0.00\"),     bold\u003dTrue)\n\n    dayStyle     \u003d makeStyle(dayBg,    bold\u003dTrue)\n    dayInt       \u003d makeStyle(dayBg,    df.getFormat(\"#,##0\"),    bold\u003dTrue)\n    dayPct_s     \u003d makeStyle(dayBg,    df.getFormat(\"0.00\"),     bold\u003dTrue)\n    dayCurr      \u003d makeStyle(dayBg,    df.getFormat(\"$#,##0\"),   bold\u003dTrue)\n    dayRedS      \u003d makeStyle(dayRed,   df.getFormat(\"0.00\"),     bold\u003dTrue)\n\n    shiftStyle   \u003d makeStyle(shiftBg,  bold\u003dTrue)\n    shiftInt     \u003d makeStyle(shiftBg,  df.getFormat(\"#,##0\"),    bold\u003dTrue)\n    shiftPct_s   \u003d makeStyle(shiftBg,  df.getFormat(\"0.00\"),     bold\u003dTrue)\n    shiftCurr    \u003d makeStyle(shiftBg,  df.getFormat(\"$#,##0\"),   bold\u003dTrue)\n    shiftRedS    \u003d makeStyle(shiftRed, df.getFormat(\"0.00\"),     bold\u003dTrue)\n\n    dataStyle    \u003d makeStyle(hourBg)\n    altStyle     \u003d makeStyle(hourAltBg)\n    intStyle     \u003d makeStyle(hourBg,   df.getFormat(\"#,##0\"))\n    decStyle     \u003d makeStyle(hourBg,   df.getFormat(\"#,##0.00\"))\n    pctStyle     \u003d makeStyle(hourBg,   df.getFormat(\"0.00\"))\n    currencyStyle\u003d makeStyle(hourBg,   df.getFormat(\"$#,##0\"))\n    redPctStyle  \u003d makeStyle(hourRed,  df.getFormat(\"0.00\"))\n\n    # ---------------- UNIT ----------------\n    unit    \u003d self.getSibling(\"selection_units\").props.value\n    options \u003d self.getSibling(\"selection_units\").props.options\n    conversion \u003d 1.0\n    label   \u003d unit\n    for opt in options:\n        if opt[\"value\"] \u003d\u003d unit:\n            conversion \u003d opt.get(\"unit_conversion\", 1)\n            label      \u003d opt.get(\"label\", unit)\n\n    # \u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\n    # OVERVIEW\n    # \u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\n    monthComp \u003d self.parent.parent.getChild(\"Data\").getChild(\"Month\")\n\n    if getattr(monthComp.meta, \"visible\", False):\n        ds \u003d monthComp.props.data\n        if ds and ds.getRowCount() \u003e 0:\n            sheet \u003d wb.createSheet(\"Overview\")\n            cols  \u003d [\"Year\",\"Month\",\"Count\",\"Weight Avg\",\"Metal Rejects\",\"Weight Rejects\"]\n            hr    \u003d sheet.createRow(0)\n            for i,h in enumerate(cols):\n                if h \u003d\u003d \"Weight Avg\":\n                    h \u003d \"Weight Avg ({})\".format(label)\n                cell \u003d hr.createCell(i)\n                cell.setCellValue(h)\n                cell.setCellStyle(headerStyle)\n            colMap \u003d {ds.getColumnName(i): i for i in range(ds.getColumnCount())}\n            for r in range(ds.getRowCount()):\n                row   \u003d sheet.createRow(r+1)\n                isAlt \u003d r % 2\n                for c,h in enumerate(cols):\n                    val  \u003d ds.getValueAt(r, colMap[h])\n                    cell \u003d row.createCell(c)\n                    sUse \u003d altStyle if isAlt else dataStyle\n                    if isinstance(val,(int,float)):\n                        if h \u003d\u003d \"Weight Avg\":\n                            cell.setCellValue(val/conversion)\n                            cell.setCellStyle(decStyle)\n                        else:\n                            cell.setCellValue(val)\n                            cell.setCellStyle(intStyle)\n                    else:\n                        cell.setCellValue(str(val))\n                        cell.setCellStyle(sUse)\n            for i in range(len(cols)):\n                sheet.autoSizeColumn(i)\n\n    # \u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\n    # GIVEAWAY\n    # \u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\n    params \u003d {\n        \"line_id\":          self.getSibling(\"selection_line\").props.value,\n        \"scale_id\":         self.getSibling(\"selection_scale\").props.value,\n        \"start_dt\":         system.date.addMonths(self.view.custom.end_dt,\n                                -int(self.getSibling(\"selection_range\").props.value)),\n        \"end_dt\":           self.view.custom.end_dt,\n        \"shift_start_hour\": 10,\n        \"bucket_hours\":     1\n    }\n\n    ds    \u003d system.db.runNamedQuery(\"Weight_Q/Giveaway/GetGiveawayForReport\", params)\n    sheet \u003d wb.createSheet(\"Giveaway\")\n\n    if ds.getRowCount() \u003d\u003d 0:\n        sheet.createRow(0).createCell(0).setCellValue(\"No data\")\n    else:\n        headers \u003d list(ds.getColumnNames())\n        bIdx \u003d headers.index(\"bucket_start\")\n        sIdx \u003d headers.index(\"sku_code\")\n        tIdx \u003d headers.index(\"target_grams\")\n        aIdx \u003d headers.index(\"actual_grams\")\n        gIdx \u003d headers.index(\"giveaway_grams\")\n        cIdx \u003d headers.index(\"cost_per_lb\")\n\n        pivot  \u003d {}\n        skuSet \u003d set()\n\n        for r in range(ds.getRowCount()):\n            b \u003d ds.getValueAt(r, bIdx)\n            s \u003d ds.getValueAt(r, sIdx)\n            t \u003d ds.getValueAt(r, tIdx) or 0\n            a \u003d ds.getValueAt(r, aIdx) or 0\n            g \u003d ds.getValueAt(r, gIdx) or 0\n            c \u003d ds.getValueAt(r, cIdx) or 0\n            skuSet.add(s)\n            pivot.setdefault(b, {})\n            pivot[b].setdefault(s, {\"t\":0,\"a\":0,\"g\":0,\"c\":c})\n            pivot[b][s][\"t\"] +\u003d t\n            pivot[b][s][\"a\"] +\u003d a\n            pivot[b][s][\"g\"] +\u003d g\n\n        skuList    \u003d sorted(list(skuSet))\n        bucketList \u003d sorted(pivot.keys())\n\n        # -------- TIME HELPERS --------\n        def toCentral(dt): return system.date.addHours(dt, -5)\n        def fmt(dt):        return system.date.format(dt, \"yyyy-MM-dd HH:mm\")\n        def getShift(dt):\n            dt \u003d toCentral(dt)\n            h  \u003d system.date.getHour24(dt)\n            return system.date.addHours(dt, -((h-6)%8))\n        def getDay(dt):\n            return system.date.format(toCentral(dt), \"yyyy-MM-dd\")\n        def getMonth(dt):\n            return system.date.format(toCentral(dt), \"yyyy-MM\")\n\n        # -------- BUILD STRUCTURE: month -\u003e day -\u003e shift -\u003e [buckets] --------\n        monthMap \u003d {}\n        for b in bucketList:\n            m  \u003d getMonth(b)\n            d  \u003d getDay(b)\n            sh \u003d getShift(b)\n            monthMap.setdefault(m, {})\n            monthMap[m].setdefault(d, {})\n            monthMap[m][d].setdefault(sh, [])\n            monthMap[m][d][sh].append(b)\n\n        # -------- HEADER --------\n        # Summary columns: unit label on weight columns, % and Cost stay as-is\n        headersOut \u003d [\n            \"Time\",\n            \"Target ({})\".format(label),\n            \"Actual ({})\".format(label),\n            \"Giveaway ({})\".format(label),\n            \"Giveaway %\",\n            \"Cost ($)\"\n        ]\n        for sku in skuList:\n            headersOut +\u003d [\n                \"{} Target ({})\".format(sku, label),\n                \"{} Actual ({})\".format(sku, label),\n                \"{} Giveaway ({})\".format(sku, label),\n                \"{} %\".format(sku),\n                \"{} Cost ($)\".format(sku)\n            ]\n\n        hr \u003d sheet.createRow(0)\n        for i,h in enumerate(headersOut):\n            c \u003d hr.createCell(i)\n            c.setCellValue(h)\n            c.setCellStyle(headerStyle)\n\n        # -------- SUMMARY ROW HELPER --------\n        def writeSummaryRow(row, label, totT, totA, totG, totCost, skuData,\n                            lblStyle, numStyle, pStyle, curStyle, redStyle):\n            row.createCell(0).setCellValue(label)\n            row.getCell(0).setCellStyle(lblStyle)\n            totPct \u003d (totG/totT*100) if totT else 0\n            totals \u003d [totT/conversion, totA/conversion, totG/conversion, totPct, totCost]\n            for i,v in enumerate(totals, 1):\n                c \u003d row.createCell(i)\n                c.setCellValue(v)\n                if i \u003d\u003d 4:\n                    c.setCellStyle(redStyle if v \u003e 1 else pStyle)\n                elif i \u003d\u003d 5:\n                    c.setCellStyle(curStyle)\n                else:\n                    c.setCellStyle(numStyle)\n            col \u003d 6\n            for s in skuList:\n                v    \u003d skuData[s]\n                vals \u003d [v[\"t\"]/conversion, v[\"a\"]/conversion, v[\"g\"]/conversion,\n                        (v[\"g\"]/v[\"t\"]*100 if v[\"t\"] else 0), v[\"cost\"]]\n                for j,val in enumerate(vals):\n                    c \u003d row.createCell(col+j)\n                    c.setCellValue(val)\n                    if j \u003d\u003d 3:\n                        c.setCellStyle(redStyle if val \u003e 1 else pStyle)\n                    elif j \u003d\u003d 4:\n                        c.setCellStyle(curStyle)\n                    else:\n                        c.setCellStyle(numStyle)\n                col +\u003d 5\n\n        rowIndex \u003d 1\n\n        for month in sorted(monthMap.keys()):\n\n            # accumulate month totals\n            mT\u003dmA\u003dmG\u003dmCost\u003d0\n            skuMo \u003d {s:{\"t\":0,\"a\":0,\"g\":0,\"cost\":0} for s in skuList}\n\n            for day in monthMap[month]:\n                for shift in monthMap[month][day]:\n                    for b in monthMap[month][day][shift]:\n                        for s in skuList:\n                            v    \u003d pivot[b].get(s, {\"t\":0,\"a\":0,\"g\":0,\"c\":0})\n                            cost \u003d (v[\"g\"]/453.592)*v[\"c\"]\n                            mT+\u003dv[\"t\"]; mA+\u003dv[\"a\"]; mG+\u003dv[\"g\"]; mCost+\u003dcost\n                            skuMo[s][\"t\"]+\u003dv[\"t\"]; skuMo[s][\"a\"]+\u003dv[\"a\"]\n                            skuMo[s][\"g\"]+\u003dv[\"g\"]; skuMo[s][\"cost\"]+\u003dcost\n\n            moRow \u003d sheet.createRow(rowIndex)\n            writeSummaryRow(moRow, \"Month \"+month, mT, mA, mG, mCost, skuMo,\n                            monthStyle, monthInt, monthPct_s, monthCurr, monthRedS)\n            rowIndex  +\u003d 1\n            monthStart \u003d rowIndex\n\n            # -------- DAY LOOP --------\n            for day in sorted(monthMap[month].keys()):\n\n                dT\u003ddA\u003ddG\u003ddCost\u003d0\n                skuDay \u003d {s:{\"t\":0,\"a\":0,\"g\":0,\"cost\":0} for s in skuList}\n\n                for shift in monthMap[month][day]:\n                    for b in monthMap[month][day][shift]:\n                        for s in skuList:\n                            v    \u003d pivot[b].get(s, {\"t\":0,\"a\":0,\"g\":0,\"c\":0})\n                            cost \u003d (v[\"g\"]/453.592)*v[\"c\"]\n                            dT+\u003dv[\"t\"]; dA+\u003dv[\"a\"]; dG+\u003dv[\"g\"]; dCost+\u003dcost\n                            skuDay[s][\"t\"]+\u003dv[\"t\"]; skuDay[s][\"a\"]+\u003dv[\"a\"]\n                            skuDay[s][\"g\"]+\u003dv[\"g\"]; skuDay[s][\"cost\"]+\u003dcost\n\n                dayRow \u003d sheet.createRow(rowIndex)\n                writeSummaryRow(dayRow, \"Day \"+day, dT, dA, dG, dCost, skuDay,\n                                dayStyle, dayInt, dayPct_s, dayCurr, dayRedS)\n                rowIndex +\u003d 1\n                dayStart  \u003d rowIndex\n\n                # -------- SHIFT LOOP --------\n                for shift in sorted(monthMap[month][day].keys()):\n\n                    buckets \u003d monthMap[month][day][shift]\n                    shT\u003dshA\u003dshG\u003dshCost\u003d0\n                    skuSh \u003d {s:{\"t\":0,\"a\":0,\"g\":0,\"cost\":0} for s in skuList}\n\n                    for b in buckets:\n                        for s in skuList:\n                            v    \u003d pivot[b].get(s, {\"t\":0,\"a\":0,\"g\":0,\"c\":0})\n                            cost \u003d (v[\"g\"]/453.592)*v[\"c\"]\n                            shT+\u003dv[\"t\"]; shA+\u003dv[\"a\"]; shG+\u003dv[\"g\"]; shCost+\u003dcost\n                            skuSh[s][\"t\"]+\u003dv[\"t\"]; skuSh[s][\"a\"]+\u003dv[\"a\"]\n                            skuSh[s][\"g\"]+\u003dv[\"g\"]; skuSh[s][\"cost\"]+\u003dcost\n\n                    shRow \u003d sheet.createRow(rowIndex)\n                    writeSummaryRow(shRow, \"Shift \"+fmt(shift), shT, shA, shG, shCost, skuSh,\n                                    shiftStyle, shiftInt, shiftPct_s, shiftCurr, shiftRedS)\n                    rowIndex  +\u003d 1\n                    shiftStart \u003d rowIndex\n\n                    # -------- HOURLY --------\n                    for b in buckets:\n                        row   \u003d sheet.createRow(rowIndex)\n                        isAlt \u003d rowIndex % 2\n                        hStyle \u003d altStyle if isAlt else dataStyle\n\n                        row.createCell(0).setCellValue(fmt(toCentral(b)))\n                        row.getCell(0).setCellStyle(hStyle)\n\n                        totT\u003dtotA\u003dtotG\u003dtotCost\u003d0\n                        col\u003d6\n\n                        for s in skuList:\n                            v \u003d pivot[b].get(s, {\"t\":0,\"a\":0,\"g\":0,\"c\":0})\n                            t,a,g,c \u003d v[\"t\"],v[\"a\"],v[\"g\"],v[\"c\"]\n                            tC,aC,gC \u003d t/conversion, a/conversion, g/conversion\n                            pct  \u003d (g/t*100) if t else 0\n                            cost \u003d (g/453.592)*c\n                            totT+\u003dtC; totA+\u003daC; totG+\u003dgC; totCost+\u003dcost\n\n                            for j,val in enumerate([tC,aC,gC,pct,cost]):\n                                cell \u003d row.createCell(col+j)\n                                cell.setCellValue(val)\n                                if j \u003d\u003d 3:\n                                    cell.setCellStyle(redPctStyle if val \u003e 1 else pctStyle)\n                                elif j \u003d\u003d 4:\n                                    cell.setCellStyle(currencyStyle)\n                                else:\n                                    cell.setCellStyle(intStyle)\n                            col +\u003d 5\n\n                        totals \u003d [totT, totA, totG, (totG/totT*100 if totT else 0), totCost]\n                        for i,v in enumerate(totals, 1):\n                            c \u003d row.createCell(i)\n                            c.setCellValue(v)\n                            if i \u003d\u003d 4:\n                                c.setCellStyle(redPctStyle if v \u003e 1 else pctStyle)\n                            elif i \u003d\u003d 5:\n                                c.setCellStyle(currencyStyle)\n                            else:\n                                c.setCellStyle(intStyle)\n\n                        rowIndex +\u003d 1\n\n                    sheet.groupRow(shiftStart, rowIndex-1)\n                    sheet.setRowGroupCollapsed(shiftStart, True)\n\n                sheet.groupRow(dayStart, rowIndex-1)\n                sheet.setRowGroupCollapsed(dayStart, True)\n\n            sheet.groupRow(monthStart, rowIndex-1)\n            sheet.setRowGroupCollapsed(monthStart, True)\n\n        for i in range(len(headersOut)):\n            sheet.autoSizeColumn(i)\n\n    # -------- EXPORT --------\n    stream \u003d ByteArrayOutputStream()\n    wb.write(stream)\n    wb.close()\n\n    system.perspective.download(\n        \"Weight_Tracking.xlsx\",\n        stream.toByteArray(),\n        \"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet\"\n    )\n\n    self.parent.custom.Exporting \u003d False"
+                    "script": "\n    import system\n    from java.io import ByteArrayOutputStream\n    from org.apache.poi.xssf.usermodel import XSSFWorkbook, XSSFColor\n    from org.apache.poi.ss.usermodel import FillPatternType, BorderStyle, HorizontalAlignment\n    from java.awt import Color\n\n    self.parent.custom.Exporting \u003d True\n    wb \u003d XSSFWorkbook()\n\n    # ---------------- COLORS ----------------\n    def rgb(r,g,b): return XSSFColor(Color(r,g,b), None)\n\n    def blend(r1,g1,b1, r2,g2,b2, t):\n        return rgb(\n            int(r1 + (r2-r1)*t),\n            int(g1 + (g2-g1)*t),\n            int(b1 + (b2-b1)*t)\n        )\n\n    M_R,M_G,M_B    \u003d 31,  78, 121\n    D_R,D_G,D_B    \u003d 68, 114, 196\n    SH_R,SH_G,SH_B \u003d 70, 130,  80\n    H_R,H_G,H_B    \u003d 173, 216, 230\n    RED_R,RED_G,RED_B \u003d 255, 80, 80\n\n    monthBg   \u003d blend(M_R,M_G,M_B,    255,255,255, 0.30)\n    dayBg     \u003d blend(D_R,D_G,D_B,    255,255,255, 0.35)\n    shiftBg   \u003d blend(SH_R,SH_G,SH_B, 255,255,255, 0.40)\n    hourBg    \u003d blend(H_R,H_G,H_B,    255,255,255, 0.55)\n    hourAltBg \u003d blend(H_R,H_G,H_B,    255,255,255, 0.70)\n\n    monthRed  \u003d blend(RED_R,RED_G,RED_B, M_R,M_G,M_B,    0.35)\n    dayRed    \u003d blend(RED_R,RED_G,RED_B, D_R,D_G,D_B,    0.35)\n    shiftRed  \u003d blend(RED_R,RED_G,RED_B, SH_R,SH_G,SH_B, 0.35)\n    hourRed   \u003d blend(RED_R,RED_G,RED_B, H_R,H_G,H_B,    0.35)\n\n    headerColor \u003d rgb(90,150,210)\n\n    # ---------------- STYLES ----------------\n    def makeStyle(fill\u003dNone, fmt\u003dNone, bold\u003dFalse, fontColor\u003dNone):\n        s \u003d wb.createCellStyle()\n        if fill:\n            s.setFillForegroundColor(fill)\n            s.setFillPattern(FillPatternType.SOLID_FOREGROUND)\n        if fmt:\n            s.setDataFormat(fmt)\n        s.setAlignment(HorizontalAlignment.CENTER)\n        for b in [BorderStyle.THIN]*4:\n            s.setBorderBottom(b); s.setBorderTop(b)\n            s.setBorderLeft(b);   s.setBorderRight(b)\n        f \u003d wb.createFont()\n        if bold:      f.setBold(True)\n        if fontColor: f.setColor(fontColor)\n        if bold or fontColor: s.setFont(f)\n        return s\n\n    df  \u003d wb.createDataFormat()\n    wht \u003d XSSFColor(Color(255,255,255), None)\n\n    headerStyle  \u003d makeStyle(headerColor, bold\u003dTrue, fontColor\u003dwht)\n\n    monthStyle   \u003d makeStyle(monthBg,  bold\u003dTrue)\n    monthInt     \u003d makeStyle(monthBg,  df.getFormat(\"#,##0\"),    bold\u003dTrue)\n    monthPct_s   \u003d makeStyle(monthBg,  df.getFormat(\"0.00\"),     bold\u003dTrue)\n    monthCurr    \u003d makeStyle(monthBg,  df.getFormat(\"$#,##0\"),   bold\u003dTrue)\n    monthRedS    \u003d makeStyle(monthRed, df.getFormat(\"0.00\"),     bold\u003dTrue)\n\n    dayStyle     \u003d makeStyle(dayBg,    bold\u003dTrue)\n    dayInt       \u003d makeStyle(dayBg,    df.getFormat(\"#,##0\"),    bold\u003dTrue)\n    dayPct_s     \u003d makeStyle(dayBg,    df.getFormat(\"0.00\"),     bold\u003dTrue)\n    dayCurr      \u003d makeStyle(dayBg,    df.getFormat(\"$#,##0\"),   bold\u003dTrue)\n    dayRedS      \u003d makeStyle(dayRed,   df.getFormat(\"0.00\"),     bold\u003dTrue)\n\n    shiftStyle   \u003d makeStyle(shiftBg,  bold\u003dTrue)\n    shiftInt     \u003d makeStyle(shiftBg,  df.getFormat(\"#,##0\"),    bold\u003dTrue)\n    shiftPct_s   \u003d makeStyle(shiftBg,  df.getFormat(\"0.00\"),     bold\u003dTrue)\n    shiftCurr    \u003d makeStyle(shiftBg,  df.getFormat(\"$#,##0\"),   bold\u003dTrue)\n    shiftRedS    \u003d makeStyle(shiftRed, df.getFormat(\"0.00\"),     bold\u003dTrue)\n\n    dataStyle    \u003d makeStyle(hourBg)\n    altStyle     \u003d makeStyle(hourAltBg)\n    intStyle     \u003d makeStyle(hourBg,   df.getFormat(\"#,##0\"))\n    decStyle     \u003d makeStyle(hourBg,   df.getFormat(\"#,##0.00\"))\n    pctStyle     \u003d makeStyle(hourBg,   df.getFormat(\"0.00\"))\n    currencyStyle\u003d makeStyle(hourBg,   df.getFormat(\"$#,##0\"))\n    redPctStyle  \u003d makeStyle(hourRed,  df.getFormat(\"0.00\"))\n\n    # ---------------- UNIT ----------------\n    unit    \u003d self.getSibling(\"selection_units\").props.value\n    options \u003d self.getSibling(\"selection_units\").props.options\n    conversion \u003d 1.0\n    label   \u003d unit\n    for opt in options:\n        if opt[\"value\"] \u003d\u003d unit:\n            conversion \u003d opt.get(\"unit_conversion\", 1)\n            label      \u003d opt.get(\"label\", unit)\n\n    # \u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\n    # OVERVIEW\n    # \u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\n    monthComp \u003d self.parent.parent.getChild(\"Data\").getChild(\"Month\")\n\n    if getattr(monthComp.meta, \"visible\", False):\n        ds \u003d monthComp.props.data\n        if ds and ds.getRowCount() \u003e 0:\n            sheet \u003d wb.createSheet(\"Overview\")\n            cols  \u003d [\"Year\",\"Month\",\"Count\",\"Weight Avg\",\"Metal Rejects\",\"Weight Rejects\"]\n            hr    \u003d sheet.createRow(0)\n            for i,h in enumerate(cols):\n                if h \u003d\u003d \"Weight Avg\":\n                    h \u003d \"Weight Avg ({})\".format(label)\n                cell \u003d hr.createCell(i)\n                cell.setCellValue(h)\n                cell.setCellStyle(headerStyle)\n            colMap \u003d {ds.getColumnName(i): i for i in range(ds.getColumnCount())}\n            for r in range(ds.getRowCount()):\n                row   \u003d sheet.createRow(r+1)\n                isAlt \u003d r % 2\n                for c,h in enumerate(cols):\n                    val  \u003d ds.getValueAt(r, colMap[h])\n                    cell \u003d row.createCell(c)\n                    sUse \u003d altStyle if isAlt else dataStyle\n                    if isinstance(val,(int,float)):\n                        if h \u003d\u003d \"Weight Avg\":\n                            cell.setCellValue(val/conversion)\n                            cell.setCellStyle(decStyle)\n                        else:\n                            cell.setCellValue(val)\n                            cell.setCellStyle(intStyle)\n                    else:\n                        cell.setCellValue(str(val))\n                        cell.setCellStyle(sUse)\n            for i in range(len(cols)):\n                sheet.autoSizeColumn(i)\n\n    # \u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\n    # GIVEAWAY\n    # \u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\n\ttry:\n\t\n\t\tCORE_P.Excel.perspectiveTableToWorkbook(self.parent.parent.getChild(\"Year\").getChild(\"year_data_table\"),sheetName\u003d\"Daily Summary\",workbook\u003dwb, decimalPlaces\u003d2)\t\t\t\n\t\tCORE_P.Excel.perspectiveTableToWorkbook(self.parent.parent.getChild(\"Data_Giveaway\").getChild(\"data\"),sheetName\u003d\"Monthly Giveaway\",workbook\u003dwb, decimalPlaces\u003d2)\t\n\t\tCORE_P.Excel.perspectiveTableToWorkbook(self.parent.parent.getChild(\"Data_Giveaway_Daily\").getChild(\"alldata\"),sheetName\u003d\"Daily Giveaway\",workbook\u003dwb, decimalPlaces\u003d2)\t\n#\t\t\n#\t\t#ds \u003d self.parent.parent.getChild(\"Data_Giveaway\").getChild(\"data\").props.data\n#\t#    \n#\t#    params \u003d {\n#\t#        \"line_id\":          self.getSibling(\"selection_line\").props.value,\n#\t#        \"scale_id\":         self.getSibling(\"selection_scale\").props.value,\n#\t#        \"start_dt\":         system.date.addMonths(self.view.custom.end_dt,\n#\t#                                -int(self.getSibling(\"selection_range\").props.value)),\n#\t#        \"end_dt\":           self.view.custom.end_dt,\n#\t#        \"shift_start_hour\": 10,\n#\t#        \"bucket_hours\":     1\n#\t#    }\n#\t#\n#\t#    ds    \u003d system.db.runNamedQuery(\"Weight_Q/Giveaway/GetGiveawayForReport\", params)\n#\t    sheet \u003d wb.createSheet(\"Giveaway\")\n#\t\n#\t    if len(ds) \u003d\u003d 0:\n#\t        sheet.createRow(0).createCell(0).setCellValue(\"No data\")\n#\t    else:\n#\t        headers \u003d list(ds.getColumnNames())\n#\t        bIdx \u003d headers.index(\"bucket_start\")\n#\t        sIdx \u003d headers.index(\"sku_code\")\n#\t        tIdx \u003d headers.index(\"target_grams\")\n#\t        aIdx \u003d headers.index(\"actual_grams\")\n#\t        gIdx \u003d headers.index(\"giveaway_grams\")\n#\t        cIdx \u003d headers.index(\"cost_per_lb\")\n#\t\n#\t        pivot  \u003d {}\n#\t        skuSet \u003d set()\n#\t\n#\t#        for r in range(ds.getRowCount()):\n#\t#            b \u003d ds.getValueAt(r, bIdx)\n#\t#            s \u003d ds.getValueAt(r, sIdx)\n#\t#            t \u003d ds.getValueAt(r, tIdx) or 0\n#\t#            a \u003d ds.getValueAt(r, aIdx) or 0\n#\t#            g \u003d ds.getValueAt(r, gIdx) or 0\n#\t#            c \u003d ds.getValueAt(r, cIdx) or 0\n#\t#            skuSet.add(s)\n#\t#            pivot.setdefault(b, {})\n#\t#            pivot[b].setdefault(s, {\"t\":0,\"a\":0,\"g\":0,\"c\":c})\n#\t#            pivot[b][s][\"t\"] +\u003d t\n#\t#            pivot[b][s][\"a\"] +\u003d a\n#\t#            pivot[b][s][\"g\"] +\u003d g\n#\t#\n#\t#        skuList    \u003d sorted(list(skuSet))\n#\t#        bucketList \u003d sorted(pivot.keys())\n#\t#\n#\t#        # -------- TIME HELPERS --------\n#\t#        def toCentral(dt): return system.date.addHours(dt, -5)\n#\t#        def fmt(dt):        return system.date.format(dt, \"yyyy-MM-dd HH:mm\")\n#\t#        def getShift(dt):\n#\t#            dt \u003d toCentral(dt)\n#\t#            h  \u003d system.date.getHour24(dt)\n#\t#            return system.date.addHours(dt, -((h-6)%8))\n#\t#        def getDay(dt):\n#\t#            return system.date.format(toCentral(dt), \"yyyy-MM-dd\")\n#\t#        def getMonth(dt):\n#\t#            return system.date.format(toCentral(dt), \"yyyy-MM\")\n#\t#\n#\t#        # -------- BUILD STRUCTURE: month -\u003e day -\u003e shift -\u003e [buckets] --------\n#\t#        monthMap \u003d {}\n#\t#        for b in bucketList:\n#\t#            m  \u003d getMonth(b)\n#\t#            d  \u003d getDay(b)\n#\t#            sh \u003d getShift(b)\n#\t#            monthMap.setdefault(m, {})\n#\t#            monthMap[m].setdefault(d, {})\n#\t#            monthMap[m][d].setdefault(sh, [])\n#\t#            monthMap[m][d][sh].append(b)\n#\t\n#\t        # -------- HEADER --------\n#\t        # Summary columns: unit label on weight columns, % and Cost stay as-is\n#\t        headersOut \u003d [\n#\t            \"Time\",\n#\t            \"Target ({})\".format(label),\n#\t            \"Actual ({})\".format(label),\n#\t            \"Giveaway ({})\".format(label),\n#\t            \"Giveaway %\",\n#\t            \"Cost ($)\"\n#\t        ]\n#\t        for sku in skuList:\n#\t            headersOut +\u003d [\n#\t                \"{} Target ({})\".format(sku, label),\n#\t                \"{} Actual ({})\".format(sku, label),\n#\t                \"{} Giveaway ({})\".format(sku, label),\n#\t                \"{} %\".format(sku),\n#\t                \"{} Cost ($)\".format(sku)\n#\t            ]\n#\t\n#\t        hr \u003d sheet.createRow(0)\n#\t        for i,h in enumerate(headersOut):\n#\t            c \u003d hr.createCell(i)\n#\t            c.setCellValue(h)\n#\t            c.setCellStyle(headerStyle)\n#\t\n#\t        # -------- SUMMARY ROW HELPER --------\n#\t        def writeSummaryRow(row, label, totT, totA, totG, totCost, skuData,\n#\t                            lblStyle, numStyle, pStyle, curStyle, redStyle):\n#\t            row.createCell(0).setCellValue(label)\n#\t            row.getCell(0).setCellStyle(lblStyle)\n#\t            totPct \u003d (totG/totT*100) if totT else 0\n#\t            totals \u003d [totT/conversion, totA/conversion, totG/conversion, totPct, totCost]\n#\t            for i,v in enumerate(totals, 1):\n#\t                c \u003d row.createCell(i)\n#\t                c.setCellValue(v)\n#\t                if i \u003d\u003d 4:\n#\t                    c.setCellStyle(redStyle if v \u003e 1 else pStyle)\n#\t                elif i \u003d\u003d 5:\n#\t                    c.setCellStyle(curStyle)\n#\t                else:\n#\t                    c.setCellStyle(numStyle)\n#\t            col \u003d 6\n#\t            for s in skuList:\n#\t                v    \u003d skuData[s]\n#\t                vals \u003d [v[\"t\"]/conversion, v[\"a\"]/conversion, v[\"g\"]/conversion,\n#\t                        (v[\"g\"]/v[\"t\"]*100 if v[\"t\"] else 0), v[\"cost\"]]\n#\t                for j,val in enumerate(vals):\n#\t                    c \u003d row.createCell(col+j)\n#\t                    c.setCellValue(val)\n#\t                    if j \u003d\u003d 3:\n#\t                        c.setCellStyle(redStyle if val \u003e 1 else pStyle)\n#\t                    elif j \u003d\u003d 4:\n#\t                        c.setCellStyle(curStyle)\n#\t                    else:\n#\t                        c.setCellStyle(numStyle)\n#\t                col +\u003d 5\n#\t\n#\t        rowIndex \u003d 1\n#\t\n#\t        for month in sorted(monthMap.keys()):\n#\t\n#\t            # accumulate month totals\n#\t            mT\u003dmA\u003dmG\u003dmCost\u003d0\n#\t            skuMo \u003d {s:{\"t\":0,\"a\":0,\"g\":0,\"cost\":0} for s in skuList}\n#\t\n#\t            for day in monthMap[month]:\n#\t                for shift in monthMap[month][day]:\n#\t                    for b in monthMap[month][day][shift]:\n#\t                        for s in skuList:\n#\t                            v    \u003d pivot[b].get(s, {\"t\":0,\"a\":0,\"g\":0,\"c\":0})\n#\t                            cost \u003d (v[\"g\"]/453.592)*v[\"c\"]\n#\t                            mT+\u003dv[\"t\"]; mA+\u003dv[\"a\"]; mG+\u003dv[\"g\"]; mCost+\u003dcost\n#\t                            skuMo[s][\"t\"]+\u003dv[\"t\"]; skuMo[s][\"a\"]+\u003dv[\"a\"]\n#\t                            skuMo[s][\"g\"]+\u003dv[\"g\"]; skuMo[s][\"cost\"]+\u003dcost\n#\t\n#\t            moRow \u003d sheet.createRow(rowIndex)\n#\t            writeSummaryRow(moRow, \"Month \"+month, mT, mA, mG, mCost, skuMo,\n#\t                            monthStyle, monthInt, monthPct_s, monthCurr, monthRedS)\n#\t            rowIndex  +\u003d 1\n#\t            monthStart \u003d rowIndex\n#\t\n#\t            # -------- DAY LOOP --------\n#\t            for day in sorted(monthMap[month].keys()):\n#\t\n#\t                dT\u003ddA\u003ddG\u003ddCost\u003d0\n#\t                skuDay \u003d {s:{\"t\":0,\"a\":0,\"g\":0,\"cost\":0} for s in skuList}\n#\t\n#\t                for shift in monthMap[month][day]:\n#\t                    for b in monthMap[month][day][shift]:\n#\t                        for s in skuList:\n#\t                            v    \u003d pivot[b].get(s, {\"t\":0,\"a\":0,\"g\":0,\"c\":0})\n#\t                            cost \u003d (v[\"g\"]/453.592)*v[\"c\"]\n#\t                            dT+\u003dv[\"t\"]; dA+\u003dv[\"a\"]; dG+\u003dv[\"g\"]; dCost+\u003dcost\n#\t                            skuDay[s][\"t\"]+\u003dv[\"t\"]; skuDay[s][\"a\"]+\u003dv[\"a\"]\n#\t                            skuDay[s][\"g\"]+\u003dv[\"g\"]; skuDay[s][\"cost\"]+\u003dcost\n#\t\n#\t                dayRow \u003d sheet.createRow(rowIndex)\n#\t                writeSummaryRow(dayRow, \"Day \"+day, dT, dA, dG, dCost, skuDay,\n#\t                                dayStyle, dayInt, dayPct_s, dayCurr, dayRedS)\n#\t                rowIndex +\u003d 1\n#\t                dayStart  \u003d rowIndex\n#\t\n#\t                # -------- SHIFT LOOP --------\n#\t                for shift in sorted(monthMap[month][day].keys()):\n#\t\n#\t                    buckets \u003d monthMap[month][day][shift]\n#\t                    shT\u003dshA\u003dshG\u003dshCost\u003d0\n#\t                    skuSh \u003d {s:{\"t\":0,\"a\":0,\"g\":0,\"cost\":0} for s in skuList}\n#\t\n#\t                    for b in buckets:\n#\t                        for s in skuList:\n#\t                            v    \u003d pivot[b].get(s, {\"t\":0,\"a\":0,\"g\":0,\"c\":0})\n#\t                            cost \u003d (v[\"g\"]/453.592)*v[\"c\"]\n#\t                            shT+\u003dv[\"t\"]; shA+\u003dv[\"a\"]; shG+\u003dv[\"g\"]; shCost+\u003dcost\n#\t                            skuSh[s][\"t\"]+\u003dv[\"t\"]; skuSh[s][\"a\"]+\u003dv[\"a\"]\n#\t                            skuSh[s][\"g\"]+\u003dv[\"g\"]; skuSh[s][\"cost\"]+\u003dcost\n#\t\n#\t                    shRow \u003d sheet.createRow(rowIndex)\n#\t                    writeSummaryRow(shRow, \"Shift \"+fmt(shift), shT, shA, shG, shCost, skuSh,\n#\t                                    shiftStyle, shiftInt, shiftPct_s, shiftCurr, shiftRedS)\n#\t                    rowIndex  +\u003d 1\n#\t                    shiftStart \u003d rowIndex\n#\t\n#\t                    # -------- HOURLY --------\n#\t                    for b in buckets:\n#\t                        row   \u003d sheet.createRow(rowIndex)\n#\t                        isAlt \u003d rowIndex % 2\n#\t                        hStyle \u003d altStyle if isAlt else dataStyle\n#\t\n#\t                        row.createCell(0).setCellValue(fmt(toCentral(b)))\n#\t                        row.getCell(0).setCellStyle(hStyle)\n#\t\n#\t                        totT\u003dtotA\u003dtotG\u003dtotCost\u003d0\n#\t                        col\u003d6\n#\t\n#\t                        for s in skuList:\n#\t                            v \u003d pivot[b].get(s, {\"t\":0,\"a\":0,\"g\":0,\"c\":0})\n#\t                            t,a,g,c \u003d v[\"t\"],v[\"a\"],v[\"g\"],v[\"c\"]\n#\t                            tC,aC,gC \u003d t/conversion, a/conversion, g/conversion\n#\t                            pct  \u003d (g/t*100) if t else 0\n#\t                            cost \u003d (g/453.592)*c\n#\t                            totT+\u003dtC; totA+\u003daC; totG+\u003dgC; totCost+\u003dcost\n#\t\n#\t                            for j,val in enumerate([tC,aC,gC,pct,cost]):\n#\t                                cell \u003d row.createCell(col+j)\n#\t                                cell.setCellValue(val)\n#\t                                if j \u003d\u003d 3:\n#\t                                    cell.setCellStyle(redPctStyle if val \u003e 1 else pctStyle)\n#\t                                elif j \u003d\u003d 4:\n#\t                                    cell.setCellStyle(currencyStyle)\n#\t                                else:\n#\t                                    cell.setCellStyle(intStyle)\n#\t                            col +\u003d 5\n#\t\n#\t                        totals \u003d [totT, totA, totG, (totG/totT*100 if totT else 0), totCost]\n#\t                        for i,v in enumerate(totals, 1):\n#\t                            c \u003d row.createCell(i)\n#\t                            c.setCellValue(v)\n#\t                            if i \u003d\u003d 4:\n#\t                                c.setCellStyle(redPctStyle if v \u003e 1 else pctStyle)\n#\t                            elif i \u003d\u003d 5:\n#\t                                c.setCellStyle(currencyStyle)\n#\t                            else:\n#\t                                c.setCellStyle(intStyle)\n#\t\n#\t                        rowIndex +\u003d 1\n#\t\n#\t                    sheet.groupRow(shiftStart, rowIndex-1)\n#\t                    sheet.setRowGroupCollapsed(shiftStart, True)\n#\t\n#\t                sheet.groupRow(dayStart, rowIndex-1)\n#\t                sheet.setRowGroupCollapsed(dayStart, True)\n#\t\n#\t            sheet.groupRow(monthStart, rowIndex-1)\n#\t            sheet.setRowGroupCollapsed(monthStart, True)\n#\t\n#\t        for i in range(len(headersOut)):\n#\t            sheet.autoSizeColumn(i)\n\texcept:\n\t\tCORE_P.Utils.errorPopup(\u0027Error getting giveaway data for export\u0027)\n\n    # -------- EXPORT --------\n    stream \u003d ByteArrayOutputStream()\n    wb.write(stream)\n    wb.close()\n\n    system.perspective.download(\n        \"Weight_Tracking.xlsx\",\n        stream.toByteArray(),\n        \"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet\"\n    )\n\n    self.parent.custom.Exporting \u003d False"
                   },
                   "scope": "G",
                   "type": "script"
@@ -2950,6 +2953,107 @@
               ]
             },
             "type": "ia.display.table"
+          },
+          {
+            "events": {
+              "component": {
+                "onSubviewExpand": {
+                  "config": {
+                    "script": "\n\tindex \u003d event.row\n\tself.parent.custom.Selection.month_dt\u003dsystem.date.addDays(self.props.data[index].month_dt,3)"
+                  },
+                  "scope": "G",
+                  "type": "script"
+                }
+              }
+            },
+            "meta": {
+              "name": "alldata",
+              "visible": false
+            },
+            "position": {
+              "basis": "100%",
+              "display": false,
+              "shrink": 0
+            },
+            "propConfig": {
+              "props.columns": {
+                "binding": {
+                  "config": {
+                    "path": "parent.custom.Data.Daily.columns"
+                  },
+                  "overlayOptOut": true,
+                  "type": "property"
+                }
+              },
+              "props.data": {
+                "binding": {
+                  "config": {
+                    "struct": {
+                      "data": "{parent.custom.Data.Daily.data}",
+                      "filter": "{.../Data_Giveaway.custom.Selection.month_dt}"
+                    },
+                    "waitOnAll": true
+                  },
+                  "overlayOptOut": true,
+                  "transforms": [
+                    {
+                      "code": "    return value[\u0027data\u0027]\n#\t\n#    import system\n#\n#    selected_dt \u003d value[\u0027filter\u0027]\n#    data \u003d value[\u0027data\u0027]\n#\n#    # ----------------------------------\n#    # COLLECT ALL SKUs (from existing data)\n#    # ----------------------------------\n#    skus \u003d set()\n#\n#    for row in data:\n#        for key in row.keys():\n#            if key.startswith(\"SKU_\") and key.endswith(\"_g\"):\n#                sku \u003d key.replace(\"SKU_\", \"\").replace(\"_g\", \"\")\n#                skus.add(sku)\n#\n#    skus \u003d sorted(list(skus))\n#\n#    # ----------------------------------\n#    # FILTER BY MONTH (if selected)\n#    # ----------------------------------\n#    if selected_dt:\n#\n#        sel_year  \u003d system.date.getYear(selected_dt)\n#        sel_month \u003d system.date.getMonth(selected_dt)\n#\n#        filtered \u003d []\n#\n#        for row in data:\n#            d \u003d row[\"day_dt\"]\n#\n#            if (\n#                system.date.getYear(d) \u003d\u003d sel_year and\n#                system.date.getMonth(d) \u003d\u003d sel_month\n#            ):\n#                filtered.append(row)\n#\n#    else:\n#        filtered \u003d list(data)\n#\n#    # ----------------------------------\n#    # ENSURE ALL SKU COLUMNS EXIST\n#    # (important for table consistency)\n#    # ----------------------------------\n#    result \u003d []\n#\n#    for row in filtered:\n#\n#        new_row \u003d dict(row)  # shallow copy\n#\n#        for sku in skus:\n#            prefix \u003d \"SKU_\" + sku\n#\n#            if prefix + \"_g\" not in new_row:\n#                new_row[prefix + \"_g\"] \u003d {\"value\": None}\n#\n#            if prefix + \"_pct\" not in new_row:\n#                new_row[prefix + \"_pct\"] \u003d {\"value\": None}\n#\n#            if prefix + \"_dol\" not in new_row:\n#                new_row[prefix + \"_dol\"] \u003d {\"value\": None}\n#\n#        # totals safety\n#        if \"TOTAL_g\" not in new_row:\n#            new_row[\"TOTAL_g\"] \u003d {\"value\": None}\n#\n#        if \"TOTAL_pct\" not in new_row:\n#            new_row[\"TOTAL_pct\"] \u003d {\"value\": None}\n#\n#        if \"TOTAL_dol\" not in new_row:\n#            new_row[\"TOTAL_dol\"] \u003d {\"value\": None}\n#\n#        result.append(new_row)\n#\n#    return result",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "expr-struct"
+                }
+              },
+              "props.headerGroups": {
+                "binding": {
+                  "config": {
+                    "path": "parent.custom.Data.Daily.headerGroups"
+                  },
+                  "overlayOptOut": true,
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "bodyStyle": {
+                "classes": "Weight_S/Framework/Card/Label"
+              },
+              "enableHeader": false,
+              "enableHeaderGroups": true,
+              "headerGroupStyle": {
+                "classes": "Weight_S/Framework/Card/Value"
+              },
+              "headerStyle": {
+                "classes": "Weight_S/Framework/Card/Value"
+              },
+              "pager": {
+                "bottom": false
+              },
+              "rows": {
+                "height": "20px"
+              },
+              "selection": {
+                "enableRowSelection": false
+              },
+              "style": {
+                "paddingLeft": 4,
+                "paddingRight": 4
+              }
+            },
+            "scripts": {
+              "customMethods": [],
+              "extensionFunctions": null,
+              "messageHandlers": [
+                {
+                  "messageType": "refreshGiveawayCost",
+                  "pageScope": true,
+                  "script": "\tself.parent.refreshBinding(\"custom.Data.Daily\")\n\t",
+                  "sessionScope": false,
+                  "viewScope": false
+                }
+              ]
+            },
+            "type": "ia.display.table"
           }
         ],
         "custom": {
@@ -2987,7 +3091,7 @@
               },
               "transforms": [
                 {
-                  "code": "\t\n\timport system\n\timport re\n\tfrom java.text import SimpleDateFormat\n\ttry:\n\t\tdata \u003d system.dataset.toPyDataSet(value)\n\t\n\t\t\t\n\t\t# ----------------------------------\n\t\t# SETTINGS\n\t\t# ----------------------------------\n\t\tWIDTH_DAY \u003d 150\n\t\tWIDTH_G   \u003d 75\n\t\tWIDTH_PCT \u003d 50\n\t\tWIDTH_DOL \u003d 75\n\t\t\n\t\tBORDER_HEAVY \u003d \"2px solid #9CA3AF\"\n\t\tBORDER_GROUP \u003d \"2px solid #D1D5DB\"\n\t\t\n\t\tBG_SKU \u003d \"#F9FAFB00\"\n\t\t\n\t\tRED_BG   \u003d \"#FEE2E2\"\n\t\tRED_TEXT \u003d \"#B91C1C\"\n\t\t\n\t\tfmt_day \u003d SimpleDateFormat(\"MM/dd\")\n\t\tfmt_weight \u003d \"0,0\"\t\n\t\t\n\t\t# Also get the Manual losses (eg, floor sweepings)\n\t\tparameters\u003d{\n\t\t\t\u0027line_id\u0027:self.custom.Selection.line_id,\n\t\t\t\u0027start_dt\u0027:self.view.custom.start_dt,\n\t\t\t\u0027end_dt\u0027:self.view.custom.end_dt,\n\t\t\t\u0027unit_id\u0027:self.custom.Selection.unit_id,\n\t\t\t\u0027timezone\u0027:self.view.custom.timezone.sqlserver\n\t\t}\n\t\tmanual_data \u003d CORE_P.Utils.datasetToDicts(\n\t\t\t\tsystem.db.runNamedQuery(\n\t\t\t\t\tproject\u003dsystem.project.getProjectName(), \n\t\t\t\t\tpath\u003d\u0027Weight_Q/Giveaway/GetDailyManualGiveaway\u0027, \n\t\t\t\t\tparameters\u003dparameters\n\t\t\t\t)\n\t\t\t)   \n\t\t#CORE_P.Utils.errorPopup(str(parameters) + \u0027 - \u0027 + str(manual_data))\n\t\tmanual_days\u003d{}\n\t\t# Restructure into a dict based on month, for easy access later\n\t\tfor row in manual_data:\n\t\t\tmanual_days[ fmt_day.format(row[\u0027production_day\u0027]) ] \u003d row\n\t\tshow_manual_giveaway \u003d 0\n\t\t\n\t\t#CORE_P.Utils.errorPopup(str(manual_months))\n\t\t\t\n\t\t# ----------------------------------\n\t\t# UNIT\n\t\t# ----------------------------------\n\t\ttry:\n\t\t    unit_name \u003d next(iter({row[\"unit_name\"] for row in data}), \"g\")\n\t\texcept:\n\t\t    unit_name \u003d \"g\"\n\t\t\n\t\t# ----------------------------------\n\t\t# SORT SKUs NUMERICALLY\n\t\t# ----------------------------------\n\t\tdef sku_sort_key(sku):\n\t\t    match \u003d re.search(r\"\\d+\", sku)\n\t\t    return int(match.group()) if match else 9999\n\t\t\n\t\tskus \u003d sorted({str(row[\"sku_code\"]) for row in data}, key\u003dsku_sort_key)\n\t\t\n\t\t# ----------------------------------\n\t\t# BUILD CONTINUOUS DAY RANGE\n\t\t# ----------------------------------\n\t\tall_days \u003d sorted({row[\"production_date\"] for row in data})\n\t\t\t\n\t\tdays \u003d []\n\t\t\n\t\tif all_days:\n\t\t    start \u003d all_days[0]\n\t\t    end   \u003d all_days[-1]\n\t\t\n\t\t    current \u003d start\n\t\t\n\t\t    while current \u003c\u003d end:\n\t\t        days.append(current)\n\t\t        current \u003d system.date.addDays(current, 1)\n\t\t\n\t\t# ----------------------------------\n\t\t# LOOKUP\n\t\t# ----------------------------------\n\t\tlookup \u003d {}\n\t\t\n\t\tfor row in data:\n\t\t    d \u003d row[\"production_date\"]\n\t\t\n\t\t    key \u003d (\n\t\t        system.date.getYear(d),\n\t\t        system.date.getMonth(d),\n\t\t        system.date.getDayOfMonth(d),\n\t\t        row[\"sku_code\"]\n\t\t    )\n\t\t\n\t\t    lookup[key] \u003d {\n\t\t        \"g\": row[\"giveaway_weight\"],\n\t\t        \"pct\": row[\"giveaway_percent\"],\n\t\t        \"dol\": row[\"giveaway_dollars\"],\n\t\t        \"act\": row[\"actual_weight\"]\n\t\t    }\n\t\t\n\t\t# ----------------------------------\n\t\t# CELL HELPERS (FORCED BORDERS)\n\t\t# ----------------------------------\n\t\tdef normal_cell(val, bg\u003dNone):\n\t\t    style \u003d {\n\t\t        \"textAlign\": \"center\",\n\t\t        \"borderRight\": BORDER_GROUP   # 🔥 ALWAYS\n\t\t    }\n\t\t\n\t\t    if bg:\n\t\t        style[\"backgroundColor\"] \u003d bg\n\t\t\n\t\t    return {\"value\": val, \"style\": style}\n\t\t\n\t\tdef pct_cell(val, bg\u003dNone):\n\t\t    style \u003d {\n\t\t        \"textAlign\": \"center\",\n\t\t        \"borderRight\": BORDER_GROUP   # 🔥 ALWAYS\n\t\t    }\n\t\t\n\t\t    if bg:\n\t\t        style[\"backgroundColor\"] \u003d bg\n\t\t\n\t\t    if val is not None and float(val) \u003e 1:\n\t\t        style[\"backgroundColor\"] \u003d RED_BG\n\t\t        style[\"color\"] \u003d RED_TEXT\n\t\t        style[\"fontWeight\"] \u003d \"700\"\n\t\t\n\t\t    return {\"value\": val, \"style\": style}\n\t\t\n\t\t# ----------------------------------\n\t\t# BUILD ROWS\n\t\t# ----------------------------------\n\t\trows \u003d []\n\t\tdays.reverse() # Show days most recent first\n\t\tfor day in days:\n\t\t\n\t\t    row \u003d {}\n\t\t    fmted_day \u003d fmt_day.format(day)\n\t\t\t   \t\n\t\t    row[\"day\"] \u003d {\n\t\t        \"value\": fmt_day.format(day),\n\t\t        \"style\": {\n\t\t            \"textAlign\": \"center\",\n\t\t            \"borderRight\": BORDER_GROUP\n\t\t        }\n\t\t    }\n\t\t\n\t\t    row[\"day_dt\"] \u003d day\n\t\t\n\t\t    total_g \u003d 0\n\t\t    total_dol \u003d 0\n\t\t    total_act \u003d 0\n\t\t\n\t\t    for sku in skus:\n\t\t\n\t\t        key \u003d (\n\t\t            system.date.getYear(day),\n\t\t            system.date.getMonth(day),\n\t\t            system.date.getDayOfMonth(day),\n\t\t            sku\n\t\t        )\n\t\t\n\t\t        val \u003d lookup.get(key, None)\n\t\t\n\t\t        g   \u003d val[\"g\"] if val else None\n\t\t        pct \u003d val[\"pct\"] if val else None\n\t\t        dol \u003d val[\"dol\"] if val else None\n\t\t        act \u003d val[\"act\"] if val else None\n\t\t\n\t\t        prefix \u003d \"SKU_\" + sku\n\t\t\n\t\t        row[prefix + \"_g\"]   \u003d normal_cell(g, BG_SKU)\n\t\t        row[prefix + \"_pct\"] \u003d pct_cell(pct, BG_SKU)\n\t\t        row[prefix + \"_dol\"] \u003d normal_cell(dol, BG_SKU)\n\t\t\n\t\t        if g is not None:\n\t\t            total_g +\u003d g\n\t\t        if dol is not None:\n\t\t            total_dol +\u003d dol\n\t\t        if act is not None:\n\t\t            total_act +\u003d act\n\t\t\n\t\t\t# Add the relevant manual giveaway data into this month row\n\t\t\tif fmted_day in manual_days:\n\t\t\t\t\n\t\t\t\tshow_manual_giveaway \u003d 1\n\t\t\t\trow[\u0027manual_giveaway_grams\u0027] \u003d manual_days[ fmted_day ][\u0027giveaway_grams\u0027] or 0\n\t\t\t\trow[\u0027manual_giveaway_weight\u0027] \u003d manual_days[ fmted_day ][\u0027giveaway_weight\u0027] or 0\n\t\t\t\trow[\u0027manual_giveaway_cost\u0027] \u003d manual_days[ fmted_day ][\u0027giveaway_cost\u0027] or 0\n\t\t\t\trow[\u0027manual_actual_grams\u0027] \u003d manual_days[ fmted_day ][\u0027actual_grams\u0027] or 0\n\t\t\t\tif(row[\u0027manual_actual_grams\u0027] + row[\u0027manual_giveaway_grams\u0027]):\n\t\t\t\t\trow[\u0027manual_percentage\u0027]  \u003d round(row[\u0027manual_giveaway_grams\u0027] / (row[\u0027manual_actual_grams\u0027] + row[\u0027manual_giveaway_grams\u0027]),2)\n\t\t\t\telse:\n\t\t\t\t\trow[\u0027manual_percentage\u0027] \u003d 0  \n\t\t\t\t\n\t\t    # totals\n\t\t    if total_act \u003e 0:\n\t\t        total_pct \u003d (float(total_g) / float(total_act)) * 100.0\n\t\t    else:\n\t\t        total_pct \u003d None\n\t\t\n\t\t    row[\"TOTAL_g\"]   \u003d normal_cell(total_g if total_g !\u003d 0 else None)\n\t\t    row[\"TOTAL_pct\"] \u003d pct_cell(total_pct)\n\t\t    row[\"TOTAL_dol\"] \u003d normal_cell(total_dol if total_dol !\u003d 0 else None)\n\t\t\n\t\t    rows.append(row)\n\t\t\n\t\t# ----------------------------------\n\t\t# COLUMN BUILDER\n\t\t# ----------------------------------\n\t\tdef col(field, title, fmt\u003d\"0,0\", width\u003d80, strict\u003dFalse):\n\t\t    return {\n\t\t        \"field\": field,\n\t\t        \"visible\": True,\n\t\t        \"render\": \"auto\",\n\t\t        \"align\": \"center\",\n\t\t        \"justify\": \"center\",\n\t\t        \"sortable\": True,\n\t\t        \"resizable\": True,\n\t\t        \"numberFormat\": fmt if fmt else \"none\",\n\t\t        \"width\": width,\n\t\t        \"strictWidth\": strict,\n\t\t        \"header\": {\n\t\t            \"title\": title,\n\t\t            \"align\": \"center\",\n\t\t            \"justify\": \"center\"\n\t\t        }\n\t\t    }\n\t\t\n\t\tcolumns \u003d []\n\t\t\n\t\tcolumns.append(col(\"day\", \"Day\", \"none\", WIDTH_DAY, True))\n\t\t\n\t\tcolumns.append({\n\t\t    \"field\": \"day_dt\",\n\t\t    \"visible\": False\n\t\t})\n\t\t\n\t\tcolumns.append(col(\"TOTAL_g\", unit_name, fmt_weight, WIDTH_G))\n\t\tcolumns.append(col(\"TOTAL_pct\", \"%\", \"0.00\", WIDTH_PCT))\n\t\tcolumns.append(col(\"TOTAL_dol\", \"$\", \"$0,0\", WIDTH_DOL))\n\t\t\n\t\tfor sku in skus:\n\t\t    prefix \u003d \"SKU_\" + sku\n\t\t    columns.append(col(prefix + \"_g\", unit_name, fmt_weight, WIDTH_G))\n\t\t    columns.append(col(prefix + \"_pct\", \"%\", \"0.00\", WIDTH_PCT))\n\t\t    columns.append(col(prefix + \"_dol\", \"$\", \"$0,0\", WIDTH_DOL))\n\t\t\n\t\tif(show_manual_giveaway):\n\t\t\tcolumns.append(col(\"manual_giveaway_weight\", unit_name, fmt_weight, WIDTH_G))\n\t\t\tcolumns.append(col(\"manual_percentage\", \"%\", \"0.00\", WIDTH_PCT))\n\t\t\tcolumns.append(col(\"manual_giveaway_cost\", \"$\", \"$0,0\", WIDTH_DOL))\n\t\t\t\t\n\t\t# ----------------------------------\n\t\t# HEADER GROUPS\n\t\t# ----------------------------------\n\t\tdef header(title, span, bg\u003dNone, border\u003dFalse):\n\t\t    style \u003d {\n\t\t        \"fontWeight\": \"700\",\n\t\t        \"borderBottom\": BORDER_HEAVY\n\t\t    }\n\t\t\n\t\t    if bg:\n\t\t        style[\"backgroundColor\"] \u003d bg\n\t\t    if border:\n\t\t        style[\"borderRight\"] \u003d BORDER_GROUP\n\t\t\n\t\t    return {\n\t\t        \"title\": title,\n\t\t        \"span\": span,\n\t\t        \"justify\": \"center\",\n\t\t        \"align\": \"center\",\n\t\t        \"style\": style\n\t\t    }\n\t\t\n\t\trow1 \u003d []\n\t\trow1.append(header(\"\", 1, None, True))\n\t\trow1.append(header(\"TOTAL\", 3, None, True))\n\t\t\n\t\tfor sku in skus:\n\t\t    row1.append(header(sku, 3, BG_SKU, True))\n\t\t\n\t\tif(show_manual_giveaway):\n\t\t\trow1.append(header(\"Manual Giveaway\", 3, None, True))\n\t\t\t\t\t\t\n\t\trow2 \u003d []\n\t\trow2.append(header(\"Day\", 1, None, True))\n\t\t\n\t\trow2.append(header(unit_name, 1))\n\t\trow2.append(header(\"%\", 1))\n\t\trow2.append(header(\"$\", 1, None, True))\n\t\t\n\t\tfor sku in skus:\n\t\t    row2.append(header(unit_name, 1, BG_SKU))\n\t\t    row2.append(header(\"%\", 1, BG_SKU))\n\t\t    row2.append(header(\"$\", 1, BG_SKU, True))\n\t\t\n\t\tif(show_manual_giveaway):\n\t\t    row2.append(header(unit_name, 1, BG_SKU))\n\t\t    row2.append(header(\"%\", 1, BG_SKU))\n\t\t    row2.append(header(\"$\", 1, BG_SKU, True))\n\t\t    \t\n\t\theaderGroups \u003d [row1, row2]\n\t\t\n\t\t# ----------------------------------\n\t\t# RETURN\n\t\t# ----------------------------------\n\t\treturn {\n\t\t    \"data\": rows,\n\t\t    \"columns\": columns,\n\t\t    \"headerGroups\": headerGroups\n\t\t}\n\texcept:\n\t\tCORE_P.Utils.errorPopup(\u0027Error getting daily giveaway data!\u0027)",
+                  "code": "\t\n\timport system\n\timport re\n\tfrom java.text import SimpleDateFormat\n\ttry:\n\t\tdata \u003d system.dataset.toPyDataSet(value)\n\t\n\t\t\t\n\t\t# ----------------------------------\n\t\t# SETTINGS\n\t\t# ----------------------------------\n\t\tWIDTH_DAY \u003d 150\n\t\tWIDTH_G   \u003d 75\n\t\tWIDTH_PCT \u003d 50\n\t\tWIDTH_DOL \u003d 75\n\t\t\n\t\tBORDER_HEAVY \u003d \"2px solid #9CA3AF\"\n\t\tBORDER_GROUP \u003d \"2px solid #D1D5DB\"\n\t\t\n\t\tBG_SKU \u003d \"#F9FAFB00\"\n\t\t\n\t\tRED_BG   \u003d \"#FEE2E2\"\n\t\tRED_TEXT \u003d \"#B91C1C\"\n\t\t\n\t\t#fmt_day \u003d SimpleDateFormat(\"MM/dd\")\n\t\tfmt_day \u003d SimpleDateFormat(\"YYYY-MM-dd\")\n\t\tfmt_weight \u003d \"0,0\"\t\n\t\t\n\t\t# Also get the Manual losses (eg, floor sweepings)\n\t\tparameters\u003d{\n\t\t\t\u0027line_id\u0027:self.custom.Selection.line_id,\n\t\t\t\u0027start_dt\u0027:self.view.custom.start_dt,\n\t\t\t\u0027end_dt\u0027:self.view.custom.end_dt,\n\t\t\t\u0027unit_id\u0027:self.custom.Selection.unit_id,\n\t\t\t\u0027timezone\u0027:self.view.custom.timezone.sqlserver\n\t\t}\n\t\tmanual_data \u003d CORE_P.Utils.datasetToDicts(\n\t\t\t\tsystem.db.runNamedQuery(\n\t\t\t\t\tproject\u003dsystem.project.getProjectName(), \n\t\t\t\t\tpath\u003d\u0027Weight_Q/Giveaway/GetDailyManualGiveaway\u0027, \n\t\t\t\t\tparameters\u003dparameters\n\t\t\t\t)\n\t\t\t)   \n\t\t#CORE_P.Utils.errorPopup(str(parameters) + \u0027 - \u0027 + str(manual_data))\n\t\tmanual_days\u003d{}\n\t\t# Restructure into a dict based on month, for easy access later\n\t\tfor row in manual_data:\n\t\t\tmanual_days[ fmt_day.format(row[\u0027production_day\u0027]) ] \u003d row\n\t\tshow_manual_giveaway \u003d 0\n\t\t\n\t\t#CORE_P.Utils.errorPopup(str(manual_months))\n\t\t\t\n\t\t# ----------------------------------\n\t\t# UNIT\n\t\t# ----------------------------------\n\t\ttry:\n\t\t    unit_name \u003d next(iter({row[\"unit_name\"] for row in data}), \"g\")\n\t\texcept:\n\t\t    unit_name \u003d \"g\"\n\t\t\n\t\t# ----------------------------------\n\t\t# SORT SKUs NUMERICALLY\n\t\t# ----------------------------------\n\t\tdef sku_sort_key(sku):\n\t\t    match \u003d re.search(r\"\\d+\", sku)\n\t\t    return int(match.group()) if match else 9999\n\t\t\n\t\tskus \u003d sorted({str(row[\"sku_code\"]) for row in data}, key\u003dsku_sort_key)\n\t\t\n\t\t# ----------------------------------\n\t\t# BUILD CONTINUOUS DAY RANGE\n\t\t# ----------------------------------\n\t\tall_days \u003d sorted({row[\"production_date\"] for row in data})\n\t\t\t\n\t\tdays \u003d []\n\t\t\n\t\tif all_days:\n\t\t    start \u003d all_days[0]\n\t\t    end   \u003d all_days[-1]\n\t\t\n\t\t    current \u003d start\n\t\t\n\t\t    while current \u003c\u003d end:\n\t\t        days.append(current)\n\t\t        current \u003d system.date.addDays(current, 1)\n\t\t\n\t\t# ----------------------------------\n\t\t# LOOKUP\n\t\t# ----------------------------------\n\t\tlookup \u003d {}\n\t\t\n\t\tfor row in data:\n\t\t    d \u003d row[\"production_date\"]\n\t\t\n\t\t    key \u003d (\n\t\t        system.date.getYear(d),\n\t\t        system.date.getMonth(d),\n\t\t        system.date.getDayOfMonth(d),\n\t\t        row[\"sku_code\"]\n\t\t    )\n\t\t\n\t\t    lookup[key] \u003d {\n\t\t        \"g\": row[\"giveaway_weight\"],\n\t\t        \"pct\": row[\"giveaway_percent\"],\n\t\t        \"dol\": row[\"giveaway_dollars\"],\n\t\t        \"act\": row[\"actual_weight\"]\n\t\t    }\n\t\t\n\t\t# ----------------------------------\n\t\t# CELL HELPERS (FORCED BORDERS)\n\t\t# ----------------------------------\n\t\tdef normal_cell(val, bg\u003dNone):\n\t\t    style \u003d {\n\t\t        \"textAlign\": \"center\",\n\t\t        \"borderRight\": BORDER_GROUP   # 🔥 ALWAYS\n\t\t    }\n\t\t\n\t\t    if bg:\n\t\t        style[\"backgroundColor\"] \u003d bg\n\t\t\n\t\t    return {\"value\": val, \"style\": style}\n\t\t\n\t\tdef pct_cell(val, bg\u003dNone):\n\t\t    style \u003d {\n\t\t        \"textAlign\": \"center\",\n\t\t        \"borderRight\": BORDER_GROUP   # 🔥 ALWAYS\n\t\t    }\n\t\t\n\t\t    if bg:\n\t\t        style[\"backgroundColor\"] \u003d bg\n\t\t\n\t\t    if val is not None and float(val) \u003e 1:\n\t\t        style[\"backgroundColor\"] \u003d RED_BG\n\t\t        style[\"color\"] \u003d RED_TEXT\n\t\t        style[\"fontWeight\"] \u003d \"700\"\n\t\t\n\t\t    return {\"value\": val, \"style\": style}\n\t\t\n\t\t# ----------------------------------\n\t\t# BUILD ROWS\n\t\t# ----------------------------------\n\t\trows \u003d []\n\t\tdays.reverse() # Show days most recent first\n\t\tfor day in days:\n\t\t\n\t\t    row \u003d {}\n\t\t    fmted_day \u003d fmt_day.format(day)\n\t\t\t   \t\n\t\t    row[\"day\"] \u003d {\n\t\t        \"value\": fmt_day.format(day),\n\t\t        \"style\": {\n\t\t            \"textAlign\": \"center\",\n\t\t            \"borderRight\": BORDER_GROUP\n\t\t        }\n\t\t    }\n\t\t\n\t\t    row[\"day_dt\"] \u003d day\n\t\t\n\t\t    total_g \u003d 0\n\t\t    total_dol \u003d 0\n\t\t    total_act \u003d 0\n\t\t\n\t\t    for sku in skus:\n\t\t\n\t\t        key \u003d (\n\t\t            system.date.getYear(day),\n\t\t            system.date.getMonth(day),\n\t\t            system.date.getDayOfMonth(day),\n\t\t            sku\n\t\t        )\n\t\t\n\t\t        val \u003d lookup.get(key, None)\n\t\t\n\t\t        g   \u003d val[\"g\"] if val else None\n\t\t        pct \u003d val[\"pct\"] if val else None\n\t\t        dol \u003d val[\"dol\"] if val else None\n\t\t        act \u003d val[\"act\"] if val else None\n\t\t\n\t\t        prefix \u003d \"SKU_\" + sku\n\t\t\n\t\t        row[prefix + \"_g\"]   \u003d normal_cell(g, BG_SKU)\n\t\t        row[prefix + \"_pct\"] \u003d pct_cell(pct, BG_SKU)\n\t\t        row[prefix + \"_dol\"] \u003d normal_cell(dol, BG_SKU)\n\t\t\n\t\t        if g is not None:\n\t\t            total_g +\u003d g\n\t\t        if dol is not None:\n\t\t            total_dol +\u003d dol\n\t\t        if act is not None:\n\t\t            total_act +\u003d act\n\t\t\n\t\t\t# Add the relevant manual giveaway data into this month row\n\t\t\tif fmted_day in manual_days:\n\t\t\t\t\n\t\t\t\tshow_manual_giveaway \u003d 1\n\t\t\t\trow[\u0027manual_giveaway_grams\u0027] \u003d manual_days[ fmted_day ][\u0027giveaway_grams\u0027] or 0\n\t\t\t\trow[\u0027manual_giveaway_weight\u0027] \u003d manual_days[ fmted_day ][\u0027giveaway_weight\u0027] or 0\n\t\t\t\trow[\u0027manual_giveaway_cost\u0027] \u003d manual_days[ fmted_day ][\u0027giveaway_cost\u0027] or 0\n\t\t\t\trow[\u0027manual_actual_grams\u0027] \u003d manual_days[ fmted_day ][\u0027actual_grams\u0027] or 0\n\t\t\t\tif(row[\u0027manual_actual_grams\u0027] + row[\u0027manual_giveaway_grams\u0027]):\n\t\t\t\t\trow[\u0027manual_percentage\u0027]  \u003d round(row[\u0027manual_giveaway_grams\u0027] / (row[\u0027manual_actual_grams\u0027] + row[\u0027manual_giveaway_grams\u0027]),2)\n\t\t\t\telse:\n\t\t\t\t\trow[\u0027manual_percentage\u0027] \u003d 0  \n\t\t\t\t\n\t\t    # totals\n\t\t    if total_act \u003e 0:\n\t\t        total_pct \u003d (float(total_g) / float(total_act)) * 100.0\n\t\t    else:\n\t\t        total_pct \u003d None\n\t\t\n\t\t    row[\"TOTAL_g\"]   \u003d normal_cell(total_g if total_g !\u003d 0 else None)\n\t\t    row[\"TOTAL_pct\"] \u003d pct_cell(total_pct)\n\t\t    row[\"TOTAL_dol\"] \u003d normal_cell(total_dol if total_dol !\u003d 0 else None)\n\t\t\n\t\t    rows.append(row)\n\t\t\n\t\t# ----------------------------------\n\t\t# COLUMN BUILDER\n\t\t# ----------------------------------\n\t\tdef col(field, title, fmt\u003d\"0,0\", width\u003d80, strict\u003dFalse):\n\t\t    return {\n\t\t        \"field\": field,\n\t\t        \"visible\": True,\n\t\t        \"render\": \"auto\",\n\t\t        \"align\": \"center\",\n\t\t        \"justify\": \"center\",\n\t\t        \"sortable\": True,\n\t\t        \"resizable\": True,\n\t\t        \"numberFormat\": fmt if fmt else \"none\",\n\t\t        \"width\": width,\n\t\t        \"strictWidth\": strict,\n\t\t        \"header\": {\n\t\t            \"title\": title,\n\t\t            \"align\": \"center\",\n\t\t            \"justify\": \"center\"\n\t\t        }\n\t\t    }\n\t\t\n\t\tcolumns \u003d []\n\t\t\n\t\tcolumns.append(col(\"day\", \"Day\", \"none\", WIDTH_DAY, True))\n\t\t\n\t\tcolumns.append({\n\t\t    \"field\": \"day_dt\",\n\t\t    \"visible\": False\n\t\t})\n\t\t\n\t\tcolumns.append(col(\"TOTAL_g\", unit_name, fmt_weight, WIDTH_G))\n\t\tcolumns.append(col(\"TOTAL_pct\", \"%\", \"0.00\", WIDTH_PCT))\n\t\tcolumns.append(col(\"TOTAL_dol\", \"$\", \"$0,0\", WIDTH_DOL))\n\t\t\n\t\tfor sku in skus:\n\t\t    prefix \u003d \"SKU_\" + sku\n\t\t    columns.append(col(prefix + \"_g\", unit_name, fmt_weight, WIDTH_G))\n\t\t    columns.append(col(prefix + \"_pct\", \"%\", \"0.00\", WIDTH_PCT))\n\t\t    columns.append(col(prefix + \"_dol\", \"$\", \"$0,0\", WIDTH_DOL))\n\t\t\n\t\tif(show_manual_giveaway):\n\t\t\tcolumns.append(col(\"manual_giveaway_weight\", unit_name, fmt_weight, WIDTH_G))\n\t\t\tcolumns.append(col(\"manual_percentage\", \"%\", \"0.00\", WIDTH_PCT))\n\t\t\tcolumns.append(col(\"manual_giveaway_cost\", \"$\", \"$0,0\", WIDTH_DOL))\n\t\t\t\t\n\t\t# ----------------------------------\n\t\t# HEADER GROUPS\n\t\t# ----------------------------------\n\t\tdef header(title, span, bg\u003dNone, border\u003dFalse):\n\t\t    style \u003d {\n\t\t        \"fontWeight\": \"700\",\n\t\t        \"borderBottom\": BORDER_HEAVY\n\t\t    }\n\t\t\n\t\t    if bg:\n\t\t        style[\"backgroundColor\"] \u003d bg\n\t\t    if border:\n\t\t        style[\"borderRight\"] \u003d BORDER_GROUP\n\t\t\n\t\t    return {\n\t\t        \"title\": title,\n\t\t        \"span\": span,\n\t\t        \"justify\": \"center\",\n\t\t        \"align\": \"center\",\n\t\t        \"style\": style\n\t\t    }\n\t\t\n\t\trow1 \u003d []\n\t\trow1.append(header(\"\", 1, None, True))\n\t\trow1.append(header(\"TOTAL\", 3, None, True))\n\t\t\n\t\tfor sku in skus:\n\t\t    row1.append(header(sku, 3, BG_SKU, True))\n\t\t\n\t\tif(show_manual_giveaway):\n\t\t\trow1.append(header(\"Manual Giveaway\", 3, None, True))\n\t\t\t\t\t\t\n\t\trow2 \u003d []\n\t\trow2.append(header(\"Day\", 1, None, True))\n\t\t\n\t\trow2.append(header(unit_name, 1))\n\t\trow2.append(header(\"%\", 1))\n\t\trow2.append(header(\"$\", 1, None, True))\n\t\t\n\t\tfor sku in skus:\n\t\t    row2.append(header(unit_name, 1, BG_SKU))\n\t\t    row2.append(header(\"%\", 1, BG_SKU))\n\t\t    row2.append(header(\"$\", 1, BG_SKU, True))\n\t\t\n\t\tif(show_manual_giveaway):\n\t\t    row2.append(header(unit_name, 1, BG_SKU))\n\t\t    row2.append(header(\"%\", 1, BG_SKU))\n\t\t    row2.append(header(\"$\", 1, BG_SKU, True))\n\t\t    \t\n\t\theaderGroups \u003d [row1, row2]\n\t\t\n\t\t# ----------------------------------\n\t\t# RETURN\n\t\t# ----------------------------------\n\t\treturn {\n\t\t    \"data\": rows,\n\t\t    \"columns\": columns,\n\t\t    \"headerGroups\": headerGroups\n\t\t}\n\texcept:\n\t\tCORE_P.Utils.errorPopup(\u0027Error getting daily giveaway data!\u0027)",
                   "type": "script"
                 }
               ],
@@ -3402,6 +3506,772 @@
               }
             },
             "type": "kyvislabs.display.apexchart"
+          },
+          {
+            "meta": {
+              "name": "year_data_table"
+            },
+            "position": {
+              "basis": "1188px",
+              "display": false
+            },
+            "propConfig": {
+              "props.data": {
+                "binding": {
+                  "config": {
+                    "path": "view.custom.all_days"
+                  },
+                  "transforms": [
+                    {
+                      "code": "\t#CORE_P.Utils.errorPopup(str(value[0]))\n\treturn value",
+                      "type": "script"
+                    }
+                  ],
+                  "type": "property"
+                }
+              }
+            },
+            "props": {
+              "columns": [
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "date",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Date"
+                  },
+                  "justify": "auto",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "string",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": ""
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "total_count",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Unit Count"
+                  },
+                  "justify": "auto",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": ""
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "total_weight",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Total Weight"
+                  },
+                  "justify": "auto",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": ""
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "units",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": " "
+                  },
+                  "justify": "auto",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": ""
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "weight_avg",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Average Weight"
+                  },
+                  "justify": "auto",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": ""
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "metal_rejects",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Metal Rejects"
+                  },
+                  "justify": "auto",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": ""
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "weight_rejects",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": "Weight Rejects"
+                  },
+                  "justify": "auto",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": ""
+                },
+                {
+                  "align": "center",
+                  "boolean": "checkbox",
+                  "dateFormat": "MM/DD/YYYY",
+                  "editable": false,
+                  "field": "",
+                  "filter": {
+                    "boolean": {
+                      "condition": ""
+                    },
+                    "date": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "enabled": false,
+                    "number": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "string": {
+                      "condition": "",
+                      "value": ""
+                    },
+                    "visible": "on-hover"
+                  },
+                  "footer": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "header": {
+                    "align": "center",
+                    "justify": "left",
+                    "style": {
+                      "classes": ""
+                    },
+                    "title": ""
+                  },
+                  "justify": "auto",
+                  "nullFormat": {
+                    "includeNullStrings": false,
+                    "nullFormatValue": "",
+                    "strict": false
+                  },
+                  "number": "value",
+                  "numberFormat": "0,0.##",
+                  "progressBar": {
+                    "bar": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "max": 100,
+                    "min": 0,
+                    "track": {
+                      "color": "",
+                      "style": {
+                        "classes": ""
+                      }
+                    },
+                    "value": {
+                      "enabled": true,
+                      "format": "0,0.##",
+                      "justify": "center",
+                      "style": {
+                        "classes": ""
+                      }
+                    }
+                  },
+                  "render": "auto",
+                  "resizable": true,
+                  "sort": "none",
+                  "sortable": true,
+                  "strictWidth": false,
+                  "style": {
+                    "classes": ""
+                  },
+                  "toggleSwitch": {
+                    "color": {
+                      "selected": "",
+                      "unselected": ""
+                    }
+                  },
+                  "viewParams": {},
+                  "viewPath": "",
+                  "visible": true,
+                  "width": ""
+                }
+              ]
+            },
+            "type": "ia.display.table"
           }
         ],
         "meta": {
@@ -3418,7 +4288,7 @@
               },
               "transforms": [
                 {
-                  "code": "\twidth \u003d int(value)*15 + 115\n\treturn str(width)+\u0027px\u0027",
+                  "code": "\twidth \u003d int(value)*15 + 115 \n\treturn str(width)+\u0027px\u0027",
                   "type": "script"
                 }
               ],

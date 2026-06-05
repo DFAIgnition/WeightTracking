@@ -32,8 +32,38 @@
     "parameters": [
       {
         "type": "Parameter",
+        "identifier": "timezone",
+        "sqlType": 7
+      },
+      {
+        "type": "Parameter",
+        "identifier": "start_dt",
+        "sqlType": 8
+      },
+      {
+        "type": "Parameter",
+        "identifier": "end_dt",
+        "sqlType": 8
+      },
+      {
+        "type": "Parameter",
+        "identifier": "scale_id",
+        "sqlType": 2
+      },
+      {
+        "type": "Parameter",
         "identifier": "line_id",
         "sqlType": 2
+      },
+      {
+        "type": "Parameter",
+        "identifier": "unit_conversion",
+        "sqlType": 4
+      },
+      {
+        "type": "Parameter",
+        "identifier": "total_conversion",
+        "sqlType": 4
       }
     ]
   }

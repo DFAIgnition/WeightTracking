@@ -15,6 +15,7 @@ def getProjectMenu():
 		{'label': "Overview",		'icon':"material/aspect_ratio",	"target": "/main"},
 		{'label': "Weights By Month",		'icon':"material/calendar_today",	"target": "/weightsbymonth"},
 		{'label': "Weights By Day",		'icon':"material/event",	"target": "/weightsbyday"},
+		{'label': "Weights By Shift",		'icon':"material/event_note",	"target": "/weightsbyshift"},
 		{'label': "Admin",				'icon':"material/settings",		"target": "", "items":[
 			{'label': "Filler Setup",		'icon':"material/settings",	"target": "/admin",  'permission_code':'SITEADMIN', 'project_name':project_name},
 			{'label': "User Admin",					'icon':"material/settings",		"target": "/useradmin", 		'permission_code':'SITEADMIN', 'project_name':project_name},

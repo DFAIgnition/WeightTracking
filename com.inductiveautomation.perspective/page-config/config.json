@@ -27,6 +27,10 @@
     "/weightsbymonth": {
       "title": "Weights by Month",
       "viewPath": "Weight_V/WeightsByMonth"
+    },
+    "/weightsbyshift": {
+      "title": "Weights by Shift",
+      "viewPath": "Weight_V/WeightsByShift"
     }
   },
   "sharedDocks": {

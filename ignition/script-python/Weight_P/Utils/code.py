@@ -106,4 +106,8 @@ def SecondsToHours(value):
 	
 	hours = value // 3600
 	return str(hours) + " h "
-	
+
+# Turn a shift from the db that looks like 20260601, to this: 2026-06-01
+def display_shift_date(shift_date):
+	shift_date = str(shift_date)
+	return shift_date[:4] + "-" + shift_date[4:6] + "-" + shift_date[6:]

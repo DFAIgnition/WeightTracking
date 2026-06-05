@@ -499,20 +499,30 @@ def ProcessWeek(Start, End, site_id, scale_id):
 						    if tag in tags and tags[tag]:
 						        last_known_values[tag] = tags[tag]    
 
-#			# Remove keys that have no hourly data or less than 2 bags per hour
-#			for day_key in list(daily_data.keys()):  # Iterate over each day
-#			    for hour_key in list(daily_data[day_key].keys()):  # Iterate over each hour
-#			    	for material_key in list(daily_data[day_key][hour_key].keys()):  # Iterate over each material
-#				        hour_data = daily_data[day_key][hour_key][material_key]
-#				        # Check if 'count' key exists and if its value is less than 1
-#				        total_count = 0
-#				        if 'count' in hour_data:
-#				        	total_count += hour_data['count']
-#				        if 	'out_of_threshold' in hour_data:
-#				        	total_count += len(hour_data['out_of_threshold'])
-#				        if total_count <= 1:
-#				            del daily_data[day_key][hour_key][material_key]  # Delete the hour bucket
-#			            
+			# Remove keys that have no hourly data or less than 2 bags per hour
+			for day_key in list(daily_data.keys()):  # Iterate over each day
+			    for hour_key in list(daily_data[day_key].keys()):  # Iterate over each hour
+			    	for material_key in list(daily_data[day_key][hour_key].keys()):  # Iterate over each material
+				        hour_data = daily_data[day_key][hour_key][material_key]
+				        # Check if 'count' key exists and if its value is less than 1
+				        total_count = 0
+				        if 'count' in hour_data:
+				        	total_count += hour_data['count']
+				        if 	'out_of_threshold' in hour_data:
+				        	total_count += len(hour_data['out_of_threshold'])
+				        if total_count <= 1:
+				        	# If there is only one value found, it is likely an error (or someone testing the system), so we don't want to record it
+				        	# Instead, just blank out all the numbers, so we can still put a row in the database showing that nothing happened
+				        	# (this is important for having hourly rows to distribute manual losses over)
+				        	for dict_key in ('count', 'total_count', 'weight_avg', 'weight_sum','weight_diff','pct_weight_over',
+				        					'pct_weight_under','pct_out_of_range','standard_deviation','variance','weight_range','weight_max',
+				        					'weight_min','percentile25','percentile50','percentile75','reject_metal','reject_over','reject_under'):
+			        			daily_data[day_key][hour_key][material_key][dict_key] = 0
+				            #del daily_data[day_key][hour_key][material_key]  # Delete the hour bucket
+				            	
+
+
+			    # No longer deleting the nearly-empty rows, just blanking them out       
 #			    # After processing hours, check if the day has any hours left
 #				if not daily_data[day_key]:  # Check if the day is empty
 #				    del daily_data[day_key]  # Delete the day if it has no hours
