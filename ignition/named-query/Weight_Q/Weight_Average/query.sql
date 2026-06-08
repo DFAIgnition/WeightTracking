@@ -42,6 +42,7 @@ RejectAgg AS (
 
 SELECT
     b.time_start,
+    dateadd(hour, -:day_start, b.time_start) as shift_date,
     CASE WHEN b.count > 0 THEN (b.weight_sum / b.count) ELSE 0 END AS weight_avg,
     b.weight_sum,
     b.weight_max,

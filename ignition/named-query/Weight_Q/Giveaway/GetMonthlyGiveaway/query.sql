@@ -13,15 +13,23 @@ END
                 ELSE
                     g.event_dt AT TIME ZONE :timezone
             END
-        AS datetime2(0)) AS local_event_dt, *
-
-    
+        AS datetime2(0)) AS local_event_dt, 
+		CAST(
+            CASE 
+                WHEN @is_utc = 1
+                    THEN dateadd(hour, -:day_start, g.event_dt) AT TIME ZONE 'UTC' AT TIME ZONE :timezone
+                ELSE
+                    dateadd(hour, -:day_start, g.event_dt) AT TIME ZONE :timezone
+            END
+        AS datetime2(0)) AS local_shift_date,
+    	*
+    	
     from [weight].dbo.giveaway g
     where g.line_id=:line_id
 	and (g.event_dt >= :start_dt and g.event_dt < :end_dt)
 )
 select 
-   DATEFROMPARTS(YEAR(a.local_event_dt), MONTH(a.local_event_dt), 1) AS production_month, 
+   DATEFROMPARTS(YEAR(a.local_shift_date), MONTH(a.local_shift_date), 1) AS production_month, 
    
     a.site_id,
     a.line_id,
@@ -75,7 +83,7 @@ WHERE a.quality_flag = 0
 
 GROUP BY
     a.site_id,
-    DATEFROMPARTS(YEAR(a.local_event_dt), MONTH(a.local_event_dt), 1),
+    DATEFROMPARTS(YEAR(a.local_shift_date), MONTH(a.local_shift_date), 1),
     a.line_id,
     a.filler_id,
     s.sku_code,

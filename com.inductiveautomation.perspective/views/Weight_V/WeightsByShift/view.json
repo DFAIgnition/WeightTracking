@@ -5,9 +5,9 @@
       "$": [
         "ts",
         192,
-        1780611430952
+        1780869568083
       ],
-      "$ts": 1780660800000
+      "$ts": 1780920000000
     },
     "heatmap_format": {
       "colorScale": {
@@ -85,9 +85,9 @@
     },
     "key": "value",
     "line": {
-      "Description": "Bag Line 1 ",
+      "Description": "",
       "MaxWeight": 30000,
-      "MinWeight": 0
+      "MinWeight": 20000
     },
     "scale": {
       "conversion_factor": 1,
@@ -102,18 +102,11 @@
       "index_year": "",
       "timestamp": ""
     },
-    "sqlserver_timezone": "New Zealand Standard Time",
-    "start_dt": {
-      "$": [
-        "ts",
-        192,
-        1780622875158
-      ],
-      "$ts": 1780056000000
-    }
+    "sqlserver_timezone": "UTC",
+    "start_dt": null
   },
   "params": {
-    "timeZoneID": "Pacific/Auckland"
+    "timeZoneID": ""
   },
   "propConfig": {
     "custom.end_dt": {
@@ -533,7 +526,7 @@
                 "marginRight": 10,
                 "marginTop": 4
               },
-              "value": 1
+              "value": 0
             },
             "type": "ia.input.dropdown"
           },
@@ -924,6 +917,7 @@
                   "config": {
                     "path": ".../Selections/selection_units.props.value"
                   },
+                  "enabled": false,
                   "transforms": [
                     {
                       "code": "\tif value\u003d\u003d\u0027gkg\u0027:\n\t\treturn \u0027Weight Average [g]\u0027\n\telif value\u003d\u003d\u0027olbs\u0027:\n\t\treturn \u0027Weight Average [oz]\u0027\n\t\t\n\treturn \u0027Weight Average [\u0027 + str(value) + \u0027]\u0027\n",
@@ -940,7 +934,7 @@
                   },
                   "transforms": [
                     {
-                      "code": "\tif value\u003d\u003d\u0027gkg\u0027:\n\t\treturn \u0027Total Production [kg]\u0027\n\telif value\u003d\u003d\u0027olbs\u0027:\n\t\treturn \u0027Total Production [lbs]\u0027\n\t\t\t\t\n\treturn \u0027Total Production [\u0027 + str(value) + \u0027]\u0027\t",
+                      "code": "\tif value\u003d\u003d\u0027gkg\u0027:\n\t\treturn \u0027Weight Average [kg]\u0027\n\telif value\u003d\u003d\u0027olbs\u0027:\n\t\treturn \u0027Weight Average [lbs]\u0027\n\t\t\t\t\n\treturn \u0027Weight Average [\u0027 + str(value) + \u0027]\u0027\t",
                       "type": "script"
                     }
                   ],
@@ -954,7 +948,7 @@
                   },
                   "transforms": [
                     {
-                      "code": "\tif value\u003d\u003d\u0027gkg\u0027:\n\t\treturn \u0027Overage [kg]\u0027\n\telif value\u003d\u003d\u0027olbs\u0027:\n\t\treturn \u0027Overage [lbs]\u0027\n\t\t\t\t\n\treturn \u0027Overage [\u0027 + str(value) + \u0027]\u0027\t",
+                      "code": "\tif value\u003d\u003d\u0027gkg\u0027:\n\t\treturn \u0027Total Production [kg]\u0027\n\telif value\u003d\u003d\u0027olbs\u0027:\n\t\treturn \u0027Total Production [lbs]\u0027\n\t\t\t\t\n\treturn \u0027Total Production [\u0027 + str(value) + \u0027]\u0027\t",
                       "type": "script"
                     }
                   ],
@@ -1570,7 +1564,8 @@
                     "justify": "left",
                     "style": {
                       "classes": ""
-                    }
+                    },
+                    "title": "Units"
                   },
                   "justify": "auto",
                   "nullFormat": {

@@ -31,18 +31,27 @@ BEGIN
 END
 GO 
 
-
+-- Add some more indexes to speed things up...
 CREATE INDEX [aggregated_shift_i] ON [dbo].[aggregated]
 (
-	[scale_id] ASC,
 	[shift_date] asc, 
 	[shift_number] asc,
+	[scale_id] ASC,
 	[material] ASC,
 	[po_number] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 
+CREATE NONCLUSTERED INDEX [aggregated_shift_i2] ON [dbo].[aggregated] ([shift_date],[shift_number]) 
+INCLUDE ([scale_id],[time_start],[count],[weight_sum],[weight_diff],[pct_weight_over],[pct_weight_under],[material],[total_count]);
+
+CREATE NONCLUSTERED INDEX [aggregated_shift_i3] ON [dbo].[aggregated] ([scale_id],[shift_date],[shift_number]) 
+INCLUDE ([time_start],[count],[weight_sum],[weight_diff],[pct_weight_over],[pct_weight_under],[material],[total_count])
+
+CREATE NONCLUSTERED INDEX rejects_i ON [dbo].[rejects] ([line_id],[time_start],[material]) INCLUDE ([metal_count],[weight_count])
+
 update statistics [aggregated];
+update statistics [rejects];
 
 
 INSERT INTO weight.dbo.versions (version_number) VALUES (1.10);

@@ -54,6 +54,11 @@
         "type": "Parameter",
         "identifier": "timezone",
         "sqlType": 7
+      },
+      {
+        "type": "Parameter",
+        "identifier": "day_start",
+        "sqlType": 2
       }
     ]
   }
