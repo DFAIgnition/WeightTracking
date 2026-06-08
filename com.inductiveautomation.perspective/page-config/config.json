@@ -1,7 +1,7 @@
 {
   "pages": {
     "/admin": {
-      "title": "",
+      "title": "Weights Admin",
       "viewPath": "Weight_V/Administration/Admin"
     },
     "/aggregator": {
@@ -13,7 +13,7 @@
       "viewPath": "Weight_V/Configuration/Configuration"
     },
     "/main": {
-      "title": "Aggregator",
+      "title": "Weights Overview",
       "viewPath": "Weight_V/Overview"
     },
     "/useradmin": {

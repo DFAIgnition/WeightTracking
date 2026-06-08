@@ -1202,7 +1202,7 @@
                       },
                       "transforms": [
                         {
-                          "code": "\tif (not value):\n\t\treturn 2\n\treturn value\t\n\t",
+                          "code": "\tif (not value):\n\t\treturn 1\n\treturn value\t\n\t",
                           "type": "script"
                         }
                       ],
@@ -1212,6 +1212,10 @@
                 },
                 "props": {
                   "options": [
+                    {
+                      "label": "One",
+                      "value": 1
+                    },
                     {
                       "label": "Two",
                       "value": 2
@@ -1257,7 +1261,7 @@
                       },
                       "transforms": [
                         {
-                          "code": "\tif (not value):\n\t\treturn 12\n\treturn value\t\n\t",
+                          "code": "\tif (not value):\n\t\treturn 24\n\treturn value\t\n\t",
                           "type": "script"
                         }
                       ],
@@ -1274,6 +1278,10 @@
                     {
                       "label": "Twelve Hours",
                       "value": 12
+                    },
+                    {
+                      "label": "Twenty Four Hours",
+                      "value": 24
                     }
                   ]
                 },

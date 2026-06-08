@@ -1,408 +1,6 @@
 {
   "custom": {
-    "aggregator_day_metal": [
-      {
-        "data": [
-          {
-            "x": "00:00",
-            "y": 0
-          },
-          {
-            "x": "01:00",
-            "y": 0
-          },
-          {
-            "x": "02:00",
-            "y": 0
-          },
-          {
-            "x": "03:00",
-            "y": 0
-          },
-          {
-            "x": "04:00",
-            "y": 0
-          },
-          {
-            "x": "05:00",
-            "y": 0
-          },
-          {
-            "x": "06:00",
-            "y": 0
-          },
-          {
-            "x": "07:00",
-            "y": 0
-          },
-          {
-            "x": "08:00",
-            "y": 0
-          },
-          {
-            "x": "09:00",
-            "y": 0
-          },
-          {
-            "x": "10:00",
-            "y": 0
-          },
-          {
-            "x": "11:00",
-            "y": 0
-          },
-          {
-            "x": "12:00",
-            "y": 0
-          },
-          {
-            "x": "13:00",
-            "y": 0
-          },
-          {
-            "x": "14:00",
-            "y": 0
-          },
-          {
-            "x": "15:00",
-            "y": 0
-          },
-          {
-            "x": "16:00",
-            "y": 0
-          },
-          {
-            "x": "17:00",
-            "y": 0
-          },
-          {
-            "x": "18:00",
-            "y": 0
-          },
-          {
-            "x": "19:00",
-            "y": 0
-          },
-          {
-            "x": "20:00",
-            "y": 0
-          },
-          {
-            "x": "21:00",
-            "y": 0
-          },
-          {
-            "x": "22:00",
-            "y": 0
-          },
-          {
-            "x": "23:00",
-            "y": 0
-          }
-        ],
-        "name": "Metal Total Hits"
-      },
-      {
-        "data": [
-          {
-            "x": "00:00",
-            "y": 0
-          },
-          {
-            "x": "01:00",
-            "y": 0
-          },
-          {
-            "x": "02:00",
-            "y": 0
-          },
-          {
-            "x": "03:00",
-            "y": 0
-          },
-          {
-            "x": "04:00",
-            "y": 0
-          },
-          {
-            "x": "05:00",
-            "y": 0
-          },
-          {
-            "x": "06:00",
-            "y": 0
-          },
-          {
-            "x": "07:00",
-            "y": 0
-          },
-          {
-            "x": "08:00",
-            "y": 0
-          },
-          {
-            "x": "09:00",
-            "y": 0
-          },
-          {
-            "x": "10:00",
-            "y": 0
-          },
-          {
-            "x": "11:00",
-            "y": 0
-          },
-          {
-            "x": "12:00",
-            "y": 0
-          },
-          {
-            "x": "13:00",
-            "y": 0
-          },
-          {
-            "x": "14:00",
-            "y": 0
-          },
-          {
-            "x": "15:00",
-            "y": 0
-          },
-          {
-            "x": "16:00",
-            "y": 0
-          },
-          {
-            "x": "17:00",
-            "y": 0
-          },
-          {
-            "x": "18:00",
-            "y": 0
-          },
-          {
-            "x": "19:00",
-            "y": 0
-          },
-          {
-            "x": "20:00",
-            "y": 0
-          },
-          {
-            "x": "21:00",
-            "y": 0
-          },
-          {
-            "x": "22:00",
-            "y": 0
-          },
-          {
-            "x": "23:00",
-            "y": 0
-          }
-        ],
-        "name": "Metal Actual Hits"
-      },
-      {
-        "data": [
-          {
-            "x": "00:00",
-            "y": 0
-          },
-          {
-            "x": "01:00",
-            "y": 0
-          },
-          {
-            "x": "02:00",
-            "y": 0
-          },
-          {
-            "x": "03:00",
-            "y": 0
-          },
-          {
-            "x": "04:00",
-            "y": 0
-          },
-          {
-            "x": "05:00",
-            "y": 0
-          },
-          {
-            "x": "06:00",
-            "y": 0
-          },
-          {
-            "x": "07:00",
-            "y": 0
-          },
-          {
-            "x": "08:00",
-            "y": 0
-          },
-          {
-            "x": "09:00",
-            "y": 0
-          },
-          {
-            "x": "10:00",
-            "y": 0
-          },
-          {
-            "x": "11:00",
-            "y": 0
-          },
-          {
-            "x": "12:00",
-            "y": 0
-          },
-          {
-            "x": "13:00",
-            "y": 0
-          },
-          {
-            "x": "14:00",
-            "y": 0
-          },
-          {
-            "x": "15:00",
-            "y": 0
-          },
-          {
-            "x": "16:00",
-            "y": 0
-          },
-          {
-            "x": "17:00",
-            "y": 0
-          },
-          {
-            "x": "18:00",
-            "y": 0
-          },
-          {
-            "x": "19:00",
-            "y": 0
-          },
-          {
-            "x": "20:00",
-            "y": 0
-          },
-          {
-            "x": "21:00",
-            "y": 0
-          },
-          {
-            "x": "22:00",
-            "y": 0
-          },
-          {
-            "x": "23:00",
-            "y": 0
-          }
-        ],
-        "name": "Metal Test Hits"
-      }
-    ],
-    "aggregator_day_weight": [
-      {
-        "x": "00:00",
-        "y": 0
-      },
-      {
-        "x": "01:00",
-        "y": 0
-      },
-      {
-        "x": "02:00",
-        "y": 0
-      },
-      {
-        "x": "03:00",
-        "y": 0
-      },
-      {
-        "x": "04:00",
-        "y": 0
-      },
-      {
-        "x": "05:00",
-        "y": 0
-      },
-      {
-        "x": "06:00",
-        "y": 0
-      },
-      {
-        "x": "07:00",
-        "y": 0
-      },
-      {
-        "x": "08:00",
-        "y": 0
-      },
-      {
-        "x": "09:00",
-        "y": 0
-      },
-      {
-        "x": "10:00",
-        "y": 0
-      },
-      {
-        "x": "11:00",
-        "y": 0
-      },
-      {
-        "x": "12:00",
-        "y": 0
-      },
-      {
-        "x": "13:00",
-        "y": 0
-      },
-      {
-        "x": "14:00",
-        "y": 0
-      },
-      {
-        "x": "15:00",
-        "y": 0
-      },
-      {
-        "x": "16:00",
-        "y": 0
-      },
-      {
-        "x": "17:00",
-        "y": 0
-      },
-      {
-        "x": "18:00",
-        "y": 0
-      },
-      {
-        "x": "19:00",
-        "y": 0
-      },
-      {
-        "x": "20:00",
-        "y": 0
-      },
-      {
-        "x": "21:00",
-        "y": 0
-      },
-      {
-        "x": "22:00",
-        "y": 0
-      },
-      {
-        "x": "23:00",
-        "y": 0
-      }
-    ],
+    "aggregator_day_weight": [],
     "day_start_hour": 0,
     "design": null,
     "has_metal_detector_tags": "value",
@@ -488,14 +86,14 @@
     },
     "metal_metric": "total",
     "scale": {
-      "total_design": 0.11023121845796995
+      "total_design": 50
     },
     "selection": {},
     "start_dt": {
       "$": [
         "ts",
         192,
-        1780887909993
+        1780952899824
       ],
       "$ts": 1751328000000
     },
@@ -505,9 +103,9 @@
     },
     "units": {
       "individual_units": "lbs",
-      "total_conversion": 453.5920104980469,
+      "total_conversion": 1,
       "total_units": "lbs",
-      "unit_conversion": 453.5920104980469
+      "unit_conversion": 1
     }
   },
   "params": {
@@ -533,7 +131,7 @@
         "overlayOptOut": true,
         "transforms": [
           {
-            "code": "\n    import system\n    from java.util import Calendar, TimeZone, Locale\n    \n    all_days\u003d[]\n\t\n    # ----------------------------------\n    # CONFIG\n    # ----------------------------------\n    timeZoneId \u003d self.params.timeZoneID\n    tz \u003d TimeZone.getTimeZone(timeZoneId)\n\n    unit_conversion \u003d float(self.custom.units[\u0027unit_conversion\u0027])\n    total_conversion \u003d float(self.custom.units[\u0027total_conversion\u0027])\n\n    # ----------------------------------\n    # HELPERS\n    # ----------------------------------\n    def new_data():\n        return {\n        \t\u0027date\u0027: \u0027\u0027,\n        \t\u0027units\u0027: \u0027\u0027,\n            \u0027weight_avg\u0027: 0,\n            \u0027count\u0027: 0,\n            \u0027total_count\u0027: 0,\n            \u0027weight_diff\u0027: 0,\n\n            # legacy\n            \u0027metal_rejects\u0027: 0,\n\n            # new\n            \u0027metal_count\u0027: 0,\n            \u0027metal_test_count\u0027: 0,\n            \u0027metal_actual_count\u0027: 0,\n\n            \u0027weight_rejects\u0027: 0,\n            \u0027total_weight\u0027: 0,\n            \u0027over_pct\u0027: 0\n        }\n\n    def update(data, record):\n\t\n        # ----------------------------------\n        # BASIC METRICS\n        # ----------------------------------\n        #data[\u0027date\u0027] \u003d CORE_P.Time.display_local_dt(record.get(\u0027time_start\u0027), self, format\u003d\u0027yyyy-MM-dd\u0027)\n        data[\u0027date\u0027] \u003d CORE_P.Time.display_local_dt(record.get(\u0027shift_date\u0027), self, format\u003d\u0027yyyy-MM-dd\u0027)\n        data[\u0027units\u0027] \u003d self.getChild(\"root\").getChild(\"Selections\").getChild(\"selection_units\").props.value\n        data[\u0027weight_avg\u0027] +\u003d float(record.get(\u0027weight_sum\u0027) or 0)\n        data[\u0027count\u0027] +\u003d int(record.get(\u0027count\u0027) or 0)\n        data[\u0027total_count\u0027] +\u003d int(record.get(\u0027total_count\u0027) or 0)\n        data[\u0027weight_diff\u0027] +\u003d float(record.get(\u0027weight_diff\u0027) or 0)\n\n        # ----------------------------------\n        # METAL (ROBUST HANDLING)\n        # ----------------------------------\n        metal_total \u003d (\n            record.get(\u0027metal_count\u0027) or \n            record.get(\u0027METAL_COUNT\u0027) or \n            record.get(\u0027metal_rejects\u0027) or \n            record.get(\u0027METAL_REJECTS\u0027) or \n            0\n        )\n\n        metal_test \u003d (\n            record.get(\u0027metal_test_count\u0027) or \n            record.get(\u0027METAL_TEST_COUNT\u0027) or \n            0\n        )\n\n        metal_actual \u003d (\n            record.get(\u0027metal_actual_count\u0027) or \n            record.get(\u0027METAL_ACTUAL_COUNT\u0027)\n        )\n\n        # derive actual if missing\n        if metal_actual is None:\n            metal_actual \u003d metal_total - metal_test\n\n        # safety\n        if metal_actual \u003c 0:\n            metal_actual \u003d 0\n\n        # accumulate\n        data[\u0027metal_count\u0027] +\u003d int(metal_total)\n        data[\u0027metal_test_count\u0027] +\u003d int(metal_test)\n        data[\u0027metal_actual_count\u0027] +\u003d int(metal_actual)\n\n        # keep legacy\n        data[\u0027metal_rejects\u0027] +\u003d int(metal_total)\n\n        # ----------------------------------\n        # WEIGHT REJECTS\n        # ----------------------------------\n        data[\u0027weight_rejects\u0027] +\u003d int(record.get(\u0027weight_rejects\u0027) or 0)\n\n    def finalize(data):\n\n        if data[\u0027count\u0027] \u003e 0:\n\n            # avg weight\n            data[\u0027weight_avg\u0027] \u003d (float(data[\u0027weight_avg\u0027]) / float(data[\u0027count\u0027])) / unit_conversion\n\n            # total produced weight\n            data[\u0027total_weight\u0027] \u003d float(data[\u0027weight_avg\u0027] * data[\u0027count\u0027])\n\n            # giveaway weight\n            data[\u0027weight_diff\u0027] \u003d float(data[\u0027weight_diff\u0027]) / total_conversion\n\n            # % overage\n            if data[\u0027total_weight\u0027] \u003e 0:\n                data[\u0027over_pct\u0027] \u003d (data[\u0027weight_diff\u0027] / data[\u0027total_weight\u0027]) * 100\n            else:\n                data[\u0027over_pct\u0027] \u003d 0\n\n        # ----------------------------------\n        # FINAL SAFETY CHECK\n        # ----------------------------------\n        if data[\u0027metal_count\u0027] \u003c (data[\u0027metal_test_count\u0027] + data[\u0027metal_actual_count\u0027]):\n            data[\u0027metal_actual_count\u0027] \u003d data[\u0027metal_count\u0027] - data[\u0027metal_test_count\u0027]\n\n    # ----------------------------------\n    # BUILD STRUCTURE\n    # ----------------------------------\n    def build_year():\n\n        result \u003d []\n\n        for m in range(12):\n\n            cal \u003d Calendar.getInstance(tz)\n            cal.set(Calendar.MONTH, m)\n\n\t\n            month_name \u003d cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())\n\n            days \u003d []\n            max_day \u003d cal.getActualMaximum(Calendar.DAY_OF_MONTH)\n\n            for d in range(1, max_day + 1):\n\n                cal.set(Calendar.DAY_OF_MONTH, d)\n                cal.set(Calendar.HOUR_OF_DAY, 0)\n                cal.set(Calendar.MINUTE, 0)\n                cal.set(Calendar.SECOND, 0)\n                cal.set(Calendar.MILLISECOND, 0)\n\n                day_data \u003d new_data()\n                day_data[\u0027x\u0027] \u003d system.date.toMillis(cal.getTime())\n                \n                days.append(day_data)\n\n            summary_data \u003d new_data()\n            summary_data[\u0027x\u0027] \u003d month_name\n\n            result.append({\n                \u0027days\u0027: days,\n                \u0027summary\u0027: summary_data\n            })\n\n        return result\n\n    # ----------------------------------\n    # AGGREGATE\n    # ----------------------------------\n    try:\n\t    yearly \u003d build_year()\n\t\n\t    for record in value:\n\t\n\t        #ts \u003d system.date.fromMillis(record[\u0027time_start\u0027])\n\t        ts \u003d system.date.fromMillis(record[\u0027shift_date\u0027])\n\t\n\t        cal \u003d Calendar.getInstance(tz)\n\t        cal.setTime(ts)\n\t\n\t        m \u003d cal.get(Calendar.MONTH)\n\t        d \u003d cal.get(Calendar.DAY_OF_MONTH) - 1\n\t\n\t        update(yearly[m][\u0027days\u0027][d], record)\n\t        update(yearly[m][\u0027summary\u0027], record)\n\n\t    # ----------------------------------\n\t    # FINALIZE\n\t    # ----------------------------------\n\t    for month in yearly:\n\t        for day in month[\u0027days\u0027]:\n\t            finalize(day)\n\t            if (day[\u0027date\u0027]):\n\t            \tall_days.append(day)            \n\t        finalize(month[\u0027summary\u0027])\n\t    \n\t\t\n\t\tself.custom.all_days \u003d sorted(all_days, key\u003dlambda x: x[\u0027date\u0027], reverse\u003dTrue)\n    except:\n\t\tCORE_P.Utils.errorPopup(\u0027Error generating weight tracking aggregator!\u0027)\n    return yearly",
+            "code": "\n    import system\n    from java.util import Calendar, TimeZone, Locale\n    \n    all_days\u003d[]\n\t\n    # ----------------------------------\n    # CONFIG\n    # ----------------------------------\n    timeZoneId \u003d self.params.timeZoneID\n    tz \u003d TimeZone.getTimeZone(timeZoneId)\n\n    unit_conversion \u003d float(self.custom.units[\u0027unit_conversion\u0027])\n    total_conversion \u003d float(self.custom.units[\u0027total_conversion\u0027])\n\n    # ----------------------------------\n    # HELPERS\n    # ----------------------------------\n    def new_data():\n        return {\n        \t\u0027date\u0027: \u0027\u0027,\n        \t\u0027units\u0027: \u0027\u0027,\n            \u0027weight_avg\u0027: 0,\n            \u0027count\u0027: 0,\n            \u0027total_count\u0027: 0,\n            \u0027weight_diff\u0027: 0,\n\n            # legacy\n            \u0027metal_rejects\u0027: 0,\n\n            # new\n            \u0027metal_count\u0027: 0,\n            \u0027metal_test_count\u0027: 0,\n            \u0027metal_actual_count\u0027: 0,\n\n            \u0027weight_rejects\u0027: 0,\n            \u0027total_weight\u0027: 0,\n            \u0027over_pct\u0027: 0\n        }\n\n    def update(data, record):\n\t\n        # ----------------------------------\n        # BASIC METRICS\n        # ----------------------------------\n        #data[\u0027date\u0027] \u003d CORE_P.Time.display_local_dt(record.get(\u0027time_start\u0027), self, format\u003d\u0027yyyy-MM-dd\u0027)\n        data[\u0027date\u0027] \u003d CORE_P.Time.display_local_dt(record.get(\u0027shift_date\u0027), self, format\u003d\u0027yyyy-MM-dd\u0027)\n        data[\u0027units\u0027] \u003d self.getChild(\"root\").getChild(\"Selections\").getChild(\"selection_units\").props.value\n        data[\u0027weight_avg\u0027] +\u003d float(record.get(\u0027weight_sum\u0027) or 0)\n        data[\u0027count\u0027] +\u003d int(record.get(\u0027count\u0027) or 0)\n        data[\u0027total_count\u0027] +\u003d int(record.get(\u0027total_count\u0027) or 0)\n        data[\u0027weight_diff\u0027] +\u003d float(record.get(\u0027weight_diff\u0027) or 0)\n\n        # ----------------------------------\n        # METAL (ROBUST HANDLING)\n        # ----------------------------------\n        metal_total \u003d (\n            record.get(\u0027metal_count\u0027) or \n            record.get(\u0027METAL_COUNT\u0027) or \n            record.get(\u0027metal_rejects\u0027) or \n            record.get(\u0027METAL_REJECTS\u0027) or \n            0\n        )\n\n        metal_test \u003d (\n            record.get(\u0027metal_test_count\u0027) or \n            record.get(\u0027METAL_TEST_COUNT\u0027) or \n            0\n        )\n\n        metal_actual \u003d (\n            record.get(\u0027metal_actual_count\u0027) or \n            record.get(\u0027METAL_ACTUAL_COUNT\u0027)\n        )\n\n        # derive actual if missing\n        if metal_actual is None:\n            metal_actual \u003d metal_total - metal_test\n\n        # safety\n        if metal_actual \u003c 0:\n            metal_actual \u003d 0\n\n        # accumulate\n        data[\u0027metal_count\u0027] +\u003d int(metal_total)\n        data[\u0027metal_test_count\u0027] +\u003d int(metal_test)\n        data[\u0027metal_actual_count\u0027] +\u003d int(metal_actual)\n\n        # keep legacy\n        data[\u0027metal_rejects\u0027] +\u003d int(metal_total)\n\n        # ----------------------------------\n        # WEIGHT REJECTS\n        # ----------------------------------\n        data[\u0027weight_rejects\u0027] +\u003d int(record.get(\u0027weight_rejects\u0027) or 0)\n\n    def finalize(data):\n\n        if data[\u0027count\u0027] \u003e 0:\n\n            # avg weight\n            data[\u0027weight_avg\u0027] \u003d (float(data[\u0027weight_avg\u0027]) / float(data[\u0027count\u0027])) / unit_conversion\n\n            # total produced weight\n            data[\u0027total_weight\u0027] \u003d float(data[\u0027weight_avg\u0027] * data[\u0027count\u0027])\n\n            # giveaway weight\n            data[\u0027weight_diff\u0027] \u003d float(data[\u0027weight_diff\u0027]) / total_conversion\n\n            # % overage\n            if data[\u0027total_weight\u0027] \u003e 0:\n                data[\u0027over_pct\u0027] \u003d (data[\u0027weight_diff\u0027] / data[\u0027total_weight\u0027]) * 100\n            else:\n                data[\u0027over_pct\u0027] \u003d 0\n\n        # ----------------------------------\n        # FINAL SAFETY CHECK\n        # ----------------------------------\n        if data[\u0027metal_count\u0027] \u003c (data[\u0027metal_test_count\u0027] + data[\u0027metal_actual_count\u0027]):\n            data[\u0027metal_actual_count\u0027] \u003d data[\u0027metal_count\u0027] - data[\u0027metal_test_count\u0027]\n\n    # ----------------------------------\n    # BUILD STRUCTURE\n    # ----------------------------------\n    def build_year():\n\n        result \u003d []\n\n        for m in range(12):\n\n            cal \u003d Calendar.getInstance(tz)\n            cal.set(Calendar.MONTH, m)\n\n\t\n            month_name \u003d cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())\n\n            days \u003d []\n            max_day \u003d cal.getActualMaximum(Calendar.DAY_OF_MONTH)\n\n            for d in range(1, max_day + 1):\n\n                cal.set(Calendar.DAY_OF_MONTH, d)\n                cal.set(Calendar.HOUR_OF_DAY, 0)\n                cal.set(Calendar.MINUTE, 0)\n                cal.set(Calendar.SECOND, 0)\n                cal.set(Calendar.MILLISECOND, 0)\n\n                day_data \u003d new_data()\n                day_data[\u0027x\u0027] \u003d system.date.toMillis(cal.getTime())\n                \n                # TESTING!!!\n                cal.add(Calendar.HOUR_OF_DAY, self.custom.day_start_hour)\n                day_data[\u0027x_local\u0027] \u003d system.date.toMillis(cal.getTime())\n                \n                days.append(day_data)\n\n            summary_data \u003d new_data()\n            summary_data[\u0027x\u0027] \u003d month_name\n\n            result.append({\n                \u0027days\u0027: days,\n                \u0027summary\u0027: summary_data\n            })\n\n        return result\n\n    # ----------------------------------\n    # AGGREGATE\n    # ----------------------------------\n    try:\n\t    yearly \u003d build_year()\n\t\n\t    for record in value:\n\t\n\t        #ts \u003d system.date.fromMillis(record[\u0027time_start\u0027])\n\t        ts \u003d system.date.fromMillis(record[\u0027shift_date\u0027])\n\t\n\t        cal \u003d Calendar.getInstance(tz)\n\t        cal.setTime(ts)\n\t\n\t        m \u003d cal.get(Calendar.MONTH)\n\t        d \u003d cal.get(Calendar.DAY_OF_MONTH) - 1\n\t\n\t        update(yearly[m][\u0027days\u0027][d], record)\n\t        update(yearly[m][\u0027summary\u0027], record)\n\n\t    # ----------------------------------\n\t    # FINALIZE\n\t    # ----------------------------------\n\t    for month in yearly:\n\t        for day in month[\u0027days\u0027]:\n\t            finalize(day)\n\t            if (day[\u0027date\u0027]):\n\t            \tall_days.append(day)            \n\t        finalize(month[\u0027summary\u0027])\n\t    \n\t\t\n\t\tself.custom.all_days \u003d sorted(all_days, key\u003dlambda x: x[\u0027date\u0027], reverse\u003dTrue)\n    except:\n\t\tCORE_P.Utils.errorPopup(\u0027Error generating weight tracking aggregator!\u0027)\n    return yearly",
             "type": "script"
           }
         ],
@@ -584,7 +182,7 @@
         ],
         "type": "property"
       },
-      "persistent": true
+      "persistent": false
     },
     "custom.aggregator_day_sp": {
       "binding": {
@@ -628,7 +226,7 @@
         },
         "transforms": [
           {
-            "code": "\n    months \u003d int(self.getChild(\"root\").getChild(\"Selections\").getChild(\"selection_range\").props.value)\n\n    end_dt \u003d self.custom.end_dt\n    # End_Dt is now set to right at the end of the month, so use an earlier day to determine which month we are currently in (otherwise timezone changes can mess things up)\n    dummy_end_dt \u003d CORE_P.Time.adjustTimestamp(end_dt, offset_days\u003d-10) \n   \n    import system\n\n    month_short \u003d [\"Jan\", \"Feb\", \"Mar\", \"Apr\", \"May\", \"Jun\",\n                   \"Jul\", \"Aug\", \"Sep\", \"Oct\", \"Nov\", \"Dec\"]\n\n    month_to_number \u003d {\n        \"January\": 1, \"February\": 2, \"March\": 3, \"April\": 4,\n        \"May\": 5, \"June\": 6, \"July\": 7, \"August\": 8,\n        \"September\": 9, \"October\": 10, \"November\": 11, \"December\": 12\n    }\n\n    monthlyData \u003d value[\u0027aggregator\u0027]\n\n    # ----------------------------------\n    # BUILD LOOKUP FROM DATA\n    # keyed by (year, month)\n    # ----------------------------------\n    lookup \u003d {}\n\n    for month in monthlyData:\n        monthName \u003d month[\"summary\"][\"x\"]\n        month_number \u003d month_to_number.get(monthName)\n\n        if not month_number:\n            continue\n\n        # infer year relative to end_dt\n        end_month \u003d dummy_end_dt.getMonth() +1\n        end_year \u003d dummy_end_dt.getYear() + 1900\n\n        if month_number \u003e end_month:\n            year \u003d end_year - 1\n        else:\n            year \u003d end_year\n\n        lookup[(year, month_number)] \u003d month\n\n    # ----------------------------------\n    # GENERATE LAST X MONTHS\n    # ----------------------------------\n    result \u003d []\n\n    for i in range(months):\n\n        dt \u003d system.date.addMonths(dummy_end_dt, -i)\n\n        year \u003d dt.getYear() + 1900\n        month_number \u003d dt.getMonth() +1\n\n        month_label \u003d str(year) + \" - \" + month_short[month_number - 1]\n\n        monthData \u003d lookup.get((year, month_number))\n\n        monthDataArray \u003d []\n\n        if monthData:\n\n            for day in monthData[\"days\"]:\n                count \u003d day[\"count\"]\n                weight_diff \u003d day[\"weight_diff\"]\n                weight_avg \u003d day[\"weight_avg\"]\n\n                avg_diff \u003d float(weight_diff) / count if count \u003e 0 else 0\n\n                monthDataArray.append({\n                    \"x\": day[\"x\"],\n                    \"y\": avg_diff,\n                    \"y2\": weight_avg,\n                    \"y3\": weight_diff,\n                    \"y4\": count\n                })\n\n        else:\n            # placeholder empty month\n            for d in range(1, 32):\n                monthDataArray.append({\n                    \"x\": d,\n                    \"y\": 0,\n                    \"y2\": 0,\n                    \"y3\": 0,\n                    \"y4\": 0\n                })\n\n        result.append({\n            \"name\": month_label,\n            \"year\": year,\n            \"month\": month_number,   # 1–12\n            \"data\": monthDataArray\n        })\n\n    # ----------------------------------\n    # Apex heatmap renders series bottom-up,\n    # so reverse to show latest on top\n    # ----------------------------------\n    result.reverse()\n\n    return result",
+            "code": "\n    months \u003d int(self.getChild(\"root\").getChild(\"Selections\").getChild(\"selection_range\").props.value)\n\n    end_dt \u003d self.custom.end_dt\n    # End_Dt is now set to right at the end of the month, so use an earlier day to determine which month we are currently in (otherwise timezone changes can mess things up)\n    dummy_end_dt \u003d CORE_P.Time.adjustTimestamp(end_dt, offset_days\u003d-10) \n   \n    import system\n\n    month_short \u003d [\"Jan\", \"Feb\", \"Mar\", \"Apr\", \"May\", \"Jun\",\n                   \"Jul\", \"Aug\", \"Sep\", \"Oct\", \"Nov\", \"Dec\"]\n\n    month_to_number \u003d {\n        \"January\": 1, \"February\": 2, \"March\": 3, \"April\": 4,\n        \"May\": 5, \"June\": 6, \"July\": 7, \"August\": 8,\n        \"September\": 9, \"October\": 10, \"November\": 11, \"December\": 12\n    }\n\n    monthlyData \u003d value[\u0027aggregator\u0027]\n\n    # ----------------------------------\n    # BUILD LOOKUP FROM DATA\n    # keyed by (year, month)\n    # ----------------------------------\n    lookup \u003d {}\n\n    for month in monthlyData:\n        monthName \u003d month[\"summary\"][\"x\"]\n        month_number \u003d month_to_number.get(monthName)\n\n        if not month_number:\n            continue\n\n        # infer year relative to end_dt\n        end_month \u003d dummy_end_dt.getMonth() +1\n        end_year \u003d dummy_end_dt.getYear() + 1900\n\n        if month_number \u003e end_month:\n            year \u003d end_year - 1\n        else:\n            year \u003d end_year\n\n        lookup[(year, month_number)] \u003d month\n\n    # ----------------------------------\n    # GENERATE LAST X MONTHS\n    # ----------------------------------\n    result \u003d []\n\n    for i in range(months):\n\n        dt \u003d system.date.addMonths(dummy_end_dt, -i)\n\n        year \u003d dt.getYear() + 1900\n        month_number \u003d dt.getMonth() +1\n\n        month_label \u003d str(year) + \" - \" + month_short[month_number - 1]\n\n        monthData \u003d lookup.get((year, month_number))\n\n        monthDataArray \u003d []\n\n        if monthData:\n\n            for day in monthData[\"days\"]:\n                count \u003d day[\"count\"]\n                weight_diff \u003d day[\"weight_diff\"]\n                weight_avg \u003d day[\"weight_avg\"]\n\n                avg_diff \u003d float(weight_diff) / count if count \u003e 0 else 0\n\n                monthDataArray.append({\n                    \"x\": day[\"x\"],\n                    \"x_local\": day[\"x_local\"],\n                    \"y\": avg_diff,\n                    \"y2\": weight_avg,\n                    \"y3\": weight_diff,\n                    \"y4\": count\n                })\n\n        else:\n            # placeholder empty month\n            for d in range(1, 32):\n                monthDataArray.append({\n                    \"x\": d,\n                    \"y\": 0,\n                    \"y2\": 0,\n                    \"y3\": 0,\n                    \"y4\": 0\n                })\n\n        result.append({\n            \"name\": month_label,\n            \"year\": year,\n            \"month\": month_number,   # 1–12\n            \"data\": monthDataArray\n        })\n\n    # ----------------------------------\n    # Apex heatmap renders series bottom-up,\n    # so reverse to show latest on top\n    # ----------------------------------\n    result.reverse()\n\n    return result",
             "type": "script"
           }
         ],
@@ -3743,7 +3341,7 @@
               "component": {
                 "dataPointSelectionHandler": {
                   "config": {
-                    "script": "\n    from java.util import Calendar, TimeZone\n\n    # Get the timezone ID from a session property or another source\n    timeZoneId \u003d self.view.params.timeZoneID\n    tz \u003d TimeZone.getTimeZone(timeZoneId)\n    \n    \n    #Hide if no data exists for selected day\n\t\n    # Check if no data exists for the selected day\n    if self.props.series[event.seriesIndex].data[event.dataPointIndex].y \u003d\u003d 0:\n    \tself.view.custom.selection.timestamp \u003d \u0027\u0027\n        self.view.custom.selection.index_series \u003d \u0027\u0027\n        self.view.custom.selection.index_day \u003d \u0027\u0027\n        self.view.custom.selection.index_year \u003d \u0027\u0027\n        return  # Exit the function if no data\n\t\n\t# Hide with second click on same day\n    if event.seriesIndex \u003d\u003d self.view.custom.selection.index_series and event.dataPointIndex \u003d\u003d self.view.custom.selection.index_day:\n        self.view.custom.selection.timestamp \u003d \u0027\u0027\n        self.view.custom.selection.index_series \u003d \u0027\u0027\n        self.view.custom.selection.index_day \u003d \u0027\u0027\n        self.view.custom.selection.index_year \u003d \u0027\u0027\n        return\n        \n   # CORE_P.Utils.errorPopup(\u0027Event:\u0027 + str(event) + str(self.props.series[event.seriesIndex]) + \u0027\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u0027 + str(self.props.series[event.seriesIndex].data[event.dataPointIndex].x / 1000.0))\n    # 1744588800.0, in pacific time April 14th\n    # 1744588800.0\n    \n    # 1744588800.0, Auckland time\n    # 1744588800.0 UTC\n    # 1744502400.0, US/Central\n    \n    # Retrieve the year from the series data\n    series_year \u003d self.props.series[event.seriesIndex].year\n\n    # Convert to seconds for Python datetime operations\n    timestamp_seconds \u003d self.props.series[event.seriesIndex].data[event.dataPointIndex].x / 1000.0\n    \n    #offset \u003d CORE_P.Time.getOffsetInHoursFromUTC(timeZoneId)\n    #timestamp_seconds \u003d timestamp_seconds + (offset * 3600)\n    \n    # Create a calendar instance, set the time and adjust to the specified timezone\n    calendar \u003d Calendar.getInstance(tz)\n    calendar.setTimeInMillis(long(timestamp_seconds * 1000))\n    \n    \n    # Correctly set the year based on the series data\n    calendar.set(Calendar.YEAR, series_year)\n\n    #CORE_P.Utils.errorPopup(str(CORE_P.Time.formatDateTime(calendar.getTime(), format \u003d \"MMM dd, YYYY hh:mm:ss\")) + \u0027 - \u0027 + str(timestamp_seconds))    \n    \n    # Set hour, minute, second, and millisecond to 0 to get the start of the day\n    calendar.set(Calendar.HOUR_OF_DAY, 0)\n    calendar.set(Calendar.MINUTE, 0)\n    calendar.set(Calendar.SECOND, 0)\n    calendar.set(Calendar.MILLISECOND, 0)\n    \n\n    \n    # Convert back to epoch milliseconds adjusted for the specified timezone\n    midnight_timestamp \u003d calendar.getTimeInMillis()\n    self.view.custom.selection.timestamp \u003d midnight_timestamp\n    \n    self.view.custom.selection.index_series \u003d event.seriesIndex\n    self.view.custom.selection.index_day \u003d event.dataPointIndex\n    self.view.custom.selection.index_year \u003d series_year\n\t\n\n\t\n\n"
+                    "script": "\n    from java.util import Calendar, TimeZone\n\n    # Get the timezone ID from a session property or another source\n    timeZoneId \u003d self.view.params.timeZoneID\n    tz \u003d TimeZone.getTimeZone(timeZoneId)\n    \n    \n    #Hide if no data exists for selected day\n\t\n    # Check if no data exists for the selected day\n    if self.props.series[event.seriesIndex].data[event.dataPointIndex].y \u003d\u003d 0:\n    \tself.view.custom.selection.timestamp \u003d \u0027\u0027\n        self.view.custom.selection.index_series \u003d \u0027\u0027\n        self.view.custom.selection.index_day \u003d \u0027\u0027\n        self.view.custom.selection.index_year \u003d \u0027\u0027\n        return  # Exit the function if no data\n\t\n\t# Hide with second click on same day\n    if event.seriesIndex \u003d\u003d self.view.custom.selection.index_series and event.dataPointIndex \u003d\u003d self.view.custom.selection.index_day:\n        self.view.custom.selection.timestamp \u003d \u0027\u0027\n        self.view.custom.selection.index_series \u003d \u0027\u0027\n        self.view.custom.selection.index_day \u003d \u0027\u0027\n        self.view.custom.selection.index_year \u003d \u0027\u0027\n        return\n        \n   # CORE_P.Utils.errorPopup(\u0027Event:\u0027 + str(event) + str(self.props.series[event.seriesIndex]) + \u0027\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u0027 + str(self.props.series[event.seriesIndex].data[event.dataPointIndex].x / 1000.0))\n    # 1744588800.0, in pacific time April 14th\n    # 1744588800.0\n    \n    # 1744588800.0, Auckland time\n    # 1744588800.0 UTC\n    # 1744502400.0, US/Central\n    \n    # Retrieve the year from the series data\n    series_year \u003d self.props.series[event.seriesIndex].year\n\n    # Convert to seconds for Python datetime operations\n    timestamp_seconds \u003d self.props.series[event.seriesIndex].data[event.dataPointIndex].x / 1000.0\n    #timestamp_seconds \u003d self.props.series[event.seriesIndex].data[event.dataPointIndex].x_local / 1000.0\n    \n    #offset \u003d CORE_P.Time.getOffsetInHoursFromUTC(timeZoneId)\n    #timestamp_seconds \u003d timestamp_seconds + (offset * 3600)\n    \n    # Create a calendar instance, set the time and adjust to the specified timezone\n    calendar \u003d Calendar.getInstance(tz)\n    calendar.setTimeInMillis(long(timestamp_seconds * 1000))\n    \n    \n    # Correctly set the year based on the series data\n    calendar.set(Calendar.YEAR, series_year)\n\n    #CORE_P.Utils.errorPopup(str(CORE_P.Time.formatDateTime(calendar.getTime(), format \u003d \"MMM dd, YYYY hh:mm:ss\")) + \u0027 - \u0027 + str(timestamp_seconds))    \n    \n    # Set hour, minute, second, and millisecond to 0 to get the start of the day\n    calendar.set(Calendar.HOUR_OF_DAY, 0)\n    calendar.set(Calendar.MINUTE, 0)\n    calendar.set(Calendar.SECOND, 0)\n    calendar.set(Calendar.MILLISECOND, 0)\n    \n    # Convert back to epoch milliseconds adjusted for the specified timezone\n    midnight_timestamp \u003d calendar.getTimeInMillis()\n    \n    #midnight_timestamp \u003d CORE_P.Time.adjustTimestamp(midnight_timestamp, offset_hours\u003d-2) # TESTING!!!\n   # CORE_P.Utils.errorPopup(str(self.props.series[event.seriesIndex].data[event.dataPointIndex]))\n    \n    self.view.custom.selection.timestamp \u003d midnight_timestamp\n    \n    self.view.custom.selection.index_series \u003d event.seriesIndex\n    self.view.custom.selection.index_day \u003d event.dataPointIndex\n    self.view.custom.selection.index_year \u003d series_year\n\t\n\n\t\n\n\n"
                   },
                   "scope": "G",
                   "type": "script"
