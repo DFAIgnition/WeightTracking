@@ -96,6 +96,7 @@ aggregated AS (
         l.event_date
 )
 SELECT
+    concat(a.production_date,':',a.shift_number) as shift, 
     a.production_date,
     a.shift_number,
     a.site_id,
@@ -118,7 +119,8 @@ SELECT
     SUM((a.giveaway_grams / 453.59237) * sc.cost_per_lb)
         / NULLIF(SUM(a.actual_grams) / NULLIF(s.nominal_net_grams, 0), 0)                       AS giveaway_dollars_per_package,
     SUM(a.giveaway_grams / u.unit_conversion)                                                   AS giveaway_weight,
-    SUM(a.actual_grams   / u.unit_conversion)                                                   AS actual_weight
+    SUM(a.actual_grams   / u.unit_conversion)                                                   AS actual_weight,
+    SUM(a.target_grams   / u.unit_conversion)                                                   AS target_weight
 FROM aggregated a
 LEFT JOIN weight.dbo.sku_type s
     ON a.sku_id = s.sku_id
@@ -127,6 +129,8 @@ LEFT JOIN weight.dbo.sku_cost sc
     AND sc.sku_id  = a.sku_id
     AND a.event_date >= sc.effective_start_dt
     AND a.event_date <= ISNULL(sc.effective_end_dt, '9999-12-31')
+LEFT JOIN [weight].dbo.manual_losses ml on (ml.line_id=a.line_id and ml.shift_date = a.production_date and ml.shift_number=a.shift_number)
+    
 JOIN weight.dbo.unit u
     ON u.unit_id = :unit_id
 GROUP BY

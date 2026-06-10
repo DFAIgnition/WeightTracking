@@ -1,7 +1,7 @@
 PROJECT={
     'project_name':system.project.getProjectName(),
     'db_name':'weight',
-    'version_number':1.19,
+    'version_number':1.20,
     'project_dependencies':{
         'Core':1.65,
         'STARR':1.62,

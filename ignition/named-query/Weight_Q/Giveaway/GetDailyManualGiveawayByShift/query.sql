@@ -22,7 +22,6 @@ END
                     dateadd(hour, -:day_start, a.time_start) AT TIME ZONE :timezone
             END
         AS datetime2(0)) AS local_shift_date,
-        
         u.unit_name, u.unit_id, f.line_id,a.shift_date, a.shift_number,u.unit_conversion,
         sum(a.weight_sum) as actual_grams, 
         sum(a.weight_sum/u.unit_conversion) as actual_weight,
@@ -41,7 +40,8 @@ END
 )
 
 select  
-    DATEFROMPARTS(YEAR(a.local_shift_date), MONTH(a.local_shift_date), DAY(a.local_shift_date)) AS production_day, a.shift_number, a.unit_name, a.unit_id, 
+    DATEFROMPARTS(YEAR(a.local_shift_date), MONTH(a.local_shift_date), DAY(a.local_shift_date)) AS production_day, a.shift_number, 
+    a.unit_name, a.unit_id, 
     sum(ml.loss_per_hour) as giveaway_grams, 
     (sum(ml.loss_per_hour/a.unit_conversion)) as giveaway_weight,
     (sum(ml.cost_per_hour)) as giveaway_cost,
