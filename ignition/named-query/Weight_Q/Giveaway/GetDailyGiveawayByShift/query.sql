@@ -28,6 +28,7 @@ END
 ),
 local_giveaway AS (
     -- Step 2: AT TIME ZONE runs on hourly rows only
+    -- Also compute shift_number here, before the next aggregation
     SELECT
         CAST(
             CASE 
@@ -55,10 +56,27 @@ local_giveaway AS (
         h.giveaway_grams
     FROM hourly_giveaway h
 ),
-aggregated AS (
-    -- Step 3: roll up to monthly production buckets before joins
+local_giveaway_with_shift AS (
+    -- Step 3: calculate shift number from the local_shift_date-adjusted time
+    -- Done as a separate CTE so we can reference local_shift_date cleanly
     SELECT
-        DATEFROMPARTS(YEAR(l.local_shift_date), MONTH(l.local_shift_date), 1) AS production_month,
+        *,
+        -- Hour within the production day (0-23 after the day_start offset is applied)
+        DATEDIFF(hour,
+            CAST(CAST(local_shift_date AS DATE) AS DATETIME2),  -- midnight of production date
+            local_shift_date                                      -- actual local time
+        ) AS hour_of_production_day,
+        (DATEDIFF(hour,
+            CAST(CAST(local_shift_date AS DATE) AS DATETIME2),
+            local_shift_date
+        ) / :shift_length) + 1  AS shift_number
+    FROM local_giveaway
+),
+aggregated AS (
+    -- Step 4: roll up to daily+shift buckets before joins
+    SELECT
+        DATEFROMPARTS(YEAR(l.local_shift_date), MONTH(l.local_shift_date), DAY(l.local_shift_date)) AS production_date,
+        l.shift_number,
         l.site_id,
         l.line_id,
         l.filler_id,
@@ -67,9 +85,10 @@ aggregated AS (
         SUM(l.target_grams)   AS target_grams,
         SUM(l.actual_grams)   AS actual_grams,
         SUM(l.giveaway_grams) AS giveaway_grams
-    FROM local_giveaway l
+    FROM local_giveaway_with_shift l
     GROUP BY
-        DATEFROMPARTS(YEAR(l.local_shift_date), MONTH(l.local_shift_date), 1),
+        DATEFROMPARTS(YEAR(l.local_shift_date), MONTH(l.local_shift_date), DAY(l.local_shift_date)),
+        l.shift_number,
         l.site_id,
         l.line_id,
         l.filler_id,
@@ -77,7 +96,8 @@ aggregated AS (
         l.event_date
 )
 SELECT
-    a.production_month,
+    a.production_date,
+    a.shift_number,
     a.site_id,
     a.line_id,
     a.filler_id,
@@ -98,8 +118,7 @@ SELECT
     SUM((a.giveaway_grams / 453.59237) * sc.cost_per_lb)
         / NULLIF(SUM(a.actual_grams) / NULLIF(s.nominal_net_grams, 0), 0)                       AS giveaway_dollars_per_package,
     SUM(a.giveaway_grams / u.unit_conversion)                                                   AS giveaway_weight,
-    SUM(a.actual_grams   / u.unit_conversion)                                                   AS actual_weight,
-    SUM(a.target_grams   / u.unit_conversion)                                                   AS target_weight
+    SUM(a.actual_grams   / u.unit_conversion)                                                   AS actual_weight
 FROM aggregated a
 LEFT JOIN weight.dbo.sku_type s
     ON a.sku_id = s.sku_id
@@ -111,7 +130,8 @@ LEFT JOIN weight.dbo.sku_cost sc
 JOIN weight.dbo.unit u
     ON u.unit_id = :unit_id
 GROUP BY
-    a.production_month,
+    a.production_date,
+    a.shift_number,
     a.site_id,
     a.line_id,
     a.filler_id,
@@ -120,5 +140,5 @@ GROUP BY
     s.nominal_net_grams,
     u.unit_name,
     u.unit_id
-ORDER BY a.production_month DESC
+ORDER BY a.production_date DESC, a.shift_number desc
 OPTION (RECOMPILE)

@@ -50,6 +50,12 @@ INCLUDE ([time_start],[count],[weight_sum],[weight_diff],[pct_weight_over],[pct_
 
 CREATE NONCLUSTERED INDEX rejects_i ON [dbo].[rejects] ([line_id],[time_start],[material]) INCLUDE ([metal_count],[weight_count])
 
+CREATE INDEX IX_giveaway_line_eventdt 
+ON weight.dbo.giveaway (line_id, event_dt, quality_flag)
+INCLUDE (site_id, filler_id, sku_id, 
+         delta_target_grams, delta_actual_grams, delta_giveaway_grams)
+
+
 update statistics [aggregated];
 update statistics [rejects];
 
